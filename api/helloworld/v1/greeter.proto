@@ -17,11 +17,29 @@ service Greeter {
       get: "/helloworld/{name}"
     };
   }
+
+  rpc Category (Empty) returns (CategoryResp) {
+    option (google.api.http) = {
+      get: "/category"
+    };
+  }
 }
 
 // The request message containing the user's name.
 message HelloRequest {
   string name = 1;
+}
+
+message Empty {
+
+}
+
+message CategoryResp {
+  repeated Category categories = 1;
+}
+message Category {
+  string categoryName = 1;
+  string id = 2;
 }
 
 // The response message containing the greetings
