@@ -49,6 +49,12 @@ api:
 build:
 	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
 
+
+.PHONY: run
+# build and run the service use local_config.yaml
+run: build
+	./bin/kubecit-service -conf "./configs/config.yaml"
+
 .PHONY: generate
 # generate
 generate:
@@ -81,3 +87,5 @@ help:
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
+
+

@@ -2,6 +2,7 @@ package server
 
 import (
 	v1 "kubecit-service/api/helloworld/v1"
+	"kubecit-service/gin"
 	"kubecit-service/internal/conf"
 	"kubecit-service/internal/service"
 
@@ -27,6 +28,9 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
+
+	logService := gin.NewGinService()
+	srv.HandlePrefix("/web/", logService)
 	v1.RegisterGreeterHTTPServer(srv, greeter)
 	return srv
 }
