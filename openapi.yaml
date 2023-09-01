@@ -3,10 +3,129 @@
 
 openapi: 3.0.3
 info:
-    title: Greeter API
-    description: The greeting service definition.
+    title: ""
     version: 0.0.1
 paths:
+    /api/course/category/getFirstCategories:
+        get:
+            tags:
+                - Course
+            operationId: Course_GetFirstCategories
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.GetFirstCategoriesReply'
+    /api/course/mostNew:
+        post:
+            tags:
+                - Course
+            operationId: Course_MostNew
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.PageRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.MostNewReply'
+    /api/course/search:
+        post:
+            tags:
+                - Course
+            operationId: Course_SearchCourse
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.SearchCourseRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.SearchCourseReply'
+    /api/course/tags/list:
+        post:
+            tags:
+                - Course
+            operationId: Course_TagsList
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.TagsListRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.TagsListReply'
+    /api/member/getInfo:
+        get:
+            tags:
+                - Member
+            operationId: Member_GetInfo
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.GetInfoReply'
+    /api/slider/getSliders:
+        get:
+            tags:
+                - Slider
+            operationId: Slider_GetSliders
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.GetSlidersReply'
+    /api/token/createToken:
+        get:
+            tags:
+                - Token
+            operationId: Token_CreateToken
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.CreateTokenReply'
+    /api/u/loginByJson:
+        post:
+            tags:
+                - Login
+            operationId: Login_LoginByJson
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.LoginByJsonRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.LoginByJsonReply'
     /category:
         get:
             tags:
@@ -54,11 +173,379 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.Category'
+        helloworld.v1.CourseInfo:
+            type: object
+            properties:
+                isRecommend:
+                    type: integer
+                    format: int32
+                isIntegral:
+                    type: integer
+                    format: int32
+                secondCategory:
+                    type: string
+                saleType:
+                    type: integer
+                    format: int32
+                discountPrice:
+                    type: number
+                    format: float
+                firstCategory:
+                    type: string
+                isMember:
+                    type: integer
+                    format: int32
+                firstCategoryName:
+                    type: string
+                teachingType:
+                    type: integer
+                    format: int32
+                courseLevel:
+                    type: integer
+                    format: int32
+                updateBy:
+                    type: string
+                lecturerName:
+                    type: array
+                    items:
+                        type: string
+                purchaseCnt:
+                    type: integer
+                    format: int32
+                totalHour:
+                    type: number
+                    format: float
+                id:
+                    type: string
+                bizCourseDetail:
+                    type: array
+                    items:
+                        type: string
+                courseCover:
+                    type: string
+                ext3:
+                    type: string
+                ext2:
+                    type: string
+                bizCourseChapters:
+                    type: array
+                    items:
+                        type: string
+                ext1:
+                    type: string
+                salePrice:
+                    type: number
+                    format: float
+                bizCourseTeacher:
+                    type: array
+                    items:
+                        type: string
+                bizCourseAttachments:
+                    type: array
+                    items:
+                        type: string
+                updateTime:
+                    type: string
+                    format: date-time
+                tags:
+                    type: string
+                courseName:
+                    type: string
+                createBy:
+                    type: string
+                purchaseCounter:
+                    type: integer
+                    format: int32
+                createTime:
+                    type: string
+                    format: date-time
+                clicks:
+                    type: integer
+                    format: int32
+                secondCategoryName:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
+        helloworld.v1.CreateTokenReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+                data:
+                    type: object
+                    additionalProperties:
+                        type: string
+        helloworld.v1.FirstCategory:
+            type: object
+            properties:
+                thumbnail:
+                    type: string
+                level:
+                    type: integer
+                    format: int32
+                description:
+                    type: string
+                updateTime:
+                    type: string
+                    format: date-time
+                sort:
+                    type: integer
+                    format: int32
+                categoryName:
+                    type: string
+                parentId:
+                    type: string
+                createBy:
+                    type: string
+                createTime:
+                    type: string
+                    format: date-time
+                updateBy:
+                    type: string
+                children:
+                    type: array
+                    items:
+                        type: string
+                parentCategory:
+                    type: array
+                    items:
+                        type: string
+                id:
+                    type: string
+                ext3:
+                    type: string
+                ext2:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
+                ext1:
+                    type: string
+        helloworld.v1.GetFirstCategoriesReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.GetFirstCategoriesReplyData'
+        helloworld.v1.GetFirstCategoriesReplyData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.FirstCategory'
+        helloworld.v1.GetInfoReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+        helloworld.v1.GetSlidersReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.GetSlidersReplyData'
+        helloworld.v1.GetSlidersReplyData:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.SliderInfo'
         helloworld.v1.HelloReply:
             type: object
             properties:
                 message:
                     type: string
             description: The response message containing the greetings
+        helloworld.v1.LoginByJsonReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.LoginByJsonReplyData'
+        helloworld.v1.LoginByJsonReplyData:
+            type: object
+            properties:
+                accessToken:
+                    type: string
+        helloworld.v1.LoginByJsonRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+        helloworld.v1.Metadata:
+            type: object
+            properties:
+                msg:
+                    type: string
+                code:
+                    type: string
+                success:
+                    type: boolean
+                version:
+                    type: string
+                timestamp:
+                    type: string
+        helloworld.v1.MostNewReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.MostNewReplyData'
+        helloworld.v1.MostNewReplyData:
+            type: object
+            properties:
+                pageInfo:
+                    $ref: '#/components/schemas/helloworld.v1.PageInfo'
+        helloworld.v1.PageInfo:
+            type: object
+            properties:
+                startRow:
+                    type: integer
+                    format: int32
+                navigatepageNums:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+                lastPage:
+                    type: integer
+                    format: int32
+                prePage:
+                    type: integer
+                    format: int32
+                hasNextPage:
+                    type: boolean
+                nextPage:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                endRow:
+                    type: integer
+                    format: int32
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.CourseInfo'
+                pageNum:
+                    type: integer
+                    format: int32
+                navigatePages:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int32
+                navigateFirstPage:
+                    type: integer
+                    format: int32
+                pages:
+                    type: integer
+                    format: int32
+                size:
+                    type: integer
+                    format: int32
+                firstPage:
+                    type: integer
+                    format: int32
+                isLastPage:
+                    type: boolean
+                hasPreviousPage:
+                    type: boolean
+                navigateLastPage:
+                    type: integer
+                    format: int32
+                isFirstPage:
+                    type: boolean
+        helloworld.v1.PageRequest:
+            type: object
+            properties:
+                pageNum:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        helloworld.v1.SearchCourseReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.PageInfo'
+        helloworld.v1.SearchCourseRequest:
+            type: object
+            properties:
+                pageNum:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                entity:
+                    type: object
+                    additionalProperties:
+                        type: string
+        helloworld.v1.SliderInfo:
+            type: object
+            properties:
+                createBy:
+                    type: string
+                imageName:
+                    type: string
+                createTime:
+                    type: string
+                    format: date-time
+                updateBy:
+                    type: string
+                imageRemark:
+                    type: string
+                imageUrl:
+                    type: string
+                pcHref:
+                    type: string
+                updateTime:
+                    type: string
+                    format: date-time
+                id:
+                    type: string
+                appHref:
+                    type: string
+        helloworld.v1.TagsListReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.PageInfo'
+        helloworld.v1.TagsListRequest:
+            type: object
+            properties:
+                pageNum:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                entity:
+                    type: object
+                    additionalProperties:
+                        type: string
 tags:
+    - name: Course
     - name: Greeter
+      description: The greeting service definition.
+    - name: Login
+    - name: Member
+    - name: Slider
+    - name: Token

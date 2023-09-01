@@ -3,6 +3,7 @@ syntax = "proto3";
 package helloworld.v1;
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "kubecit-service/api/helloworld/v1;v1";
 option java_multiple_files = true;
@@ -45,4 +46,304 @@ message Category {
 // The response message containing the greetings
 message HelloReply {
   string message = 1;
+}
+
+
+service Course {
+  rpc MostNew (PageRequest) returns (MostNewReply) {
+    option (google.api.http) = {
+      post: "/api/course/mostNew",
+      body: "*"
+    };
+  }
+  rpc GetFirstCategories (GetFirstCategoriesRequest) returns (GetFirstCategoriesReply) {
+    option (google.api.http) = {
+      get: "/api/course/category/getFirstCategories"
+    };
+  }
+  rpc TagsList (TagsListRequest) returns (TagsListReply) {
+    option (google.api.http) = {
+      post: "/api/course/tags/list",
+      body: "*"
+    };
+  }
+  rpc SearchCourse (SearchCourseRequest) returns (SearchCourseReply) {
+    option (google.api.http) = {
+      post: "/api/course/search",
+      body: "*"
+    };
+  }
+}
+
+service Slider {
+  rpc GetSliders (GetSlidersRequest) returns (GetSlidersReply) {
+    option (google.api.http) = {
+      get: "/api/slider/getSliders",
+    };
+  }
+}
+
+service Token {
+  rpc CreateToken (CreateTokenRequest) returns (CreateTokenReply) {
+    option (google.api.http) = {
+      get: "/api/token/createToken",
+    };
+  }
+}
+
+service Member {
+  rpc GetInfo (GetInfoRequest) returns (GetInfoReply) {
+    option (google.api.http) = {
+      get: "/api/member/getInfo",
+    };
+  }
+}
+
+service Login {
+  rpc LoginByJson (LoginByJsonRequest) returns (LoginByJsonReply) {
+    option (google.api.http) = {
+      post: "/api/u/loginByJson",
+      body: "*"
+    };
+  }
+}
+
+message PageRequest {
+  int32 pageNum = 1;
+  int32 pageSize = 2;
+}
+
+message Metadata {
+  string msg = 1;
+  string code = 2;
+  bool success = 3;
+  string version = 4;
+  string timestamp = 5;
+}
+
+message MostNewReply {
+  Metadata meta = 1;
+  MostNewReplyData data = 2;
+}
+
+message MostNewReplyData {
+  PageInfo pageInfo = 1;
+}
+
+message PageInfo {
+  int32 startRow = 1;
+  repeated int32 navigatepageNums = 2;
+  int32 lastPage = 3;
+  int32 prePage = 4;
+  bool hasNextPage = 5;
+  int32 nextPage = 6;
+  int32 pageSize = 7;
+  int32 endRow = 8;
+  repeated CourseInfo list = 9;
+  int32 pageNum = 10;
+  int32 navigatePages = 11;
+  int32 total = 12;
+  int32 navigateFirstPage = 13;
+  int32 pages = 14;
+  int32 size = 15;
+  int32 firstPage = 16;
+  bool isLastPage = 17;
+  bool hasPreviousPage = 18;
+  int32 navigateLastPage = 19;
+  bool isFirstPage = 20;
+}
+
+message CourseInfo {
+  int32 isRecommend = 1;
+  int32 isIntegral = 2;
+  string secondCategory = 3;
+  int32 saleType = 4;
+  float discountPrice = 5;
+  string firstCategory = 6;
+  int32 isMember = 7;
+  string firstCategoryName = 8;
+  int32 teachingType = 9;
+  int32 courseLevel = 10;
+  string updateBy = 11;
+  repeated string lecturerName = 12;
+  int32 purchaseCnt = 13;
+  float totalHour = 14;
+  string id = 15;
+  repeated string bizCourseDetail = 16;
+  string courseCover = 17;
+  string ext3 = 18;
+  string ext2 = 19;
+  repeated string bizCourseChapters = 20;
+  string ext1 = 21;
+  float salePrice = 22;
+  repeated string bizCourseTeacher = 23;
+  repeated string bizCourseAttachments = 24;
+  google.protobuf.Timestamp updateTime = 25;
+  string tags = 26;
+  string courseName = 27;
+  string createBy = 28;
+  int32 purchaseCounter = 29;
+  google.protobuf.Timestamp createTime = 30;
+  int32 clicks = 31;
+  string secondCategoryName = 32;
+  int32 status = 33;
+}
+
+message GetFirstCategoriesRequest {
+
+}
+
+message GetFirstCategoriesReply {
+  Metadata meta = 1;
+  getFirstCategoriesReplyData data = 2;
+}
+
+message getFirstCategoriesReplyData {
+  repeated FirstCategory list = 1;
+}
+
+message FirstCategory {
+  string thumbnail = 1;
+  int32 level = 2;
+  string description =3;
+  google.protobuf.Timestamp updateTime = 4;
+  int32 sort = 5;
+  string categoryName = 6;
+  string parentId = 7;
+  string createBy = 8;
+  google.protobuf.Timestamp createTime = 9;
+  string updateBy = 10;
+  repeated string children = 11;
+  repeated string parentCategory = 12;
+  string id = 13;
+  string ext3 = 14;
+  string ext2 = 15;
+  int32 status = 16;
+  string ext1 = 17;
+}
+
+message TagsListRequest {
+  int32 pageNum = 1;
+  int32 pageSize = 2;
+  map<string,string> entity = 3;
+}
+
+message TagsListReply {
+  Metadata meta = 1;
+  PageInfo data = 2;
+}
+
+message SearchCourseRequest {
+  int32 pageNum = 1;
+  int32 pageSize = 2;
+  map<string,string> entity = 3;
+}
+
+message SearchCourseReply {
+  Metadata meta = 1;
+  PageInfo data = 2;
+}
+
+message GetSlidersRequest {}
+message GetSlidersReply {
+  Metadata meta = 1;
+  GetSlidersReplyData data = 2;
+}
+
+message GetSlidersReplyData {
+  repeated SliderInfo list = 1;
+}
+
+message SliderInfo {
+  string createBy = 1;
+  string imageName = 2;
+  google.protobuf.Timestamp createTime = 3;
+  string updateBy = 4;
+  string imageRemark = 5;
+  string imageUrl = 6;
+  string pcHref = 7;
+  google.protobuf.Timestamp updateTime = 8;
+  string id = 9;
+  string appHref = 10;
+}
+
+message CreateTokenRequest {}
+message CreateTokenReply {
+  Metadata meta = 1;
+  map<string,string> data = 2;
+}
+
+message GetInfoRequest {}
+message GetInfoReply {
+  Metadata meta = 1;
+
+}
+
+message GetInfoReplyData {
+  google.protobuf.Timestamp birthday = 1;
+  string sysCode = 2;
+  int32 gender = 3;
+  string city = 4;
+  repeated string loginType = 5;
+  string county = 6;
+  string highestEducation = 7;
+  int32 isEnable = 8;
+  string password = 9;
+  string province = 10;
+  string updateBy = 11;
+  float totalHour = 12;
+  string id = 13;
+  string platformAuthuser = 14;
+  string email = 15;
+  string qq = 16;
+  string address = 17;
+  string ext03 = 18;
+  string ext02 = 19;
+  string ext01 = 20;
+  string nickName = 21;
+  string emergencyContact = 22;
+  string emergencyContactNumber = 23;
+  string mobile = 24;
+  string wechat = 25;
+  int32 regSource = 26;
+  string telephone = 27;
+  google.protobuf.Timestamp updateTime = 28;
+  string avatar = 29;
+  string realName = 30;
+  string createBy = 31;
+  MemberVIPInfo vipInfo = 32;
+  string personalSignature = 33;
+  string certificateNumber = 34;
+  google.protobuf.Timestamp createTime = 35;
+  int32 age = 36;
+  string residenceAddress = 37;
+  string username = 38;
+  string certificateType = 39;
+}
+
+message MemberVIPInfo {
+  string orderNumber = 1;
+  string vipName = 2;
+  string vipId = 3;
+  string vipDesc = 4;
+  google.protobuf.Timestamp startTime = 5;
+  string id = 6;
+  google.protobuf.Timestamp endTime = 7;
+  int32 isExpired = 8;
+  string memberId = 9;
+  string vipIcon = 10;
+}
+
+message LoginByJsonRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginByJsonReply {
+  Metadata meta = 1;
+  LoginByJsonReplyData data = 2;
+}
+
+message LoginByJsonReplyData {
+  string accessToken = 1;
 }
