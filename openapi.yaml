@@ -7,11 +7,22 @@ info:
     description: The greeting service definition.
     version: 0.0.1
 paths:
+    /category:
+        get:
+            tags:
+                - Greeter
+            operationId: Greeter_Category
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.CategoryResp'
     /helloworld/{name}:
         get:
             tags:
                 - Greeter
-                - subgroup
             description: Sends a greeting
             operationId: Greeter_SayHello
             parameters:
@@ -29,6 +40,20 @@ paths:
                                 $ref: '#/components/schemas/helloworld.v1.HelloReply'
 components:
     schemas:
+        helloworld.v1.Category:
+            type: object
+            properties:
+                categoryName:
+                    type: string
+                id:
+                    type: string
+        helloworld.v1.CategoryResp:
+            type: object
+            properties:
+                categories:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.Category'
         helloworld.v1.HelloReply:
             type: object
             properties:
