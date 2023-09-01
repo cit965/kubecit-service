@@ -38,3 +38,6 @@ bin/
 *.swp
 
 .dist
+
+
+test.db
