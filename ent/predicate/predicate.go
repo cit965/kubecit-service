@@ -8,3 +8,15 @@ import (
 
 // Category is the predicate function for category builders.
 type Category func(*sql.Selector)
+
+// Course is the predicate function for course builders.
+type Course func(*sql.Selector)
+
+// Member is the predicate function for member builders.
+type Member func(*sql.Selector)
+
+// Slider is the predicate function for slider builders.
+type Slider func(*sql.Selector)
+
+// Token is the predicate function for token builders.
+type Token func(*sql.Selector)

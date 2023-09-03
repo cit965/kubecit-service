@@ -6,6 +6,18 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /api/categories:
+        get:
+            tags:
+                - Category
+            operationId: Category_Category
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.CategoryResp'
     /api/course/category/getFirstCategories:
         get:
             tags:
@@ -126,18 +138,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.LoginByJsonReply'
-    /category:
-        get:
-            tags:
-                - Greeter
-            operationId: Greeter_Category
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/helloworld.v1.CategoryResp'
     /helloworld/{name}:
         get:
             tags:
@@ -159,7 +159,7 @@ paths:
                                 $ref: '#/components/schemas/helloworld.v1.HelloReply'
 components:
     schemas:
-        helloworld.v1.Category:
+        helloworld.v1.CategoryInfo:
             type: object
             properties:
                 categoryName:
@@ -172,7 +172,7 @@ components:
                 categories:
                     type: array
                     items:
-                        $ref: '#/components/schemas/helloworld.v1.Category'
+                        $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
         helloworld.v1.CourseInfo:
             type: object
             properties:
@@ -542,6 +542,7 @@ components:
                     additionalProperties:
                         type: string
 tags:
+    - name: Category
     - name: Course
     - name: Greeter
       description: The greeting service definition.
