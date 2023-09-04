@@ -24,7 +24,37 @@ var (
 	}
 	// CoursesColumns holds the columns for the "courses" table.
 	CoursesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString},
+		{Name: "is_recommend", Type: field.TypeBool, Default: false},
+		{Name: "is_integral", Type: field.TypeBool, Default: false},
+		{Name: "second_category", Type: field.TypeString},
+		{Name: "sale_type", Type: field.TypeInt32},
+		{Name: "discount_price", Type: field.TypeFloat32},
+		{Name: "first_category_name", Type: field.TypeString},
+		{Name: "teaching_type", Type: field.TypeInt32},
+		{Name: "course_level", Type: field.TypeInt32},
+		{Name: "update_by", Type: field.TypeTime},
+		{Name: "lecturer_name", Type: field.TypeString},
+		{Name: "purchase_cnt", Type: field.TypeInt32},
+		{Name: "total_hour", Type: field.TypeFloat32},
+		{Name: "biz_course_detail", Type: field.TypeString},
+		{Name: "course_cover", Type: field.TypeString},
+		{Name: "ext3", Type: field.TypeString},
+		{Name: "ext2", Type: field.TypeString},
+		{Name: "biz_course_chapters", Type: field.TypeString},
+		{Name: "ext1", Type: field.TypeString},
+		{Name: "sale_price", Type: field.TypeFloat32},
+		{Name: "biz_course_teacher", Type: field.TypeString},
+		{Name: "biz_course_attachments", Type: field.TypeString},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "tags", Type: field.TypeString},
+		{Name: "course_name", Type: field.TypeString},
+		{Name: "create_by", Type: field.TypeString},
+		{Name: "purchase_counter", Type: field.TypeInt32},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "clicks", Type: field.TypeInt32},
+		{Name: "second_category_name", Type: field.TypeString},
+		{Name: "status", Type: field.TypeString},
 	}
 	// CoursesTable holds the schema information for the "courses" table.
 	CoursesTable = &schema.Table{
