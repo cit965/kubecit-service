@@ -15,6 +15,10 @@ func (Category) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").
 			Default("unknown"),
+		field.String("id").Unique(),
+		field.String("parentId"),
+		field.String("level"),
+		field.String("status"),
 	}
 }
 

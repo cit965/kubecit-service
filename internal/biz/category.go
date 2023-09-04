@@ -10,6 +10,9 @@ import (
 type Category struct {
 	CategoryName string
 	Id           string
+	ParentId     string
+	Level        string
+	Status       string
 }
 
 // CategoryRepo is a Category repo.

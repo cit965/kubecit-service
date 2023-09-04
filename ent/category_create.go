@@ -33,6 +33,30 @@ func (cc *CategoryCreate) SetNillableName(s *string) *CategoryCreate {
 	return cc
 }
 
+// SetParentId sets the "parentId" field.
+func (cc *CategoryCreate) SetParentId(s string) *CategoryCreate {
+	cc.mutation.SetParentId(s)
+	return cc
+}
+
+// SetLevel sets the "level" field.
+func (cc *CategoryCreate) SetLevel(s string) *CategoryCreate {
+	cc.mutation.SetLevel(s)
+	return cc
+}
+
+// SetStatus sets the "status" field.
+func (cc *CategoryCreate) SetStatus(s string) *CategoryCreate {
+	cc.mutation.SetStatus(s)
+	return cc
+}
+
+// SetID sets the "id" field.
+func (cc *CategoryCreate) SetID(s string) *CategoryCreate {
+	cc.mutation.SetID(s)
+	return cc
+}
+
 // Mutation returns the CategoryMutation object of the builder.
 func (cc *CategoryCreate) Mutation() *CategoryMutation {
 	return cc.mutation
@@ -79,6 +103,15 @@ func (cc *CategoryCreate) check() error {
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Category.name"`)}
 	}
+	if _, ok := cc.mutation.ParentId(); !ok {
+		return &ValidationError{Name: "parentId", err: errors.New(`ent: missing required field "Category.parentId"`)}
+	}
+	if _, ok := cc.mutation.Level(); !ok {
+		return &ValidationError{Name: "level", err: errors.New(`ent: missing required field "Category.level"`)}
+	}
+	if _, ok := cc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Category.status"`)}
+	}
 	return nil
 }
 
@@ -93,8 +126,13 @@ func (cc *CategoryCreate) sqlSave(ctx context.Context) (*Category, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		if id, ok := _spec.ID.Value.(string); ok {
+			_node.ID = id
+		} else {
+			return nil, fmt.Errorf("unexpected Category.ID type: %T", _spec.ID.Value)
+		}
+	}
 	cc.mutation.id = &_node.ID
 	cc.mutation.done = true
 	return _node, nil
@@ -103,11 +141,27 @@ func (cc *CategoryCreate) sqlSave(ctx context.Context) (*Category, error) {
 func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Category{config: cc.config}
-		_spec = sqlgraph.NewCreateSpec(category.Table, sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt))
+		_spec = sqlgraph.NewCreateSpec(category.Table, sqlgraph.NewFieldSpec(category.FieldID, field.TypeString))
 	)
+	if id, ok := cc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := cc.mutation.Name(); ok {
 		_spec.SetField(category.FieldName, field.TypeString, value)
 		_node.Name = value
+	}
+	if value, ok := cc.mutation.ParentId(); ok {
+		_spec.SetField(category.FieldParentId, field.TypeString, value)
+		_node.ParentId = value
+	}
+	if value, ok := cc.mutation.Level(); ok {
+		_spec.SetField(category.FieldLevel, field.TypeString, value)
+		_node.Level = value
+	}
+	if value, ok := cc.mutation.Status(); ok {
+		_spec.SetField(category.FieldStatus, field.TypeString, value)
+		_node.Status = value
 	}
 	return _node, _spec
 }
@@ -153,10 +207,6 @@ func (ccb *CategoryCreateBulk) Save(ctx context.Context) ([]*Category, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				mutation.done = true
 				return nodes[i], nil
 			})

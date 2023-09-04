@@ -28,6 +28,9 @@ func (s *CategoryService) Category(ctx context.Context, req *pb.Empty) (*pb.Cate
 		cs = append(cs, &pb.CategoryInfo{
 			CategoryName: v.CategoryName,
 			Id:           v.Id,
+			ParentId:     v.ParentId,
+			Level:        v.Level,
+			Status:       v.Status,
 		})
 	}
 	return &pb.CategoryResp{Categories: cs}, nil

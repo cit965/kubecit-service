@@ -166,6 +166,12 @@ components:
                     type: string
                 id:
                     type: string
+                parentId:
+                    type: string
+                level:
+                    type: string
+                status:
+                    type: string
         helloworld.v1.CategoryResp:
             type: object
             properties:
