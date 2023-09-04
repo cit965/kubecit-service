@@ -4,53 +4,1754 @@ package course
 
 import (
 	"kubecit-service/ent/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 )
 
 // ID filters vertices based on their ID field.
-func ID(id int) predicate.Course {
+func ID(id string) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldID, id))
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id int) predicate.Course {
+func IDEQ(id string) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldID, id))
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id int) predicate.Course {
+func IDNEQ(id string) predicate.Course {
 	return predicate.Course(sql.FieldNEQ(FieldID, id))
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...int) predicate.Course {
+func IDIn(ids ...string) predicate.Course {
 	return predicate.Course(sql.FieldIn(FieldID, ids...))
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...int) predicate.Course {
+func IDNotIn(ids ...string) predicate.Course {
 	return predicate.Course(sql.FieldNotIn(FieldID, ids...))
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id int) predicate.Course {
+func IDGT(id string) predicate.Course {
 	return predicate.Course(sql.FieldGT(FieldID, id))
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id int) predicate.Course {
+func IDGTE(id string) predicate.Course {
 	return predicate.Course(sql.FieldGTE(FieldID, id))
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id int) predicate.Course {
+func IDLT(id string) predicate.Course {
 	return predicate.Course(sql.FieldLT(FieldID, id))
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id int) predicate.Course {
+func IDLTE(id string) predicate.Course {
 	return predicate.Course(sql.FieldLTE(FieldID, id))
+}
+
+// IDEqualFold applies the EqualFold predicate on the ID field.
+func IDEqualFold(id string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldID, id))
+}
+
+// IDContainsFold applies the ContainsFold predicate on the ID field.
+func IDContainsFold(id string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldID, id))
+}
+
+// IsRecommend applies equality check predicate on the "isRecommend" field. It's identical to IsRecommendEQ.
+func IsRecommend(v bool) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldIsRecommend, v))
+}
+
+// IsIntegral applies equality check predicate on the "isIntegral" field. It's identical to IsIntegralEQ.
+func IsIntegral(v bool) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldIsIntegral, v))
+}
+
+// SecondCategory applies equality check predicate on the "secondCategory" field. It's identical to SecondCategoryEQ.
+func SecondCategory(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldSecondCategory, v))
+}
+
+// SaleType applies equality check predicate on the "saleType" field. It's identical to SaleTypeEQ.
+func SaleType(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldSaleType, v))
+}
+
+// DiscountPrice applies equality check predicate on the "discountPrice" field. It's identical to DiscountPriceEQ.
+func DiscountPrice(v float32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldDiscountPrice, v))
+}
+
+// FirstCategoryName applies equality check predicate on the "firstCategoryName" field. It's identical to FirstCategoryNameEQ.
+func FirstCategoryName(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldFirstCategoryName, v))
+}
+
+// TeachingType applies equality check predicate on the "teachingType" field. It's identical to TeachingTypeEQ.
+func TeachingType(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldTeachingType, v))
+}
+
+// CourseLevel applies equality check predicate on the "courseLevel" field. It's identical to CourseLevelEQ.
+func CourseLevel(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCourseLevel, v))
+}
+
+// UpdateBy applies equality check predicate on the "updateBy" field. It's identical to UpdateByEQ.
+func UpdateBy(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldUpdateBy, v))
+}
+
+// LecturerName applies equality check predicate on the "lecturerName" field. It's identical to LecturerNameEQ.
+func LecturerName(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldLecturerName, v))
+}
+
+// PurchaseCnt applies equality check predicate on the "purchaseCnt" field. It's identical to PurchaseCntEQ.
+func PurchaseCnt(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldPurchaseCnt, v))
+}
+
+// TotalHour applies equality check predicate on the "totalHour" field. It's identical to TotalHourEQ.
+func TotalHour(v float32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldTotalHour, v))
+}
+
+// BizCourseDetail applies equality check predicate on the "bizCourseDetail" field. It's identical to BizCourseDetailEQ.
+func BizCourseDetail(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldBizCourseDetail, v))
+}
+
+// CourseCover applies equality check predicate on the "courseCover" field. It's identical to CourseCoverEQ.
+func CourseCover(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCourseCover, v))
+}
+
+// Ext3 applies equality check predicate on the "ext3" field. It's identical to Ext3EQ.
+func Ext3(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldExt3, v))
+}
+
+// Ext2 applies equality check predicate on the "ext2" field. It's identical to Ext2EQ.
+func Ext2(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldExt2, v))
+}
+
+// BizCourseChapters applies equality check predicate on the "bizCourseChapters" field. It's identical to BizCourseChaptersEQ.
+func BizCourseChapters(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldBizCourseChapters, v))
+}
+
+// Ext1 applies equality check predicate on the "ext1" field. It's identical to Ext1EQ.
+func Ext1(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldExt1, v))
+}
+
+// SalePrice applies equality check predicate on the "salePrice" field. It's identical to SalePriceEQ.
+func SalePrice(v float32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldSalePrice, v))
+}
+
+// BizCourseTeacher applies equality check predicate on the "bizCourseTeacher" field. It's identical to BizCourseTeacherEQ.
+func BizCourseTeacher(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldBizCourseTeacher, v))
+}
+
+// BizCourseAttachments applies equality check predicate on the "bizCourseAttachments" field. It's identical to BizCourseAttachmentsEQ.
+func BizCourseAttachments(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldBizCourseAttachments, v))
+}
+
+// UpdateTime applies equality check predicate on the "updateTime" field. It's identical to UpdateTimeEQ.
+func UpdateTime(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldUpdateTime, v))
+}
+
+// Tags applies equality check predicate on the "tags" field. It's identical to TagsEQ.
+func Tags(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldTags, v))
+}
+
+// CourseName applies equality check predicate on the "courseName" field. It's identical to CourseNameEQ.
+func CourseName(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCourseName, v))
+}
+
+// CreateBy applies equality check predicate on the "createBy" field. It's identical to CreateByEQ.
+func CreateBy(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCreateBy, v))
+}
+
+// PurchaseCounter applies equality check predicate on the "purchaseCounter" field. It's identical to PurchaseCounterEQ.
+func PurchaseCounter(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldPurchaseCounter, v))
+}
+
+// CreateTime applies equality check predicate on the "createTime" field. It's identical to CreateTimeEQ.
+func CreateTime(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCreateTime, v))
+}
+
+// Clicks applies equality check predicate on the "clicks" field. It's identical to ClicksEQ.
+func Clicks(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldClicks, v))
+}
+
+// SecondCategoryName applies equality check predicate on the "secondCategoryName" field. It's identical to SecondCategoryNameEQ.
+func SecondCategoryName(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldSecondCategoryName, v))
+}
+
+// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
+func Status(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldStatus, v))
+}
+
+// IsRecommendEQ applies the EQ predicate on the "isRecommend" field.
+func IsRecommendEQ(v bool) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldIsRecommend, v))
+}
+
+// IsRecommendNEQ applies the NEQ predicate on the "isRecommend" field.
+func IsRecommendNEQ(v bool) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldIsRecommend, v))
+}
+
+// IsIntegralEQ applies the EQ predicate on the "isIntegral" field.
+func IsIntegralEQ(v bool) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldIsIntegral, v))
+}
+
+// IsIntegralNEQ applies the NEQ predicate on the "isIntegral" field.
+func IsIntegralNEQ(v bool) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldIsIntegral, v))
+}
+
+// SecondCategoryEQ applies the EQ predicate on the "secondCategory" field.
+func SecondCategoryEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldSecondCategory, v))
+}
+
+// SecondCategoryNEQ applies the NEQ predicate on the "secondCategory" field.
+func SecondCategoryNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldSecondCategory, v))
+}
+
+// SecondCategoryIn applies the In predicate on the "secondCategory" field.
+func SecondCategoryIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldSecondCategory, vs...))
+}
+
+// SecondCategoryNotIn applies the NotIn predicate on the "secondCategory" field.
+func SecondCategoryNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldSecondCategory, vs...))
+}
+
+// SecondCategoryGT applies the GT predicate on the "secondCategory" field.
+func SecondCategoryGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldSecondCategory, v))
+}
+
+// SecondCategoryGTE applies the GTE predicate on the "secondCategory" field.
+func SecondCategoryGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldSecondCategory, v))
+}
+
+// SecondCategoryLT applies the LT predicate on the "secondCategory" field.
+func SecondCategoryLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldSecondCategory, v))
+}
+
+// SecondCategoryLTE applies the LTE predicate on the "secondCategory" field.
+func SecondCategoryLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldSecondCategory, v))
+}
+
+// SecondCategoryContains applies the Contains predicate on the "secondCategory" field.
+func SecondCategoryContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldSecondCategory, v))
+}
+
+// SecondCategoryHasPrefix applies the HasPrefix predicate on the "secondCategory" field.
+func SecondCategoryHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldSecondCategory, v))
+}
+
+// SecondCategoryHasSuffix applies the HasSuffix predicate on the "secondCategory" field.
+func SecondCategoryHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldSecondCategory, v))
+}
+
+// SecondCategoryEqualFold applies the EqualFold predicate on the "secondCategory" field.
+func SecondCategoryEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldSecondCategory, v))
+}
+
+// SecondCategoryContainsFold applies the ContainsFold predicate on the "secondCategory" field.
+func SecondCategoryContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldSecondCategory, v))
+}
+
+// SaleTypeEQ applies the EQ predicate on the "saleType" field.
+func SaleTypeEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldSaleType, v))
+}
+
+// SaleTypeNEQ applies the NEQ predicate on the "saleType" field.
+func SaleTypeNEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldSaleType, v))
+}
+
+// SaleTypeIn applies the In predicate on the "saleType" field.
+func SaleTypeIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldSaleType, vs...))
+}
+
+// SaleTypeNotIn applies the NotIn predicate on the "saleType" field.
+func SaleTypeNotIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldSaleType, vs...))
+}
+
+// SaleTypeGT applies the GT predicate on the "saleType" field.
+func SaleTypeGT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldSaleType, v))
+}
+
+// SaleTypeGTE applies the GTE predicate on the "saleType" field.
+func SaleTypeGTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldSaleType, v))
+}
+
+// SaleTypeLT applies the LT predicate on the "saleType" field.
+func SaleTypeLT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldSaleType, v))
+}
+
+// SaleTypeLTE applies the LTE predicate on the "saleType" field.
+func SaleTypeLTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldSaleType, v))
+}
+
+// DiscountPriceEQ applies the EQ predicate on the "discountPrice" field.
+func DiscountPriceEQ(v float32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldDiscountPrice, v))
+}
+
+// DiscountPriceNEQ applies the NEQ predicate on the "discountPrice" field.
+func DiscountPriceNEQ(v float32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldDiscountPrice, v))
+}
+
+// DiscountPriceIn applies the In predicate on the "discountPrice" field.
+func DiscountPriceIn(vs ...float32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldDiscountPrice, vs...))
+}
+
+// DiscountPriceNotIn applies the NotIn predicate on the "discountPrice" field.
+func DiscountPriceNotIn(vs ...float32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldDiscountPrice, vs...))
+}
+
+// DiscountPriceGT applies the GT predicate on the "discountPrice" field.
+func DiscountPriceGT(v float32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldDiscountPrice, v))
+}
+
+// DiscountPriceGTE applies the GTE predicate on the "discountPrice" field.
+func DiscountPriceGTE(v float32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldDiscountPrice, v))
+}
+
+// DiscountPriceLT applies the LT predicate on the "discountPrice" field.
+func DiscountPriceLT(v float32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldDiscountPrice, v))
+}
+
+// DiscountPriceLTE applies the LTE predicate on the "discountPrice" field.
+func DiscountPriceLTE(v float32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldDiscountPrice, v))
+}
+
+// FirstCategoryNameEQ applies the EQ predicate on the "firstCategoryName" field.
+func FirstCategoryNameEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameNEQ applies the NEQ predicate on the "firstCategoryName" field.
+func FirstCategoryNameNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameIn applies the In predicate on the "firstCategoryName" field.
+func FirstCategoryNameIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldFirstCategoryName, vs...))
+}
+
+// FirstCategoryNameNotIn applies the NotIn predicate on the "firstCategoryName" field.
+func FirstCategoryNameNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldFirstCategoryName, vs...))
+}
+
+// FirstCategoryNameGT applies the GT predicate on the "firstCategoryName" field.
+func FirstCategoryNameGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameGTE applies the GTE predicate on the "firstCategoryName" field.
+func FirstCategoryNameGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameLT applies the LT predicate on the "firstCategoryName" field.
+func FirstCategoryNameLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameLTE applies the LTE predicate on the "firstCategoryName" field.
+func FirstCategoryNameLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameContains applies the Contains predicate on the "firstCategoryName" field.
+func FirstCategoryNameContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameHasPrefix applies the HasPrefix predicate on the "firstCategoryName" field.
+func FirstCategoryNameHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameHasSuffix applies the HasSuffix predicate on the "firstCategoryName" field.
+func FirstCategoryNameHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameEqualFold applies the EqualFold predicate on the "firstCategoryName" field.
+func FirstCategoryNameEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldFirstCategoryName, v))
+}
+
+// FirstCategoryNameContainsFold applies the ContainsFold predicate on the "firstCategoryName" field.
+func FirstCategoryNameContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldFirstCategoryName, v))
+}
+
+// TeachingTypeEQ applies the EQ predicate on the "teachingType" field.
+func TeachingTypeEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldTeachingType, v))
+}
+
+// TeachingTypeNEQ applies the NEQ predicate on the "teachingType" field.
+func TeachingTypeNEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldTeachingType, v))
+}
+
+// TeachingTypeIn applies the In predicate on the "teachingType" field.
+func TeachingTypeIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldTeachingType, vs...))
+}
+
+// TeachingTypeNotIn applies the NotIn predicate on the "teachingType" field.
+func TeachingTypeNotIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldTeachingType, vs...))
+}
+
+// TeachingTypeGT applies the GT predicate on the "teachingType" field.
+func TeachingTypeGT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldTeachingType, v))
+}
+
+// TeachingTypeGTE applies the GTE predicate on the "teachingType" field.
+func TeachingTypeGTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldTeachingType, v))
+}
+
+// TeachingTypeLT applies the LT predicate on the "teachingType" field.
+func TeachingTypeLT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldTeachingType, v))
+}
+
+// TeachingTypeLTE applies the LTE predicate on the "teachingType" field.
+func TeachingTypeLTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldTeachingType, v))
+}
+
+// CourseLevelEQ applies the EQ predicate on the "courseLevel" field.
+func CourseLevelEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCourseLevel, v))
+}
+
+// CourseLevelNEQ applies the NEQ predicate on the "courseLevel" field.
+func CourseLevelNEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldCourseLevel, v))
+}
+
+// CourseLevelIn applies the In predicate on the "courseLevel" field.
+func CourseLevelIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldCourseLevel, vs...))
+}
+
+// CourseLevelNotIn applies the NotIn predicate on the "courseLevel" field.
+func CourseLevelNotIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldCourseLevel, vs...))
+}
+
+// CourseLevelGT applies the GT predicate on the "courseLevel" field.
+func CourseLevelGT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldCourseLevel, v))
+}
+
+// CourseLevelGTE applies the GTE predicate on the "courseLevel" field.
+func CourseLevelGTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldCourseLevel, v))
+}
+
+// CourseLevelLT applies the LT predicate on the "courseLevel" field.
+func CourseLevelLT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldCourseLevel, v))
+}
+
+// CourseLevelLTE applies the LTE predicate on the "courseLevel" field.
+func CourseLevelLTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldCourseLevel, v))
+}
+
+// UpdateByEQ applies the EQ predicate on the "updateBy" field.
+func UpdateByEQ(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldUpdateBy, v))
+}
+
+// UpdateByNEQ applies the NEQ predicate on the "updateBy" field.
+func UpdateByNEQ(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldUpdateBy, v))
+}
+
+// UpdateByIn applies the In predicate on the "updateBy" field.
+func UpdateByIn(vs ...time.Time) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldUpdateBy, vs...))
+}
+
+// UpdateByNotIn applies the NotIn predicate on the "updateBy" field.
+func UpdateByNotIn(vs ...time.Time) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldUpdateBy, vs...))
+}
+
+// UpdateByGT applies the GT predicate on the "updateBy" field.
+func UpdateByGT(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldUpdateBy, v))
+}
+
+// UpdateByGTE applies the GTE predicate on the "updateBy" field.
+func UpdateByGTE(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldUpdateBy, v))
+}
+
+// UpdateByLT applies the LT predicate on the "updateBy" field.
+func UpdateByLT(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldUpdateBy, v))
+}
+
+// UpdateByLTE applies the LTE predicate on the "updateBy" field.
+func UpdateByLTE(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldUpdateBy, v))
+}
+
+// LecturerNameEQ applies the EQ predicate on the "lecturerName" field.
+func LecturerNameEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldLecturerName, v))
+}
+
+// LecturerNameNEQ applies the NEQ predicate on the "lecturerName" field.
+func LecturerNameNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldLecturerName, v))
+}
+
+// LecturerNameIn applies the In predicate on the "lecturerName" field.
+func LecturerNameIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldLecturerName, vs...))
+}
+
+// LecturerNameNotIn applies the NotIn predicate on the "lecturerName" field.
+func LecturerNameNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldLecturerName, vs...))
+}
+
+// LecturerNameGT applies the GT predicate on the "lecturerName" field.
+func LecturerNameGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldLecturerName, v))
+}
+
+// LecturerNameGTE applies the GTE predicate on the "lecturerName" field.
+func LecturerNameGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldLecturerName, v))
+}
+
+// LecturerNameLT applies the LT predicate on the "lecturerName" field.
+func LecturerNameLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldLecturerName, v))
+}
+
+// LecturerNameLTE applies the LTE predicate on the "lecturerName" field.
+func LecturerNameLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldLecturerName, v))
+}
+
+// LecturerNameContains applies the Contains predicate on the "lecturerName" field.
+func LecturerNameContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldLecturerName, v))
+}
+
+// LecturerNameHasPrefix applies the HasPrefix predicate on the "lecturerName" field.
+func LecturerNameHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldLecturerName, v))
+}
+
+// LecturerNameHasSuffix applies the HasSuffix predicate on the "lecturerName" field.
+func LecturerNameHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldLecturerName, v))
+}
+
+// LecturerNameEqualFold applies the EqualFold predicate on the "lecturerName" field.
+func LecturerNameEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldLecturerName, v))
+}
+
+// LecturerNameContainsFold applies the ContainsFold predicate on the "lecturerName" field.
+func LecturerNameContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldLecturerName, v))
+}
+
+// PurchaseCntEQ applies the EQ predicate on the "purchaseCnt" field.
+func PurchaseCntEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldPurchaseCnt, v))
+}
+
+// PurchaseCntNEQ applies the NEQ predicate on the "purchaseCnt" field.
+func PurchaseCntNEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldPurchaseCnt, v))
+}
+
+// PurchaseCntIn applies the In predicate on the "purchaseCnt" field.
+func PurchaseCntIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldPurchaseCnt, vs...))
+}
+
+// PurchaseCntNotIn applies the NotIn predicate on the "purchaseCnt" field.
+func PurchaseCntNotIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldPurchaseCnt, vs...))
+}
+
+// PurchaseCntGT applies the GT predicate on the "purchaseCnt" field.
+func PurchaseCntGT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldPurchaseCnt, v))
+}
+
+// PurchaseCntGTE applies the GTE predicate on the "purchaseCnt" field.
+func PurchaseCntGTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldPurchaseCnt, v))
+}
+
+// PurchaseCntLT applies the LT predicate on the "purchaseCnt" field.
+func PurchaseCntLT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldPurchaseCnt, v))
+}
+
+// PurchaseCntLTE applies the LTE predicate on the "purchaseCnt" field.
+func PurchaseCntLTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldPurchaseCnt, v))
+}
+
+// TotalHourEQ applies the EQ predicate on the "totalHour" field.
+func TotalHourEQ(v float32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldTotalHour, v))
+}
+
+// TotalHourNEQ applies the NEQ predicate on the "totalHour" field.
+func TotalHourNEQ(v float32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldTotalHour, v))
+}
+
+// TotalHourIn applies the In predicate on the "totalHour" field.
+func TotalHourIn(vs ...float32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldTotalHour, vs...))
+}
+
+// TotalHourNotIn applies the NotIn predicate on the "totalHour" field.
+func TotalHourNotIn(vs ...float32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldTotalHour, vs...))
+}
+
+// TotalHourGT applies the GT predicate on the "totalHour" field.
+func TotalHourGT(v float32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldTotalHour, v))
+}
+
+// TotalHourGTE applies the GTE predicate on the "totalHour" field.
+func TotalHourGTE(v float32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldTotalHour, v))
+}
+
+// TotalHourLT applies the LT predicate on the "totalHour" field.
+func TotalHourLT(v float32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldTotalHour, v))
+}
+
+// TotalHourLTE applies the LTE predicate on the "totalHour" field.
+func TotalHourLTE(v float32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldTotalHour, v))
+}
+
+// BizCourseDetailEQ applies the EQ predicate on the "bizCourseDetail" field.
+func BizCourseDetailEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailNEQ applies the NEQ predicate on the "bizCourseDetail" field.
+func BizCourseDetailNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailIn applies the In predicate on the "bizCourseDetail" field.
+func BizCourseDetailIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldBizCourseDetail, vs...))
+}
+
+// BizCourseDetailNotIn applies the NotIn predicate on the "bizCourseDetail" field.
+func BizCourseDetailNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldBizCourseDetail, vs...))
+}
+
+// BizCourseDetailGT applies the GT predicate on the "bizCourseDetail" field.
+func BizCourseDetailGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailGTE applies the GTE predicate on the "bizCourseDetail" field.
+func BizCourseDetailGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailLT applies the LT predicate on the "bizCourseDetail" field.
+func BizCourseDetailLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailLTE applies the LTE predicate on the "bizCourseDetail" field.
+func BizCourseDetailLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailContains applies the Contains predicate on the "bizCourseDetail" field.
+func BizCourseDetailContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailHasPrefix applies the HasPrefix predicate on the "bizCourseDetail" field.
+func BizCourseDetailHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailHasSuffix applies the HasSuffix predicate on the "bizCourseDetail" field.
+func BizCourseDetailHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailEqualFold applies the EqualFold predicate on the "bizCourseDetail" field.
+func BizCourseDetailEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldBizCourseDetail, v))
+}
+
+// BizCourseDetailContainsFold applies the ContainsFold predicate on the "bizCourseDetail" field.
+func BizCourseDetailContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldBizCourseDetail, v))
+}
+
+// CourseCoverEQ applies the EQ predicate on the "courseCover" field.
+func CourseCoverEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCourseCover, v))
+}
+
+// CourseCoverNEQ applies the NEQ predicate on the "courseCover" field.
+func CourseCoverNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldCourseCover, v))
+}
+
+// CourseCoverIn applies the In predicate on the "courseCover" field.
+func CourseCoverIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldCourseCover, vs...))
+}
+
+// CourseCoverNotIn applies the NotIn predicate on the "courseCover" field.
+func CourseCoverNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldCourseCover, vs...))
+}
+
+// CourseCoverGT applies the GT predicate on the "courseCover" field.
+func CourseCoverGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldCourseCover, v))
+}
+
+// CourseCoverGTE applies the GTE predicate on the "courseCover" field.
+func CourseCoverGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldCourseCover, v))
+}
+
+// CourseCoverLT applies the LT predicate on the "courseCover" field.
+func CourseCoverLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldCourseCover, v))
+}
+
+// CourseCoverLTE applies the LTE predicate on the "courseCover" field.
+func CourseCoverLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldCourseCover, v))
+}
+
+// CourseCoverContains applies the Contains predicate on the "courseCover" field.
+func CourseCoverContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldCourseCover, v))
+}
+
+// CourseCoverHasPrefix applies the HasPrefix predicate on the "courseCover" field.
+func CourseCoverHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldCourseCover, v))
+}
+
+// CourseCoverHasSuffix applies the HasSuffix predicate on the "courseCover" field.
+func CourseCoverHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldCourseCover, v))
+}
+
+// CourseCoverEqualFold applies the EqualFold predicate on the "courseCover" field.
+func CourseCoverEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldCourseCover, v))
+}
+
+// CourseCoverContainsFold applies the ContainsFold predicate on the "courseCover" field.
+func CourseCoverContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldCourseCover, v))
+}
+
+// Ext3EQ applies the EQ predicate on the "ext3" field.
+func Ext3EQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldExt3, v))
+}
+
+// Ext3NEQ applies the NEQ predicate on the "ext3" field.
+func Ext3NEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldExt3, v))
+}
+
+// Ext3In applies the In predicate on the "ext3" field.
+func Ext3In(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldExt3, vs...))
+}
+
+// Ext3NotIn applies the NotIn predicate on the "ext3" field.
+func Ext3NotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldExt3, vs...))
+}
+
+// Ext3GT applies the GT predicate on the "ext3" field.
+func Ext3GT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldExt3, v))
+}
+
+// Ext3GTE applies the GTE predicate on the "ext3" field.
+func Ext3GTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldExt3, v))
+}
+
+// Ext3LT applies the LT predicate on the "ext3" field.
+func Ext3LT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldExt3, v))
+}
+
+// Ext3LTE applies the LTE predicate on the "ext3" field.
+func Ext3LTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldExt3, v))
+}
+
+// Ext3Contains applies the Contains predicate on the "ext3" field.
+func Ext3Contains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldExt3, v))
+}
+
+// Ext3HasPrefix applies the HasPrefix predicate on the "ext3" field.
+func Ext3HasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldExt3, v))
+}
+
+// Ext3HasSuffix applies the HasSuffix predicate on the "ext3" field.
+func Ext3HasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldExt3, v))
+}
+
+// Ext3EqualFold applies the EqualFold predicate on the "ext3" field.
+func Ext3EqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldExt3, v))
+}
+
+// Ext3ContainsFold applies the ContainsFold predicate on the "ext3" field.
+func Ext3ContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldExt3, v))
+}
+
+// Ext2EQ applies the EQ predicate on the "ext2" field.
+func Ext2EQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldExt2, v))
+}
+
+// Ext2NEQ applies the NEQ predicate on the "ext2" field.
+func Ext2NEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldExt2, v))
+}
+
+// Ext2In applies the In predicate on the "ext2" field.
+func Ext2In(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldExt2, vs...))
+}
+
+// Ext2NotIn applies the NotIn predicate on the "ext2" field.
+func Ext2NotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldExt2, vs...))
+}
+
+// Ext2GT applies the GT predicate on the "ext2" field.
+func Ext2GT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldExt2, v))
+}
+
+// Ext2GTE applies the GTE predicate on the "ext2" field.
+func Ext2GTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldExt2, v))
+}
+
+// Ext2LT applies the LT predicate on the "ext2" field.
+func Ext2LT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldExt2, v))
+}
+
+// Ext2LTE applies the LTE predicate on the "ext2" field.
+func Ext2LTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldExt2, v))
+}
+
+// Ext2Contains applies the Contains predicate on the "ext2" field.
+func Ext2Contains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldExt2, v))
+}
+
+// Ext2HasPrefix applies the HasPrefix predicate on the "ext2" field.
+func Ext2HasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldExt2, v))
+}
+
+// Ext2HasSuffix applies the HasSuffix predicate on the "ext2" field.
+func Ext2HasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldExt2, v))
+}
+
+// Ext2EqualFold applies the EqualFold predicate on the "ext2" field.
+func Ext2EqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldExt2, v))
+}
+
+// Ext2ContainsFold applies the ContainsFold predicate on the "ext2" field.
+func Ext2ContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldExt2, v))
+}
+
+// BizCourseChaptersEQ applies the EQ predicate on the "bizCourseChapters" field.
+func BizCourseChaptersEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersNEQ applies the NEQ predicate on the "bizCourseChapters" field.
+func BizCourseChaptersNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersIn applies the In predicate on the "bizCourseChapters" field.
+func BizCourseChaptersIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldBizCourseChapters, vs...))
+}
+
+// BizCourseChaptersNotIn applies the NotIn predicate on the "bizCourseChapters" field.
+func BizCourseChaptersNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldBizCourseChapters, vs...))
+}
+
+// BizCourseChaptersGT applies the GT predicate on the "bizCourseChapters" field.
+func BizCourseChaptersGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersGTE applies the GTE predicate on the "bizCourseChapters" field.
+func BizCourseChaptersGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersLT applies the LT predicate on the "bizCourseChapters" field.
+func BizCourseChaptersLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersLTE applies the LTE predicate on the "bizCourseChapters" field.
+func BizCourseChaptersLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersContains applies the Contains predicate on the "bizCourseChapters" field.
+func BizCourseChaptersContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersHasPrefix applies the HasPrefix predicate on the "bizCourseChapters" field.
+func BizCourseChaptersHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersHasSuffix applies the HasSuffix predicate on the "bizCourseChapters" field.
+func BizCourseChaptersHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersEqualFold applies the EqualFold predicate on the "bizCourseChapters" field.
+func BizCourseChaptersEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldBizCourseChapters, v))
+}
+
+// BizCourseChaptersContainsFold applies the ContainsFold predicate on the "bizCourseChapters" field.
+func BizCourseChaptersContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldBizCourseChapters, v))
+}
+
+// Ext1EQ applies the EQ predicate on the "ext1" field.
+func Ext1EQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldExt1, v))
+}
+
+// Ext1NEQ applies the NEQ predicate on the "ext1" field.
+func Ext1NEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldExt1, v))
+}
+
+// Ext1In applies the In predicate on the "ext1" field.
+func Ext1In(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldExt1, vs...))
+}
+
+// Ext1NotIn applies the NotIn predicate on the "ext1" field.
+func Ext1NotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldExt1, vs...))
+}
+
+// Ext1GT applies the GT predicate on the "ext1" field.
+func Ext1GT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldExt1, v))
+}
+
+// Ext1GTE applies the GTE predicate on the "ext1" field.
+func Ext1GTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldExt1, v))
+}
+
+// Ext1LT applies the LT predicate on the "ext1" field.
+func Ext1LT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldExt1, v))
+}
+
+// Ext1LTE applies the LTE predicate on the "ext1" field.
+func Ext1LTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldExt1, v))
+}
+
+// Ext1Contains applies the Contains predicate on the "ext1" field.
+func Ext1Contains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldExt1, v))
+}
+
+// Ext1HasPrefix applies the HasPrefix predicate on the "ext1" field.
+func Ext1HasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldExt1, v))
+}
+
+// Ext1HasSuffix applies the HasSuffix predicate on the "ext1" field.
+func Ext1HasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldExt1, v))
+}
+
+// Ext1EqualFold applies the EqualFold predicate on the "ext1" field.
+func Ext1EqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldExt1, v))
+}
+
+// Ext1ContainsFold applies the ContainsFold predicate on the "ext1" field.
+func Ext1ContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldExt1, v))
+}
+
+// SalePriceEQ applies the EQ predicate on the "salePrice" field.
+func SalePriceEQ(v float32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldSalePrice, v))
+}
+
+// SalePriceNEQ applies the NEQ predicate on the "salePrice" field.
+func SalePriceNEQ(v float32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldSalePrice, v))
+}
+
+// SalePriceIn applies the In predicate on the "salePrice" field.
+func SalePriceIn(vs ...float32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldSalePrice, vs...))
+}
+
+// SalePriceNotIn applies the NotIn predicate on the "salePrice" field.
+func SalePriceNotIn(vs ...float32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldSalePrice, vs...))
+}
+
+// SalePriceGT applies the GT predicate on the "salePrice" field.
+func SalePriceGT(v float32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldSalePrice, v))
+}
+
+// SalePriceGTE applies the GTE predicate on the "salePrice" field.
+func SalePriceGTE(v float32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldSalePrice, v))
+}
+
+// SalePriceLT applies the LT predicate on the "salePrice" field.
+func SalePriceLT(v float32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldSalePrice, v))
+}
+
+// SalePriceLTE applies the LTE predicate on the "salePrice" field.
+func SalePriceLTE(v float32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldSalePrice, v))
+}
+
+// BizCourseTeacherEQ applies the EQ predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherNEQ applies the NEQ predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherIn applies the In predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldBizCourseTeacher, vs...))
+}
+
+// BizCourseTeacherNotIn applies the NotIn predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldBizCourseTeacher, vs...))
+}
+
+// BizCourseTeacherGT applies the GT predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherGTE applies the GTE predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherLT applies the LT predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherLTE applies the LTE predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherContains applies the Contains predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherHasPrefix applies the HasPrefix predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherHasSuffix applies the HasSuffix predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherEqualFold applies the EqualFold predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldBizCourseTeacher, v))
+}
+
+// BizCourseTeacherContainsFold applies the ContainsFold predicate on the "bizCourseTeacher" field.
+func BizCourseTeacherContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldBizCourseTeacher, v))
+}
+
+// BizCourseAttachmentsEQ applies the EQ predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsNEQ applies the NEQ predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsIn applies the In predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldBizCourseAttachments, vs...))
+}
+
+// BizCourseAttachmentsNotIn applies the NotIn predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldBizCourseAttachments, vs...))
+}
+
+// BizCourseAttachmentsGT applies the GT predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsGTE applies the GTE predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsLT applies the LT predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsLTE applies the LTE predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsContains applies the Contains predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsHasPrefix applies the HasPrefix predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsHasSuffix applies the HasSuffix predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsEqualFold applies the EqualFold predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldBizCourseAttachments, v))
+}
+
+// BizCourseAttachmentsContainsFold applies the ContainsFold predicate on the "bizCourseAttachments" field.
+func BizCourseAttachmentsContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldBizCourseAttachments, v))
+}
+
+// UpdateTimeEQ applies the EQ predicate on the "updateTime" field.
+func UpdateTimeEQ(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldUpdateTime, v))
+}
+
+// UpdateTimeNEQ applies the NEQ predicate on the "updateTime" field.
+func UpdateTimeNEQ(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldUpdateTime, v))
+}
+
+// UpdateTimeIn applies the In predicate on the "updateTime" field.
+func UpdateTimeIn(vs ...time.Time) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldUpdateTime, vs...))
+}
+
+// UpdateTimeNotIn applies the NotIn predicate on the "updateTime" field.
+func UpdateTimeNotIn(vs ...time.Time) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldUpdateTime, vs...))
+}
+
+// UpdateTimeGT applies the GT predicate on the "updateTime" field.
+func UpdateTimeGT(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldUpdateTime, v))
+}
+
+// UpdateTimeGTE applies the GTE predicate on the "updateTime" field.
+func UpdateTimeGTE(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldUpdateTime, v))
+}
+
+// UpdateTimeLT applies the LT predicate on the "updateTime" field.
+func UpdateTimeLT(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldUpdateTime, v))
+}
+
+// UpdateTimeLTE applies the LTE predicate on the "updateTime" field.
+func UpdateTimeLTE(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldUpdateTime, v))
+}
+
+// TagsEQ applies the EQ predicate on the "tags" field.
+func TagsEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldTags, v))
+}
+
+// TagsNEQ applies the NEQ predicate on the "tags" field.
+func TagsNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldTags, v))
+}
+
+// TagsIn applies the In predicate on the "tags" field.
+func TagsIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldTags, vs...))
+}
+
+// TagsNotIn applies the NotIn predicate on the "tags" field.
+func TagsNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldTags, vs...))
+}
+
+// TagsGT applies the GT predicate on the "tags" field.
+func TagsGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldTags, v))
+}
+
+// TagsGTE applies the GTE predicate on the "tags" field.
+func TagsGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldTags, v))
+}
+
+// TagsLT applies the LT predicate on the "tags" field.
+func TagsLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldTags, v))
+}
+
+// TagsLTE applies the LTE predicate on the "tags" field.
+func TagsLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldTags, v))
+}
+
+// TagsContains applies the Contains predicate on the "tags" field.
+func TagsContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldTags, v))
+}
+
+// TagsHasPrefix applies the HasPrefix predicate on the "tags" field.
+func TagsHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldTags, v))
+}
+
+// TagsHasSuffix applies the HasSuffix predicate on the "tags" field.
+func TagsHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldTags, v))
+}
+
+// TagsEqualFold applies the EqualFold predicate on the "tags" field.
+func TagsEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldTags, v))
+}
+
+// TagsContainsFold applies the ContainsFold predicate on the "tags" field.
+func TagsContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldTags, v))
+}
+
+// CourseNameEQ applies the EQ predicate on the "courseName" field.
+func CourseNameEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCourseName, v))
+}
+
+// CourseNameNEQ applies the NEQ predicate on the "courseName" field.
+func CourseNameNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldCourseName, v))
+}
+
+// CourseNameIn applies the In predicate on the "courseName" field.
+func CourseNameIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldCourseName, vs...))
+}
+
+// CourseNameNotIn applies the NotIn predicate on the "courseName" field.
+func CourseNameNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldCourseName, vs...))
+}
+
+// CourseNameGT applies the GT predicate on the "courseName" field.
+func CourseNameGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldCourseName, v))
+}
+
+// CourseNameGTE applies the GTE predicate on the "courseName" field.
+func CourseNameGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldCourseName, v))
+}
+
+// CourseNameLT applies the LT predicate on the "courseName" field.
+func CourseNameLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldCourseName, v))
+}
+
+// CourseNameLTE applies the LTE predicate on the "courseName" field.
+func CourseNameLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldCourseName, v))
+}
+
+// CourseNameContains applies the Contains predicate on the "courseName" field.
+func CourseNameContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldCourseName, v))
+}
+
+// CourseNameHasPrefix applies the HasPrefix predicate on the "courseName" field.
+func CourseNameHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldCourseName, v))
+}
+
+// CourseNameHasSuffix applies the HasSuffix predicate on the "courseName" field.
+func CourseNameHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldCourseName, v))
+}
+
+// CourseNameEqualFold applies the EqualFold predicate on the "courseName" field.
+func CourseNameEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldCourseName, v))
+}
+
+// CourseNameContainsFold applies the ContainsFold predicate on the "courseName" field.
+func CourseNameContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldCourseName, v))
+}
+
+// CreateByEQ applies the EQ predicate on the "createBy" field.
+func CreateByEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCreateBy, v))
+}
+
+// CreateByNEQ applies the NEQ predicate on the "createBy" field.
+func CreateByNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldCreateBy, v))
+}
+
+// CreateByIn applies the In predicate on the "createBy" field.
+func CreateByIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldCreateBy, vs...))
+}
+
+// CreateByNotIn applies the NotIn predicate on the "createBy" field.
+func CreateByNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldCreateBy, vs...))
+}
+
+// CreateByGT applies the GT predicate on the "createBy" field.
+func CreateByGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldCreateBy, v))
+}
+
+// CreateByGTE applies the GTE predicate on the "createBy" field.
+func CreateByGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldCreateBy, v))
+}
+
+// CreateByLT applies the LT predicate on the "createBy" field.
+func CreateByLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldCreateBy, v))
+}
+
+// CreateByLTE applies the LTE predicate on the "createBy" field.
+func CreateByLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldCreateBy, v))
+}
+
+// CreateByContains applies the Contains predicate on the "createBy" field.
+func CreateByContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldCreateBy, v))
+}
+
+// CreateByHasPrefix applies the HasPrefix predicate on the "createBy" field.
+func CreateByHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldCreateBy, v))
+}
+
+// CreateByHasSuffix applies the HasSuffix predicate on the "createBy" field.
+func CreateByHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldCreateBy, v))
+}
+
+// CreateByEqualFold applies the EqualFold predicate on the "createBy" field.
+func CreateByEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldCreateBy, v))
+}
+
+// CreateByContainsFold applies the ContainsFold predicate on the "createBy" field.
+func CreateByContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldCreateBy, v))
+}
+
+// PurchaseCounterEQ applies the EQ predicate on the "purchaseCounter" field.
+func PurchaseCounterEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldPurchaseCounter, v))
+}
+
+// PurchaseCounterNEQ applies the NEQ predicate on the "purchaseCounter" field.
+func PurchaseCounterNEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldPurchaseCounter, v))
+}
+
+// PurchaseCounterIn applies the In predicate on the "purchaseCounter" field.
+func PurchaseCounterIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldPurchaseCounter, vs...))
+}
+
+// PurchaseCounterNotIn applies the NotIn predicate on the "purchaseCounter" field.
+func PurchaseCounterNotIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldPurchaseCounter, vs...))
+}
+
+// PurchaseCounterGT applies the GT predicate on the "purchaseCounter" field.
+func PurchaseCounterGT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldPurchaseCounter, v))
+}
+
+// PurchaseCounterGTE applies the GTE predicate on the "purchaseCounter" field.
+func PurchaseCounterGTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldPurchaseCounter, v))
+}
+
+// PurchaseCounterLT applies the LT predicate on the "purchaseCounter" field.
+func PurchaseCounterLT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldPurchaseCounter, v))
+}
+
+// PurchaseCounterLTE applies the LTE predicate on the "purchaseCounter" field.
+func PurchaseCounterLTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldPurchaseCounter, v))
+}
+
+// CreateTimeEQ applies the EQ predicate on the "createTime" field.
+func CreateTimeEQ(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldCreateTime, v))
+}
+
+// CreateTimeNEQ applies the NEQ predicate on the "createTime" field.
+func CreateTimeNEQ(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldCreateTime, v))
+}
+
+// CreateTimeIn applies the In predicate on the "createTime" field.
+func CreateTimeIn(vs ...time.Time) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldCreateTime, vs...))
+}
+
+// CreateTimeNotIn applies the NotIn predicate on the "createTime" field.
+func CreateTimeNotIn(vs ...time.Time) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldCreateTime, vs...))
+}
+
+// CreateTimeGT applies the GT predicate on the "createTime" field.
+func CreateTimeGT(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldCreateTime, v))
+}
+
+// CreateTimeGTE applies the GTE predicate on the "createTime" field.
+func CreateTimeGTE(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldCreateTime, v))
+}
+
+// CreateTimeLT applies the LT predicate on the "createTime" field.
+func CreateTimeLT(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldCreateTime, v))
+}
+
+// CreateTimeLTE applies the LTE predicate on the "createTime" field.
+func CreateTimeLTE(v time.Time) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldCreateTime, v))
+}
+
+// ClicksEQ applies the EQ predicate on the "clicks" field.
+func ClicksEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldClicks, v))
+}
+
+// ClicksNEQ applies the NEQ predicate on the "clicks" field.
+func ClicksNEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldClicks, v))
+}
+
+// ClicksIn applies the In predicate on the "clicks" field.
+func ClicksIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldClicks, vs...))
+}
+
+// ClicksNotIn applies the NotIn predicate on the "clicks" field.
+func ClicksNotIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldClicks, vs...))
+}
+
+// ClicksGT applies the GT predicate on the "clicks" field.
+func ClicksGT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldClicks, v))
+}
+
+// ClicksGTE applies the GTE predicate on the "clicks" field.
+func ClicksGTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldClicks, v))
+}
+
+// ClicksLT applies the LT predicate on the "clicks" field.
+func ClicksLT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldClicks, v))
+}
+
+// ClicksLTE applies the LTE predicate on the "clicks" field.
+func ClicksLTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldClicks, v))
+}
+
+// SecondCategoryNameEQ applies the EQ predicate on the "secondCategoryName" field.
+func SecondCategoryNameEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameNEQ applies the NEQ predicate on the "secondCategoryName" field.
+func SecondCategoryNameNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameIn applies the In predicate on the "secondCategoryName" field.
+func SecondCategoryNameIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldSecondCategoryName, vs...))
+}
+
+// SecondCategoryNameNotIn applies the NotIn predicate on the "secondCategoryName" field.
+func SecondCategoryNameNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldSecondCategoryName, vs...))
+}
+
+// SecondCategoryNameGT applies the GT predicate on the "secondCategoryName" field.
+func SecondCategoryNameGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameGTE applies the GTE predicate on the "secondCategoryName" field.
+func SecondCategoryNameGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameLT applies the LT predicate on the "secondCategoryName" field.
+func SecondCategoryNameLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameLTE applies the LTE predicate on the "secondCategoryName" field.
+func SecondCategoryNameLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameContains applies the Contains predicate on the "secondCategoryName" field.
+func SecondCategoryNameContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameHasPrefix applies the HasPrefix predicate on the "secondCategoryName" field.
+func SecondCategoryNameHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameHasSuffix applies the HasSuffix predicate on the "secondCategoryName" field.
+func SecondCategoryNameHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameEqualFold applies the EqualFold predicate on the "secondCategoryName" field.
+func SecondCategoryNameEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldSecondCategoryName, v))
+}
+
+// SecondCategoryNameContainsFold applies the ContainsFold predicate on the "secondCategoryName" field.
+func SecondCategoryNameContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldSecondCategoryName, v))
+}
+
+// StatusEQ applies the EQ predicate on the "status" field.
+func StatusEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldStatus, v))
+}
+
+// StatusNEQ applies the NEQ predicate on the "status" field.
+func StatusNEQ(v string) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldStatus, v))
+}
+
+// StatusIn applies the In predicate on the "status" field.
+func StatusIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldStatus, vs...))
+}
+
+// StatusNotIn applies the NotIn predicate on the "status" field.
+func StatusNotIn(vs ...string) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldStatus, vs...))
+}
+
+// StatusGT applies the GT predicate on the "status" field.
+func StatusGT(v string) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldStatus, v))
+}
+
+// StatusGTE applies the GTE predicate on the "status" field.
+func StatusGTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldStatus, v))
+}
+
+// StatusLT applies the LT predicate on the "status" field.
+func StatusLT(v string) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldStatus, v))
+}
+
+// StatusLTE applies the LTE predicate on the "status" field.
+func StatusLTE(v string) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldStatus, v))
+}
+
+// StatusContains applies the Contains predicate on the "status" field.
+func StatusContains(v string) predicate.Course {
+	return predicate.Course(sql.FieldContains(FieldStatus, v))
+}
+
+// StatusHasPrefix applies the HasPrefix predicate on the "status" field.
+func StatusHasPrefix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasPrefix(FieldStatus, v))
+}
+
+// StatusHasSuffix applies the HasSuffix predicate on the "status" field.
+func StatusHasSuffix(v string) predicate.Course {
+	return predicate.Course(sql.FieldHasSuffix(FieldStatus, v))
+}
+
+// StatusEqualFold applies the EqualFold predicate on the "status" field.
+func StatusEqualFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldEqualFold(FieldStatus, v))
+}
+
+// StatusContainsFold applies the ContainsFold predicate on the "status" field.
+func StatusContainsFold(v string) predicate.Course {
+	return predicate.Course(sql.FieldContainsFold(FieldStatus, v))
 }
 
 // And groups predicates with the AND operator between them.

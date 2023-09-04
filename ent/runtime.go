@@ -4,6 +4,7 @@ package ent
 
 import (
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/course"
 	"kubecit-service/ent/schema"
 )
 
@@ -17,4 +18,14 @@ func init() {
 	categoryDescName := categoryFields[0].Descriptor()
 	// category.DefaultName holds the default value on creation for the name field.
 	category.DefaultName = categoryDescName.Default.(string)
+	courseFields := schema.Course{}.Fields()
+	_ = courseFields
+	// courseDescIsRecommend is the schema descriptor for isRecommend field.
+	courseDescIsRecommend := courseFields[0].Descriptor()
+	// course.DefaultIsRecommend holds the default value on creation for the isRecommend field.
+	course.DefaultIsRecommend = courseDescIsRecommend.Default.(bool)
+	// courseDescIsIntegral is the schema descriptor for isIntegral field.
+	courseDescIsIntegral := courseFields[1].Descriptor()
+	// course.DefaultIsIntegral holds the default value on creation for the isIntegral field.
+	course.DefaultIsIntegral = courseDescIsIntegral.Default.(bool)
 }

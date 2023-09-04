@@ -7,8 +7,10 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 	"sync"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -527,13 +529,52 @@ func (m *CategoryMutation) ResetEdge(name string) error {
 // CourseMutation represents an operation that mutates the Course nodes in the graph.
 type CourseMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*Course, error)
-	predicates    []predicate.Course
+	op                   Op
+	typ                  string
+	id                   *string
+	isRecommend          *bool
+	isIntegral           *bool
+	secondCategory       *string
+	saleType             *int32
+	addsaleType          *int32
+	discountPrice        *float32
+	adddiscountPrice     *float32
+	firstCategoryName    *string
+	teachingType         *int32
+	addteachingType      *int32
+	courseLevel          *int32
+	addcourseLevel       *int32
+	updateBy             *time.Time
+	lecturerName         *string
+	purchaseCnt          *int32
+	addpurchaseCnt       *int32
+	totalHour            *float32
+	addtotalHour         *float32
+	bizCourseDetail      *string
+	courseCover          *string
+	ext3                 *string
+	ext2                 *string
+	bizCourseChapters    *string
+	ext1                 *string
+	salePrice            *float32
+	addsalePrice         *float32
+	bizCourseTeacher     *string
+	bizCourseAttachments *string
+	updateTime           *time.Time
+	tags                 *string
+	courseName           *string
+	createBy             *string
+	purchaseCounter      *int32
+	addpurchaseCounter   *int32
+	createTime           *time.Time
+	clicks               *int32
+	addclicks            *int32
+	secondCategoryName   *string
+	status               *string
+	clearedFields        map[string]struct{}
+	done                 bool
+	oldValue             func(context.Context) (*Course, error)
+	predicates           []predicate.Course
 }
 
 var _ ent.Mutation = (*CourseMutation)(nil)
@@ -556,7 +597,7 @@ func newCourseMutation(c config, op Op, opts ...courseOption) *CourseMutation {
 }
 
 // withCourseID sets the ID field of the mutation.
-func withCourseID(id int) courseOption {
+func withCourseID(id string) courseOption {
 	return func(m *CourseMutation) {
 		var (
 			err   error
@@ -606,9 +647,15 @@ func (m CourseMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Course entities.
+func (m *CourseMutation) SetID(id string) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *CourseMutation) ID() (id int, exists bool) {
+func (m *CourseMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -619,12 +666,12 @@ func (m *CourseMutation) ID() (id int, exists bool) {
 // That means, if the mutation is applied within a transaction with an isolation level such
 // as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
 // or updated by the mutation.
-func (m *CourseMutation) IDs(ctx context.Context) ([]int, error) {
+func (m *CourseMutation) IDs(ctx context.Context) ([]string, error) {
 	switch {
 	case m.op.Is(OpUpdateOne | OpDeleteOne):
 		id, exists := m.ID()
 		if exists {
-			return []int{id}, nil
+			return []string{id}, nil
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
@@ -632,6 +679,1266 @@ func (m *CourseMutation) IDs(ctx context.Context) ([]int, error) {
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
+}
+
+// SetIsRecommend sets the "isRecommend" field.
+func (m *CourseMutation) SetIsRecommend(b bool) {
+	m.isRecommend = &b
+}
+
+// IsRecommend returns the value of the "isRecommend" field in the mutation.
+func (m *CourseMutation) IsRecommend() (r bool, exists bool) {
+	v := m.isRecommend
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsRecommend returns the old "isRecommend" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldIsRecommend(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsRecommend is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsRecommend requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsRecommend: %w", err)
+	}
+	return oldValue.IsRecommend, nil
+}
+
+// ResetIsRecommend resets all changes to the "isRecommend" field.
+func (m *CourseMutation) ResetIsRecommend() {
+	m.isRecommend = nil
+}
+
+// SetIsIntegral sets the "isIntegral" field.
+func (m *CourseMutation) SetIsIntegral(b bool) {
+	m.isIntegral = &b
+}
+
+// IsIntegral returns the value of the "isIntegral" field in the mutation.
+func (m *CourseMutation) IsIntegral() (r bool, exists bool) {
+	v := m.isIntegral
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsIntegral returns the old "isIntegral" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldIsIntegral(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsIntegral is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsIntegral requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsIntegral: %w", err)
+	}
+	return oldValue.IsIntegral, nil
+}
+
+// ResetIsIntegral resets all changes to the "isIntegral" field.
+func (m *CourseMutation) ResetIsIntegral() {
+	m.isIntegral = nil
+}
+
+// SetSecondCategory sets the "secondCategory" field.
+func (m *CourseMutation) SetSecondCategory(s string) {
+	m.secondCategory = &s
+}
+
+// SecondCategory returns the value of the "secondCategory" field in the mutation.
+func (m *CourseMutation) SecondCategory() (r string, exists bool) {
+	v := m.secondCategory
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSecondCategory returns the old "secondCategory" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldSecondCategory(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSecondCategory is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSecondCategory requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSecondCategory: %w", err)
+	}
+	return oldValue.SecondCategory, nil
+}
+
+// ResetSecondCategory resets all changes to the "secondCategory" field.
+func (m *CourseMutation) ResetSecondCategory() {
+	m.secondCategory = nil
+}
+
+// SetSaleType sets the "saleType" field.
+func (m *CourseMutation) SetSaleType(i int32) {
+	m.saleType = &i
+	m.addsaleType = nil
+}
+
+// SaleType returns the value of the "saleType" field in the mutation.
+func (m *CourseMutation) SaleType() (r int32, exists bool) {
+	v := m.saleType
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSaleType returns the old "saleType" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldSaleType(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSaleType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSaleType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSaleType: %w", err)
+	}
+	return oldValue.SaleType, nil
+}
+
+// AddSaleType adds i to the "saleType" field.
+func (m *CourseMutation) AddSaleType(i int32) {
+	if m.addsaleType != nil {
+		*m.addsaleType += i
+	} else {
+		m.addsaleType = &i
+	}
+}
+
+// AddedSaleType returns the value that was added to the "saleType" field in this mutation.
+func (m *CourseMutation) AddedSaleType() (r int32, exists bool) {
+	v := m.addsaleType
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSaleType resets all changes to the "saleType" field.
+func (m *CourseMutation) ResetSaleType() {
+	m.saleType = nil
+	m.addsaleType = nil
+}
+
+// SetDiscountPrice sets the "discountPrice" field.
+func (m *CourseMutation) SetDiscountPrice(f float32) {
+	m.discountPrice = &f
+	m.adddiscountPrice = nil
+}
+
+// DiscountPrice returns the value of the "discountPrice" field in the mutation.
+func (m *CourseMutation) DiscountPrice() (r float32, exists bool) {
+	v := m.discountPrice
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDiscountPrice returns the old "discountPrice" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldDiscountPrice(ctx context.Context) (v float32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDiscountPrice is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDiscountPrice requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDiscountPrice: %w", err)
+	}
+	return oldValue.DiscountPrice, nil
+}
+
+// AddDiscountPrice adds f to the "discountPrice" field.
+func (m *CourseMutation) AddDiscountPrice(f float32) {
+	if m.adddiscountPrice != nil {
+		*m.adddiscountPrice += f
+	} else {
+		m.adddiscountPrice = &f
+	}
+}
+
+// AddedDiscountPrice returns the value that was added to the "discountPrice" field in this mutation.
+func (m *CourseMutation) AddedDiscountPrice() (r float32, exists bool) {
+	v := m.adddiscountPrice
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDiscountPrice resets all changes to the "discountPrice" field.
+func (m *CourseMutation) ResetDiscountPrice() {
+	m.discountPrice = nil
+	m.adddiscountPrice = nil
+}
+
+// SetFirstCategoryName sets the "firstCategoryName" field.
+func (m *CourseMutation) SetFirstCategoryName(s string) {
+	m.firstCategoryName = &s
+}
+
+// FirstCategoryName returns the value of the "firstCategoryName" field in the mutation.
+func (m *CourseMutation) FirstCategoryName() (r string, exists bool) {
+	v := m.firstCategoryName
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFirstCategoryName returns the old "firstCategoryName" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldFirstCategoryName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFirstCategoryName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFirstCategoryName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFirstCategoryName: %w", err)
+	}
+	return oldValue.FirstCategoryName, nil
+}
+
+// ResetFirstCategoryName resets all changes to the "firstCategoryName" field.
+func (m *CourseMutation) ResetFirstCategoryName() {
+	m.firstCategoryName = nil
+}
+
+// SetTeachingType sets the "teachingType" field.
+func (m *CourseMutation) SetTeachingType(i int32) {
+	m.teachingType = &i
+	m.addteachingType = nil
+}
+
+// TeachingType returns the value of the "teachingType" field in the mutation.
+func (m *CourseMutation) TeachingType() (r int32, exists bool) {
+	v := m.teachingType
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTeachingType returns the old "teachingType" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldTeachingType(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTeachingType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTeachingType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTeachingType: %w", err)
+	}
+	return oldValue.TeachingType, nil
+}
+
+// AddTeachingType adds i to the "teachingType" field.
+func (m *CourseMutation) AddTeachingType(i int32) {
+	if m.addteachingType != nil {
+		*m.addteachingType += i
+	} else {
+		m.addteachingType = &i
+	}
+}
+
+// AddedTeachingType returns the value that was added to the "teachingType" field in this mutation.
+func (m *CourseMutation) AddedTeachingType() (r int32, exists bool) {
+	v := m.addteachingType
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetTeachingType resets all changes to the "teachingType" field.
+func (m *CourseMutation) ResetTeachingType() {
+	m.teachingType = nil
+	m.addteachingType = nil
+}
+
+// SetCourseLevel sets the "courseLevel" field.
+func (m *CourseMutation) SetCourseLevel(i int32) {
+	m.courseLevel = &i
+	m.addcourseLevel = nil
+}
+
+// CourseLevel returns the value of the "courseLevel" field in the mutation.
+func (m *CourseMutation) CourseLevel() (r int32, exists bool) {
+	v := m.courseLevel
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCourseLevel returns the old "courseLevel" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldCourseLevel(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCourseLevel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCourseLevel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCourseLevel: %w", err)
+	}
+	return oldValue.CourseLevel, nil
+}
+
+// AddCourseLevel adds i to the "courseLevel" field.
+func (m *CourseMutation) AddCourseLevel(i int32) {
+	if m.addcourseLevel != nil {
+		*m.addcourseLevel += i
+	} else {
+		m.addcourseLevel = &i
+	}
+}
+
+// AddedCourseLevel returns the value that was added to the "courseLevel" field in this mutation.
+func (m *CourseMutation) AddedCourseLevel() (r int32, exists bool) {
+	v := m.addcourseLevel
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCourseLevel resets all changes to the "courseLevel" field.
+func (m *CourseMutation) ResetCourseLevel() {
+	m.courseLevel = nil
+	m.addcourseLevel = nil
+}
+
+// SetUpdateBy sets the "updateBy" field.
+func (m *CourseMutation) SetUpdateBy(t time.Time) {
+	m.updateBy = &t
+}
+
+// UpdateBy returns the value of the "updateBy" field in the mutation.
+func (m *CourseMutation) UpdateBy() (r time.Time, exists bool) {
+	v := m.updateBy
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateBy returns the old "updateBy" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldUpdateBy(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateBy: %w", err)
+	}
+	return oldValue.UpdateBy, nil
+}
+
+// ResetUpdateBy resets all changes to the "updateBy" field.
+func (m *CourseMutation) ResetUpdateBy() {
+	m.updateBy = nil
+}
+
+// SetLecturerName sets the "lecturerName" field.
+func (m *CourseMutation) SetLecturerName(s string) {
+	m.lecturerName = &s
+}
+
+// LecturerName returns the value of the "lecturerName" field in the mutation.
+func (m *CourseMutation) LecturerName() (r string, exists bool) {
+	v := m.lecturerName
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLecturerName returns the old "lecturerName" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldLecturerName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLecturerName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLecturerName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLecturerName: %w", err)
+	}
+	return oldValue.LecturerName, nil
+}
+
+// ResetLecturerName resets all changes to the "lecturerName" field.
+func (m *CourseMutation) ResetLecturerName() {
+	m.lecturerName = nil
+}
+
+// SetPurchaseCnt sets the "purchaseCnt" field.
+func (m *CourseMutation) SetPurchaseCnt(i int32) {
+	m.purchaseCnt = &i
+	m.addpurchaseCnt = nil
+}
+
+// PurchaseCnt returns the value of the "purchaseCnt" field in the mutation.
+func (m *CourseMutation) PurchaseCnt() (r int32, exists bool) {
+	v := m.purchaseCnt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPurchaseCnt returns the old "purchaseCnt" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldPurchaseCnt(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPurchaseCnt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPurchaseCnt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPurchaseCnt: %w", err)
+	}
+	return oldValue.PurchaseCnt, nil
+}
+
+// AddPurchaseCnt adds i to the "purchaseCnt" field.
+func (m *CourseMutation) AddPurchaseCnt(i int32) {
+	if m.addpurchaseCnt != nil {
+		*m.addpurchaseCnt += i
+	} else {
+		m.addpurchaseCnt = &i
+	}
+}
+
+// AddedPurchaseCnt returns the value that was added to the "purchaseCnt" field in this mutation.
+func (m *CourseMutation) AddedPurchaseCnt() (r int32, exists bool) {
+	v := m.addpurchaseCnt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPurchaseCnt resets all changes to the "purchaseCnt" field.
+func (m *CourseMutation) ResetPurchaseCnt() {
+	m.purchaseCnt = nil
+	m.addpurchaseCnt = nil
+}
+
+// SetTotalHour sets the "totalHour" field.
+func (m *CourseMutation) SetTotalHour(f float32) {
+	m.totalHour = &f
+	m.addtotalHour = nil
+}
+
+// TotalHour returns the value of the "totalHour" field in the mutation.
+func (m *CourseMutation) TotalHour() (r float32, exists bool) {
+	v := m.totalHour
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTotalHour returns the old "totalHour" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldTotalHour(ctx context.Context) (v float32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTotalHour is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTotalHour requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTotalHour: %w", err)
+	}
+	return oldValue.TotalHour, nil
+}
+
+// AddTotalHour adds f to the "totalHour" field.
+func (m *CourseMutation) AddTotalHour(f float32) {
+	if m.addtotalHour != nil {
+		*m.addtotalHour += f
+	} else {
+		m.addtotalHour = &f
+	}
+}
+
+// AddedTotalHour returns the value that was added to the "totalHour" field in this mutation.
+func (m *CourseMutation) AddedTotalHour() (r float32, exists bool) {
+	v := m.addtotalHour
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetTotalHour resets all changes to the "totalHour" field.
+func (m *CourseMutation) ResetTotalHour() {
+	m.totalHour = nil
+	m.addtotalHour = nil
+}
+
+// SetBizCourseDetail sets the "bizCourseDetail" field.
+func (m *CourseMutation) SetBizCourseDetail(s string) {
+	m.bizCourseDetail = &s
+}
+
+// BizCourseDetail returns the value of the "bizCourseDetail" field in the mutation.
+func (m *CourseMutation) BizCourseDetail() (r string, exists bool) {
+	v := m.bizCourseDetail
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBizCourseDetail returns the old "bizCourseDetail" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldBizCourseDetail(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBizCourseDetail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBizCourseDetail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBizCourseDetail: %w", err)
+	}
+	return oldValue.BizCourseDetail, nil
+}
+
+// ResetBizCourseDetail resets all changes to the "bizCourseDetail" field.
+func (m *CourseMutation) ResetBizCourseDetail() {
+	m.bizCourseDetail = nil
+}
+
+// SetCourseCover sets the "courseCover" field.
+func (m *CourseMutation) SetCourseCover(s string) {
+	m.courseCover = &s
+}
+
+// CourseCover returns the value of the "courseCover" field in the mutation.
+func (m *CourseMutation) CourseCover() (r string, exists bool) {
+	v := m.courseCover
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCourseCover returns the old "courseCover" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldCourseCover(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCourseCover is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCourseCover requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCourseCover: %w", err)
+	}
+	return oldValue.CourseCover, nil
+}
+
+// ResetCourseCover resets all changes to the "courseCover" field.
+func (m *CourseMutation) ResetCourseCover() {
+	m.courseCover = nil
+}
+
+// SetExt3 sets the "ext3" field.
+func (m *CourseMutation) SetExt3(s string) {
+	m.ext3 = &s
+}
+
+// Ext3 returns the value of the "ext3" field in the mutation.
+func (m *CourseMutation) Ext3() (r string, exists bool) {
+	v := m.ext3
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExt3 returns the old "ext3" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldExt3(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExt3 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExt3 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExt3: %w", err)
+	}
+	return oldValue.Ext3, nil
+}
+
+// ResetExt3 resets all changes to the "ext3" field.
+func (m *CourseMutation) ResetExt3() {
+	m.ext3 = nil
+}
+
+// SetExt2 sets the "ext2" field.
+func (m *CourseMutation) SetExt2(s string) {
+	m.ext2 = &s
+}
+
+// Ext2 returns the value of the "ext2" field in the mutation.
+func (m *CourseMutation) Ext2() (r string, exists bool) {
+	v := m.ext2
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExt2 returns the old "ext2" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldExt2(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExt2 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExt2 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExt2: %w", err)
+	}
+	return oldValue.Ext2, nil
+}
+
+// ResetExt2 resets all changes to the "ext2" field.
+func (m *CourseMutation) ResetExt2() {
+	m.ext2 = nil
+}
+
+// SetBizCourseChapters sets the "bizCourseChapters" field.
+func (m *CourseMutation) SetBizCourseChapters(s string) {
+	m.bizCourseChapters = &s
+}
+
+// BizCourseChapters returns the value of the "bizCourseChapters" field in the mutation.
+func (m *CourseMutation) BizCourseChapters() (r string, exists bool) {
+	v := m.bizCourseChapters
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBizCourseChapters returns the old "bizCourseChapters" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldBizCourseChapters(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBizCourseChapters is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBizCourseChapters requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBizCourseChapters: %w", err)
+	}
+	return oldValue.BizCourseChapters, nil
+}
+
+// ResetBizCourseChapters resets all changes to the "bizCourseChapters" field.
+func (m *CourseMutation) ResetBizCourseChapters() {
+	m.bizCourseChapters = nil
+}
+
+// SetExt1 sets the "ext1" field.
+func (m *CourseMutation) SetExt1(s string) {
+	m.ext1 = &s
+}
+
+// Ext1 returns the value of the "ext1" field in the mutation.
+func (m *CourseMutation) Ext1() (r string, exists bool) {
+	v := m.ext1
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExt1 returns the old "ext1" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldExt1(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExt1 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExt1 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExt1: %w", err)
+	}
+	return oldValue.Ext1, nil
+}
+
+// ResetExt1 resets all changes to the "ext1" field.
+func (m *CourseMutation) ResetExt1() {
+	m.ext1 = nil
+}
+
+// SetSalePrice sets the "salePrice" field.
+func (m *CourseMutation) SetSalePrice(f float32) {
+	m.salePrice = &f
+	m.addsalePrice = nil
+}
+
+// SalePrice returns the value of the "salePrice" field in the mutation.
+func (m *CourseMutation) SalePrice() (r float32, exists bool) {
+	v := m.salePrice
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSalePrice returns the old "salePrice" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldSalePrice(ctx context.Context) (v float32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSalePrice is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSalePrice requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSalePrice: %w", err)
+	}
+	return oldValue.SalePrice, nil
+}
+
+// AddSalePrice adds f to the "salePrice" field.
+func (m *CourseMutation) AddSalePrice(f float32) {
+	if m.addsalePrice != nil {
+		*m.addsalePrice += f
+	} else {
+		m.addsalePrice = &f
+	}
+}
+
+// AddedSalePrice returns the value that was added to the "salePrice" field in this mutation.
+func (m *CourseMutation) AddedSalePrice() (r float32, exists bool) {
+	v := m.addsalePrice
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSalePrice resets all changes to the "salePrice" field.
+func (m *CourseMutation) ResetSalePrice() {
+	m.salePrice = nil
+	m.addsalePrice = nil
+}
+
+// SetBizCourseTeacher sets the "bizCourseTeacher" field.
+func (m *CourseMutation) SetBizCourseTeacher(s string) {
+	m.bizCourseTeacher = &s
+}
+
+// BizCourseTeacher returns the value of the "bizCourseTeacher" field in the mutation.
+func (m *CourseMutation) BizCourseTeacher() (r string, exists bool) {
+	v := m.bizCourseTeacher
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBizCourseTeacher returns the old "bizCourseTeacher" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldBizCourseTeacher(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBizCourseTeacher is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBizCourseTeacher requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBizCourseTeacher: %w", err)
+	}
+	return oldValue.BizCourseTeacher, nil
+}
+
+// ResetBizCourseTeacher resets all changes to the "bizCourseTeacher" field.
+func (m *CourseMutation) ResetBizCourseTeacher() {
+	m.bizCourseTeacher = nil
+}
+
+// SetBizCourseAttachments sets the "bizCourseAttachments" field.
+func (m *CourseMutation) SetBizCourseAttachments(s string) {
+	m.bizCourseAttachments = &s
+}
+
+// BizCourseAttachments returns the value of the "bizCourseAttachments" field in the mutation.
+func (m *CourseMutation) BizCourseAttachments() (r string, exists bool) {
+	v := m.bizCourseAttachments
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBizCourseAttachments returns the old "bizCourseAttachments" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldBizCourseAttachments(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBizCourseAttachments is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBizCourseAttachments requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBizCourseAttachments: %w", err)
+	}
+	return oldValue.BizCourseAttachments, nil
+}
+
+// ResetBizCourseAttachments resets all changes to the "bizCourseAttachments" field.
+func (m *CourseMutation) ResetBizCourseAttachments() {
+	m.bizCourseAttachments = nil
+}
+
+// SetUpdateTime sets the "updateTime" field.
+func (m *CourseMutation) SetUpdateTime(t time.Time) {
+	m.updateTime = &t
+}
+
+// UpdateTime returns the value of the "updateTime" field in the mutation.
+func (m *CourseMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.updateTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "updateTime" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ResetUpdateTime resets all changes to the "updateTime" field.
+func (m *CourseMutation) ResetUpdateTime() {
+	m.updateTime = nil
+}
+
+// SetTags sets the "tags" field.
+func (m *CourseMutation) SetTags(s string) {
+	m.tags = &s
+}
+
+// Tags returns the value of the "tags" field in the mutation.
+func (m *CourseMutation) Tags() (r string, exists bool) {
+	v := m.tags
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTags returns the old "tags" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldTags(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTags is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTags requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTags: %w", err)
+	}
+	return oldValue.Tags, nil
+}
+
+// ResetTags resets all changes to the "tags" field.
+func (m *CourseMutation) ResetTags() {
+	m.tags = nil
+}
+
+// SetCourseName sets the "courseName" field.
+func (m *CourseMutation) SetCourseName(s string) {
+	m.courseName = &s
+}
+
+// CourseName returns the value of the "courseName" field in the mutation.
+func (m *CourseMutation) CourseName() (r string, exists bool) {
+	v := m.courseName
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCourseName returns the old "courseName" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldCourseName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCourseName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCourseName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCourseName: %w", err)
+	}
+	return oldValue.CourseName, nil
+}
+
+// ResetCourseName resets all changes to the "courseName" field.
+func (m *CourseMutation) ResetCourseName() {
+	m.courseName = nil
+}
+
+// SetCreateBy sets the "createBy" field.
+func (m *CourseMutation) SetCreateBy(s string) {
+	m.createBy = &s
+}
+
+// CreateBy returns the value of the "createBy" field in the mutation.
+func (m *CourseMutation) CreateBy() (r string, exists bool) {
+	v := m.createBy
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateBy returns the old "createBy" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldCreateBy(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateBy: %w", err)
+	}
+	return oldValue.CreateBy, nil
+}
+
+// ResetCreateBy resets all changes to the "createBy" field.
+func (m *CourseMutation) ResetCreateBy() {
+	m.createBy = nil
+}
+
+// SetPurchaseCounter sets the "purchaseCounter" field.
+func (m *CourseMutation) SetPurchaseCounter(i int32) {
+	m.purchaseCounter = &i
+	m.addpurchaseCounter = nil
+}
+
+// PurchaseCounter returns the value of the "purchaseCounter" field in the mutation.
+func (m *CourseMutation) PurchaseCounter() (r int32, exists bool) {
+	v := m.purchaseCounter
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPurchaseCounter returns the old "purchaseCounter" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldPurchaseCounter(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPurchaseCounter is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPurchaseCounter requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPurchaseCounter: %w", err)
+	}
+	return oldValue.PurchaseCounter, nil
+}
+
+// AddPurchaseCounter adds i to the "purchaseCounter" field.
+func (m *CourseMutation) AddPurchaseCounter(i int32) {
+	if m.addpurchaseCounter != nil {
+		*m.addpurchaseCounter += i
+	} else {
+		m.addpurchaseCounter = &i
+	}
+}
+
+// AddedPurchaseCounter returns the value that was added to the "purchaseCounter" field in this mutation.
+func (m *CourseMutation) AddedPurchaseCounter() (r int32, exists bool) {
+	v := m.addpurchaseCounter
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPurchaseCounter resets all changes to the "purchaseCounter" field.
+func (m *CourseMutation) ResetPurchaseCounter() {
+	m.purchaseCounter = nil
+	m.addpurchaseCounter = nil
+}
+
+// SetCreateTime sets the "createTime" field.
+func (m *CourseMutation) SetCreateTime(t time.Time) {
+	m.createTime = &t
+}
+
+// CreateTime returns the value of the "createTime" field in the mutation.
+func (m *CourseMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.createTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "createTime" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ResetCreateTime resets all changes to the "createTime" field.
+func (m *CourseMutation) ResetCreateTime() {
+	m.createTime = nil
+}
+
+// SetClicks sets the "clicks" field.
+func (m *CourseMutation) SetClicks(i int32) {
+	m.clicks = &i
+	m.addclicks = nil
+}
+
+// Clicks returns the value of the "clicks" field in the mutation.
+func (m *CourseMutation) Clicks() (r int32, exists bool) {
+	v := m.clicks
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldClicks returns the old "clicks" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldClicks(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldClicks is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldClicks requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldClicks: %w", err)
+	}
+	return oldValue.Clicks, nil
+}
+
+// AddClicks adds i to the "clicks" field.
+func (m *CourseMutation) AddClicks(i int32) {
+	if m.addclicks != nil {
+		*m.addclicks += i
+	} else {
+		m.addclicks = &i
+	}
+}
+
+// AddedClicks returns the value that was added to the "clicks" field in this mutation.
+func (m *CourseMutation) AddedClicks() (r int32, exists bool) {
+	v := m.addclicks
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetClicks resets all changes to the "clicks" field.
+func (m *CourseMutation) ResetClicks() {
+	m.clicks = nil
+	m.addclicks = nil
+}
+
+// SetSecondCategoryName sets the "secondCategoryName" field.
+func (m *CourseMutation) SetSecondCategoryName(s string) {
+	m.secondCategoryName = &s
+}
+
+// SecondCategoryName returns the value of the "secondCategoryName" field in the mutation.
+func (m *CourseMutation) SecondCategoryName() (r string, exists bool) {
+	v := m.secondCategoryName
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSecondCategoryName returns the old "secondCategoryName" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldSecondCategoryName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSecondCategoryName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSecondCategoryName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSecondCategoryName: %w", err)
+	}
+	return oldValue.SecondCategoryName, nil
+}
+
+// ResetSecondCategoryName resets all changes to the "secondCategoryName" field.
+func (m *CourseMutation) ResetSecondCategoryName() {
+	m.secondCategoryName = nil
+}
+
+// SetStatus sets the "status" field.
+func (m *CourseMutation) SetStatus(s string) {
+	m.status = &s
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *CourseMutation) Status() (r string, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldStatus(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *CourseMutation) ResetStatus() {
+	m.status = nil
 }
 
 // Where appends a list predicates to the CourseMutation builder.
@@ -668,7 +1975,97 @@ func (m *CourseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CourseMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 30)
+	if m.isRecommend != nil {
+		fields = append(fields, course.FieldIsRecommend)
+	}
+	if m.isIntegral != nil {
+		fields = append(fields, course.FieldIsIntegral)
+	}
+	if m.secondCategory != nil {
+		fields = append(fields, course.FieldSecondCategory)
+	}
+	if m.saleType != nil {
+		fields = append(fields, course.FieldSaleType)
+	}
+	if m.discountPrice != nil {
+		fields = append(fields, course.FieldDiscountPrice)
+	}
+	if m.firstCategoryName != nil {
+		fields = append(fields, course.FieldFirstCategoryName)
+	}
+	if m.teachingType != nil {
+		fields = append(fields, course.FieldTeachingType)
+	}
+	if m.courseLevel != nil {
+		fields = append(fields, course.FieldCourseLevel)
+	}
+	if m.updateBy != nil {
+		fields = append(fields, course.FieldUpdateBy)
+	}
+	if m.lecturerName != nil {
+		fields = append(fields, course.FieldLecturerName)
+	}
+	if m.purchaseCnt != nil {
+		fields = append(fields, course.FieldPurchaseCnt)
+	}
+	if m.totalHour != nil {
+		fields = append(fields, course.FieldTotalHour)
+	}
+	if m.bizCourseDetail != nil {
+		fields = append(fields, course.FieldBizCourseDetail)
+	}
+	if m.courseCover != nil {
+		fields = append(fields, course.FieldCourseCover)
+	}
+	if m.ext3 != nil {
+		fields = append(fields, course.FieldExt3)
+	}
+	if m.ext2 != nil {
+		fields = append(fields, course.FieldExt2)
+	}
+	if m.bizCourseChapters != nil {
+		fields = append(fields, course.FieldBizCourseChapters)
+	}
+	if m.ext1 != nil {
+		fields = append(fields, course.FieldExt1)
+	}
+	if m.salePrice != nil {
+		fields = append(fields, course.FieldSalePrice)
+	}
+	if m.bizCourseTeacher != nil {
+		fields = append(fields, course.FieldBizCourseTeacher)
+	}
+	if m.bizCourseAttachments != nil {
+		fields = append(fields, course.FieldBizCourseAttachments)
+	}
+	if m.updateTime != nil {
+		fields = append(fields, course.FieldUpdateTime)
+	}
+	if m.tags != nil {
+		fields = append(fields, course.FieldTags)
+	}
+	if m.courseName != nil {
+		fields = append(fields, course.FieldCourseName)
+	}
+	if m.createBy != nil {
+		fields = append(fields, course.FieldCreateBy)
+	}
+	if m.purchaseCounter != nil {
+		fields = append(fields, course.FieldPurchaseCounter)
+	}
+	if m.createTime != nil {
+		fields = append(fields, course.FieldCreateTime)
+	}
+	if m.clicks != nil {
+		fields = append(fields, course.FieldClicks)
+	}
+	if m.secondCategoryName != nil {
+		fields = append(fields, course.FieldSecondCategoryName)
+	}
+	if m.status != nil {
+		fields = append(fields, course.FieldStatus)
+	}
 	return fields
 }
 
@@ -676,6 +2073,68 @@ func (m *CourseMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *CourseMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case course.FieldIsRecommend:
+		return m.IsRecommend()
+	case course.FieldIsIntegral:
+		return m.IsIntegral()
+	case course.FieldSecondCategory:
+		return m.SecondCategory()
+	case course.FieldSaleType:
+		return m.SaleType()
+	case course.FieldDiscountPrice:
+		return m.DiscountPrice()
+	case course.FieldFirstCategoryName:
+		return m.FirstCategoryName()
+	case course.FieldTeachingType:
+		return m.TeachingType()
+	case course.FieldCourseLevel:
+		return m.CourseLevel()
+	case course.FieldUpdateBy:
+		return m.UpdateBy()
+	case course.FieldLecturerName:
+		return m.LecturerName()
+	case course.FieldPurchaseCnt:
+		return m.PurchaseCnt()
+	case course.FieldTotalHour:
+		return m.TotalHour()
+	case course.FieldBizCourseDetail:
+		return m.BizCourseDetail()
+	case course.FieldCourseCover:
+		return m.CourseCover()
+	case course.FieldExt3:
+		return m.Ext3()
+	case course.FieldExt2:
+		return m.Ext2()
+	case course.FieldBizCourseChapters:
+		return m.BizCourseChapters()
+	case course.FieldExt1:
+		return m.Ext1()
+	case course.FieldSalePrice:
+		return m.SalePrice()
+	case course.FieldBizCourseTeacher:
+		return m.BizCourseTeacher()
+	case course.FieldBizCourseAttachments:
+		return m.BizCourseAttachments()
+	case course.FieldUpdateTime:
+		return m.UpdateTime()
+	case course.FieldTags:
+		return m.Tags()
+	case course.FieldCourseName:
+		return m.CourseName()
+	case course.FieldCreateBy:
+		return m.CreateBy()
+	case course.FieldPurchaseCounter:
+		return m.PurchaseCounter()
+	case course.FieldCreateTime:
+		return m.CreateTime()
+	case course.FieldClicks:
+		return m.Clicks()
+	case course.FieldSecondCategoryName:
+		return m.SecondCategoryName()
+	case course.FieldStatus:
+		return m.Status()
+	}
 	return nil, false
 }
 
@@ -683,6 +2142,68 @@ func (m *CourseMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *CourseMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case course.FieldIsRecommend:
+		return m.OldIsRecommend(ctx)
+	case course.FieldIsIntegral:
+		return m.OldIsIntegral(ctx)
+	case course.FieldSecondCategory:
+		return m.OldSecondCategory(ctx)
+	case course.FieldSaleType:
+		return m.OldSaleType(ctx)
+	case course.FieldDiscountPrice:
+		return m.OldDiscountPrice(ctx)
+	case course.FieldFirstCategoryName:
+		return m.OldFirstCategoryName(ctx)
+	case course.FieldTeachingType:
+		return m.OldTeachingType(ctx)
+	case course.FieldCourseLevel:
+		return m.OldCourseLevel(ctx)
+	case course.FieldUpdateBy:
+		return m.OldUpdateBy(ctx)
+	case course.FieldLecturerName:
+		return m.OldLecturerName(ctx)
+	case course.FieldPurchaseCnt:
+		return m.OldPurchaseCnt(ctx)
+	case course.FieldTotalHour:
+		return m.OldTotalHour(ctx)
+	case course.FieldBizCourseDetail:
+		return m.OldBizCourseDetail(ctx)
+	case course.FieldCourseCover:
+		return m.OldCourseCover(ctx)
+	case course.FieldExt3:
+		return m.OldExt3(ctx)
+	case course.FieldExt2:
+		return m.OldExt2(ctx)
+	case course.FieldBizCourseChapters:
+		return m.OldBizCourseChapters(ctx)
+	case course.FieldExt1:
+		return m.OldExt1(ctx)
+	case course.FieldSalePrice:
+		return m.OldSalePrice(ctx)
+	case course.FieldBizCourseTeacher:
+		return m.OldBizCourseTeacher(ctx)
+	case course.FieldBizCourseAttachments:
+		return m.OldBizCourseAttachments(ctx)
+	case course.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
+	case course.FieldTags:
+		return m.OldTags(ctx)
+	case course.FieldCourseName:
+		return m.OldCourseName(ctx)
+	case course.FieldCreateBy:
+		return m.OldCreateBy(ctx)
+	case course.FieldPurchaseCounter:
+		return m.OldPurchaseCounter(ctx)
+	case course.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case course.FieldClicks:
+		return m.OldClicks(ctx)
+	case course.FieldSecondCategoryName:
+		return m.OldSecondCategoryName(ctx)
+	case course.FieldStatus:
+		return m.OldStatus(ctx)
+	}
 	return nil, fmt.Errorf("unknown Course field %s", name)
 }
 
@@ -691,6 +2212,216 @@ func (m *CourseMutation) OldField(ctx context.Context, name string) (ent.Value, 
 // type.
 func (m *CourseMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case course.FieldIsRecommend:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsRecommend(v)
+		return nil
+	case course.FieldIsIntegral:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsIntegral(v)
+		return nil
+	case course.FieldSecondCategory:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSecondCategory(v)
+		return nil
+	case course.FieldSaleType:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSaleType(v)
+		return nil
+	case course.FieldDiscountPrice:
+		v, ok := value.(float32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDiscountPrice(v)
+		return nil
+	case course.FieldFirstCategoryName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFirstCategoryName(v)
+		return nil
+	case course.FieldTeachingType:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTeachingType(v)
+		return nil
+	case course.FieldCourseLevel:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCourseLevel(v)
+		return nil
+	case course.FieldUpdateBy:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateBy(v)
+		return nil
+	case course.FieldLecturerName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLecturerName(v)
+		return nil
+	case course.FieldPurchaseCnt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPurchaseCnt(v)
+		return nil
+	case course.FieldTotalHour:
+		v, ok := value.(float32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTotalHour(v)
+		return nil
+	case course.FieldBizCourseDetail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBizCourseDetail(v)
+		return nil
+	case course.FieldCourseCover:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCourseCover(v)
+		return nil
+	case course.FieldExt3:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExt3(v)
+		return nil
+	case course.FieldExt2:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExt2(v)
+		return nil
+	case course.FieldBizCourseChapters:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBizCourseChapters(v)
+		return nil
+	case course.FieldExt1:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExt1(v)
+		return nil
+	case course.FieldSalePrice:
+		v, ok := value.(float32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSalePrice(v)
+		return nil
+	case course.FieldBizCourseTeacher:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBizCourseTeacher(v)
+		return nil
+	case course.FieldBizCourseAttachments:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBizCourseAttachments(v)
+		return nil
+	case course.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
+		return nil
+	case course.FieldTags:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTags(v)
+		return nil
+	case course.FieldCourseName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCourseName(v)
+		return nil
+	case course.FieldCreateBy:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateBy(v)
+		return nil
+	case course.FieldPurchaseCounter:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPurchaseCounter(v)
+		return nil
+	case course.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case course.FieldClicks:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetClicks(v)
+		return nil
+	case course.FieldSecondCategoryName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSecondCategoryName(v)
+		return nil
+	case course.FieldStatus:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Course field %s", name)
 }
@@ -698,13 +2429,61 @@ func (m *CourseMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *CourseMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addsaleType != nil {
+		fields = append(fields, course.FieldSaleType)
+	}
+	if m.adddiscountPrice != nil {
+		fields = append(fields, course.FieldDiscountPrice)
+	}
+	if m.addteachingType != nil {
+		fields = append(fields, course.FieldTeachingType)
+	}
+	if m.addcourseLevel != nil {
+		fields = append(fields, course.FieldCourseLevel)
+	}
+	if m.addpurchaseCnt != nil {
+		fields = append(fields, course.FieldPurchaseCnt)
+	}
+	if m.addtotalHour != nil {
+		fields = append(fields, course.FieldTotalHour)
+	}
+	if m.addsalePrice != nil {
+		fields = append(fields, course.FieldSalePrice)
+	}
+	if m.addpurchaseCounter != nil {
+		fields = append(fields, course.FieldPurchaseCounter)
+	}
+	if m.addclicks != nil {
+		fields = append(fields, course.FieldClicks)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *CourseMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case course.FieldSaleType:
+		return m.AddedSaleType()
+	case course.FieldDiscountPrice:
+		return m.AddedDiscountPrice()
+	case course.FieldTeachingType:
+		return m.AddedTeachingType()
+	case course.FieldCourseLevel:
+		return m.AddedCourseLevel()
+	case course.FieldPurchaseCnt:
+		return m.AddedPurchaseCnt()
+	case course.FieldTotalHour:
+		return m.AddedTotalHour()
+	case course.FieldSalePrice:
+		return m.AddedSalePrice()
+	case course.FieldPurchaseCounter:
+		return m.AddedPurchaseCounter()
+	case course.FieldClicks:
+		return m.AddedClicks()
+	}
 	return nil, false
 }
 
@@ -712,6 +2491,71 @@ func (m *CourseMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *CourseMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case course.FieldSaleType:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSaleType(v)
+		return nil
+	case course.FieldDiscountPrice:
+		v, ok := value.(float32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDiscountPrice(v)
+		return nil
+	case course.FieldTeachingType:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddTeachingType(v)
+		return nil
+	case course.FieldCourseLevel:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCourseLevel(v)
+		return nil
+	case course.FieldPurchaseCnt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPurchaseCnt(v)
+		return nil
+	case course.FieldTotalHour:
+		v, ok := value.(float32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddTotalHour(v)
+		return nil
+	case course.FieldSalePrice:
+		v, ok := value.(float32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSalePrice(v)
+		return nil
+	case course.FieldPurchaseCounter:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPurchaseCounter(v)
+		return nil
+	case course.FieldClicks:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddClicks(v)
+		return nil
+	}
 	return fmt.Errorf("unknown Course numeric field %s", name)
 }
 
@@ -737,6 +2581,98 @@ func (m *CourseMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *CourseMutation) ResetField(name string) error {
+	switch name {
+	case course.FieldIsRecommend:
+		m.ResetIsRecommend()
+		return nil
+	case course.FieldIsIntegral:
+		m.ResetIsIntegral()
+		return nil
+	case course.FieldSecondCategory:
+		m.ResetSecondCategory()
+		return nil
+	case course.FieldSaleType:
+		m.ResetSaleType()
+		return nil
+	case course.FieldDiscountPrice:
+		m.ResetDiscountPrice()
+		return nil
+	case course.FieldFirstCategoryName:
+		m.ResetFirstCategoryName()
+		return nil
+	case course.FieldTeachingType:
+		m.ResetTeachingType()
+		return nil
+	case course.FieldCourseLevel:
+		m.ResetCourseLevel()
+		return nil
+	case course.FieldUpdateBy:
+		m.ResetUpdateBy()
+		return nil
+	case course.FieldLecturerName:
+		m.ResetLecturerName()
+		return nil
+	case course.FieldPurchaseCnt:
+		m.ResetPurchaseCnt()
+		return nil
+	case course.FieldTotalHour:
+		m.ResetTotalHour()
+		return nil
+	case course.FieldBizCourseDetail:
+		m.ResetBizCourseDetail()
+		return nil
+	case course.FieldCourseCover:
+		m.ResetCourseCover()
+		return nil
+	case course.FieldExt3:
+		m.ResetExt3()
+		return nil
+	case course.FieldExt2:
+		m.ResetExt2()
+		return nil
+	case course.FieldBizCourseChapters:
+		m.ResetBizCourseChapters()
+		return nil
+	case course.FieldExt1:
+		m.ResetExt1()
+		return nil
+	case course.FieldSalePrice:
+		m.ResetSalePrice()
+		return nil
+	case course.FieldBizCourseTeacher:
+		m.ResetBizCourseTeacher()
+		return nil
+	case course.FieldBizCourseAttachments:
+		m.ResetBizCourseAttachments()
+		return nil
+	case course.FieldUpdateTime:
+		m.ResetUpdateTime()
+		return nil
+	case course.FieldTags:
+		m.ResetTags()
+		return nil
+	case course.FieldCourseName:
+		m.ResetCourseName()
+		return nil
+	case course.FieldCreateBy:
+		m.ResetCreateBy()
+		return nil
+	case course.FieldPurchaseCounter:
+		m.ResetPurchaseCounter()
+		return nil
+	case course.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case course.FieldClicks:
+		m.ResetClicks()
+		return nil
+	case course.FieldSecondCategoryName:
+		m.ResetSecondCategoryName()
+		return nil
+	case course.FieldStatus:
+		m.ResetStatus()
+		return nil
+	}
 	return fmt.Errorf("unknown Course field %s", name)
 }
 
