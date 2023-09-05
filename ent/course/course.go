@@ -4,6 +4,7 @@ package course
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -15,14 +16,10 @@ const (
 	FieldIsRecommend = "is_recommend"
 	// FieldIsIntegral holds the string denoting the isintegral field in the database.
 	FieldIsIntegral = "is_integral"
-	// FieldSecondCategory holds the string denoting the secondcategory field in the database.
-	FieldSecondCategory = "second_category"
 	// FieldSaleType holds the string denoting the saletype field in the database.
 	FieldSaleType = "sale_type"
 	// FieldDiscountPrice holds the string denoting the discountprice field in the database.
 	FieldDiscountPrice = "discount_price"
-	// FieldFirstCategoryName holds the string denoting the firstcategoryname field in the database.
-	FieldFirstCategoryName = "first_category_name"
 	// FieldTeachingType holds the string denoting the teachingtype field in the database.
 	FieldTeachingType = "teaching_type"
 	// FieldCourseLevel holds the string denoting the courselevel field in the database.
@@ -39,14 +36,8 @@ const (
 	FieldBizCourseDetail = "biz_course_detail"
 	// FieldCourseCover holds the string denoting the coursecover field in the database.
 	FieldCourseCover = "course_cover"
-	// FieldExt3 holds the string denoting the ext3 field in the database.
-	FieldExt3 = "ext3"
-	// FieldExt2 holds the string denoting the ext2 field in the database.
-	FieldExt2 = "ext2"
 	// FieldBizCourseChapters holds the string denoting the bizcoursechapters field in the database.
 	FieldBizCourseChapters = "biz_course_chapters"
-	// FieldExt1 holds the string denoting the ext1 field in the database.
-	FieldExt1 = "ext1"
 	// FieldSalePrice holds the string denoting the saleprice field in the database.
 	FieldSalePrice = "sale_price"
 	// FieldBizCourseTeacher holds the string denoting the bizcourseteacher field in the database.
@@ -67,12 +58,17 @@ const (
 	FieldCreateTime = "create_time"
 	// FieldClicks holds the string denoting the clicks field in the database.
 	FieldClicks = "clicks"
-	// FieldSecondCategoryName holds the string denoting the secondcategoryname field in the database.
-	FieldSecondCategoryName = "second_category_name"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// EdgeCategories holds the string denoting the categories edge name in mutations.
+	EdgeCategories = "categories"
 	// Table holds the table name of the course in the database.
 	Table = "courses"
+	// CategoriesTable is the table that holds the categories relation/edge. The primary key declared below.
+	CategoriesTable = "course_categories"
+	// CategoriesInverseTable is the table name for the Category entity.
+	// It exists in this package in order to avoid circular dependency with the "category" package.
+	CategoriesInverseTable = "categories"
 )
 
 // Columns holds all SQL columns for course fields.
@@ -80,10 +76,8 @@ var Columns = []string{
 	FieldID,
 	FieldIsRecommend,
 	FieldIsIntegral,
-	FieldSecondCategory,
 	FieldSaleType,
 	FieldDiscountPrice,
-	FieldFirstCategoryName,
 	FieldTeachingType,
 	FieldCourseLevel,
 	FieldUpdateBy,
@@ -92,10 +86,7 @@ var Columns = []string{
 	FieldTotalHour,
 	FieldBizCourseDetail,
 	FieldCourseCover,
-	FieldExt3,
-	FieldExt2,
 	FieldBizCourseChapters,
-	FieldExt1,
 	FieldSalePrice,
 	FieldBizCourseTeacher,
 	FieldBizCourseAttachments,
@@ -106,9 +97,14 @@ var Columns = []string{
 	FieldPurchaseCounter,
 	FieldCreateTime,
 	FieldClicks,
-	FieldSecondCategoryName,
 	FieldStatus,
 }
+
+var (
+	// CategoriesPrimaryKey and CategoriesColumn2 are the table columns denoting the
+	// primary key for the categories relation (M2M).
+	CategoriesPrimaryKey = []string{"course_id", "category_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -145,11 +141,6 @@ func ByIsIntegral(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsIntegral, opts...).ToFunc()
 }
 
-// BySecondCategory orders the results by the secondCategory field.
-func BySecondCategory(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSecondCategory, opts...).ToFunc()
-}
-
 // BySaleType orders the results by the saleType field.
 func BySaleType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSaleType, opts...).ToFunc()
@@ -158,11 +149,6 @@ func BySaleType(opts ...sql.OrderTermOption) OrderOption {
 // ByDiscountPrice orders the results by the discountPrice field.
 func ByDiscountPrice(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDiscountPrice, opts...).ToFunc()
-}
-
-// ByFirstCategoryName orders the results by the firstCategoryName field.
-func ByFirstCategoryName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldFirstCategoryName, opts...).ToFunc()
 }
 
 // ByTeachingType orders the results by the teachingType field.
@@ -205,24 +191,9 @@ func ByCourseCover(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCourseCover, opts...).ToFunc()
 }
 
-// ByExt3 orders the results by the ext3 field.
-func ByExt3(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldExt3, opts...).ToFunc()
-}
-
-// ByExt2 orders the results by the ext2 field.
-func ByExt2(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldExt2, opts...).ToFunc()
-}
-
 // ByBizCourseChapters orders the results by the bizCourseChapters field.
 func ByBizCourseChapters(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBizCourseChapters, opts...).ToFunc()
-}
-
-// ByExt1 orders the results by the ext1 field.
-func ByExt1(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldExt1, opts...).ToFunc()
 }
 
 // BySalePrice orders the results by the salePrice field.
@@ -275,12 +246,28 @@ func ByClicks(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldClicks, opts...).ToFunc()
 }
 
-// BySecondCategoryName orders the results by the secondCategoryName field.
-func BySecondCategoryName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSecondCategoryName, opts...).ToFunc()
-}
-
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
+// ByCategoriesCount orders the results by categories count.
+func ByCategoriesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCategoriesStep(), opts...)
+	}
+}
+
+// ByCategories orders the results by categories terms.
+func ByCategories(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCategoriesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newCategoriesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CategoriesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, CategoriesTable, CategoriesPrimaryKey...),
+	)
 }

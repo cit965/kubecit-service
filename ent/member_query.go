@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"kubecit-service/ent/member"
 	"kubecit-service/ent/predicate"
+	"kubecit-service/ent/user"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
@@ -21,6 +22,8 @@ type MemberQuery struct {
 	order      []member.OrderOption
 	inters     []Interceptor
 	predicates []predicate.Member
+	withUser   *UserQuery
+	withFKs    bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +60,28 @@ func (mq *MemberQuery) Order(o ...member.OrderOption) *MemberQuery {
 	return mq
 }
 
+// QueryUser chains the current query on the "user" edge.
+func (mq *MemberQuery) QueryUser() *UserQuery {
+	query := (&UserClient{config: mq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := mq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := mq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(member.Table, member.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, member.UserTable, member.UserColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(mq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
 // First returns the first Member entity from the query.
 // Returns a *NotFoundError when no Member was found.
 func (mq *MemberQuery) First(ctx context.Context) (*Member, error) {
@@ -81,8 +106,8 @@ func (mq *MemberQuery) FirstX(ctx context.Context) *Member {
 
 // FirstID returns the first Member ID from the query.
 // Returns a *NotFoundError when no Member ID was found.
-func (mq *MemberQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (mq *MemberQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = mq.Limit(1).IDs(setContextOp(ctx, mq.ctx, "FirstID")); err != nil {
 		return
 	}
@@ -94,7 +119,7 @@ func (mq *MemberQuery) FirstID(ctx context.Context) (id int, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (mq *MemberQuery) FirstIDX(ctx context.Context) int {
+func (mq *MemberQuery) FirstIDX(ctx context.Context) string {
 	id, err := mq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -132,8 +157,8 @@ func (mq *MemberQuery) OnlyX(ctx context.Context) *Member {
 // OnlyID is like Only, but returns the only Member ID in the query.
 // Returns a *NotSingularError when more than one Member ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (mq *MemberQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (mq *MemberQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = mq.Limit(2).IDs(setContextOp(ctx, mq.ctx, "OnlyID")); err != nil {
 		return
 	}
@@ -149,7 +174,7 @@ func (mq *MemberQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (mq *MemberQuery) OnlyIDX(ctx context.Context) int {
+func (mq *MemberQuery) OnlyIDX(ctx context.Context) string {
 	id, err := mq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -177,7 +202,7 @@ func (mq *MemberQuery) AllX(ctx context.Context) []*Member {
 }
 
 // IDs executes the query and returns a list of Member IDs.
-func (mq *MemberQuery) IDs(ctx context.Context) (ids []int, err error) {
+func (mq *MemberQuery) IDs(ctx context.Context) (ids []string, err error) {
 	if mq.ctx.Unique == nil && mq.path != nil {
 		mq.Unique(true)
 	}
@@ -189,7 +214,7 @@ func (mq *MemberQuery) IDs(ctx context.Context) (ids []int, err error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (mq *MemberQuery) IDsX(ctx context.Context) []int {
+func (mq *MemberQuery) IDsX(ctx context.Context) []string {
 	ids, err := mq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -249,14 +274,38 @@ func (mq *MemberQuery) Clone() *MemberQuery {
 		order:      append([]member.OrderOption{}, mq.order...),
 		inters:     append([]Interceptor{}, mq.inters...),
 		predicates: append([]predicate.Member{}, mq.predicates...),
+		withUser:   mq.withUser.Clone(),
 		// clone intermediate query.
 		sql:  mq.sql.Clone(),
 		path: mq.path,
 	}
 }
 
+// WithUser tells the query-builder to eager-load the nodes that are connected to
+// the "user" edge. The optional arguments are used to configure the query builder of the edge.
+func (mq *MemberQuery) WithUser(opts ...func(*UserQuery)) *MemberQuery {
+	query := (&UserClient{config: mq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	mq.withUser = query
+	return mq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		OrderNumber string `json:"orderNumber,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.Member.Query().
+//		GroupBy(member.FieldOrderNumber).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
 func (mq *MemberQuery) GroupBy(field string, fields ...string) *MemberGroupBy {
 	mq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &MemberGroupBy{build: mq}
@@ -268,6 +317,16 @@ func (mq *MemberQuery) GroupBy(field string, fields ...string) *MemberGroupBy {
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		OrderNumber string `json:"orderNumber,omitempty"`
+//	}
+//
+//	client.Member.Query().
+//		Select(member.FieldOrderNumber).
+//		Scan(ctx, &v)
 func (mq *MemberQuery) Select(fields ...string) *MemberSelect {
 	mq.ctx.Fields = append(mq.ctx.Fields, fields...)
 	sbuild := &MemberSelect{MemberQuery: mq}
@@ -309,15 +368,26 @@ func (mq *MemberQuery) prepareQuery(ctx context.Context) error {
 
 func (mq *MemberQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Member, error) {
 	var (
-		nodes = []*Member{}
-		_spec = mq.querySpec()
+		nodes       = []*Member{}
+		withFKs     = mq.withFKs
+		_spec       = mq.querySpec()
+		loadedTypes = [1]bool{
+			mq.withUser != nil,
+		}
 	)
+	if mq.withUser != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, member.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Member).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &Member{config: mq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -329,7 +399,46 @@ func (mq *MemberQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Membe
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := mq.withUser; query != nil {
+		if err := mq.loadUser(ctx, query, nodes, nil,
+			func(n *Member, e *User) { n.Edges.User = e }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (mq *MemberQuery) loadUser(ctx context.Context, query *UserQuery, nodes []*Member, init func(*Member), assign func(*Member, *User)) error {
+	ids := make([]string, 0, len(nodes))
+	nodeids := make(map[string][]*Member)
+	for i := range nodes {
+		if nodes[i].user_vip_member == nil {
+			continue
+		}
+		fk := *nodes[i].user_vip_member
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "user_vip_member" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
 }
 
 func (mq *MemberQuery) sqlCount(ctx context.Context) (int, error) {
@@ -342,7 +451,7 @@ func (mq *MemberQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (mq *MemberQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(member.Table, member.Columns, sqlgraph.NewFieldSpec(member.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewQuerySpec(member.Table, member.Columns, sqlgraph.NewFieldSpec(member.FieldID, field.TypeString))
 	_spec.From = mq.sql
 	if unique := mq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique

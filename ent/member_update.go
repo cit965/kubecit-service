@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"kubecit-service/ent/member"
 	"kubecit-service/ent/predicate"
+	"kubecit-service/ent/user"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -27,9 +29,88 @@ func (mu *MemberUpdate) Where(ps ...predicate.Member) *MemberUpdate {
 	return mu
 }
 
+// SetOrderNumber sets the "orderNumber" field.
+func (mu *MemberUpdate) SetOrderNumber(s string) *MemberUpdate {
+	mu.mutation.SetOrderNumber(s)
+	return mu
+}
+
+// SetVipName sets the "vipName" field.
+func (mu *MemberUpdate) SetVipName(s string) *MemberUpdate {
+	mu.mutation.SetVipName(s)
+	return mu
+}
+
+// SetVipId sets the "vipId" field.
+func (mu *MemberUpdate) SetVipId(s string) *MemberUpdate {
+	mu.mutation.SetVipId(s)
+	return mu
+}
+
+// SetVipDesc sets the "vipDesc" field.
+func (mu *MemberUpdate) SetVipDesc(s string) *MemberUpdate {
+	mu.mutation.SetVipDesc(s)
+	return mu
+}
+
+// SetStartTime sets the "startTime" field.
+func (mu *MemberUpdate) SetStartTime(t time.Time) *MemberUpdate {
+	mu.mutation.SetStartTime(t)
+	return mu
+}
+
+// SetEndTime sets the "endTime" field.
+func (mu *MemberUpdate) SetEndTime(t time.Time) *MemberUpdate {
+	mu.mutation.SetEndTime(t)
+	return mu
+}
+
+// SetIsExpired sets the "isExpired" field.
+func (mu *MemberUpdate) SetIsExpired(b bool) *MemberUpdate {
+	mu.mutation.SetIsExpired(b)
+	return mu
+}
+
+// SetMemberId sets the "memberId" field.
+func (mu *MemberUpdate) SetMemberId(s string) *MemberUpdate {
+	mu.mutation.SetMemberId(s)
+	return mu
+}
+
+// SetVipIcon sets the "vipIcon" field.
+func (mu *MemberUpdate) SetVipIcon(s string) *MemberUpdate {
+	mu.mutation.SetVipIcon(s)
+	return mu
+}
+
+// SetUserID sets the "user" edge to the User entity by ID.
+func (mu *MemberUpdate) SetUserID(id string) *MemberUpdate {
+	mu.mutation.SetUserID(id)
+	return mu
+}
+
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (mu *MemberUpdate) SetNillableUserID(id *string) *MemberUpdate {
+	if id != nil {
+		mu = mu.SetUserID(*id)
+	}
+	return mu
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (mu *MemberUpdate) SetUser(u *User) *MemberUpdate {
+	return mu.SetUserID(u.ID)
+}
+
 // Mutation returns the MemberMutation object of the builder.
 func (mu *MemberUpdate) Mutation() *MemberMutation {
 	return mu.mutation
+}
+
+// ClearUser clears the "user" edge to the User entity.
+func (mu *MemberUpdate) ClearUser() *MemberUpdate {
+	mu.mutation.ClearUser()
+	return mu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -60,13 +141,69 @@ func (mu *MemberUpdate) ExecX(ctx context.Context) {
 }
 
 func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(member.Table, member.Columns, sqlgraph.NewFieldSpec(member.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(member.Table, member.Columns, sqlgraph.NewFieldSpec(member.FieldID, field.TypeString))
 	if ps := mu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := mu.mutation.OrderNumber(); ok {
+		_spec.SetField(member.FieldOrderNumber, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.VipName(); ok {
+		_spec.SetField(member.FieldVipName, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.VipId(); ok {
+		_spec.SetField(member.FieldVipId, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.VipDesc(); ok {
+		_spec.SetField(member.FieldVipDesc, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.StartTime(); ok {
+		_spec.SetField(member.FieldStartTime, field.TypeTime, value)
+	}
+	if value, ok := mu.mutation.EndTime(); ok {
+		_spec.SetField(member.FieldEndTime, field.TypeTime, value)
+	}
+	if value, ok := mu.mutation.IsExpired(); ok {
+		_spec.SetField(member.FieldIsExpired, field.TypeBool, value)
+	}
+	if value, ok := mu.mutation.MemberId(); ok {
+		_spec.SetField(member.FieldMemberId, field.TypeString, value)
+	}
+	if value, ok := mu.mutation.VipIcon(); ok {
+		_spec.SetField(member.FieldVipIcon, field.TypeString, value)
+	}
+	if mu.mutation.UserCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.UserTable,
+			Columns: []string{member.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := mu.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.UserTable,
+			Columns: []string{member.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -88,9 +225,88 @@ type MemberUpdateOne struct {
 	mutation *MemberMutation
 }
 
+// SetOrderNumber sets the "orderNumber" field.
+func (muo *MemberUpdateOne) SetOrderNumber(s string) *MemberUpdateOne {
+	muo.mutation.SetOrderNumber(s)
+	return muo
+}
+
+// SetVipName sets the "vipName" field.
+func (muo *MemberUpdateOne) SetVipName(s string) *MemberUpdateOne {
+	muo.mutation.SetVipName(s)
+	return muo
+}
+
+// SetVipId sets the "vipId" field.
+func (muo *MemberUpdateOne) SetVipId(s string) *MemberUpdateOne {
+	muo.mutation.SetVipId(s)
+	return muo
+}
+
+// SetVipDesc sets the "vipDesc" field.
+func (muo *MemberUpdateOne) SetVipDesc(s string) *MemberUpdateOne {
+	muo.mutation.SetVipDesc(s)
+	return muo
+}
+
+// SetStartTime sets the "startTime" field.
+func (muo *MemberUpdateOne) SetStartTime(t time.Time) *MemberUpdateOne {
+	muo.mutation.SetStartTime(t)
+	return muo
+}
+
+// SetEndTime sets the "endTime" field.
+func (muo *MemberUpdateOne) SetEndTime(t time.Time) *MemberUpdateOne {
+	muo.mutation.SetEndTime(t)
+	return muo
+}
+
+// SetIsExpired sets the "isExpired" field.
+func (muo *MemberUpdateOne) SetIsExpired(b bool) *MemberUpdateOne {
+	muo.mutation.SetIsExpired(b)
+	return muo
+}
+
+// SetMemberId sets the "memberId" field.
+func (muo *MemberUpdateOne) SetMemberId(s string) *MemberUpdateOne {
+	muo.mutation.SetMemberId(s)
+	return muo
+}
+
+// SetVipIcon sets the "vipIcon" field.
+func (muo *MemberUpdateOne) SetVipIcon(s string) *MemberUpdateOne {
+	muo.mutation.SetVipIcon(s)
+	return muo
+}
+
+// SetUserID sets the "user" edge to the User entity by ID.
+func (muo *MemberUpdateOne) SetUserID(id string) *MemberUpdateOne {
+	muo.mutation.SetUserID(id)
+	return muo
+}
+
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillableUserID(id *string) *MemberUpdateOne {
+	if id != nil {
+		muo = muo.SetUserID(*id)
+	}
+	return muo
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (muo *MemberUpdateOne) SetUser(u *User) *MemberUpdateOne {
+	return muo.SetUserID(u.ID)
+}
+
 // Mutation returns the MemberMutation object of the builder.
 func (muo *MemberUpdateOne) Mutation() *MemberMutation {
 	return muo.mutation
+}
+
+// ClearUser clears the "user" edge to the User entity.
+func (muo *MemberUpdateOne) ClearUser() *MemberUpdateOne {
+	muo.mutation.ClearUser()
+	return muo
 }
 
 // Where appends a list predicates to the MemberUpdate builder.
@@ -134,7 +350,7 @@ func (muo *MemberUpdateOne) ExecX(ctx context.Context) {
 }
 
 func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err error) {
-	_spec := sqlgraph.NewUpdateSpec(member.Table, member.Columns, sqlgraph.NewFieldSpec(member.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(member.Table, member.Columns, sqlgraph.NewFieldSpec(member.FieldID, field.TypeString))
 	id, ok := muo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Member.id" for update`)}
@@ -158,6 +374,62 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (_node *Member, err err
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := muo.mutation.OrderNumber(); ok {
+		_spec.SetField(member.FieldOrderNumber, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.VipName(); ok {
+		_spec.SetField(member.FieldVipName, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.VipId(); ok {
+		_spec.SetField(member.FieldVipId, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.VipDesc(); ok {
+		_spec.SetField(member.FieldVipDesc, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.StartTime(); ok {
+		_spec.SetField(member.FieldStartTime, field.TypeTime, value)
+	}
+	if value, ok := muo.mutation.EndTime(); ok {
+		_spec.SetField(member.FieldEndTime, field.TypeTime, value)
+	}
+	if value, ok := muo.mutation.IsExpired(); ok {
+		_spec.SetField(member.FieldIsExpired, field.TypeBool, value)
+	}
+	if value, ok := muo.mutation.MemberId(); ok {
+		_spec.SetField(member.FieldMemberId, field.TypeString, value)
+	}
+	if value, ok := muo.mutation.VipIcon(); ok {
+		_spec.SetField(member.FieldVipIcon, field.TypeString, value)
+	}
+	if muo.mutation.UserCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.UserTable,
+			Columns: []string{member.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := muo.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.UserTable,
+			Columns: []string{member.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Member{config: muo.config}
 	_spec.Assign = _node.assignValues

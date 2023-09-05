@@ -5,7 +5,9 @@ package ent
 import (
 	"fmt"
 	"kubecit-service/ent/member"
+	"kubecit-service/ent/user"
 	"strings"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -13,10 +15,54 @@ import (
 
 // Member is the model entity for the Member schema.
 type Member struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
-	ID           int `json:"id,omitempty"`
-	selectValues sql.SelectValues
+	ID string `json:"id,omitempty"`
+	// OrderNumber holds the value of the "orderNumber" field.
+	OrderNumber string `json:"orderNumber,omitempty"`
+	// VipName holds the value of the "vipName" field.
+	VipName string `json:"vipName,omitempty"`
+	// VipId holds the value of the "vipId" field.
+	VipId string `json:"vipId,omitempty"`
+	// VipDesc holds the value of the "vipDesc" field.
+	VipDesc string `json:"vipDesc,omitempty"`
+	// StartTime holds the value of the "startTime" field.
+	StartTime time.Time `json:"startTime,omitempty"`
+	// EndTime holds the value of the "endTime" field.
+	EndTime time.Time `json:"endTime,omitempty"`
+	// IsExpired holds the value of the "isExpired" field.
+	IsExpired bool `json:"isExpired,omitempty"`
+	// MemberId holds the value of the "memberId" field.
+	MemberId string `json:"memberId,omitempty"`
+	// VipIcon holds the value of the "vipIcon" field.
+	VipIcon string `json:"vipIcon,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the MemberQuery when eager-loading is set.
+	Edges           MemberEdges `json:"edges"`
+	user_vip_member *string
+	selectValues    sql.SelectValues
+}
+
+// MemberEdges holds the relations/edges for other nodes in the graph.
+type MemberEdges struct {
+	// User holds the value of the user edge.
+	User *User `json:"user,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// UserOrErr returns the User value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e MemberEdges) UserOrErr() (*User, error) {
+	if e.loadedTypes[0] {
+		if e.User == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: user.Label}
+		}
+		return e.User, nil
+	}
+	return nil, &NotLoadedError{edge: "user"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -24,8 +70,14 @@ func (*Member) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case member.FieldID:
-			values[i] = new(sql.NullInt64)
+		case member.FieldIsExpired:
+			values[i] = new(sql.NullBool)
+		case member.FieldID, member.FieldOrderNumber, member.FieldVipName, member.FieldVipId, member.FieldVipDesc, member.FieldMemberId, member.FieldVipIcon:
+			values[i] = new(sql.NullString)
+		case member.FieldStartTime, member.FieldEndTime:
+			values[i] = new(sql.NullTime)
+		case member.ForeignKeys[0]: // user_vip_member
+			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -42,11 +94,72 @@ func (m *Member) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case member.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value.Valid {
+				m.ID = value.String
 			}
-			m.ID = int(value.Int64)
+		case member.FieldOrderNumber:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field orderNumber", values[i])
+			} else if value.Valid {
+				m.OrderNumber = value.String
+			}
+		case member.FieldVipName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field vipName", values[i])
+			} else if value.Valid {
+				m.VipName = value.String
+			}
+		case member.FieldVipId:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field vipId", values[i])
+			} else if value.Valid {
+				m.VipId = value.String
+			}
+		case member.FieldVipDesc:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field vipDesc", values[i])
+			} else if value.Valid {
+				m.VipDesc = value.String
+			}
+		case member.FieldStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field startTime", values[i])
+			} else if value.Valid {
+				m.StartTime = value.Time
+			}
+		case member.FieldEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field endTime", values[i])
+			} else if value.Valid {
+				m.EndTime = value.Time
+			}
+		case member.FieldIsExpired:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field isExpired", values[i])
+			} else if value.Valid {
+				m.IsExpired = value.Bool
+			}
+		case member.FieldMemberId:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field memberId", values[i])
+			} else if value.Valid {
+				m.MemberId = value.String
+			}
+		case member.FieldVipIcon:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field vipIcon", values[i])
+			} else if value.Valid {
+				m.VipIcon = value.String
+			}
+		case member.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field user_vip_member", values[i])
+			} else if value.Valid {
+				m.user_vip_member = new(string)
+				*m.user_vip_member = value.String
+			}
 		default:
 			m.selectValues.Set(columns[i], values[i])
 		}
@@ -58,6 +171,11 @@ func (m *Member) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (m *Member) Value(name string) (ent.Value, error) {
 	return m.selectValues.Get(name)
+}
+
+// QueryUser queries the "user" edge of the Member entity.
+func (m *Member) QueryUser() *UserQuery {
+	return NewMemberClient(m.config).QueryUser(m)
 }
 
 // Update returns a builder for updating this Member.
@@ -82,7 +200,33 @@ func (m *Member) Unwrap() *Member {
 func (m *Member) String() string {
 	var builder strings.Builder
 	builder.WriteString("Member(")
-	builder.WriteString(fmt.Sprintf("id=%v", m.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", m.ID))
+	builder.WriteString("orderNumber=")
+	builder.WriteString(m.OrderNumber)
+	builder.WriteString(", ")
+	builder.WriteString("vipName=")
+	builder.WriteString(m.VipName)
+	builder.WriteString(", ")
+	builder.WriteString("vipId=")
+	builder.WriteString(m.VipId)
+	builder.WriteString(", ")
+	builder.WriteString("vipDesc=")
+	builder.WriteString(m.VipDesc)
+	builder.WriteString(", ")
+	builder.WriteString("startTime=")
+	builder.WriteString(m.StartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("endTime=")
+	builder.WriteString(m.EndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("isExpired=")
+	builder.WriteString(fmt.Sprintf("%v", m.IsExpired))
+	builder.WriteString(", ")
+	builder.WriteString("memberId=")
+	builder.WriteString(m.MemberId)
+	builder.WriteString(", ")
+	builder.WriteString("vipIcon=")
+	builder.WriteString(m.VipIcon)
 	builder.WriteByte(')')
 	return builder.String()
 }

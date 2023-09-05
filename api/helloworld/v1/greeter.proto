@@ -177,10 +177,7 @@ message CourseInfo {
   string id = 15;
   repeated string bizCourseDetail = 16;
   string courseCover = 17;
-  string ext3 = 18;
-  string ext2 = 19;
   repeated string bizCourseChapters = 20;
-  string ext1 = 21;
   float salePrice = 22;
   repeated string bizCourseTeacher = 23;
   repeated string bizCourseAttachments = 24;
@@ -222,10 +219,7 @@ message FirstCategory {
   repeated string children = 11;
   repeated string parentCategory = 12;
   string id = 13;
-  string ext3 = 14;
-  string ext2 = 15;
   int32 status = 16;
-  string ext1 = 17;
 }
 
 message TagsListRequest {
@@ -282,7 +276,7 @@ message CreateTokenReply {
 message GetInfoRequest {}
 message GetInfoReply {
   Metadata meta = 1;
-
+  GetInfoReplyData data = 2;
 }
 
 message GetInfoReplyData {
@@ -303,9 +297,6 @@ message GetInfoReplyData {
   string email = 15;
   string qq = 16;
   string address = 17;
-  string ext03 = 18;
-  string ext02 = 19;
-  string ext01 = 20;
   string nickName = 21;
   string emergencyContact = 22;
   string emergencyContactNumber = 23;

@@ -40,7 +40,7 @@ func (sd *SliderDelete) ExecX(ctx context.Context) int {
 }
 
 func (sd *SliderDelete) sqlExec(ctx context.Context) (int, error) {
-	_spec := sqlgraph.NewDeleteSpec(slider.Table, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewDeleteSpec(slider.Table, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeString))
 	if ps := sd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {

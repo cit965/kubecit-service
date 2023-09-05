@@ -21,14 +21,10 @@ type Course struct {
 	IsRecommend bool `json:"isRecommend,omitempty"`
 	// IsIntegral holds the value of the "isIntegral" field.
 	IsIntegral bool `json:"isIntegral,omitempty"`
-	// SecondCategory holds the value of the "secondCategory" field.
-	SecondCategory string `json:"secondCategory,omitempty"`
 	// SaleType holds the value of the "saleType" field.
 	SaleType int32 `json:"saleType,omitempty"`
 	// DiscountPrice holds the value of the "discountPrice" field.
 	DiscountPrice float32 `json:"discountPrice,omitempty"`
-	// FirstCategoryName holds the value of the "firstCategoryName" field.
-	FirstCategoryName string `json:"firstCategoryName,omitempty"`
 	// TeachingType holds the value of the "teachingType" field.
 	TeachingType int32 `json:"teachingType,omitempty"`
 	// CourseLevel holds the value of the "courseLevel" field.
@@ -45,14 +41,8 @@ type Course struct {
 	BizCourseDetail string `json:"bizCourseDetail,omitempty"`
 	// CourseCover holds the value of the "courseCover" field.
 	CourseCover string `json:"courseCover,omitempty"`
-	// Ext3 holds the value of the "ext3" field.
-	Ext3 string `json:"ext3,omitempty"`
-	// Ext2 holds the value of the "ext2" field.
-	Ext2 string `json:"ext2,omitempty"`
 	// BizCourseChapters holds the value of the "bizCourseChapters" field.
 	BizCourseChapters string `json:"bizCourseChapters,omitempty"`
-	// Ext1 holds the value of the "ext1" field.
-	Ext1 string `json:"ext1,omitempty"`
 	// SalePrice holds the value of the "salePrice" field.
 	SalePrice float32 `json:"salePrice,omitempty"`
 	// BizCourseTeacher holds the value of the "bizCourseTeacher" field.
@@ -73,11 +63,30 @@ type Course struct {
 	CreateTime time.Time `json:"createTime,omitempty"`
 	// Clicks holds the value of the "clicks" field.
 	Clicks int32 `json:"clicks,omitempty"`
-	// SecondCategoryName holds the value of the "secondCategoryName" field.
-	SecondCategoryName string `json:"secondCategoryName,omitempty"`
 	// Status holds the value of the "status" field.
-	Status       string `json:"status,omitempty"`
+	Status string `json:"status,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the CourseQuery when eager-loading is set.
+	Edges        CourseEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// CourseEdges holds the relations/edges for other nodes in the graph.
+type CourseEdges struct {
+	// Categories holds the value of the categories edge.
+	Categories []*Category `json:"categories,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// CategoriesOrErr returns the Categories value or an error if the edge
+// was not loaded in eager-loading.
+func (e CourseEdges) CategoriesOrErr() ([]*Category, error) {
+	if e.loadedTypes[0] {
+		return e.Categories, nil
+	}
+	return nil, &NotLoadedError{edge: "categories"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -91,7 +100,7 @@ func (*Course) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullFloat64)
 		case course.FieldSaleType, course.FieldTeachingType, course.FieldCourseLevel, course.FieldPurchaseCnt, course.FieldPurchaseCounter, course.FieldClicks:
 			values[i] = new(sql.NullInt64)
-		case course.FieldID, course.FieldSecondCategory, course.FieldFirstCategoryName, course.FieldLecturerName, course.FieldBizCourseDetail, course.FieldCourseCover, course.FieldExt3, course.FieldExt2, course.FieldBizCourseChapters, course.FieldExt1, course.FieldBizCourseTeacher, course.FieldBizCourseAttachments, course.FieldTags, course.FieldCourseName, course.FieldCreateBy, course.FieldSecondCategoryName, course.FieldStatus:
+		case course.FieldID, course.FieldLecturerName, course.FieldBizCourseDetail, course.FieldCourseCover, course.FieldBizCourseChapters, course.FieldBizCourseTeacher, course.FieldBizCourseAttachments, course.FieldTags, course.FieldCourseName, course.FieldCreateBy, course.FieldStatus:
 			values[i] = new(sql.NullString)
 		case course.FieldUpdateBy, course.FieldUpdateTime, course.FieldCreateTime:
 			values[i] = new(sql.NullTime)
@@ -128,12 +137,6 @@ func (c *Course) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.IsIntegral = value.Bool
 			}
-		case course.FieldSecondCategory:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field secondCategory", values[i])
-			} else if value.Valid {
-				c.SecondCategory = value.String
-			}
 		case course.FieldSaleType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field saleType", values[i])
@@ -145,12 +148,6 @@ func (c *Course) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field discountPrice", values[i])
 			} else if value.Valid {
 				c.DiscountPrice = float32(value.Float64)
-			}
-		case course.FieldFirstCategoryName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field firstCategoryName", values[i])
-			} else if value.Valid {
-				c.FirstCategoryName = value.String
 			}
 		case course.FieldTeachingType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -200,29 +197,11 @@ func (c *Course) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.CourseCover = value.String
 			}
-		case course.FieldExt3:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field ext3", values[i])
-			} else if value.Valid {
-				c.Ext3 = value.String
-			}
-		case course.FieldExt2:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field ext2", values[i])
-			} else if value.Valid {
-				c.Ext2 = value.String
-			}
 		case course.FieldBizCourseChapters:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field bizCourseChapters", values[i])
 			} else if value.Valid {
 				c.BizCourseChapters = value.String
-			}
-		case course.FieldExt1:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field ext1", values[i])
-			} else if value.Valid {
-				c.Ext1 = value.String
 			}
 		case course.FieldSalePrice:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -284,12 +263,6 @@ func (c *Course) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Clicks = int32(value.Int64)
 			}
-		case course.FieldSecondCategoryName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field secondCategoryName", values[i])
-			} else if value.Valid {
-				c.SecondCategoryName = value.String
-			}
 		case course.FieldStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
@@ -307,6 +280,11 @@ func (c *Course) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (c *Course) Value(name string) (ent.Value, error) {
 	return c.selectValues.Get(name)
+}
+
+// QueryCategories queries the "categories" edge of the Course entity.
+func (c *Course) QueryCategories() *CategoryQuery {
+	return NewCourseClient(c.config).QueryCategories(c)
 }
 
 // Update returns a builder for updating this Course.
@@ -338,17 +316,11 @@ func (c *Course) String() string {
 	builder.WriteString("isIntegral=")
 	builder.WriteString(fmt.Sprintf("%v", c.IsIntegral))
 	builder.WriteString(", ")
-	builder.WriteString("secondCategory=")
-	builder.WriteString(c.SecondCategory)
-	builder.WriteString(", ")
 	builder.WriteString("saleType=")
 	builder.WriteString(fmt.Sprintf("%v", c.SaleType))
 	builder.WriteString(", ")
 	builder.WriteString("discountPrice=")
 	builder.WriteString(fmt.Sprintf("%v", c.DiscountPrice))
-	builder.WriteString(", ")
-	builder.WriteString("firstCategoryName=")
-	builder.WriteString(c.FirstCategoryName)
 	builder.WriteString(", ")
 	builder.WriteString("teachingType=")
 	builder.WriteString(fmt.Sprintf("%v", c.TeachingType))
@@ -374,17 +346,8 @@ func (c *Course) String() string {
 	builder.WriteString("courseCover=")
 	builder.WriteString(c.CourseCover)
 	builder.WriteString(", ")
-	builder.WriteString("ext3=")
-	builder.WriteString(c.Ext3)
-	builder.WriteString(", ")
-	builder.WriteString("ext2=")
-	builder.WriteString(c.Ext2)
-	builder.WriteString(", ")
 	builder.WriteString("bizCourseChapters=")
 	builder.WriteString(c.BizCourseChapters)
-	builder.WriteString(", ")
-	builder.WriteString("ext1=")
-	builder.WriteString(c.Ext1)
 	builder.WriteString(", ")
 	builder.WriteString("salePrice=")
 	builder.WriteString(fmt.Sprintf("%v", c.SalePrice))
@@ -415,9 +378,6 @@ func (c *Course) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("clicks=")
 	builder.WriteString(fmt.Sprintf("%v", c.Clicks))
-	builder.WriteString(", ")
-	builder.WriteString("secondCategoryName=")
-	builder.WriteString(c.SecondCategoryName)
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(c.Status)
