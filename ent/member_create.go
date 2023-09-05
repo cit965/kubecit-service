@@ -4,8 +4,11 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"kubecit-service/ent/member"
+	"kubecit-service/ent/user"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -16,6 +19,85 @@ type MemberCreate struct {
 	config
 	mutation *MemberMutation
 	hooks    []Hook
+}
+
+// SetOrderNumber sets the "orderNumber" field.
+func (mc *MemberCreate) SetOrderNumber(s string) *MemberCreate {
+	mc.mutation.SetOrderNumber(s)
+	return mc
+}
+
+// SetVipName sets the "vipName" field.
+func (mc *MemberCreate) SetVipName(s string) *MemberCreate {
+	mc.mutation.SetVipName(s)
+	return mc
+}
+
+// SetVipId sets the "vipId" field.
+func (mc *MemberCreate) SetVipId(s string) *MemberCreate {
+	mc.mutation.SetVipId(s)
+	return mc
+}
+
+// SetVipDesc sets the "vipDesc" field.
+func (mc *MemberCreate) SetVipDesc(s string) *MemberCreate {
+	mc.mutation.SetVipDesc(s)
+	return mc
+}
+
+// SetStartTime sets the "startTime" field.
+func (mc *MemberCreate) SetStartTime(t time.Time) *MemberCreate {
+	mc.mutation.SetStartTime(t)
+	return mc
+}
+
+// SetEndTime sets the "endTime" field.
+func (mc *MemberCreate) SetEndTime(t time.Time) *MemberCreate {
+	mc.mutation.SetEndTime(t)
+	return mc
+}
+
+// SetIsExpired sets the "isExpired" field.
+func (mc *MemberCreate) SetIsExpired(b bool) *MemberCreate {
+	mc.mutation.SetIsExpired(b)
+	return mc
+}
+
+// SetMemberId sets the "memberId" field.
+func (mc *MemberCreate) SetMemberId(s string) *MemberCreate {
+	mc.mutation.SetMemberId(s)
+	return mc
+}
+
+// SetVipIcon sets the "vipIcon" field.
+func (mc *MemberCreate) SetVipIcon(s string) *MemberCreate {
+	mc.mutation.SetVipIcon(s)
+	return mc
+}
+
+// SetID sets the "id" field.
+func (mc *MemberCreate) SetID(s string) *MemberCreate {
+	mc.mutation.SetID(s)
+	return mc
+}
+
+// SetUserID sets the "user" edge to the User entity by ID.
+func (mc *MemberCreate) SetUserID(id string) *MemberCreate {
+	mc.mutation.SetUserID(id)
+	return mc
+}
+
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (mc *MemberCreate) SetNillableUserID(id *string) *MemberCreate {
+	if id != nil {
+		mc = mc.SetUserID(*id)
+	}
+	return mc
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (mc *MemberCreate) SetUser(u *User) *MemberCreate {
+	return mc.SetUserID(u.ID)
 }
 
 // Mutation returns the MemberMutation object of the builder.
@@ -52,6 +134,33 @@ func (mc *MemberCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (mc *MemberCreate) check() error {
+	if _, ok := mc.mutation.OrderNumber(); !ok {
+		return &ValidationError{Name: "orderNumber", err: errors.New(`ent: missing required field "Member.orderNumber"`)}
+	}
+	if _, ok := mc.mutation.VipName(); !ok {
+		return &ValidationError{Name: "vipName", err: errors.New(`ent: missing required field "Member.vipName"`)}
+	}
+	if _, ok := mc.mutation.VipId(); !ok {
+		return &ValidationError{Name: "vipId", err: errors.New(`ent: missing required field "Member.vipId"`)}
+	}
+	if _, ok := mc.mutation.VipDesc(); !ok {
+		return &ValidationError{Name: "vipDesc", err: errors.New(`ent: missing required field "Member.vipDesc"`)}
+	}
+	if _, ok := mc.mutation.StartTime(); !ok {
+		return &ValidationError{Name: "startTime", err: errors.New(`ent: missing required field "Member.startTime"`)}
+	}
+	if _, ok := mc.mutation.EndTime(); !ok {
+		return &ValidationError{Name: "endTime", err: errors.New(`ent: missing required field "Member.endTime"`)}
+	}
+	if _, ok := mc.mutation.IsExpired(); !ok {
+		return &ValidationError{Name: "isExpired", err: errors.New(`ent: missing required field "Member.isExpired"`)}
+	}
+	if _, ok := mc.mutation.MemberId(); !ok {
+		return &ValidationError{Name: "memberId", err: errors.New(`ent: missing required field "Member.memberId"`)}
+	}
+	if _, ok := mc.mutation.VipIcon(); !ok {
+		return &ValidationError{Name: "vipIcon", err: errors.New(`ent: missing required field "Member.vipIcon"`)}
+	}
 	return nil
 }
 
@@ -66,8 +175,13 @@ func (mc *MemberCreate) sqlSave(ctx context.Context) (*Member, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		if id, ok := _spec.ID.Value.(string); ok {
+			_node.ID = id
+		} else {
+			return nil, fmt.Errorf("unexpected Member.ID type: %T", _spec.ID.Value)
+		}
+	}
 	mc.mutation.id = &_node.ID
 	mc.mutation.done = true
 	return _node, nil
@@ -76,8 +190,65 @@ func (mc *MemberCreate) sqlSave(ctx context.Context) (*Member, error) {
 func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Member{config: mc.config}
-		_spec = sqlgraph.NewCreateSpec(member.Table, sqlgraph.NewFieldSpec(member.FieldID, field.TypeInt))
+		_spec = sqlgraph.NewCreateSpec(member.Table, sqlgraph.NewFieldSpec(member.FieldID, field.TypeString))
 	)
+	if id, ok := mc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
+	if value, ok := mc.mutation.OrderNumber(); ok {
+		_spec.SetField(member.FieldOrderNumber, field.TypeString, value)
+		_node.OrderNumber = value
+	}
+	if value, ok := mc.mutation.VipName(); ok {
+		_spec.SetField(member.FieldVipName, field.TypeString, value)
+		_node.VipName = value
+	}
+	if value, ok := mc.mutation.VipId(); ok {
+		_spec.SetField(member.FieldVipId, field.TypeString, value)
+		_node.VipId = value
+	}
+	if value, ok := mc.mutation.VipDesc(); ok {
+		_spec.SetField(member.FieldVipDesc, field.TypeString, value)
+		_node.VipDesc = value
+	}
+	if value, ok := mc.mutation.StartTime(); ok {
+		_spec.SetField(member.FieldStartTime, field.TypeTime, value)
+		_node.StartTime = value
+	}
+	if value, ok := mc.mutation.EndTime(); ok {
+		_spec.SetField(member.FieldEndTime, field.TypeTime, value)
+		_node.EndTime = value
+	}
+	if value, ok := mc.mutation.IsExpired(); ok {
+		_spec.SetField(member.FieldIsExpired, field.TypeBool, value)
+		_node.IsExpired = value
+	}
+	if value, ok := mc.mutation.MemberId(); ok {
+		_spec.SetField(member.FieldMemberId, field.TypeString, value)
+		_node.MemberId = value
+	}
+	if value, ok := mc.mutation.VipIcon(); ok {
+		_spec.SetField(member.FieldVipIcon, field.TypeString, value)
+		_node.VipIcon = value
+	}
+	if nodes := mc.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.UserTable,
+			Columns: []string{member.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.user_vip_member = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	return _node, _spec
 }
 
@@ -121,10 +292,6 @@ func (mcb *MemberCreateBulk) Save(ctx context.Context) ([]*Member, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				mutation.done = true
 				return nodes[i], nil
 			})

@@ -27,10 +27,8 @@ var (
 		{Name: "id", Type: field.TypeString},
 		{Name: "is_recommend", Type: field.TypeBool, Default: false},
 		{Name: "is_integral", Type: field.TypeBool, Default: false},
-		{Name: "second_category", Type: field.TypeString},
 		{Name: "sale_type", Type: field.TypeInt32},
 		{Name: "discount_price", Type: field.TypeFloat32},
-		{Name: "first_category_name", Type: field.TypeString},
 		{Name: "teaching_type", Type: field.TypeInt32},
 		{Name: "course_level", Type: field.TypeInt32},
 		{Name: "update_by", Type: field.TypeTime},
@@ -39,10 +37,7 @@ var (
 		{Name: "total_hour", Type: field.TypeFloat32},
 		{Name: "biz_course_detail", Type: field.TypeString},
 		{Name: "course_cover", Type: field.TypeString},
-		{Name: "ext3", Type: field.TypeString},
-		{Name: "ext2", Type: field.TypeString},
 		{Name: "biz_course_chapters", Type: field.TypeString},
-		{Name: "ext1", Type: field.TypeString},
 		{Name: "sale_price", Type: field.TypeFloat32},
 		{Name: "biz_course_teacher", Type: field.TypeString},
 		{Name: "biz_course_attachments", Type: field.TypeString},
@@ -53,7 +48,6 @@ var (
 		{Name: "purchase_counter", Type: field.TypeInt32},
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "clicks", Type: field.TypeInt32},
-		{Name: "second_category_name", Type: field.TypeString},
 		{Name: "status", Type: field.TypeString},
 	}
 	// CoursesTable holds the schema information for the "courses" table.
@@ -64,17 +58,44 @@ var (
 	}
 	// MembersColumns holds the columns for the "members" table.
 	MembersColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString},
+		{Name: "order_number", Type: field.TypeString},
+		{Name: "vip_name", Type: field.TypeString},
+		{Name: "vip_id", Type: field.TypeString},
+		{Name: "vip_desc", Type: field.TypeString},
+		{Name: "start_time", Type: field.TypeTime},
+		{Name: "end_time", Type: field.TypeTime},
+		{Name: "is_expired", Type: field.TypeBool},
+		{Name: "member_id", Type: field.TypeString},
+		{Name: "vip_icon", Type: field.TypeString},
+		{Name: "user_vip_member", Type: field.TypeString, Nullable: true},
 	}
 	// MembersTable holds the schema information for the "members" table.
 	MembersTable = &schema.Table{
 		Name:       "members",
 		Columns:    MembersColumns,
 		PrimaryKey: []*schema.Column{MembersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "members_users_vipMember",
+				Columns:    []*schema.Column{MembersColumns[10]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// SlidersColumns holds the columns for the "sliders" table.
 	SlidersColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString},
+		{Name: "create_by", Type: field.TypeString},
+		{Name: "image_name", Type: field.TypeString},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_by", Type: field.TypeString},
+		{Name: "image_remark", Type: field.TypeString},
+		{Name: "image_url", Type: field.TypeString},
+		{Name: "pc_href", Type: field.TypeString},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "app_href", Type: field.TypeString},
 	}
 	// SlidersTable holds the schema information for the "sliders" table.
 	SlidersTable = &schema.Table{
@@ -92,6 +113,74 @@ var (
 		Columns:    TokensColumns,
 		PrimaryKey: []*schema.Column{TokensColumns[0]},
 	}
+	// UsersColumns holds the columns for the "users" table.
+	UsersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "gender", Type: field.TypeInt32},
+		{Name: "birthday", Type: field.TypeTime},
+		{Name: "sys_code", Type: field.TypeString},
+		{Name: "city", Type: field.TypeString},
+		{Name: "country", Type: field.TypeString},
+		{Name: "highest_education", Type: field.TypeString},
+		{Name: "is_enable", Type: field.TypeBool},
+		{Name: "password", Type: field.TypeString},
+		{Name: "province", Type: field.TypeString},
+		{Name: "update_by", Type: field.TypeString},
+		{Name: "create_by", Type: field.TypeString},
+		{Name: "platform_auth_user", Type: field.TypeString},
+		{Name: "email", Type: field.TypeString},
+		{Name: "total_hour", Type: field.TypeFloat32},
+		{Name: "qq", Type: field.TypeString},
+		{Name: "address", Type: field.TypeString},
+		{Name: "nick_name", Type: field.TypeString},
+		{Name: "emergency_contact", Type: field.TypeString},
+		{Name: "emergency_contact_number", Type: field.TypeString},
+		{Name: "mobile", Type: field.TypeString},
+		{Name: "wechat", Type: field.TypeString},
+		{Name: "reg_source", Type: field.TypeInt32},
+		{Name: "telephone", Type: field.TypeString},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "avatar", Type: field.TypeString},
+		{Name: "real_name", Type: field.TypeString},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "personal_signature", Type: field.TypeString},
+		{Name: "certificate_number", Type: field.TypeString},
+		{Name: "age", Type: field.TypeInt32},
+		{Name: "residence_address", Type: field.TypeString},
+		{Name: "username", Type: field.TypeString},
+		{Name: "certificate_type", Type: field.TypeString},
+	}
+	// UsersTable holds the schema information for the "users" table.
+	UsersTable = &schema.Table{
+		Name:       "users",
+		Columns:    UsersColumns,
+		PrimaryKey: []*schema.Column{UsersColumns[0]},
+	}
+	// CourseCategoriesColumns holds the columns for the "course_categories" table.
+	CourseCategoriesColumns = []*schema.Column{
+		{Name: "course_id", Type: field.TypeString},
+		{Name: "category_id", Type: field.TypeString},
+	}
+	// CourseCategoriesTable holds the schema information for the "course_categories" table.
+	CourseCategoriesTable = &schema.Table{
+		Name:       "course_categories",
+		Columns:    CourseCategoriesColumns,
+		PrimaryKey: []*schema.Column{CourseCategoriesColumns[0], CourseCategoriesColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "course_categories_course_id",
+				Columns:    []*schema.Column{CourseCategoriesColumns[0]},
+				RefColumns: []*schema.Column{CoursesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "course_categories_category_id",
+				Columns:    []*schema.Column{CourseCategoriesColumns[1]},
+				RefColumns: []*schema.Column{CategoriesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		CategoriesTable,
@@ -99,8 +188,13 @@ var (
 		MembersTable,
 		SlidersTable,
 		TokensTable,
+		UsersTable,
+		CourseCategoriesTable,
 	}
 )
 
 func init() {
+	MembersTable.ForeignKeys[0].RefTable = UsersTable
+	CourseCategoriesTable.ForeignKeys[0].RefTable = CoursesTable
+	CourseCategoriesTable.ForeignKeys[1].RefTable = CategoriesTable
 }

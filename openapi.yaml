@@ -229,18 +229,14 @@ components:
                         type: string
                 courseCover:
                     type: string
-                ext3:
-                    type: string
-                ext2:
-                    type: string
                 bizCourseChapters:
                     type: array
                     items:
                         type: string
-                ext1:
-                    type: string
+                    description: string ext3 = 18;  string ext2 = 19;
                 salePrice:
                     type: number
+                    description: string ext1 = 21;
                     format: float
                 bizCourseTeacher:
                     type: array
@@ -347,6 +343,94 @@ components:
             properties:
                 meta:
                     $ref: '#/components/schemas/helloworld.v1.Metadata'
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.GetInfoReplyData'
+        helloworld.v1.GetInfoReplyData:
+            type: object
+            properties:
+                birthday:
+                    type: string
+                    format: date-time
+                sysCode:
+                    type: string
+                gender:
+                    type: integer
+                    format: int32
+                city:
+                    type: string
+                loginType:
+                    type: array
+                    items:
+                        type: string
+                county:
+                    type: string
+                highestEducation:
+                    type: string
+                isEnable:
+                    type: integer
+                    format: int32
+                password:
+                    type: string
+                province:
+                    type: string
+                updateBy:
+                    type: string
+                totalHour:
+                    type: number
+                    format: float
+                id:
+                    type: string
+                platformAuthuser:
+                    type: string
+                email:
+                    type: string
+                qq:
+                    type: string
+                address:
+                    type: string
+                nickName:
+                    type: string
+                    description: string ext03 = 18;  string ext02 = 19;  string ext01 = 20;
+                emergencyContact:
+                    type: string
+                emergencyContactNumber:
+                    type: string
+                mobile:
+                    type: string
+                wechat:
+                    type: string
+                regSource:
+                    type: integer
+                    format: int32
+                telephone:
+                    type: string
+                updateTime:
+                    type: string
+                    format: date-time
+                avatar:
+                    type: string
+                realName:
+                    type: string
+                createBy:
+                    type: string
+                vipInfo:
+                    $ref: '#/components/schemas/helloworld.v1.MemberVIPInfo'
+                personalSignature:
+                    type: string
+                certificateNumber:
+                    type: string
+                createTime:
+                    type: string
+                    format: date-time
+                age:
+                    type: integer
+                    format: int32
+                residenceAddress:
+                    type: string
+                username:
+                    type: string
+                certificateType:
+                    type: string
         helloworld.v1.GetSlidersReply:
             type: object
             properties:
@@ -385,6 +469,32 @@ components:
                 username:
                     type: string
                 password:
+                    type: string
+        helloworld.v1.MemberVIPInfo:
+            type: object
+            properties:
+                orderNumber:
+                    type: string
+                vipName:
+                    type: string
+                vipId:
+                    type: string
+                vipDesc:
+                    type: string
+                startTime:
+                    type: string
+                    format: date-time
+                id:
+                    type: string
+                endTime:
+                    type: string
+                    format: date-time
+                isExpired:
+                    type: integer
+                    format: int32
+                memberId:
+                    type: string
+                vipIcon:
                     type: string
         helloworld.v1.Metadata:
             type: object

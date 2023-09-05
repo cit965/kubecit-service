@@ -4,53 +4,613 @@ package member
 
 import (
 	"kubecit-service/ent/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
-func ID(id int) predicate.Member {
+func ID(id string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldID, id))
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id int) predicate.Member {
+func IDEQ(id string) predicate.Member {
 	return predicate.Member(sql.FieldEQ(FieldID, id))
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id int) predicate.Member {
+func IDNEQ(id string) predicate.Member {
 	return predicate.Member(sql.FieldNEQ(FieldID, id))
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...int) predicate.Member {
+func IDIn(ids ...string) predicate.Member {
 	return predicate.Member(sql.FieldIn(FieldID, ids...))
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...int) predicate.Member {
+func IDNotIn(ids ...string) predicate.Member {
 	return predicate.Member(sql.FieldNotIn(FieldID, ids...))
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id int) predicate.Member {
+func IDGT(id string) predicate.Member {
 	return predicate.Member(sql.FieldGT(FieldID, id))
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id int) predicate.Member {
+func IDGTE(id string) predicate.Member {
 	return predicate.Member(sql.FieldGTE(FieldID, id))
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id int) predicate.Member {
+func IDLT(id string) predicate.Member {
 	return predicate.Member(sql.FieldLT(FieldID, id))
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id int) predicate.Member {
+func IDLTE(id string) predicate.Member {
 	return predicate.Member(sql.FieldLTE(FieldID, id))
+}
+
+// IDEqualFold applies the EqualFold predicate on the ID field.
+func IDEqualFold(id string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldID, id))
+}
+
+// IDContainsFold applies the ContainsFold predicate on the ID field.
+func IDContainsFold(id string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldID, id))
+}
+
+// OrderNumber applies equality check predicate on the "orderNumber" field. It's identical to OrderNumberEQ.
+func OrderNumber(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldOrderNumber, v))
+}
+
+// VipName applies equality check predicate on the "vipName" field. It's identical to VipNameEQ.
+func VipName(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldVipName, v))
+}
+
+// VipId applies equality check predicate on the "vipId" field. It's identical to VipIdEQ.
+func VipId(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldVipId, v))
+}
+
+// VipDesc applies equality check predicate on the "vipDesc" field. It's identical to VipDescEQ.
+func VipDesc(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldVipDesc, v))
+}
+
+// StartTime applies equality check predicate on the "startTime" field. It's identical to StartTimeEQ.
+func StartTime(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldStartTime, v))
+}
+
+// EndTime applies equality check predicate on the "endTime" field. It's identical to EndTimeEQ.
+func EndTime(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldEndTime, v))
+}
+
+// IsExpired applies equality check predicate on the "isExpired" field. It's identical to IsExpiredEQ.
+func IsExpired(v bool) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldIsExpired, v))
+}
+
+// MemberId applies equality check predicate on the "memberId" field. It's identical to MemberIdEQ.
+func MemberId(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldMemberId, v))
+}
+
+// VipIcon applies equality check predicate on the "vipIcon" field. It's identical to VipIconEQ.
+func VipIcon(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldVipIcon, v))
+}
+
+// OrderNumberEQ applies the EQ predicate on the "orderNumber" field.
+func OrderNumberEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldOrderNumber, v))
+}
+
+// OrderNumberNEQ applies the NEQ predicate on the "orderNumber" field.
+func OrderNumberNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldOrderNumber, v))
+}
+
+// OrderNumberIn applies the In predicate on the "orderNumber" field.
+func OrderNumberIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldOrderNumber, vs...))
+}
+
+// OrderNumberNotIn applies the NotIn predicate on the "orderNumber" field.
+func OrderNumberNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldOrderNumber, vs...))
+}
+
+// OrderNumberGT applies the GT predicate on the "orderNumber" field.
+func OrderNumberGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldOrderNumber, v))
+}
+
+// OrderNumberGTE applies the GTE predicate on the "orderNumber" field.
+func OrderNumberGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldOrderNumber, v))
+}
+
+// OrderNumberLT applies the LT predicate on the "orderNumber" field.
+func OrderNumberLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldOrderNumber, v))
+}
+
+// OrderNumberLTE applies the LTE predicate on the "orderNumber" field.
+func OrderNumberLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldOrderNumber, v))
+}
+
+// OrderNumberContains applies the Contains predicate on the "orderNumber" field.
+func OrderNumberContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldOrderNumber, v))
+}
+
+// OrderNumberHasPrefix applies the HasPrefix predicate on the "orderNumber" field.
+func OrderNumberHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldOrderNumber, v))
+}
+
+// OrderNumberHasSuffix applies the HasSuffix predicate on the "orderNumber" field.
+func OrderNumberHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldOrderNumber, v))
+}
+
+// OrderNumberEqualFold applies the EqualFold predicate on the "orderNumber" field.
+func OrderNumberEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldOrderNumber, v))
+}
+
+// OrderNumberContainsFold applies the ContainsFold predicate on the "orderNumber" field.
+func OrderNumberContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldOrderNumber, v))
+}
+
+// VipNameEQ applies the EQ predicate on the "vipName" field.
+func VipNameEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldVipName, v))
+}
+
+// VipNameNEQ applies the NEQ predicate on the "vipName" field.
+func VipNameNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldVipName, v))
+}
+
+// VipNameIn applies the In predicate on the "vipName" field.
+func VipNameIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldVipName, vs...))
+}
+
+// VipNameNotIn applies the NotIn predicate on the "vipName" field.
+func VipNameNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldVipName, vs...))
+}
+
+// VipNameGT applies the GT predicate on the "vipName" field.
+func VipNameGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldVipName, v))
+}
+
+// VipNameGTE applies the GTE predicate on the "vipName" field.
+func VipNameGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldVipName, v))
+}
+
+// VipNameLT applies the LT predicate on the "vipName" field.
+func VipNameLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldVipName, v))
+}
+
+// VipNameLTE applies the LTE predicate on the "vipName" field.
+func VipNameLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldVipName, v))
+}
+
+// VipNameContains applies the Contains predicate on the "vipName" field.
+func VipNameContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldVipName, v))
+}
+
+// VipNameHasPrefix applies the HasPrefix predicate on the "vipName" field.
+func VipNameHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldVipName, v))
+}
+
+// VipNameHasSuffix applies the HasSuffix predicate on the "vipName" field.
+func VipNameHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldVipName, v))
+}
+
+// VipNameEqualFold applies the EqualFold predicate on the "vipName" field.
+func VipNameEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldVipName, v))
+}
+
+// VipNameContainsFold applies the ContainsFold predicate on the "vipName" field.
+func VipNameContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldVipName, v))
+}
+
+// VipIdEQ applies the EQ predicate on the "vipId" field.
+func VipIdEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldVipId, v))
+}
+
+// VipIdNEQ applies the NEQ predicate on the "vipId" field.
+func VipIdNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldVipId, v))
+}
+
+// VipIdIn applies the In predicate on the "vipId" field.
+func VipIdIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldVipId, vs...))
+}
+
+// VipIdNotIn applies the NotIn predicate on the "vipId" field.
+func VipIdNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldVipId, vs...))
+}
+
+// VipIdGT applies the GT predicate on the "vipId" field.
+func VipIdGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldVipId, v))
+}
+
+// VipIdGTE applies the GTE predicate on the "vipId" field.
+func VipIdGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldVipId, v))
+}
+
+// VipIdLT applies the LT predicate on the "vipId" field.
+func VipIdLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldVipId, v))
+}
+
+// VipIdLTE applies the LTE predicate on the "vipId" field.
+func VipIdLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldVipId, v))
+}
+
+// VipIdContains applies the Contains predicate on the "vipId" field.
+func VipIdContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldVipId, v))
+}
+
+// VipIdHasPrefix applies the HasPrefix predicate on the "vipId" field.
+func VipIdHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldVipId, v))
+}
+
+// VipIdHasSuffix applies the HasSuffix predicate on the "vipId" field.
+func VipIdHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldVipId, v))
+}
+
+// VipIdEqualFold applies the EqualFold predicate on the "vipId" field.
+func VipIdEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldVipId, v))
+}
+
+// VipIdContainsFold applies the ContainsFold predicate on the "vipId" field.
+func VipIdContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldVipId, v))
+}
+
+// VipDescEQ applies the EQ predicate on the "vipDesc" field.
+func VipDescEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldVipDesc, v))
+}
+
+// VipDescNEQ applies the NEQ predicate on the "vipDesc" field.
+func VipDescNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldVipDesc, v))
+}
+
+// VipDescIn applies the In predicate on the "vipDesc" field.
+func VipDescIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldVipDesc, vs...))
+}
+
+// VipDescNotIn applies the NotIn predicate on the "vipDesc" field.
+func VipDescNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldVipDesc, vs...))
+}
+
+// VipDescGT applies the GT predicate on the "vipDesc" field.
+func VipDescGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldVipDesc, v))
+}
+
+// VipDescGTE applies the GTE predicate on the "vipDesc" field.
+func VipDescGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldVipDesc, v))
+}
+
+// VipDescLT applies the LT predicate on the "vipDesc" field.
+func VipDescLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldVipDesc, v))
+}
+
+// VipDescLTE applies the LTE predicate on the "vipDesc" field.
+func VipDescLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldVipDesc, v))
+}
+
+// VipDescContains applies the Contains predicate on the "vipDesc" field.
+func VipDescContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldVipDesc, v))
+}
+
+// VipDescHasPrefix applies the HasPrefix predicate on the "vipDesc" field.
+func VipDescHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldVipDesc, v))
+}
+
+// VipDescHasSuffix applies the HasSuffix predicate on the "vipDesc" field.
+func VipDescHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldVipDesc, v))
+}
+
+// VipDescEqualFold applies the EqualFold predicate on the "vipDesc" field.
+func VipDescEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldVipDesc, v))
+}
+
+// VipDescContainsFold applies the ContainsFold predicate on the "vipDesc" field.
+func VipDescContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldVipDesc, v))
+}
+
+// StartTimeEQ applies the EQ predicate on the "startTime" field.
+func StartTimeEQ(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldStartTime, v))
+}
+
+// StartTimeNEQ applies the NEQ predicate on the "startTime" field.
+func StartTimeNEQ(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldStartTime, v))
+}
+
+// StartTimeIn applies the In predicate on the "startTime" field.
+func StartTimeIn(vs ...time.Time) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldStartTime, vs...))
+}
+
+// StartTimeNotIn applies the NotIn predicate on the "startTime" field.
+func StartTimeNotIn(vs ...time.Time) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldStartTime, vs...))
+}
+
+// StartTimeGT applies the GT predicate on the "startTime" field.
+func StartTimeGT(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldStartTime, v))
+}
+
+// StartTimeGTE applies the GTE predicate on the "startTime" field.
+func StartTimeGTE(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldStartTime, v))
+}
+
+// StartTimeLT applies the LT predicate on the "startTime" field.
+func StartTimeLT(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldStartTime, v))
+}
+
+// StartTimeLTE applies the LTE predicate on the "startTime" field.
+func StartTimeLTE(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldStartTime, v))
+}
+
+// EndTimeEQ applies the EQ predicate on the "endTime" field.
+func EndTimeEQ(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldEndTime, v))
+}
+
+// EndTimeNEQ applies the NEQ predicate on the "endTime" field.
+func EndTimeNEQ(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldEndTime, v))
+}
+
+// EndTimeIn applies the In predicate on the "endTime" field.
+func EndTimeIn(vs ...time.Time) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldEndTime, vs...))
+}
+
+// EndTimeNotIn applies the NotIn predicate on the "endTime" field.
+func EndTimeNotIn(vs ...time.Time) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldEndTime, vs...))
+}
+
+// EndTimeGT applies the GT predicate on the "endTime" field.
+func EndTimeGT(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldEndTime, v))
+}
+
+// EndTimeGTE applies the GTE predicate on the "endTime" field.
+func EndTimeGTE(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldEndTime, v))
+}
+
+// EndTimeLT applies the LT predicate on the "endTime" field.
+func EndTimeLT(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldEndTime, v))
+}
+
+// EndTimeLTE applies the LTE predicate on the "endTime" field.
+func EndTimeLTE(v time.Time) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldEndTime, v))
+}
+
+// IsExpiredEQ applies the EQ predicate on the "isExpired" field.
+func IsExpiredEQ(v bool) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldIsExpired, v))
+}
+
+// IsExpiredNEQ applies the NEQ predicate on the "isExpired" field.
+func IsExpiredNEQ(v bool) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldIsExpired, v))
+}
+
+// MemberIdEQ applies the EQ predicate on the "memberId" field.
+func MemberIdEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldMemberId, v))
+}
+
+// MemberIdNEQ applies the NEQ predicate on the "memberId" field.
+func MemberIdNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldMemberId, v))
+}
+
+// MemberIdIn applies the In predicate on the "memberId" field.
+func MemberIdIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldMemberId, vs...))
+}
+
+// MemberIdNotIn applies the NotIn predicate on the "memberId" field.
+func MemberIdNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldMemberId, vs...))
+}
+
+// MemberIdGT applies the GT predicate on the "memberId" field.
+func MemberIdGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldMemberId, v))
+}
+
+// MemberIdGTE applies the GTE predicate on the "memberId" field.
+func MemberIdGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldMemberId, v))
+}
+
+// MemberIdLT applies the LT predicate on the "memberId" field.
+func MemberIdLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldMemberId, v))
+}
+
+// MemberIdLTE applies the LTE predicate on the "memberId" field.
+func MemberIdLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldMemberId, v))
+}
+
+// MemberIdContains applies the Contains predicate on the "memberId" field.
+func MemberIdContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldMemberId, v))
+}
+
+// MemberIdHasPrefix applies the HasPrefix predicate on the "memberId" field.
+func MemberIdHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldMemberId, v))
+}
+
+// MemberIdHasSuffix applies the HasSuffix predicate on the "memberId" field.
+func MemberIdHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldMemberId, v))
+}
+
+// MemberIdEqualFold applies the EqualFold predicate on the "memberId" field.
+func MemberIdEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldMemberId, v))
+}
+
+// MemberIdContainsFold applies the ContainsFold predicate on the "memberId" field.
+func MemberIdContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldMemberId, v))
+}
+
+// VipIconEQ applies the EQ predicate on the "vipIcon" field.
+func VipIconEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldEQ(FieldVipIcon, v))
+}
+
+// VipIconNEQ applies the NEQ predicate on the "vipIcon" field.
+func VipIconNEQ(v string) predicate.Member {
+	return predicate.Member(sql.FieldNEQ(FieldVipIcon, v))
+}
+
+// VipIconIn applies the In predicate on the "vipIcon" field.
+func VipIconIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldIn(FieldVipIcon, vs...))
+}
+
+// VipIconNotIn applies the NotIn predicate on the "vipIcon" field.
+func VipIconNotIn(vs ...string) predicate.Member {
+	return predicate.Member(sql.FieldNotIn(FieldVipIcon, vs...))
+}
+
+// VipIconGT applies the GT predicate on the "vipIcon" field.
+func VipIconGT(v string) predicate.Member {
+	return predicate.Member(sql.FieldGT(FieldVipIcon, v))
+}
+
+// VipIconGTE applies the GTE predicate on the "vipIcon" field.
+func VipIconGTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldGTE(FieldVipIcon, v))
+}
+
+// VipIconLT applies the LT predicate on the "vipIcon" field.
+func VipIconLT(v string) predicate.Member {
+	return predicate.Member(sql.FieldLT(FieldVipIcon, v))
+}
+
+// VipIconLTE applies the LTE predicate on the "vipIcon" field.
+func VipIconLTE(v string) predicate.Member {
+	return predicate.Member(sql.FieldLTE(FieldVipIcon, v))
+}
+
+// VipIconContains applies the Contains predicate on the "vipIcon" field.
+func VipIconContains(v string) predicate.Member {
+	return predicate.Member(sql.FieldContains(FieldVipIcon, v))
+}
+
+// VipIconHasPrefix applies the HasPrefix predicate on the "vipIcon" field.
+func VipIconHasPrefix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasPrefix(FieldVipIcon, v))
+}
+
+// VipIconHasSuffix applies the HasSuffix predicate on the "vipIcon" field.
+func VipIconHasSuffix(v string) predicate.Member {
+	return predicate.Member(sql.FieldHasSuffix(FieldVipIcon, v))
+}
+
+// VipIconEqualFold applies the EqualFold predicate on the "vipIcon" field.
+func VipIconEqualFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldEqualFold(FieldVipIcon, v))
+}
+
+// VipIconContainsFold applies the ContainsFold predicate on the "vipIcon" field.
+func VipIconContainsFold(v string) predicate.Member {
+	return predicate.Member(sql.FieldContainsFold(FieldVipIcon, v))
+}
+
+// HasUser applies the HasEdge predicate on the "user" edge.
+func HasUser() predicate.Member {
+	return predicate.Member(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasUserWith applies the HasEdge predicate on the "user" edge with a given conditions (other predicates).
+func HasUserWith(preds ...predicate.User) predicate.Member {
+	return predicate.Member(func(s *sql.Selector) {
+		step := newUserStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

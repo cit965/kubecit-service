@@ -4,8 +4,10 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"kubecit-service/ent/slider"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -16,6 +18,66 @@ type SliderCreate struct {
 	config
 	mutation *SliderMutation
 	hooks    []Hook
+}
+
+// SetCreateBy sets the "createBy" field.
+func (sc *SliderCreate) SetCreateBy(s string) *SliderCreate {
+	sc.mutation.SetCreateBy(s)
+	return sc
+}
+
+// SetImageName sets the "imageName" field.
+func (sc *SliderCreate) SetImageName(s string) *SliderCreate {
+	sc.mutation.SetImageName(s)
+	return sc
+}
+
+// SetCreateTime sets the "createTime" field.
+func (sc *SliderCreate) SetCreateTime(t time.Time) *SliderCreate {
+	sc.mutation.SetCreateTime(t)
+	return sc
+}
+
+// SetUpdateBy sets the "updateBy" field.
+func (sc *SliderCreate) SetUpdateBy(s string) *SliderCreate {
+	sc.mutation.SetUpdateBy(s)
+	return sc
+}
+
+// SetImageRemark sets the "imageRemark" field.
+func (sc *SliderCreate) SetImageRemark(s string) *SliderCreate {
+	sc.mutation.SetImageRemark(s)
+	return sc
+}
+
+// SetImageUrl sets the "imageUrl" field.
+func (sc *SliderCreate) SetImageUrl(s string) *SliderCreate {
+	sc.mutation.SetImageUrl(s)
+	return sc
+}
+
+// SetPcHref sets the "pcHref" field.
+func (sc *SliderCreate) SetPcHref(s string) *SliderCreate {
+	sc.mutation.SetPcHref(s)
+	return sc
+}
+
+// SetUpdateTime sets the "updateTime" field.
+func (sc *SliderCreate) SetUpdateTime(t time.Time) *SliderCreate {
+	sc.mutation.SetUpdateTime(t)
+	return sc
+}
+
+// SetAppHref sets the "appHref" field.
+func (sc *SliderCreate) SetAppHref(s string) *SliderCreate {
+	sc.mutation.SetAppHref(s)
+	return sc
+}
+
+// SetID sets the "id" field.
+func (sc *SliderCreate) SetID(s string) *SliderCreate {
+	sc.mutation.SetID(s)
+	return sc
 }
 
 // Mutation returns the SliderMutation object of the builder.
@@ -52,6 +114,33 @@ func (sc *SliderCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (sc *SliderCreate) check() error {
+	if _, ok := sc.mutation.CreateBy(); !ok {
+		return &ValidationError{Name: "createBy", err: errors.New(`ent: missing required field "Slider.createBy"`)}
+	}
+	if _, ok := sc.mutation.ImageName(); !ok {
+		return &ValidationError{Name: "imageName", err: errors.New(`ent: missing required field "Slider.imageName"`)}
+	}
+	if _, ok := sc.mutation.CreateTime(); !ok {
+		return &ValidationError{Name: "createTime", err: errors.New(`ent: missing required field "Slider.createTime"`)}
+	}
+	if _, ok := sc.mutation.UpdateBy(); !ok {
+		return &ValidationError{Name: "updateBy", err: errors.New(`ent: missing required field "Slider.updateBy"`)}
+	}
+	if _, ok := sc.mutation.ImageRemark(); !ok {
+		return &ValidationError{Name: "imageRemark", err: errors.New(`ent: missing required field "Slider.imageRemark"`)}
+	}
+	if _, ok := sc.mutation.ImageUrl(); !ok {
+		return &ValidationError{Name: "imageUrl", err: errors.New(`ent: missing required field "Slider.imageUrl"`)}
+	}
+	if _, ok := sc.mutation.PcHref(); !ok {
+		return &ValidationError{Name: "pcHref", err: errors.New(`ent: missing required field "Slider.pcHref"`)}
+	}
+	if _, ok := sc.mutation.UpdateTime(); !ok {
+		return &ValidationError{Name: "updateTime", err: errors.New(`ent: missing required field "Slider.updateTime"`)}
+	}
+	if _, ok := sc.mutation.AppHref(); !ok {
+		return &ValidationError{Name: "appHref", err: errors.New(`ent: missing required field "Slider.appHref"`)}
+	}
 	return nil
 }
 
@@ -66,8 +155,13 @@ func (sc *SliderCreate) sqlSave(ctx context.Context) (*Slider, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		if id, ok := _spec.ID.Value.(string); ok {
+			_node.ID = id
+		} else {
+			return nil, fmt.Errorf("unexpected Slider.ID type: %T", _spec.ID.Value)
+		}
+	}
 	sc.mutation.id = &_node.ID
 	sc.mutation.done = true
 	return _node, nil
@@ -76,8 +170,48 @@ func (sc *SliderCreate) sqlSave(ctx context.Context) (*Slider, error) {
 func (sc *SliderCreate) createSpec() (*Slider, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Slider{config: sc.config}
-		_spec = sqlgraph.NewCreateSpec(slider.Table, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeInt))
+		_spec = sqlgraph.NewCreateSpec(slider.Table, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeString))
 	)
+	if id, ok := sc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
+	if value, ok := sc.mutation.CreateBy(); ok {
+		_spec.SetField(slider.FieldCreateBy, field.TypeString, value)
+		_node.CreateBy = value
+	}
+	if value, ok := sc.mutation.ImageName(); ok {
+		_spec.SetField(slider.FieldImageName, field.TypeString, value)
+		_node.ImageName = value
+	}
+	if value, ok := sc.mutation.CreateTime(); ok {
+		_spec.SetField(slider.FieldCreateTime, field.TypeTime, value)
+		_node.CreateTime = value
+	}
+	if value, ok := sc.mutation.UpdateBy(); ok {
+		_spec.SetField(slider.FieldUpdateBy, field.TypeString, value)
+		_node.UpdateBy = value
+	}
+	if value, ok := sc.mutation.ImageRemark(); ok {
+		_spec.SetField(slider.FieldImageRemark, field.TypeString, value)
+		_node.ImageRemark = value
+	}
+	if value, ok := sc.mutation.ImageUrl(); ok {
+		_spec.SetField(slider.FieldImageUrl, field.TypeString, value)
+		_node.ImageUrl = value
+	}
+	if value, ok := sc.mutation.PcHref(); ok {
+		_spec.SetField(slider.FieldPcHref, field.TypeString, value)
+		_node.PcHref = value
+	}
+	if value, ok := sc.mutation.UpdateTime(); ok {
+		_spec.SetField(slider.FieldUpdateTime, field.TypeTime, value)
+		_node.UpdateTime = value
+	}
+	if value, ok := sc.mutation.AppHref(); ok {
+		_spec.SetField(slider.FieldAppHref, field.TypeString, value)
+		_node.AppHref = value
+	}
 	return _node, _spec
 }
 
@@ -121,10 +255,6 @@ func (scb *SliderCreateBulk) Save(ctx context.Context) ([]*Slider, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				mutation.done = true
 				return nodes[i], nil
 			})
