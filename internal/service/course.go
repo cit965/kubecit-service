@@ -34,7 +34,7 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.PageRequest) (*pb.
 }
 
 func (s *KubecitService) GetFirstCategories(ctx context.Context, req *pb.GetFirstCategoriesRequest) (*pb.GetFirstCategoriesReply, error) {
-	categories, err := s.cc.ListCategory(ctx)
+	categories, err := s.cc.ListFirstCategory(ctx)
 	if err != nil {
 		return nil, err
 	}

@@ -18,6 +18,8 @@ type Category struct {
 // CategoryRepo is a Category repo.
 type CategoryRepo interface {
 	ListAll(ctx context.Context) ([]*Category, error)
+
+	ListFirstCategories(ctx context.Context) ([]*Category, error)
 }
 
 // CourseUsecase is a Category usecase.
@@ -33,4 +35,8 @@ func NewCourseUsecase(repo CategoryRepo, logger log.Logger) *CourseUsecase {
 
 func (uc *CourseUsecase) ListCategory(ctx context.Context) ([]*Category, error) {
 	return uc.repo.ListAll(ctx)
+}
+
+func (uc *CourseUsecase) ListFirstCategory(ctx context.Context) ([]*Category, error) {
+	return uc.repo.ListFirstCategories(ctx)
 }
