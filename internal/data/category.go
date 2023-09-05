@@ -31,9 +31,8 @@ func (c *categoryRepo) ListAll(ctx context.Context) ([]*biz.Category, error) {
 		categoryResult = append(categoryResult, &biz.Category{
 			CategoryName: v.Name,
 			Id:           int32(v.ID),
-
-			Level:  v.Level,
-			Status: v.Status,
+			Level:        v.Level,
+			Status:       v.Status,
 		})
 	}
 	return categoryResult, nil
