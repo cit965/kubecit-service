@@ -12,50 +12,7 @@ option java_outer_classname = "HelloworldProtoV1";
 
 // The greeting service definition.
 service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {
-    option (google.api.http) = {
-      get: "/helloworld/{name}"
-    };
-  }
-}
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
-
-message Empty {
-
-}
-
-service Category {
-  rpc Category (Empty) returns (CategoryResp) {
-    option (google.api.http) = {
-      get: "/api/categories"
-    };
-  }
-}
-
-message CategoryResp {
-  repeated CategoryInfo categories = 1;
-}
-
-message CategoryInfo {
-  string categoryName = 1;
-  int32 id = 2;
-  int32 parentId = 3;
-  string level = 4;
-  string status = 5;
-}
-
-// The response message containing the greetings
-message HelloReply {
-  string message = 1;
-}
-
-
-service Course {
   rpc MostNew (PageRequest) returns (MostNewReply) {
     option (google.api.http) = {
       post: "/api/course/mostNew",
@@ -79,17 +36,31 @@ service Course {
       body: "*"
     };
   }
-}
 
-service Slider {
+  rpc Category (Empty) returns (CategoryResp) {
+    option (google.api.http) = {
+      get: "/api/categories"
+    };
+  }
+
   rpc GetSliders (GetSlidersRequest) returns (GetSlidersReply) {
     option (google.api.http) = {
       get: "/api/slider/getSliders",
     };
   }
-}
+  rpc GetInfo (GetInfoRequest) returns (GetInfoReply) {
+    option (google.api.http) = {
+      get: "/api/member/getInfo",
+    };
+  }
 
-service Token {
+  rpc LoginByJson (LoginByJsonRequest) returns (LoginByJsonReply) {
+    option (google.api.http) = {
+      post: "/api/u/loginByJson",
+      body: "*"
+    };
+  }
+
   rpc CreateToken (CreateTokenRequest) returns (CreateTokenReply) {
     option (google.api.http) = {
       get: "/api/token/createToken",
@@ -97,22 +68,34 @@ service Token {
   }
 }
 
-service Member {
-  rpc GetInfo (GetInfoRequest) returns (GetInfoReply) {
-    option (google.api.http) = {
-      get: "/api/member/getInfo",
-    };
-  }
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
 }
 
-service Login {
-  rpc LoginByJson (LoginByJsonRequest) returns (LoginByJsonReply) {
-    option (google.api.http) = {
-      post: "/api/u/loginByJson",
-      body: "*"
-    };
-  }
+message Empty {
+
 }
+
+
+message CategoryResp {
+  repeated CategoryInfo categories = 1;
+}
+
+message CategoryInfo {
+  string categoryName = 1;
+  int32 parentId = 3;
+  string level = 4;
+  string status = 5;
+  int32 id = 6;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+
 
 message PageRequest {
   int32 pageNum = 1;

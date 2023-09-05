@@ -3,14 +3,15 @@
 
 openapi: 3.0.3
 info:
-    title: ""
+    title: Greeter API
+    description: The greeting service definition.
     version: 0.0.1
 paths:
     /api/categories:
         get:
             tags:
-                - Category
-            operationId: Category_Category
+                - Greeter
+            operationId: Greeter_Category
             responses:
                 "200":
                     description: OK
@@ -21,8 +22,8 @@ paths:
     /api/course/category/getFirstCategories:
         get:
             tags:
-                - Course
-            operationId: Course_GetFirstCategories
+                - Greeter
+            operationId: Greeter_GetFirstCategories
             responses:
                 "200":
                     description: OK
@@ -33,8 +34,8 @@ paths:
     /api/course/mostNew:
         post:
             tags:
-                - Course
-            operationId: Course_MostNew
+                - Greeter
+            operationId: Greeter_MostNew
             requestBody:
                 content:
                     application/json:
@@ -51,8 +52,8 @@ paths:
     /api/course/search:
         post:
             tags:
-                - Course
-            operationId: Course_SearchCourse
+                - Greeter
+            operationId: Greeter_SearchCourse
             requestBody:
                 content:
                     application/json:
@@ -69,8 +70,8 @@ paths:
     /api/course/tags/list:
         post:
             tags:
-                - Course
-            operationId: Course_TagsList
+                - Greeter
+            operationId: Greeter_TagsList
             requestBody:
                 content:
                     application/json:
@@ -87,8 +88,8 @@ paths:
     /api/member/getInfo:
         get:
             tags:
-                - Member
-            operationId: Member_GetInfo
+                - Greeter
+            operationId: Greeter_GetInfo
             responses:
                 "200":
                     description: OK
@@ -99,8 +100,8 @@ paths:
     /api/slider/getSliders:
         get:
             tags:
-                - Slider
-            operationId: Slider_GetSliders
+                - Greeter
+            operationId: Greeter_GetSliders
             responses:
                 "200":
                     description: OK
@@ -111,8 +112,8 @@ paths:
     /api/token/createToken:
         get:
             tags:
-                - Token
-            operationId: Token_CreateToken
+                - Greeter
+            operationId: Greeter_CreateToken
             responses:
                 "200":
                     description: OK
@@ -123,8 +124,8 @@ paths:
     /api/u/loginByJson:
         post:
             tags:
-                - Login
-            operationId: Login_LoginByJson
+                - Greeter
+            operationId: Greeter_LoginByJson
             requestBody:
                 content:
                     application/json:
@@ -138,25 +139,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.LoginByJsonReply'
-    /helloworld/{name}:
-        get:
-            tags:
-                - Greeter
-            description: Sends a greeting
-            operationId: Greeter_SayHello
-            parameters:
-                - name: name
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/helloworld.v1.HelloReply'
 components:
     schemas:
         helloworld.v1.CategoryInfo:
@@ -164,9 +146,6 @@ components:
             properties:
                 categoryName:
                     type: string
-                id:
-                    type: integer
-                    format: int32
                 parentId:
                     type: integer
                     format: int32
@@ -174,6 +153,9 @@ components:
                     type: string
                 status:
                     type: string
+                id:
+                    type: integer
+                    format: int32
         helloworld.v1.CategoryResp:
             type: object
             properties:
@@ -438,12 +420,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.SliderInfo'
-        helloworld.v1.HelloReply:
-            type: object
-            properties:
-                message:
-                    type: string
-            description: The response message containing the greetings
         helloworld.v1.LoginByJsonReply:
             type: object
             properties:
@@ -651,11 +627,4 @@ components:
                     additionalProperties:
                         type: string
 tags:
-    - name: Category
-    - name: Course
     - name: Greeter
-      description: The greeting service definition.
-    - name: Login
-    - name: Member
-    - name: Slider
-    - name: Token

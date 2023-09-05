@@ -20,17 +20,17 @@ type CategoryRepo interface {
 	ListAll(ctx context.Context) ([]*Category, error)
 }
 
-// CategoryUsecase is a Category usecase.
-type CategoryUsecase struct {
+// CourseUsecase is a Category usecase.
+type CourseUsecase struct {
 	repo CategoryRepo
 	log  *log.Helper
 }
 
-// NewCategoryUsecase new a Category usecase.
-func NewCategoryUsecase(repo CategoryRepo, logger log.Logger) *CategoryUsecase {
-	return &CategoryUsecase{repo: repo, log: log.NewHelper(logger)}
+// NewCourseUsecase new a Category usecase.
+func NewCourseUsecase(repo CategoryRepo, logger log.Logger) *CourseUsecase {
+	return &CourseUsecase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (uc *CategoryUsecase) ListCategory(ctx context.Context) ([]*Category, error) {
+func (uc *CourseUsecase) ListCategory(ctx context.Context) ([]*Category, error) {
 	return uc.repo.ListAll(ctx)
 }

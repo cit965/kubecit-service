@@ -13,7 +13,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, category *service.CategoryService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -33,7 +33,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, category *se
 	logService := gin.NewGinService()
 	srv.HandlePrefix("/web/", logService)
 	v1.RegisterGreeterHTTPServer(srv, greeter)
-	v1.RegisterCategoryHTTPServer(srv, category)
 	srv.WalkRoute(func(info http.RouteInfo) error {
 		fmt.Printf("%-50s \t %s\n", info.Path, info.Method)
 		return nil

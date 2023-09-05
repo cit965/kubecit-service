@@ -28,12 +28,11 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	greeterRepo := data.NewGreeterRepo(dataData, logger)
-	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
-	greeterService := service.NewGreeterService(greeterUsecase)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
-	categoryService := service.NewCategoryService()
-	httpServer := server.NewHTTPServer(confServer, greeterService, categoryService, logger)
+	categoryRepo := data.NewCategoryRepo(dataData, logger)
+	courseUsecase := biz.NewCourseUsecase(categoryRepo, logger)
+	kubecitService := service.NewKubecitService(courseUsecase)
+	grpcServer := server.NewGRPCServer(confServer, kubecitService, logger)
+	httpServer := server.NewHTTPServer(confServer, kubecitService, logger)
 	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {
 		cleanup()

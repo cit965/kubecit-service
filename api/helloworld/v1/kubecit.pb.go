@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        v3.21.6
-// source: helloworld/v1/greeter.proto
+// source: helloworld/v1/kubecit.proto
 
 package v1
 
@@ -34,7 +34,7 @@ type HelloRequest struct {
 func (x *HelloRequest) Reset() {
 	*x = HelloRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[0]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -47,7 +47,7 @@ func (x *HelloRequest) String() string {
 func (*HelloRequest) ProtoMessage() {}
 
 func (x *HelloRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[0]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +60,7 @@ func (x *HelloRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
 func (*HelloRequest) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{0}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *HelloRequest) GetName() string {
@@ -79,7 +79,7 @@ type Empty struct {
 func (x *Empty) Reset() {
 	*x = Empty{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[1]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -92,7 +92,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[1]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -105,7 +105,7 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{1}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{1}
 }
 
 type CategoryResp struct {
@@ -119,7 +119,7 @@ type CategoryResp struct {
 func (x *CategoryResp) Reset() {
 	*x = CategoryResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[2]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -132,7 +132,7 @@ func (x *CategoryResp) String() string {
 func (*CategoryResp) ProtoMessage() {}
 
 func (x *CategoryResp) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[2]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -145,7 +145,7 @@ func (x *CategoryResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CategoryResp.ProtoReflect.Descriptor instead.
 func (*CategoryResp) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{2}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CategoryResp) GetCategories() []*CategoryInfo {
@@ -161,16 +161,16 @@ type CategoryInfo struct {
 	unknownFields protoimpl.UnknownFields
 
 	CategoryName string `protobuf:"bytes,1,opt,name=categoryName,proto3" json:"categoryName,omitempty"`
-	Id           int32  `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
 	ParentId     int32  `protobuf:"varint,3,opt,name=parentId,proto3" json:"parentId,omitempty"`
 	Level        string `protobuf:"bytes,4,opt,name=level,proto3" json:"level,omitempty"`
 	Status       string `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Id           int32  `protobuf:"varint,6,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *CategoryInfo) Reset() {
 	*x = CategoryInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[3]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -183,7 +183,7 @@ func (x *CategoryInfo) String() string {
 func (*CategoryInfo) ProtoMessage() {}
 
 func (x *CategoryInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[3]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -196,7 +196,7 @@ func (x *CategoryInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CategoryInfo.ProtoReflect.Descriptor instead.
 func (*CategoryInfo) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{3}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CategoryInfo) GetCategoryName() string {
@@ -204,13 +204,6 @@ func (x *CategoryInfo) GetCategoryName() string {
 		return x.CategoryName
 	}
 	return ""
-}
-
-func (x *CategoryInfo) GetId() int32 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
 }
 
 func (x *CategoryInfo) GetParentId() int32 {
@@ -234,6 +227,13 @@ func (x *CategoryInfo) GetStatus() string {
 	return ""
 }
 
+func (x *CategoryInfo) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
 // The response message containing the greetings
 type HelloReply struct {
 	state         protoimpl.MessageState
@@ -246,7 +246,7 @@ type HelloReply struct {
 func (x *HelloReply) Reset() {
 	*x = HelloReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[4]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -259,7 +259,7 @@ func (x *HelloReply) String() string {
 func (*HelloReply) ProtoMessage() {}
 
 func (x *HelloReply) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[4]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -272,7 +272,7 @@ func (x *HelloReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HelloReply.ProtoReflect.Descriptor instead.
 func (*HelloReply) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{4}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *HelloReply) GetMessage() string {
@@ -294,7 +294,7 @@ type PageRequest struct {
 func (x *PageRequest) Reset() {
 	*x = PageRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[5]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -307,7 +307,7 @@ func (x *PageRequest) String() string {
 func (*PageRequest) ProtoMessage() {}
 
 func (x *PageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[5]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -320,7 +320,7 @@ func (x *PageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageRequest.ProtoReflect.Descriptor instead.
 func (*PageRequest) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{5}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *PageRequest) GetPageNum() int32 {
@@ -352,7 +352,7 @@ type Metadata struct {
 func (x *Metadata) Reset() {
 	*x = Metadata{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[6]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -365,7 +365,7 @@ func (x *Metadata) String() string {
 func (*Metadata) ProtoMessage() {}
 
 func (x *Metadata) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[6]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -378,7 +378,7 @@ func (x *Metadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metadata.ProtoReflect.Descriptor instead.
 func (*Metadata) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{6}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Metadata) GetMsg() string {
@@ -428,7 +428,7 @@ type MostNewReply struct {
 func (x *MostNewReply) Reset() {
 	*x = MostNewReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[7]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -441,7 +441,7 @@ func (x *MostNewReply) String() string {
 func (*MostNewReply) ProtoMessage() {}
 
 func (x *MostNewReply) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[7]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -454,7 +454,7 @@ func (x *MostNewReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MostNewReply.ProtoReflect.Descriptor instead.
 func (*MostNewReply) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{7}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *MostNewReply) GetMeta() *Metadata {
@@ -482,7 +482,7 @@ type MostNewReplyData struct {
 func (x *MostNewReplyData) Reset() {
 	*x = MostNewReplyData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[8]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -495,7 +495,7 @@ func (x *MostNewReplyData) String() string {
 func (*MostNewReplyData) ProtoMessage() {}
 
 func (x *MostNewReplyData) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[8]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -508,7 +508,7 @@ func (x *MostNewReplyData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MostNewReplyData.ProtoReflect.Descriptor instead.
 func (*MostNewReplyData) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{8}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *MostNewReplyData) GetPageInfo() *PageInfo {
@@ -548,7 +548,7 @@ type PageInfo struct {
 func (x *PageInfo) Reset() {
 	*x = PageInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[9]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -561,7 +561,7 @@ func (x *PageInfo) String() string {
 func (*PageInfo) ProtoMessage() {}
 
 func (x *PageInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[9]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -574,7 +574,7 @@ func (x *PageInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageInfo.ProtoReflect.Descriptor instead.
 func (*PageInfo) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{9}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *PageInfo) GetStartRow() int32 {
@@ -757,7 +757,7 @@ type CourseInfo struct {
 func (x *CourseInfo) Reset() {
 	*x = CourseInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[10]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -770,7 +770,7 @@ func (x *CourseInfo) String() string {
 func (*CourseInfo) ProtoMessage() {}
 
 func (x *CourseInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[10]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -783,7 +783,7 @@ func (x *CourseInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CourseInfo.ProtoReflect.Descriptor instead.
 func (*CourseInfo) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{10}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CourseInfo) GetIsRecommend() int32 {
@@ -1005,7 +1005,7 @@ type GetFirstCategoriesRequest struct {
 func (x *GetFirstCategoriesRequest) Reset() {
 	*x = GetFirstCategoriesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[11]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1018,7 +1018,7 @@ func (x *GetFirstCategoriesRequest) String() string {
 func (*GetFirstCategoriesRequest) ProtoMessage() {}
 
 func (x *GetFirstCategoriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[11]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1031,7 +1031,7 @@ func (x *GetFirstCategoriesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFirstCategoriesRequest.ProtoReflect.Descriptor instead.
 func (*GetFirstCategoriesRequest) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{11}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{11}
 }
 
 type GetFirstCategoriesReply struct {
@@ -1046,7 +1046,7 @@ type GetFirstCategoriesReply struct {
 func (x *GetFirstCategoriesReply) Reset() {
 	*x = GetFirstCategoriesReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[12]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1059,7 +1059,7 @@ func (x *GetFirstCategoriesReply) String() string {
 func (*GetFirstCategoriesReply) ProtoMessage() {}
 
 func (x *GetFirstCategoriesReply) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[12]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1072,7 +1072,7 @@ func (x *GetFirstCategoriesReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFirstCategoriesReply.ProtoReflect.Descriptor instead.
 func (*GetFirstCategoriesReply) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{12}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *GetFirstCategoriesReply) GetMeta() *Metadata {
@@ -1100,7 +1100,7 @@ type GetFirstCategoriesReplyData struct {
 func (x *GetFirstCategoriesReplyData) Reset() {
 	*x = GetFirstCategoriesReplyData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[13]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1113,7 +1113,7 @@ func (x *GetFirstCategoriesReplyData) String() string {
 func (*GetFirstCategoriesReplyData) ProtoMessage() {}
 
 func (x *GetFirstCategoriesReplyData) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[13]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1126,7 +1126,7 @@ func (x *GetFirstCategoriesReplyData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFirstCategoriesReplyData.ProtoReflect.Descriptor instead.
 func (*GetFirstCategoriesReplyData) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{13}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetFirstCategoriesReplyData) GetList() []*FirstCategory {
@@ -1160,7 +1160,7 @@ type FirstCategory struct {
 func (x *FirstCategory) Reset() {
 	*x = FirstCategory{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[14]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1173,7 +1173,7 @@ func (x *FirstCategory) String() string {
 func (*FirstCategory) ProtoMessage() {}
 
 func (x *FirstCategory) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[14]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1186,7 +1186,7 @@ func (x *FirstCategory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FirstCategory.ProtoReflect.Descriptor instead.
 func (*FirstCategory) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{14}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *FirstCategory) GetThumbnail() string {
@@ -1300,7 +1300,7 @@ type TagsListRequest struct {
 func (x *TagsListRequest) Reset() {
 	*x = TagsListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[15]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1313,7 +1313,7 @@ func (x *TagsListRequest) String() string {
 func (*TagsListRequest) ProtoMessage() {}
 
 func (x *TagsListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[15]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1326,7 +1326,7 @@ func (x *TagsListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagsListRequest.ProtoReflect.Descriptor instead.
 func (*TagsListRequest) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{15}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *TagsListRequest) GetPageNum() int32 {
@@ -1362,7 +1362,7 @@ type TagsListReply struct {
 func (x *TagsListReply) Reset() {
 	*x = TagsListReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[16]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1375,7 +1375,7 @@ func (x *TagsListReply) String() string {
 func (*TagsListReply) ProtoMessage() {}
 
 func (x *TagsListReply) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[16]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1388,7 +1388,7 @@ func (x *TagsListReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagsListReply.ProtoReflect.Descriptor instead.
 func (*TagsListReply) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{16}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *TagsListReply) GetMeta() *Metadata {
@@ -1418,7 +1418,7 @@ type SearchCourseRequest struct {
 func (x *SearchCourseRequest) Reset() {
 	*x = SearchCourseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[17]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1431,7 +1431,7 @@ func (x *SearchCourseRequest) String() string {
 func (*SearchCourseRequest) ProtoMessage() {}
 
 func (x *SearchCourseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[17]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1444,7 +1444,7 @@ func (x *SearchCourseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchCourseRequest.ProtoReflect.Descriptor instead.
 func (*SearchCourseRequest) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{17}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *SearchCourseRequest) GetPageNum() int32 {
@@ -1480,7 +1480,7 @@ type SearchCourseReply struct {
 func (x *SearchCourseReply) Reset() {
 	*x = SearchCourseReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[18]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1493,7 +1493,7 @@ func (x *SearchCourseReply) String() string {
 func (*SearchCourseReply) ProtoMessage() {}
 
 func (x *SearchCourseReply) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[18]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1506,7 +1506,7 @@ func (x *SearchCourseReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchCourseReply.ProtoReflect.Descriptor instead.
 func (*SearchCourseReply) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{18}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *SearchCourseReply) GetMeta() *Metadata {
@@ -1532,7 +1532,7 @@ type GetSlidersRequest struct {
 func (x *GetSlidersRequest) Reset() {
 	*x = GetSlidersRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[19]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1545,7 +1545,7 @@ func (x *GetSlidersRequest) String() string {
 func (*GetSlidersRequest) ProtoMessage() {}
 
 func (x *GetSlidersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[19]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1558,7 +1558,7 @@ func (x *GetSlidersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSlidersRequest.ProtoReflect.Descriptor instead.
 func (*GetSlidersRequest) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{19}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{19}
 }
 
 type GetSlidersReply struct {
@@ -1573,7 +1573,7 @@ type GetSlidersReply struct {
 func (x *GetSlidersReply) Reset() {
 	*x = GetSlidersReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[20]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1586,7 +1586,7 @@ func (x *GetSlidersReply) String() string {
 func (*GetSlidersReply) ProtoMessage() {}
 
 func (x *GetSlidersReply) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[20]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1599,7 +1599,7 @@ func (x *GetSlidersReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSlidersReply.ProtoReflect.Descriptor instead.
 func (*GetSlidersReply) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{20}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetSlidersReply) GetMeta() *Metadata {
@@ -1627,7 +1627,7 @@ type GetSlidersReplyData struct {
 func (x *GetSlidersReplyData) Reset() {
 	*x = GetSlidersReplyData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[21]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1640,7 +1640,7 @@ func (x *GetSlidersReplyData) String() string {
 func (*GetSlidersReplyData) ProtoMessage() {}
 
 func (x *GetSlidersReplyData) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[21]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1653,7 +1653,7 @@ func (x *GetSlidersReplyData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSlidersReplyData.ProtoReflect.Descriptor instead.
 func (*GetSlidersReplyData) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{21}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *GetSlidersReplyData) GetList() []*SliderInfo {
@@ -1683,7 +1683,7 @@ type SliderInfo struct {
 func (x *SliderInfo) Reset() {
 	*x = SliderInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[22]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1696,7 +1696,7 @@ func (x *SliderInfo) String() string {
 func (*SliderInfo) ProtoMessage() {}
 
 func (x *SliderInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[22]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1709,7 +1709,7 @@ func (x *SliderInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SliderInfo.ProtoReflect.Descriptor instead.
 func (*SliderInfo) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{22}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *SliderInfo) GetCreateBy() string {
@@ -1791,7 +1791,7 @@ type CreateTokenRequest struct {
 func (x *CreateTokenRequest) Reset() {
 	*x = CreateTokenRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[23]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1804,7 +1804,7 @@ func (x *CreateTokenRequest) String() string {
 func (*CreateTokenRequest) ProtoMessage() {}
 
 func (x *CreateTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[23]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1817,7 +1817,7 @@ func (x *CreateTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTokenRequest.ProtoReflect.Descriptor instead.
 func (*CreateTokenRequest) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{23}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{23}
 }
 
 type CreateTokenReply struct {
@@ -1832,7 +1832,7 @@ type CreateTokenReply struct {
 func (x *CreateTokenReply) Reset() {
 	*x = CreateTokenReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[24]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1845,7 +1845,7 @@ func (x *CreateTokenReply) String() string {
 func (*CreateTokenReply) ProtoMessage() {}
 
 func (x *CreateTokenReply) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[24]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1858,7 +1858,7 @@ func (x *CreateTokenReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTokenReply.ProtoReflect.Descriptor instead.
 func (*CreateTokenReply) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{24}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *CreateTokenReply) GetMeta() *Metadata {
@@ -1884,7 +1884,7 @@ type GetInfoRequest struct {
 func (x *GetInfoRequest) Reset() {
 	*x = GetInfoRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[25]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1897,7 +1897,7 @@ func (x *GetInfoRequest) String() string {
 func (*GetInfoRequest) ProtoMessage() {}
 
 func (x *GetInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[25]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1910,7 +1910,7 @@ func (x *GetInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInfoRequest.ProtoReflect.Descriptor instead.
 func (*GetInfoRequest) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{25}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{25}
 }
 
 type GetInfoReply struct {
@@ -1925,7 +1925,7 @@ type GetInfoReply struct {
 func (x *GetInfoReply) Reset() {
 	*x = GetInfoReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[26]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1938,7 +1938,7 @@ func (x *GetInfoReply) String() string {
 func (*GetInfoReply) ProtoMessage() {}
 
 func (x *GetInfoReply) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[26]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1951,7 +1951,7 @@ func (x *GetInfoReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInfoReply.ProtoReflect.Descriptor instead.
 func (*GetInfoReply) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{26}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GetInfoReply) GetMeta() *Metadata {
@@ -2014,7 +2014,7 @@ type GetInfoReplyData struct {
 func (x *GetInfoReplyData) Reset() {
 	*x = GetInfoReplyData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[27]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2027,7 +2027,7 @@ func (x *GetInfoReplyData) String() string {
 func (*GetInfoReplyData) ProtoMessage() {}
 
 func (x *GetInfoReplyData) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[27]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2040,7 +2040,7 @@ func (x *GetInfoReplyData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInfoReplyData.ProtoReflect.Descriptor instead.
 func (*GetInfoReplyData) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{27}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GetInfoReplyData) GetBirthday() *timestamppb.Timestamp {
@@ -2315,7 +2315,7 @@ type MemberVIPInfo struct {
 func (x *MemberVIPInfo) Reset() {
 	*x = MemberVIPInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[28]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2328,7 +2328,7 @@ func (x *MemberVIPInfo) String() string {
 func (*MemberVIPInfo) ProtoMessage() {}
 
 func (x *MemberVIPInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[28]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2341,7 +2341,7 @@ func (x *MemberVIPInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MemberVIPInfo.ProtoReflect.Descriptor instead.
 func (*MemberVIPInfo) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{28}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *MemberVIPInfo) GetOrderNumber() string {
@@ -2426,7 +2426,7 @@ type LoginByJsonRequest struct {
 func (x *LoginByJsonRequest) Reset() {
 	*x = LoginByJsonRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[29]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2439,7 +2439,7 @@ func (x *LoginByJsonRequest) String() string {
 func (*LoginByJsonRequest) ProtoMessage() {}
 
 func (x *LoginByJsonRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[29]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2452,7 +2452,7 @@ func (x *LoginByJsonRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByJsonRequest.ProtoReflect.Descriptor instead.
 func (*LoginByJsonRequest) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{29}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *LoginByJsonRequest) GetUsername() string {
@@ -2481,7 +2481,7 @@ type LoginByJsonReply struct {
 func (x *LoginByJsonReply) Reset() {
 	*x = LoginByJsonReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[30]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2494,7 +2494,7 @@ func (x *LoginByJsonReply) String() string {
 func (*LoginByJsonReply) ProtoMessage() {}
 
 func (x *LoginByJsonReply) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[30]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2507,7 +2507,7 @@ func (x *LoginByJsonReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByJsonReply.ProtoReflect.Descriptor instead.
 func (*LoginByJsonReply) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{30}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *LoginByJsonReply) GetMeta() *Metadata {
@@ -2535,7 +2535,7 @@ type LoginByJsonReplyData struct {
 func (x *LoginByJsonReplyData) Reset() {
 	*x = LoginByJsonReplyData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_helloworld_v1_greeter_proto_msgTypes[31]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2548,7 +2548,7 @@ func (x *LoginByJsonReplyData) String() string {
 func (*LoginByJsonReplyData) ProtoMessage() {}
 
 func (x *LoginByJsonReplyData) ProtoReflect() protoreflect.Message {
-	mi := &file_helloworld_v1_greeter_proto_msgTypes[31]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2561,7 +2561,7 @@ func (x *LoginByJsonReplyData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByJsonReplyData.ProtoReflect.Descriptor instead.
 func (*LoginByJsonReplyData) Descriptor() ([]byte, []int) {
-	return file_helloworld_v1_greeter_proto_rawDescGZIP(), []int{31}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *LoginByJsonReplyData) GetAccessToken() string {
@@ -2571,11 +2571,11 @@ func (x *LoginByJsonReplyData) GetAccessToken() string {
 	return ""
 }
 
-var File_helloworld_v1_greeter_proto protoreflect.FileDescriptor
+var File_helloworld_v1_kubecit_proto protoreflect.FileDescriptor
 
-var file_helloworld_v1_greeter_proto_rawDesc = []byte{
+var file_helloworld_v1_kubecit_proto_rawDesc = []byte{
 	0x0a, 0x1b, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2f, 0x76, 0x31, 0x2f,
-	0x67, 0x72, 0x65, 0x65, 0x74, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x68,
+	0x6b, 0x75, 0x62, 0x65, 0x63, 0x69, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x68,
 	0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x1a, 0x1c, 0x67, 0x6f,
 	0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
 	0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67,
@@ -2591,13 +2591,13 @@ var file_helloworld_v1_greeter_proto_rawDesc = []byte{
 	0x6f, 0x72, 0x69, 0x65, 0x73, 0x22, 0x8c, 0x01, 0x0a, 0x0c, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f,
 	0x72, 0x79, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x22, 0x0a, 0x0c, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f,
 	0x72, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x63, 0x61,
-	0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x61,
+	0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x61,
 	0x72, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x70, 0x61,
 	0x72, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x65, 0x76, 0x65, 0x6c, 0x18,
 	0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x65, 0x76, 0x65, 0x6c, 0x12, 0x16, 0x0a, 0x06,
 	0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74,
-	0x61, 0x74, 0x75, 0x73, 0x22, 0x26, 0x0a, 0x0a, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x70,
+	0x61, 0x74, 0x75, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x05,
+	0x52, 0x02, 0x69, 0x64, 0x22, 0x26, 0x0a, 0x0a, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x70,
 	0x6c, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x43, 0x0a, 0x0b,
 	0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x70,
@@ -2988,102 +2988,93 @@ var file_helloworld_v1_greeter_proto_rawDesc = []byte{
 	0x6e, 0x42, 0x79, 0x4a, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x44, 0x61, 0x74, 0x61,
 	0x12, 0x20, 0x0a, 0x0b, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x54, 0x6f, 0x6b,
-	0x65, 0x6e, 0x32, 0x69, 0x0a, 0x07, 0x47, 0x72, 0x65, 0x65, 0x74, 0x65, 0x72, 0x12, 0x5e, 0x0a,
-	0x08, 0x53, 0x61, 0x79, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x12, 0x1b, 0x2e, 0x68, 0x65, 0x6c, 0x6c,
-	0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f,
-	0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x70, 0x6c,
-	0x79, 0x22, 0x1a, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x14, 0x12, 0x12, 0x2f, 0x68, 0x65, 0x6c, 0x6c,
-	0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2f, 0x7b, 0x6e, 0x61, 0x6d, 0x65, 0x7d, 0x32, 0x62, 0x0a,
-	0x08, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x12, 0x56, 0x0a, 0x08, 0x43, 0x61, 0x74,
-	0x65, 0x67, 0x6f, 0x72, 0x79, 0x12, 0x14, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72,
-	0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x1b, 0x2e, 0x68, 0x65,
-	0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x74, 0x65,
-	0x67, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x22, 0x17, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x11,
-	0x12, 0x0f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65,
-	0x73, 0x32, 0xe7, 0x03, 0x0a, 0x06, 0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x12, 0x62, 0x0a, 0x07,
-	0x4d, 0x6f, 0x73, 0x74, 0x4e, 0x65, 0x77, 0x12, 0x1a, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77,
-	0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64,
-	0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x6f, 0x73, 0x74, 0x4e, 0x65, 0x77, 0x52, 0x65, 0x70, 0x6c, 0x79,
-	0x22, 0x1e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x18, 0x3a, 0x01, 0x2a, 0x22, 0x13, 0x2f, 0x61, 0x70,
-	0x69, 0x2f, 0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x2f, 0x6d, 0x6f, 0x73, 0x74, 0x4e, 0x65, 0x77,
-	0x12, 0x97, 0x01, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x46, 0x69, 0x72, 0x73, 0x74, 0x43, 0x61, 0x74,
-	0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x12, 0x28, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77,
-	0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x72, 0x73, 0x74,
-	0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x26, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76,
-	0x31, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x72, 0x73, 0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f,
-	0x72, 0x69, 0x65, 0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x2f, 0x82, 0xd3, 0xe4, 0x93, 0x02,
-	0x29, 0x12, 0x27, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x2f, 0x63,
-	0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x2f, 0x67, 0x65, 0x74, 0x46, 0x69, 0x72, 0x73, 0x74,
-	0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x12, 0x6a, 0x0a, 0x08, 0x54, 0x61,
-	0x67, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1e, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f,
-	0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x61, 0x67, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f,
-	0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x61, 0x67, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x52,
-	0x65, 0x70, 0x6c, 0x79, 0x22, 0x20, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1a, 0x3a, 0x01, 0x2a, 0x22,
-	0x15, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x2f, 0x74, 0x61, 0x67,
-	0x73, 0x2f, 0x6c, 0x69, 0x73, 0x74, 0x12, 0x73, 0x0a, 0x0c, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68,
-	0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x12, 0x22, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f,
-	0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x43, 0x6f, 0x75,
-	0x72, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x68, 0x65, 0x6c,
-	0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x61, 0x72, 0x63,
-	0x68, 0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1d, 0x82, 0xd3,
-	0xe4, 0x93, 0x02, 0x17, 0x3a, 0x01, 0x2a, 0x22, 0x12, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x6f,
-	0x75, 0x72, 0x73, 0x65, 0x2f, 0x73, 0x65, 0x61, 0x72, 0x63, 0x68, 0x32, 0x78, 0x0a, 0x06, 0x53,
-	0x6c, 0x69, 0x64, 0x65, 0x72, 0x12, 0x6e, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x53, 0x6c, 0x69, 0x64,
+	0x65, 0x6e, 0x32, 0xf9, 0x07, 0x0a, 0x07, 0x47, 0x72, 0x65, 0x65, 0x74, 0x65, 0x72, 0x12, 0x62,
+	0x0a, 0x07, 0x4d, 0x6f, 0x73, 0x74, 0x4e, 0x65, 0x77, 0x12, 0x1a, 0x2e, 0x68, 0x65, 0x6c, 0x6c,
+	0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72,
+	0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x6f, 0x73, 0x74, 0x4e, 0x65, 0x77, 0x52, 0x65, 0x70,
+	0x6c, 0x79, 0x22, 0x1e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x18, 0x3a, 0x01, 0x2a, 0x22, 0x13, 0x2f,
+	0x61, 0x70, 0x69, 0x2f, 0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x2f, 0x6d, 0x6f, 0x73, 0x74, 0x4e,
+	0x65, 0x77, 0x12, 0x97, 0x01, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x46, 0x69, 0x72, 0x73, 0x74, 0x43,
+	0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x12, 0x28, 0x2e, 0x68, 0x65, 0x6c, 0x6c,
+	0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x72,
+	0x73, 0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64,
+	0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x72, 0x73, 0x74, 0x43, 0x61, 0x74, 0x65,
+	0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x2f, 0x82, 0xd3, 0xe4,
+	0x93, 0x02, 0x29, 0x12, 0x27, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x6f, 0x75, 0x72, 0x73, 0x65,
+	0x2f, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x2f, 0x67, 0x65, 0x74, 0x46, 0x69, 0x72,
+	0x73, 0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x12, 0x6a, 0x0a, 0x08,
+	0x54, 0x61, 0x67, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1e, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f,
+	0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x61, 0x67, 0x73, 0x4c, 0x69, 0x73,
+	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f,
+	0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x61, 0x67, 0x73, 0x4c, 0x69, 0x73,
+	0x74, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x20, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1a, 0x3a, 0x01,
+	0x2a, 0x22, 0x15, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x2f, 0x74,
+	0x61, 0x67, 0x73, 0x2f, 0x6c, 0x69, 0x73, 0x74, 0x12, 0x73, 0x0a, 0x0c, 0x53, 0x65, 0x61, 0x72,
+	0x63, 0x68, 0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x12, 0x22, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f,
+	0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x43,
+	0x6f, 0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x68,
+	0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x61,
+	0x72, 0x63, 0x68, 0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1d,
+	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x17, 0x3a, 0x01, 0x2a, 0x22, 0x12, 0x2f, 0x61, 0x70, 0x69, 0x2f,
+	0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x2f, 0x73, 0x65, 0x61, 0x72, 0x63, 0x68, 0x12, 0x56, 0x0a,
+	0x08, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x12, 0x14, 0x2e, 0x68, 0x65, 0x6c, 0x6c,
+	0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a,
+	0x1b, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e,
+	0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x22, 0x17, 0x82, 0xd3,
+	0xe4, 0x93, 0x02, 0x11, 0x12, 0x0f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x61, 0x74, 0x65, 0x67,
+	0x6f, 0x72, 0x69, 0x65, 0x73, 0x12, 0x6e, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x53, 0x6c, 0x69, 0x64,
 	0x65, 0x72, 0x73, 0x12, 0x20, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64,
 	0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x6c, 0x69, 0x64, 0x65, 0x72, 0x73, 0x52, 0x65,
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72,
 	0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x6c, 0x69, 0x64, 0x65, 0x72, 0x73,
 	0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x18, 0x12, 0x16, 0x2f,
 	0x61, 0x70, 0x69, 0x2f, 0x73, 0x6c, 0x69, 0x64, 0x65, 0x72, 0x2f, 0x67, 0x65, 0x74, 0x53, 0x6c,
-	0x69, 0x64, 0x65, 0x72, 0x73, 0x32, 0x7a, 0x0a, 0x05, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x71,
-	0x0a, 0x0b, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x21, 0x2e,
+	0x69, 0x64, 0x65, 0x72, 0x73, 0x12, 0x62, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x49, 0x6e, 0x66, 0x6f,
+	0x12, 0x1d, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31,
+	0x2e, 0x47, 0x65, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x1b, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e,
+	0x47, 0x65, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1b, 0x82, 0xd3,
+	0xe4, 0x93, 0x02, 0x15, 0x12, 0x13, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x6d, 0x65, 0x6d, 0x62, 0x65,
+	0x72, 0x2f, 0x67, 0x65, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x70, 0x0a, 0x0b, 0x4c, 0x6f, 0x67,
+	0x69, 0x6e, 0x42, 0x79, 0x4a, 0x73, 0x6f, 0x6e, 0x12, 0x21, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f,
+	0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x42, 0x79,
+	0x4a, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x68, 0x65,
+	0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x6f, 0x67, 0x69,
+	0x6e, 0x42, 0x79, 0x4a, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1d, 0x82, 0xd3,
+	0xe4, 0x93, 0x02, 0x17, 0x3a, 0x01, 0x2a, 0x22, 0x12, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x75, 0x2f,
+	0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x42, 0x79, 0x4a, 0x73, 0x6f, 0x6e, 0x12, 0x71, 0x0a, 0x0b, 0x43,
+	0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x21, 0x2e, 0x68, 0x65, 0x6c,
+	0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e,
 	0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72,
-	0x65, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x1f, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31,
-	0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x70, 0x6c,
-	0x79, 0x22, 0x1e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x18, 0x12, 0x16, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65,
-	0x6e, 0x32, 0x6c, 0x0a, 0x06, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x62, 0x0a, 0x07, 0x47,
-	0x65, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1d, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f,
-	0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72,
-	0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x70,
-	0x6c, 0x79, 0x22, 0x1b, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x15, 0x12, 0x13, 0x2f, 0x61, 0x70, 0x69,
-	0x2f, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x2f, 0x67, 0x65, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x32,
-	0x79, 0x0a, 0x05, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x12, 0x70, 0x0a, 0x0b, 0x4c, 0x6f, 0x67, 0x69,
-	0x6e, 0x42, 0x79, 0x4a, 0x73, 0x6f, 0x6e, 0x12, 0x21, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77,
-	0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x42, 0x79, 0x4a,
-	0x73, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x68, 0x65, 0x6c,
-	0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x6f, 0x67, 0x69, 0x6e,
-	0x42, 0x79, 0x4a, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1d, 0x82, 0xd3, 0xe4,
-	0x93, 0x02, 0x17, 0x3a, 0x01, 0x2a, 0x22, 0x12, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x75, 0x2f, 0x6c,
-	0x6f, 0x67, 0x69, 0x6e, 0x42, 0x79, 0x4a, 0x73, 0x6f, 0x6e, 0x42, 0x59, 0x0a, 0x1c, 0x64, 0x65,
-	0x76, 0x2e, 0x6b, 0x72, 0x61, 0x74, 0x6f, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x68, 0x65, 0x6c,
-	0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x42, 0x11, 0x48, 0x65, 0x6c, 0x6c,
-	0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x56, 0x31, 0x50, 0x01, 0x5a,
-	0x24, 0x6b, 0x75, 0x62, 0x65, 0x63, 0x69, 0x74, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
-	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2f,
-	0x76, 0x31, 0x3b, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1e,
+	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x18, 0x12, 0x16, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x74, 0x6f, 0x6b,
+	0x65, 0x6e, 0x2f, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x59,
+	0x0a, 0x1c, 0x64, 0x65, 0x76, 0x2e, 0x6b, 0x72, 0x61, 0x74, 0x6f, 0x73, 0x2e, 0x61, 0x70, 0x69,
+	0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x42, 0x11,
+	0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x56,
+	0x31, 0x50, 0x01, 0x5a, 0x24, 0x6b, 0x75, 0x62, 0x65, 0x63, 0x69, 0x74, 0x2d, 0x73, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f,
+	0x72, 0x6c, 0x64, 0x2f, 0x76, 0x31, 0x3b, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
-	file_helloworld_v1_greeter_proto_rawDescOnce sync.Once
-	file_helloworld_v1_greeter_proto_rawDescData = file_helloworld_v1_greeter_proto_rawDesc
+	file_helloworld_v1_kubecit_proto_rawDescOnce sync.Once
+	file_helloworld_v1_kubecit_proto_rawDescData = file_helloworld_v1_kubecit_proto_rawDesc
 )
 
-func file_helloworld_v1_greeter_proto_rawDescGZIP() []byte {
-	file_helloworld_v1_greeter_proto_rawDescOnce.Do(func() {
-		file_helloworld_v1_greeter_proto_rawDescData = protoimpl.X.CompressGZIP(file_helloworld_v1_greeter_proto_rawDescData)
+func file_helloworld_v1_kubecit_proto_rawDescGZIP() []byte {
+	file_helloworld_v1_kubecit_proto_rawDescOnce.Do(func() {
+		file_helloworld_v1_kubecit_proto_rawDescData = protoimpl.X.CompressGZIP(file_helloworld_v1_kubecit_proto_rawDescData)
 	})
-	return file_helloworld_v1_greeter_proto_rawDescData
+	return file_helloworld_v1_kubecit_proto_rawDescData
 }
 
-var file_helloworld_v1_greeter_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
-var file_helloworld_v1_greeter_proto_goTypes = []interface{}{
+var file_helloworld_v1_kubecit_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
+var file_helloworld_v1_kubecit_proto_goTypes = []interface{}{
 	(*HelloRequest)(nil),                // 0: helloworld.v1.HelloRequest
 	(*Empty)(nil),                       // 1: helloworld.v1.Empty
 	(*CategoryResp)(nil),                // 2: helloworld.v1.CategoryResp
@@ -3121,7 +3112,7 @@ var file_helloworld_v1_greeter_proto_goTypes = []interface{}{
 	nil,                                 // 34: helloworld.v1.CreateTokenReply.DataEntry
 	(*timestamppb.Timestamp)(nil),       // 35: google.protobuf.Timestamp
 }
-var file_helloworld_v1_greeter_proto_depIdxs = []int32{
+var file_helloworld_v1_kubecit_proto_depIdxs = []int32{
 	3,  // 0: helloworld.v1.CategoryResp.categories:type_name -> helloworld.v1.CategoryInfo
 	6,  // 1: helloworld.v1.MostNewReply.meta:type_name -> helloworld.v1.Metadata
 	8,  // 2: helloworld.v1.MostNewReply.data:type_name -> helloworld.v1.MostNewReplyData
@@ -3157,40 +3148,38 @@ var file_helloworld_v1_greeter_proto_depIdxs = []int32{
 	35, // 32: helloworld.v1.MemberVIPInfo.endTime:type_name -> google.protobuf.Timestamp
 	6,  // 33: helloworld.v1.LoginByJsonReply.meta:type_name -> helloworld.v1.Metadata
 	31, // 34: helloworld.v1.LoginByJsonReply.data:type_name -> helloworld.v1.LoginByJsonReplyData
-	0,  // 35: helloworld.v1.Greeter.SayHello:input_type -> helloworld.v1.HelloRequest
-	1,  // 36: helloworld.v1.Category.Category:input_type -> helloworld.v1.Empty
-	5,  // 37: helloworld.v1.Course.MostNew:input_type -> helloworld.v1.PageRequest
-	11, // 38: helloworld.v1.Course.GetFirstCategories:input_type -> helloworld.v1.GetFirstCategoriesRequest
-	15, // 39: helloworld.v1.Course.TagsList:input_type -> helloworld.v1.TagsListRequest
-	17, // 40: helloworld.v1.Course.SearchCourse:input_type -> helloworld.v1.SearchCourseRequest
-	19, // 41: helloworld.v1.Slider.GetSliders:input_type -> helloworld.v1.GetSlidersRequest
-	23, // 42: helloworld.v1.Token.CreateToken:input_type -> helloworld.v1.CreateTokenRequest
-	25, // 43: helloworld.v1.Member.GetInfo:input_type -> helloworld.v1.GetInfoRequest
-	29, // 44: helloworld.v1.Login.LoginByJson:input_type -> helloworld.v1.LoginByJsonRequest
-	4,  // 45: helloworld.v1.Greeter.SayHello:output_type -> helloworld.v1.HelloReply
-	2,  // 46: helloworld.v1.Category.Category:output_type -> helloworld.v1.CategoryResp
-	7,  // 47: helloworld.v1.Course.MostNew:output_type -> helloworld.v1.MostNewReply
-	12, // 48: helloworld.v1.Course.GetFirstCategories:output_type -> helloworld.v1.GetFirstCategoriesReply
-	16, // 49: helloworld.v1.Course.TagsList:output_type -> helloworld.v1.TagsListReply
-	18, // 50: helloworld.v1.Course.SearchCourse:output_type -> helloworld.v1.SearchCourseReply
-	20, // 51: helloworld.v1.Slider.GetSliders:output_type -> helloworld.v1.GetSlidersReply
-	24, // 52: helloworld.v1.Token.CreateToken:output_type -> helloworld.v1.CreateTokenReply
-	26, // 53: helloworld.v1.Member.GetInfo:output_type -> helloworld.v1.GetInfoReply
-	30, // 54: helloworld.v1.Login.LoginByJson:output_type -> helloworld.v1.LoginByJsonReply
-	45, // [45:55] is the sub-list for method output_type
-	35, // [35:45] is the sub-list for method input_type
+	5,  // 35: helloworld.v1.Greeter.MostNew:input_type -> helloworld.v1.PageRequest
+	11, // 36: helloworld.v1.Greeter.GetFirstCategories:input_type -> helloworld.v1.GetFirstCategoriesRequest
+	15, // 37: helloworld.v1.Greeter.TagsList:input_type -> helloworld.v1.TagsListRequest
+	17, // 38: helloworld.v1.Greeter.SearchCourse:input_type -> helloworld.v1.SearchCourseRequest
+	1,  // 39: helloworld.v1.Greeter.Category:input_type -> helloworld.v1.Empty
+	19, // 40: helloworld.v1.Greeter.GetSliders:input_type -> helloworld.v1.GetSlidersRequest
+	25, // 41: helloworld.v1.Greeter.GetInfo:input_type -> helloworld.v1.GetInfoRequest
+	29, // 42: helloworld.v1.Greeter.LoginByJson:input_type -> helloworld.v1.LoginByJsonRequest
+	23, // 43: helloworld.v1.Greeter.CreateToken:input_type -> helloworld.v1.CreateTokenRequest
+	7,  // 44: helloworld.v1.Greeter.MostNew:output_type -> helloworld.v1.MostNewReply
+	12, // 45: helloworld.v1.Greeter.GetFirstCategories:output_type -> helloworld.v1.GetFirstCategoriesReply
+	16, // 46: helloworld.v1.Greeter.TagsList:output_type -> helloworld.v1.TagsListReply
+	18, // 47: helloworld.v1.Greeter.SearchCourse:output_type -> helloworld.v1.SearchCourseReply
+	2,  // 48: helloworld.v1.Greeter.Category:output_type -> helloworld.v1.CategoryResp
+	20, // 49: helloworld.v1.Greeter.GetSliders:output_type -> helloworld.v1.GetSlidersReply
+	26, // 50: helloworld.v1.Greeter.GetInfo:output_type -> helloworld.v1.GetInfoReply
+	30, // 51: helloworld.v1.Greeter.LoginByJson:output_type -> helloworld.v1.LoginByJsonReply
+	24, // 52: helloworld.v1.Greeter.CreateToken:output_type -> helloworld.v1.CreateTokenReply
+	44, // [44:53] is the sub-list for method output_type
+	35, // [35:44] is the sub-list for method input_type
 	35, // [35:35] is the sub-list for extension type_name
 	35, // [35:35] is the sub-list for extension extendee
 	0,  // [0:35] is the sub-list for field type_name
 }
 
-func init() { file_helloworld_v1_greeter_proto_init() }
-func file_helloworld_v1_greeter_proto_init() {
-	if File_helloworld_v1_greeter_proto != nil {
+func init() { file_helloworld_v1_kubecit_proto_init() }
+func file_helloworld_v1_kubecit_proto_init() {
+	if File_helloworld_v1_kubecit_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_helloworld_v1_greeter_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*HelloRequest); i {
 			case 0:
 				return &v.state
@@ -3202,7 +3191,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Empty); i {
 			case 0:
 				return &v.state
@@ -3214,7 +3203,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CategoryResp); i {
 			case 0:
 				return &v.state
@@ -3226,7 +3215,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CategoryInfo); i {
 			case 0:
 				return &v.state
@@ -3238,7 +3227,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*HelloReply); i {
 			case 0:
 				return &v.state
@@ -3250,7 +3239,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PageRequest); i {
 			case 0:
 				return &v.state
@@ -3262,7 +3251,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Metadata); i {
 			case 0:
 				return &v.state
@@ -3274,7 +3263,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MostNewReply); i {
 			case 0:
 				return &v.state
@@ -3286,7 +3275,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MostNewReplyData); i {
 			case 0:
 				return &v.state
@@ -3298,7 +3287,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PageInfo); i {
 			case 0:
 				return &v.state
@@ -3310,7 +3299,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CourseInfo); i {
 			case 0:
 				return &v.state
@@ -3322,7 +3311,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetFirstCategoriesRequest); i {
 			case 0:
 				return &v.state
@@ -3334,7 +3323,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetFirstCategoriesReply); i {
 			case 0:
 				return &v.state
@@ -3346,7 +3335,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetFirstCategoriesReplyData); i {
 			case 0:
 				return &v.state
@@ -3358,7 +3347,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*FirstCategory); i {
 			case 0:
 				return &v.state
@@ -3370,7 +3359,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TagsListRequest); i {
 			case 0:
 				return &v.state
@@ -3382,7 +3371,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TagsListReply); i {
 			case 0:
 				return &v.state
@@ -3394,7 +3383,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SearchCourseRequest); i {
 			case 0:
 				return &v.state
@@ -3406,7 +3395,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SearchCourseReply); i {
 			case 0:
 				return &v.state
@@ -3418,7 +3407,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSlidersRequest); i {
 			case 0:
 				return &v.state
@@ -3430,7 +3419,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSlidersReply); i {
 			case 0:
 				return &v.state
@@ -3442,7 +3431,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSlidersReplyData); i {
 			case 0:
 				return &v.state
@@ -3454,7 +3443,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SliderInfo); i {
 			case 0:
 				return &v.state
@@ -3466,7 +3455,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateTokenRequest); i {
 			case 0:
 				return &v.state
@@ -3478,7 +3467,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateTokenReply); i {
 			case 0:
 				return &v.state
@@ -3490,7 +3479,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetInfoRequest); i {
 			case 0:
 				return &v.state
@@ -3502,7 +3491,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetInfoReply); i {
 			case 0:
 				return &v.state
@@ -3514,7 +3503,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetInfoReplyData); i {
 			case 0:
 				return &v.state
@@ -3526,7 +3515,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MemberVIPInfo); i {
 			case 0:
 				return &v.state
@@ -3538,7 +3527,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*LoginByJsonRequest); i {
 			case 0:
 				return &v.state
@@ -3550,7 +3539,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*LoginByJsonReply); i {
 			case 0:
 				return &v.state
@@ -3562,7 +3551,7 @@ func file_helloworld_v1_greeter_proto_init() {
 				return nil
 			}
 		}
-		file_helloworld_v1_greeter_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*LoginByJsonReplyData); i {
 			case 0:
 				return &v.state
@@ -3579,18 +3568,18 @@ func file_helloworld_v1_greeter_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_helloworld_v1_greeter_proto_rawDesc,
+			RawDescriptor: file_helloworld_v1_kubecit_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   35,
 			NumExtensions: 0,
-			NumServices:   7,
+			NumServices:   1,
 		},
-		GoTypes:           file_helloworld_v1_greeter_proto_goTypes,
-		DependencyIndexes: file_helloworld_v1_greeter_proto_depIdxs,
-		MessageInfos:      file_helloworld_v1_greeter_proto_msgTypes,
+		GoTypes:           file_helloworld_v1_kubecit_proto_goTypes,
+		DependencyIndexes: file_helloworld_v1_kubecit_proto_depIdxs,
+		MessageInfos:      file_helloworld_v1_kubecit_proto_msgTypes,
 	}.Build()
-	File_helloworld_v1_greeter_proto = out.File
-	file_helloworld_v1_greeter_proto_rawDesc = nil
-	file_helloworld_v1_greeter_proto_goTypes = nil
-	file_helloworld_v1_greeter_proto_depIdxs = nil
+	File_helloworld_v1_kubecit_proto = out.File
+	file_helloworld_v1_kubecit_proto_rawDesc = nil
+	file_helloworld_v1_kubecit_proto_goTypes = nil
+	file_helloworld_v1_kubecit_proto_depIdxs = nil
 }

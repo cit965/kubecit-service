@@ -6,23 +6,38 @@ import (
 	pb "kubecit-service/api/helloworld/v1"
 )
 
-type CourseService struct {
-	pb.UnimplementedCourseServer
+func (s *KubecitService) GetSliders(ctx context.Context, req *pb.GetSlidersRequest) (*pb.GetSlidersReply, error) {
+	return &pb.GetSlidersReply{}, nil
 }
 
-func NewCourseService() *CourseService {
-	return &CourseService{}
+func (s *KubecitService) Category(ctx context.Context, req *pb.Empty) (*pb.CategoryResp, error) {
+	categories, err := s.cc.ListCategory(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var cs []*pb.CategoryInfo
+	for _, v := range categories {
+		cs = append(cs, &pb.CategoryInfo{
+			CategoryName: v.CategoryName,
+			Id:           v.Id,
+			ParentId:     v.ParentId,
+			Level:        v.Level,
+			Status:       v.Status,
+		})
+	}
+	return &pb.CategoryResp{Categories: cs}, nil
 }
 
-func (s *CourseService) MostNew(ctx context.Context, req *pb.PageRequest) (*pb.MostNewReply, error) {
+func (s *KubecitService) MostNew(ctx context.Context, req *pb.PageRequest) (*pb.MostNewReply, error) {
 	return &pb.MostNewReply{}, nil
 }
-func (s *CourseService) GetFirstCategories(ctx context.Context, req *pb.GetFirstCategoriesRequest) (*pb.GetFirstCategoriesReply, error) {
+func (s *KubecitService) GetFirstCategories(ctx context.Context, req *pb.GetFirstCategoriesRequest) (*pb.GetFirstCategoriesReply, error) {
 	return &pb.GetFirstCategoriesReply{}, nil
 }
-func (s *CourseService) TagsList(ctx context.Context, req *pb.TagsListRequest) (*pb.TagsListReply, error) {
+func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) (*pb.TagsListReply, error) {
 	return &pb.TagsListReply{}, nil
 }
-func (s *CourseService) SearchCourse(ctx context.Context, req *pb.SearchCourseRequest) (*pb.SearchCourseReply, error) {
+func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseRequest) (*pb.SearchCourseReply, error) {
 	return &pb.SearchCourseReply{}, nil
 }
