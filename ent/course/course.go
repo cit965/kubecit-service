@@ -12,99 +12,53 @@ const (
 	Label = "course"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldIsRecommend holds the string denoting the isrecommend field in the database.
-	FieldIsRecommend = "is_recommend"
-	// FieldIsIntegral holds the string denoting the isintegral field in the database.
-	FieldIsIntegral = "is_integral"
-	// FieldSaleType holds the string denoting the saletype field in the database.
-	FieldSaleType = "sale_type"
-	// FieldDiscountPrice holds the string denoting the discountprice field in the database.
-	FieldDiscountPrice = "discount_price"
-	// FieldTeachingType holds the string denoting the teachingtype field in the database.
-	FieldTeachingType = "teaching_type"
-	// FieldCourseLevel holds the string denoting the courselevel field in the database.
-	FieldCourseLevel = "course_level"
-	// FieldUpdateBy holds the string denoting the updateby field in the database.
-	FieldUpdateBy = "update_by"
-	// FieldLecturerName holds the string denoting the lecturername field in the database.
-	FieldLecturerName = "lecturer_name"
-	// FieldPurchaseCnt holds the string denoting the purchasecnt field in the database.
-	FieldPurchaseCnt = "purchase_cnt"
-	// FieldTotalHour holds the string denoting the totalhour field in the database.
-	FieldTotalHour = "total_hour"
-	// FieldBizCourseDetail holds the string denoting the bizcoursedetail field in the database.
-	FieldBizCourseDetail = "biz_course_detail"
-	// FieldCourseCover holds the string denoting the coursecover field in the database.
-	FieldCourseCover = "course_cover"
-	// FieldBizCourseChapters holds the string denoting the bizcoursechapters field in the database.
-	FieldBizCourseChapters = "biz_course_chapters"
-	// FieldSalePrice holds the string denoting the saleprice field in the database.
-	FieldSalePrice = "sale_price"
-	// FieldBizCourseTeacher holds the string denoting the bizcourseteacher field in the database.
-	FieldBizCourseTeacher = "biz_course_teacher"
-	// FieldBizCourseAttachments holds the string denoting the bizcourseattachments field in the database.
-	FieldBizCourseAttachments = "biz_course_attachments"
-	// FieldUpdateTime holds the string denoting the updatetime field in the database.
-	FieldUpdateTime = "update_time"
+	// FieldLevel holds the string denoting the level field in the database.
+	FieldLevel = "level"
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
+	FieldUpdatedAt = "updated_at"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// FieldDetail holds the string denoting the detail field in the database.
+	FieldDetail = "detail"
+	// FieldCover holds the string denoting the cover field in the database.
+	FieldCover = "cover"
+	// FieldPrice holds the string denoting the price field in the database.
+	FieldPrice = "price"
 	// FieldTags holds the string denoting the tags field in the database.
 	FieldTags = "tags"
-	// FieldCourseName holds the string denoting the coursename field in the database.
-	FieldCourseName = "course_name"
-	// FieldCreateBy holds the string denoting the createby field in the database.
-	FieldCreateBy = "create_by"
-	// FieldPurchaseCounter holds the string denoting the purchasecounter field in the database.
-	FieldPurchaseCounter = "purchase_counter"
-	// FieldCreateTime holds the string denoting the createtime field in the database.
-	FieldCreateTime = "create_time"
-	// FieldClicks holds the string denoting the clicks field in the database.
-	FieldClicks = "clicks"
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
+	FieldCreatedAt = "created_at"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// EdgeCategories holds the string denoting the categories edge name in mutations.
-	EdgeCategories = "categories"
+	// FieldCategoryID holds the string denoting the category_id field in the database.
+	FieldCategoryID = "category_id"
+	// EdgeOwner holds the string denoting the owner edge name in mutations.
+	EdgeOwner = "owner"
 	// Table holds the table name of the course in the database.
 	Table = "courses"
-	// CategoriesTable is the table that holds the categories relation/edge. The primary key declared below.
-	CategoriesTable = "course_categories"
-	// CategoriesInverseTable is the table name for the Category entity.
+	// OwnerTable is the table that holds the owner relation/edge.
+	OwnerTable = "courses"
+	// OwnerInverseTable is the table name for the Category entity.
 	// It exists in this package in order to avoid circular dependency with the "category" package.
-	CategoriesInverseTable = "categories"
+	OwnerInverseTable = "categories"
+	// OwnerColumn is the table column denoting the owner relation/edge.
+	OwnerColumn = "category_id"
 )
 
 // Columns holds all SQL columns for course fields.
 var Columns = []string{
 	FieldID,
-	FieldIsRecommend,
-	FieldIsIntegral,
-	FieldSaleType,
-	FieldDiscountPrice,
-	FieldTeachingType,
-	FieldCourseLevel,
-	FieldUpdateBy,
-	FieldLecturerName,
-	FieldPurchaseCnt,
-	FieldTotalHour,
-	FieldBizCourseDetail,
-	FieldCourseCover,
-	FieldBizCourseChapters,
-	FieldSalePrice,
-	FieldBizCourseTeacher,
-	FieldBizCourseAttachments,
-	FieldUpdateTime,
+	FieldLevel,
+	FieldUpdatedAt,
+	FieldName,
+	FieldDetail,
+	FieldCover,
+	FieldPrice,
 	FieldTags,
-	FieldCourseName,
-	FieldCreateBy,
-	FieldPurchaseCounter,
-	FieldCreateTime,
-	FieldClicks,
+	FieldCreatedAt,
 	FieldStatus,
+	FieldCategoryID,
 }
-
-var (
-	// CategoriesPrimaryKey and CategoriesColumn2 are the table columns denoting the
-	// primary key for the categories relation (M2M).
-	CategoriesPrimaryKey = []string{"course_id", "category_id"}
-)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -116,13 +70,6 @@ func ValidColumn(column string) bool {
 	return false
 }
 
-var (
-	// DefaultIsRecommend holds the default value on creation for the "isRecommend" field.
-	DefaultIsRecommend bool
-	// DefaultIsIntegral holds the default value on creation for the "isIntegral" field.
-	DefaultIsIntegral bool
-)
-
 // OrderOption defines the ordering options for the Course queries.
 type OrderOption func(*sql.Selector)
 
@@ -131,89 +78,34 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByIsRecommend orders the results by the isRecommend field.
-func ByIsRecommend(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsRecommend, opts...).ToFunc()
+// ByLevel orders the results by the level field.
+func ByLevel(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLevel, opts...).ToFunc()
 }
 
-// ByIsIntegral orders the results by the isIntegral field.
-func ByIsIntegral(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsIntegral, opts...).ToFunc()
+// ByUpdatedAt orders the results by the updated_at field.
+func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// BySaleType orders the results by the saleType field.
-func BySaleType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSaleType, opts...).ToFunc()
+// ByName orders the results by the name field.
+func ByName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByDiscountPrice orders the results by the discountPrice field.
-func ByDiscountPrice(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDiscountPrice, opts...).ToFunc()
+// ByDetail orders the results by the detail field.
+func ByDetail(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDetail, opts...).ToFunc()
 }
 
-// ByTeachingType orders the results by the teachingType field.
-func ByTeachingType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldTeachingType, opts...).ToFunc()
+// ByCover orders the results by the cover field.
+func ByCover(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCover, opts...).ToFunc()
 }
 
-// ByCourseLevel orders the results by the courseLevel field.
-func ByCourseLevel(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCourseLevel, opts...).ToFunc()
-}
-
-// ByUpdateBy orders the results by the updateBy field.
-func ByUpdateBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdateBy, opts...).ToFunc()
-}
-
-// ByLecturerName orders the results by the lecturerName field.
-func ByLecturerName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldLecturerName, opts...).ToFunc()
-}
-
-// ByPurchaseCnt orders the results by the purchaseCnt field.
-func ByPurchaseCnt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPurchaseCnt, opts...).ToFunc()
-}
-
-// ByTotalHour orders the results by the totalHour field.
-func ByTotalHour(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldTotalHour, opts...).ToFunc()
-}
-
-// ByBizCourseDetail orders the results by the bizCourseDetail field.
-func ByBizCourseDetail(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBizCourseDetail, opts...).ToFunc()
-}
-
-// ByCourseCover orders the results by the courseCover field.
-func ByCourseCover(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCourseCover, opts...).ToFunc()
-}
-
-// ByBizCourseChapters orders the results by the bizCourseChapters field.
-func ByBizCourseChapters(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBizCourseChapters, opts...).ToFunc()
-}
-
-// BySalePrice orders the results by the salePrice field.
-func BySalePrice(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSalePrice, opts...).ToFunc()
-}
-
-// ByBizCourseTeacher orders the results by the bizCourseTeacher field.
-func ByBizCourseTeacher(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBizCourseTeacher, opts...).ToFunc()
-}
-
-// ByBizCourseAttachments orders the results by the bizCourseAttachments field.
-func ByBizCourseAttachments(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBizCourseAttachments, opts...).ToFunc()
-}
-
-// ByUpdateTime orders the results by the updateTime field.
-func ByUpdateTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdateTime, opts...).ToFunc()
+// ByPrice orders the results by the price field.
+func ByPrice(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPrice, opts...).ToFunc()
 }
 
 // ByTags orders the results by the tags field.
@@ -221,29 +113,9 @@ func ByTags(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTags, opts...).ToFunc()
 }
 
-// ByCourseName orders the results by the courseName field.
-func ByCourseName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCourseName, opts...).ToFunc()
-}
-
-// ByCreateBy orders the results by the createBy field.
-func ByCreateBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreateBy, opts...).ToFunc()
-}
-
-// ByPurchaseCounter orders the results by the purchaseCounter field.
-func ByPurchaseCounter(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPurchaseCounter, opts...).ToFunc()
-}
-
-// ByCreateTime orders the results by the createTime field.
-func ByCreateTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreateTime, opts...).ToFunc()
-}
-
-// ByClicks orders the results by the clicks field.
-func ByClicks(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldClicks, opts...).ToFunc()
+// ByCreatedAt orders the results by the created_at field.
+func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.
@@ -251,23 +123,21 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
-// ByCategoriesCount orders the results by categories count.
-func ByCategoriesCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newCategoriesStep(), opts...)
-	}
+// ByCategoryID orders the results by the category_id field.
+func ByCategoryID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCategoryID, opts...).ToFunc()
 }
 
-// ByCategories orders the results by categories terms.
-func ByCategories(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByOwnerField orders the results by owner field.
+func ByOwnerField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newCategoriesStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newOwnerStep(), sql.OrderByField(field, opts...))
 	}
 }
-func newCategoriesStep() *sqlgraph.Step {
+func newOwnerStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(CategoriesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, false, CategoriesTable, CategoriesPrimaryKey...),
+		sqlgraph.To(OwnerInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, OwnerTable, OwnerColumn),
 	)
 }

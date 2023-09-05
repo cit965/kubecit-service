@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/slider"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -34,51 +33,15 @@ func (su *SliderUpdate) SetCreateBy(s string) *SliderUpdate {
 	return su
 }
 
-// SetImageName sets the "imageName" field.
+// SetImageName sets the "image_name" field.
 func (su *SliderUpdate) SetImageName(s string) *SliderUpdate {
 	su.mutation.SetImageName(s)
 	return su
 }
 
-// SetCreateTime sets the "createTime" field.
-func (su *SliderUpdate) SetCreateTime(t time.Time) *SliderUpdate {
-	su.mutation.SetCreateTime(t)
-	return su
-}
-
-// SetUpdateBy sets the "updateBy" field.
-func (su *SliderUpdate) SetUpdateBy(s string) *SliderUpdate {
-	su.mutation.SetUpdateBy(s)
-	return su
-}
-
-// SetImageRemark sets the "imageRemark" field.
-func (su *SliderUpdate) SetImageRemark(s string) *SliderUpdate {
-	su.mutation.SetImageRemark(s)
-	return su
-}
-
-// SetImageUrl sets the "imageUrl" field.
-func (su *SliderUpdate) SetImageUrl(s string) *SliderUpdate {
-	su.mutation.SetImageUrl(s)
-	return su
-}
-
-// SetPcHref sets the "pcHref" field.
-func (su *SliderUpdate) SetPcHref(s string) *SliderUpdate {
-	su.mutation.SetPcHref(s)
-	return su
-}
-
-// SetUpdateTime sets the "updateTime" field.
-func (su *SliderUpdate) SetUpdateTime(t time.Time) *SliderUpdate {
-	su.mutation.SetUpdateTime(t)
-	return su
-}
-
-// SetAppHref sets the "appHref" field.
-func (su *SliderUpdate) SetAppHref(s string) *SliderUpdate {
-	su.mutation.SetAppHref(s)
+// SetImageURL sets the "image_url" field.
+func (su *SliderUpdate) SetImageURL(s string) *SliderUpdate {
+	su.mutation.SetImageURL(s)
 	return su
 }
 
@@ -115,7 +78,7 @@ func (su *SliderUpdate) ExecX(ctx context.Context) {
 }
 
 func (su *SliderUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(slider.Table, slider.Columns, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeString))
+	_spec := sqlgraph.NewUpdateSpec(slider.Table, slider.Columns, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeInt))
 	if ps := su.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -129,26 +92,8 @@ func (su *SliderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := su.mutation.ImageName(); ok {
 		_spec.SetField(slider.FieldImageName, field.TypeString, value)
 	}
-	if value, ok := su.mutation.CreateTime(); ok {
-		_spec.SetField(slider.FieldCreateTime, field.TypeTime, value)
-	}
-	if value, ok := su.mutation.UpdateBy(); ok {
-		_spec.SetField(slider.FieldUpdateBy, field.TypeString, value)
-	}
-	if value, ok := su.mutation.ImageRemark(); ok {
-		_spec.SetField(slider.FieldImageRemark, field.TypeString, value)
-	}
-	if value, ok := su.mutation.ImageUrl(); ok {
-		_spec.SetField(slider.FieldImageUrl, field.TypeString, value)
-	}
-	if value, ok := su.mutation.PcHref(); ok {
-		_spec.SetField(slider.FieldPcHref, field.TypeString, value)
-	}
-	if value, ok := su.mutation.UpdateTime(); ok {
-		_spec.SetField(slider.FieldUpdateTime, field.TypeTime, value)
-	}
-	if value, ok := su.mutation.AppHref(); ok {
-		_spec.SetField(slider.FieldAppHref, field.TypeString, value)
+	if value, ok := su.mutation.ImageURL(); ok {
+		_spec.SetField(slider.FieldImageURL, field.TypeString, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -176,51 +121,15 @@ func (suo *SliderUpdateOne) SetCreateBy(s string) *SliderUpdateOne {
 	return suo
 }
 
-// SetImageName sets the "imageName" field.
+// SetImageName sets the "image_name" field.
 func (suo *SliderUpdateOne) SetImageName(s string) *SliderUpdateOne {
 	suo.mutation.SetImageName(s)
 	return suo
 }
 
-// SetCreateTime sets the "createTime" field.
-func (suo *SliderUpdateOne) SetCreateTime(t time.Time) *SliderUpdateOne {
-	suo.mutation.SetCreateTime(t)
-	return suo
-}
-
-// SetUpdateBy sets the "updateBy" field.
-func (suo *SliderUpdateOne) SetUpdateBy(s string) *SliderUpdateOne {
-	suo.mutation.SetUpdateBy(s)
-	return suo
-}
-
-// SetImageRemark sets the "imageRemark" field.
-func (suo *SliderUpdateOne) SetImageRemark(s string) *SliderUpdateOne {
-	suo.mutation.SetImageRemark(s)
-	return suo
-}
-
-// SetImageUrl sets the "imageUrl" field.
-func (suo *SliderUpdateOne) SetImageUrl(s string) *SliderUpdateOne {
-	suo.mutation.SetImageUrl(s)
-	return suo
-}
-
-// SetPcHref sets the "pcHref" field.
-func (suo *SliderUpdateOne) SetPcHref(s string) *SliderUpdateOne {
-	suo.mutation.SetPcHref(s)
-	return suo
-}
-
-// SetUpdateTime sets the "updateTime" field.
-func (suo *SliderUpdateOne) SetUpdateTime(t time.Time) *SliderUpdateOne {
-	suo.mutation.SetUpdateTime(t)
-	return suo
-}
-
-// SetAppHref sets the "appHref" field.
-func (suo *SliderUpdateOne) SetAppHref(s string) *SliderUpdateOne {
-	suo.mutation.SetAppHref(s)
+// SetImageURL sets the "image_url" field.
+func (suo *SliderUpdateOne) SetImageURL(s string) *SliderUpdateOne {
+	suo.mutation.SetImageURL(s)
 	return suo
 }
 
@@ -270,7 +179,7 @@ func (suo *SliderUpdateOne) ExecX(ctx context.Context) {
 }
 
 func (suo *SliderUpdateOne) sqlSave(ctx context.Context) (_node *Slider, err error) {
-	_spec := sqlgraph.NewUpdateSpec(slider.Table, slider.Columns, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeString))
+	_spec := sqlgraph.NewUpdateSpec(slider.Table, slider.Columns, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeInt))
 	id, ok := suo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Slider.id" for update`)}
@@ -301,26 +210,8 @@ func (suo *SliderUpdateOne) sqlSave(ctx context.Context) (_node *Slider, err err
 	if value, ok := suo.mutation.ImageName(); ok {
 		_spec.SetField(slider.FieldImageName, field.TypeString, value)
 	}
-	if value, ok := suo.mutation.CreateTime(); ok {
-		_spec.SetField(slider.FieldCreateTime, field.TypeTime, value)
-	}
-	if value, ok := suo.mutation.UpdateBy(); ok {
-		_spec.SetField(slider.FieldUpdateBy, field.TypeString, value)
-	}
-	if value, ok := suo.mutation.ImageRemark(); ok {
-		_spec.SetField(slider.FieldImageRemark, field.TypeString, value)
-	}
-	if value, ok := suo.mutation.ImageUrl(); ok {
-		_spec.SetField(slider.FieldImageUrl, field.TypeString, value)
-	}
-	if value, ok := suo.mutation.PcHref(); ok {
-		_spec.SetField(slider.FieldPcHref, field.TypeString, value)
-	}
-	if value, ok := suo.mutation.UpdateTime(); ok {
-		_spec.SetField(slider.FieldUpdateTime, field.TypeTime, value)
-	}
-	if value, ok := suo.mutation.AppHref(); ok {
-		_spec.SetField(slider.FieldAppHref, field.TypeString, value)
+	if value, ok := suo.mutation.ImageURL(); ok {
+		_spec.SetField(slider.FieldImageURL, field.TypeString, value)
 	}
 	_node = &Slider{config: suo.config}
 	_spec.Assign = _node.assignValues

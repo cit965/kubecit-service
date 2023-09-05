@@ -43,8 +43,8 @@ message CategoryResp {
 
 message CategoryInfo {
   string categoryName = 1;
-  string id = 2;
-  string parentId = 3;
+  int32 id = 2;
+  int32 parentId = 3;
   string level = 4;
   string status = 5;
 }

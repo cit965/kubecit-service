@@ -6,9 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kubecit-service/ent/member"
 	"kubecit-service/ent/user"
-	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -21,75 +19,9 @@ type UserCreate struct {
 	hooks    []Hook
 }
 
-// SetGender sets the "gender" field.
-func (uc *UserCreate) SetGender(i int32) *UserCreate {
-	uc.mutation.SetGender(i)
-	return uc
-}
-
-// SetBirthday sets the "birthday" field.
-func (uc *UserCreate) SetBirthday(t time.Time) *UserCreate {
-	uc.mutation.SetBirthday(t)
-	return uc
-}
-
-// SetSysCode sets the "sysCode" field.
-func (uc *UserCreate) SetSysCode(s string) *UserCreate {
-	uc.mutation.SetSysCode(s)
-	return uc
-}
-
-// SetCity sets the "city" field.
-func (uc *UserCreate) SetCity(s string) *UserCreate {
-	uc.mutation.SetCity(s)
-	return uc
-}
-
-// SetCountry sets the "country" field.
-func (uc *UserCreate) SetCountry(s string) *UserCreate {
-	uc.mutation.SetCountry(s)
-	return uc
-}
-
-// SetHighestEducation sets the "highestEducation" field.
-func (uc *UserCreate) SetHighestEducation(s string) *UserCreate {
-	uc.mutation.SetHighestEducation(s)
-	return uc
-}
-
-// SetIsEnable sets the "isEnable" field.
-func (uc *UserCreate) SetIsEnable(b bool) *UserCreate {
-	uc.mutation.SetIsEnable(b)
-	return uc
-}
-
 // SetPassword sets the "password" field.
 func (uc *UserCreate) SetPassword(s string) *UserCreate {
 	uc.mutation.SetPassword(s)
-	return uc
-}
-
-// SetProvince sets the "province" field.
-func (uc *UserCreate) SetProvince(s string) *UserCreate {
-	uc.mutation.SetProvince(s)
-	return uc
-}
-
-// SetUpdateBy sets the "updateBy" field.
-func (uc *UserCreate) SetUpdateBy(s string) *UserCreate {
-	uc.mutation.SetUpdateBy(s)
-	return uc
-}
-
-// SetCreateBy sets the "createBy" field.
-func (uc *UserCreate) SetCreateBy(s string) *UserCreate {
-	uc.mutation.SetCreateBy(s)
-	return uc
-}
-
-// SetPlatformAuthUser sets the "platformAuthUser" field.
-func (uc *UserCreate) SetPlatformAuthUser(s string) *UserCreate {
-	uc.mutation.SetPlatformAuthUser(s)
 	return uc
 }
 
@@ -99,69 +31,9 @@ func (uc *UserCreate) SetEmail(s string) *UserCreate {
 	return uc
 }
 
-// SetTotalHour sets the "totalHour" field.
-func (uc *UserCreate) SetTotalHour(f float32) *UserCreate {
-	uc.mutation.SetTotalHour(f)
-	return uc
-}
-
-// SetQq sets the "qq" field.
-func (uc *UserCreate) SetQq(s string) *UserCreate {
-	uc.mutation.SetQq(s)
-	return uc
-}
-
-// SetAddress sets the "address" field.
-func (uc *UserCreate) SetAddress(s string) *UserCreate {
-	uc.mutation.SetAddress(s)
-	return uc
-}
-
-// SetNickName sets the "nickName" field.
-func (uc *UserCreate) SetNickName(s string) *UserCreate {
-	uc.mutation.SetNickName(s)
-	return uc
-}
-
-// SetEmergencyContact sets the "emergencyContact" field.
-func (uc *UserCreate) SetEmergencyContact(s string) *UserCreate {
-	uc.mutation.SetEmergencyContact(s)
-	return uc
-}
-
-// SetEmergencyContactNumber sets the "emergencyContactNumber" field.
-func (uc *UserCreate) SetEmergencyContactNumber(s string) *UserCreate {
-	uc.mutation.SetEmergencyContactNumber(s)
-	return uc
-}
-
-// SetMobile sets the "mobile" field.
-func (uc *UserCreate) SetMobile(s string) *UserCreate {
-	uc.mutation.SetMobile(s)
-	return uc
-}
-
-// SetWechat sets the "wechat" field.
-func (uc *UserCreate) SetWechat(s string) *UserCreate {
-	uc.mutation.SetWechat(s)
-	return uc
-}
-
-// SetRegSource sets the "regSource" field.
-func (uc *UserCreate) SetRegSource(i int32) *UserCreate {
-	uc.mutation.SetRegSource(i)
-	return uc
-}
-
 // SetTelephone sets the "telephone" field.
 func (uc *UserCreate) SetTelephone(s string) *UserCreate {
 	uc.mutation.SetTelephone(s)
-	return uc
-}
-
-// SetUpdateTime sets the "updateTime" field.
-func (uc *UserCreate) SetUpdateTime(t time.Time) *UserCreate {
-	uc.mutation.SetUpdateTime(t)
 	return uc
 }
 
@@ -171,73 +43,10 @@ func (uc *UserCreate) SetAvatar(s string) *UserCreate {
 	return uc
 }
 
-// SetRealName sets the "realName" field.
-func (uc *UserCreate) SetRealName(s string) *UserCreate {
-	uc.mutation.SetRealName(s)
-	return uc
-}
-
-// SetCreateTime sets the "createTime" field.
-func (uc *UserCreate) SetCreateTime(t time.Time) *UserCreate {
-	uc.mutation.SetCreateTime(t)
-	return uc
-}
-
-// SetPersonalSignature sets the "personalSignature" field.
-func (uc *UserCreate) SetPersonalSignature(s string) *UserCreate {
-	uc.mutation.SetPersonalSignature(s)
-	return uc
-}
-
-// SetCertificateNumber sets the "certificateNumber" field.
-func (uc *UserCreate) SetCertificateNumber(s string) *UserCreate {
-	uc.mutation.SetCertificateNumber(s)
-	return uc
-}
-
-// SetAge sets the "age" field.
-func (uc *UserCreate) SetAge(i int32) *UserCreate {
-	uc.mutation.SetAge(i)
-	return uc
-}
-
-// SetResidenceAddress sets the "residenceAddress" field.
-func (uc *UserCreate) SetResidenceAddress(s string) *UserCreate {
-	uc.mutation.SetResidenceAddress(s)
-	return uc
-}
-
 // SetUsername sets the "username" field.
 func (uc *UserCreate) SetUsername(s string) *UserCreate {
 	uc.mutation.SetUsername(s)
 	return uc
-}
-
-// SetCertificateType sets the "certificateType" field.
-func (uc *UserCreate) SetCertificateType(s string) *UserCreate {
-	uc.mutation.SetCertificateType(s)
-	return uc
-}
-
-// SetID sets the "id" field.
-func (uc *UserCreate) SetID(s string) *UserCreate {
-	uc.mutation.SetID(s)
-	return uc
-}
-
-// AddVipMemberIDs adds the "vipMember" edge to the Member entity by IDs.
-func (uc *UserCreate) AddVipMemberIDs(ids ...string) *UserCreate {
-	uc.mutation.AddVipMemberIDs(ids...)
-	return uc
-}
-
-// AddVipMember adds the "vipMember" edges to the Member entity.
-func (uc *UserCreate) AddVipMember(m ...*Member) *UserCreate {
-	ids := make([]string, len(m))
-	for i := range m {
-		ids[i] = m[i].ID
-	}
-	return uc.AddVipMemberIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -274,104 +83,20 @@ func (uc *UserCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (uc *UserCreate) check() error {
-	if _, ok := uc.mutation.Gender(); !ok {
-		return &ValidationError{Name: "gender", err: errors.New(`ent: missing required field "User.gender"`)}
-	}
-	if _, ok := uc.mutation.Birthday(); !ok {
-		return &ValidationError{Name: "birthday", err: errors.New(`ent: missing required field "User.birthday"`)}
-	}
-	if _, ok := uc.mutation.SysCode(); !ok {
-		return &ValidationError{Name: "sysCode", err: errors.New(`ent: missing required field "User.sysCode"`)}
-	}
-	if _, ok := uc.mutation.City(); !ok {
-		return &ValidationError{Name: "city", err: errors.New(`ent: missing required field "User.city"`)}
-	}
-	if _, ok := uc.mutation.Country(); !ok {
-		return &ValidationError{Name: "country", err: errors.New(`ent: missing required field "User.country"`)}
-	}
-	if _, ok := uc.mutation.HighestEducation(); !ok {
-		return &ValidationError{Name: "highestEducation", err: errors.New(`ent: missing required field "User.highestEducation"`)}
-	}
-	if _, ok := uc.mutation.IsEnable(); !ok {
-		return &ValidationError{Name: "isEnable", err: errors.New(`ent: missing required field "User.isEnable"`)}
-	}
 	if _, ok := uc.mutation.Password(); !ok {
 		return &ValidationError{Name: "password", err: errors.New(`ent: missing required field "User.password"`)}
-	}
-	if _, ok := uc.mutation.Province(); !ok {
-		return &ValidationError{Name: "province", err: errors.New(`ent: missing required field "User.province"`)}
-	}
-	if _, ok := uc.mutation.UpdateBy(); !ok {
-		return &ValidationError{Name: "updateBy", err: errors.New(`ent: missing required field "User.updateBy"`)}
-	}
-	if _, ok := uc.mutation.CreateBy(); !ok {
-		return &ValidationError{Name: "createBy", err: errors.New(`ent: missing required field "User.createBy"`)}
-	}
-	if _, ok := uc.mutation.PlatformAuthUser(); !ok {
-		return &ValidationError{Name: "platformAuthUser", err: errors.New(`ent: missing required field "User.platformAuthUser"`)}
 	}
 	if _, ok := uc.mutation.Email(); !ok {
 		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "User.email"`)}
 	}
-	if _, ok := uc.mutation.TotalHour(); !ok {
-		return &ValidationError{Name: "totalHour", err: errors.New(`ent: missing required field "User.totalHour"`)}
-	}
-	if _, ok := uc.mutation.Qq(); !ok {
-		return &ValidationError{Name: "qq", err: errors.New(`ent: missing required field "User.qq"`)}
-	}
-	if _, ok := uc.mutation.Address(); !ok {
-		return &ValidationError{Name: "address", err: errors.New(`ent: missing required field "User.address"`)}
-	}
-	if _, ok := uc.mutation.NickName(); !ok {
-		return &ValidationError{Name: "nickName", err: errors.New(`ent: missing required field "User.nickName"`)}
-	}
-	if _, ok := uc.mutation.EmergencyContact(); !ok {
-		return &ValidationError{Name: "emergencyContact", err: errors.New(`ent: missing required field "User.emergencyContact"`)}
-	}
-	if _, ok := uc.mutation.EmergencyContactNumber(); !ok {
-		return &ValidationError{Name: "emergencyContactNumber", err: errors.New(`ent: missing required field "User.emergencyContactNumber"`)}
-	}
-	if _, ok := uc.mutation.Mobile(); !ok {
-		return &ValidationError{Name: "mobile", err: errors.New(`ent: missing required field "User.mobile"`)}
-	}
-	if _, ok := uc.mutation.Wechat(); !ok {
-		return &ValidationError{Name: "wechat", err: errors.New(`ent: missing required field "User.wechat"`)}
-	}
-	if _, ok := uc.mutation.RegSource(); !ok {
-		return &ValidationError{Name: "regSource", err: errors.New(`ent: missing required field "User.regSource"`)}
-	}
 	if _, ok := uc.mutation.Telephone(); !ok {
 		return &ValidationError{Name: "telephone", err: errors.New(`ent: missing required field "User.telephone"`)}
-	}
-	if _, ok := uc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "updateTime", err: errors.New(`ent: missing required field "User.updateTime"`)}
 	}
 	if _, ok := uc.mutation.Avatar(); !ok {
 		return &ValidationError{Name: "avatar", err: errors.New(`ent: missing required field "User.avatar"`)}
 	}
-	if _, ok := uc.mutation.RealName(); !ok {
-		return &ValidationError{Name: "realName", err: errors.New(`ent: missing required field "User.realName"`)}
-	}
-	if _, ok := uc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "createTime", err: errors.New(`ent: missing required field "User.createTime"`)}
-	}
-	if _, ok := uc.mutation.PersonalSignature(); !ok {
-		return &ValidationError{Name: "personalSignature", err: errors.New(`ent: missing required field "User.personalSignature"`)}
-	}
-	if _, ok := uc.mutation.CertificateNumber(); !ok {
-		return &ValidationError{Name: "certificateNumber", err: errors.New(`ent: missing required field "User.certificateNumber"`)}
-	}
-	if _, ok := uc.mutation.Age(); !ok {
-		return &ValidationError{Name: "age", err: errors.New(`ent: missing required field "User.age"`)}
-	}
-	if _, ok := uc.mutation.ResidenceAddress(); !ok {
-		return &ValidationError{Name: "residenceAddress", err: errors.New(`ent: missing required field "User.residenceAddress"`)}
-	}
 	if _, ok := uc.mutation.Username(); !ok {
 		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "User.username"`)}
-	}
-	if _, ok := uc.mutation.CertificateType(); !ok {
-		return &ValidationError{Name: "certificateType", err: errors.New(`ent: missing required field "User.certificateType"`)}
 	}
 	return nil
 }
@@ -387,13 +112,8 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 		}
 		return nil, err
 	}
-	if _spec.ID.Value != nil {
-		if id, ok := _spec.ID.Value.(string); ok {
-			_node.ID = id
-		} else {
-			return nil, fmt.Errorf("unexpected User.ID type: %T", _spec.ID.Value)
-		}
-	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
 	uc.mutation.id = &_node.ID
 	uc.mutation.done = true
 	return _node, nil
@@ -402,159 +122,27 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	var (
 		_node = &User{config: uc.config}
-		_spec = sqlgraph.NewCreateSpec(user.Table, sqlgraph.NewFieldSpec(user.FieldID, field.TypeString))
+		_spec = sqlgraph.NewCreateSpec(user.Table, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
 	)
-	if id, ok := uc.mutation.ID(); ok {
-		_node.ID = id
-		_spec.ID.Value = id
-	}
-	if value, ok := uc.mutation.Gender(); ok {
-		_spec.SetField(user.FieldGender, field.TypeInt32, value)
-		_node.Gender = value
-	}
-	if value, ok := uc.mutation.Birthday(); ok {
-		_spec.SetField(user.FieldBirthday, field.TypeTime, value)
-		_node.Birthday = value
-	}
-	if value, ok := uc.mutation.SysCode(); ok {
-		_spec.SetField(user.FieldSysCode, field.TypeString, value)
-		_node.SysCode = value
-	}
-	if value, ok := uc.mutation.City(); ok {
-		_spec.SetField(user.FieldCity, field.TypeString, value)
-		_node.City = value
-	}
-	if value, ok := uc.mutation.Country(); ok {
-		_spec.SetField(user.FieldCountry, field.TypeString, value)
-		_node.Country = value
-	}
-	if value, ok := uc.mutation.HighestEducation(); ok {
-		_spec.SetField(user.FieldHighestEducation, field.TypeString, value)
-		_node.HighestEducation = value
-	}
-	if value, ok := uc.mutation.IsEnable(); ok {
-		_spec.SetField(user.FieldIsEnable, field.TypeBool, value)
-		_node.IsEnable = value
-	}
 	if value, ok := uc.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
 		_node.Password = value
-	}
-	if value, ok := uc.mutation.Province(); ok {
-		_spec.SetField(user.FieldProvince, field.TypeString, value)
-		_node.Province = value
-	}
-	if value, ok := uc.mutation.UpdateBy(); ok {
-		_spec.SetField(user.FieldUpdateBy, field.TypeString, value)
-		_node.UpdateBy = value
-	}
-	if value, ok := uc.mutation.CreateBy(); ok {
-		_spec.SetField(user.FieldCreateBy, field.TypeString, value)
-		_node.CreateBy = value
-	}
-	if value, ok := uc.mutation.PlatformAuthUser(); ok {
-		_spec.SetField(user.FieldPlatformAuthUser, field.TypeString, value)
-		_node.PlatformAuthUser = value
 	}
 	if value, ok := uc.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 		_node.Email = value
 	}
-	if value, ok := uc.mutation.TotalHour(); ok {
-		_spec.SetField(user.FieldTotalHour, field.TypeFloat32, value)
-		_node.TotalHour = value
-	}
-	if value, ok := uc.mutation.Qq(); ok {
-		_spec.SetField(user.FieldQq, field.TypeString, value)
-		_node.Qq = value
-	}
-	if value, ok := uc.mutation.Address(); ok {
-		_spec.SetField(user.FieldAddress, field.TypeString, value)
-		_node.Address = value
-	}
-	if value, ok := uc.mutation.NickName(); ok {
-		_spec.SetField(user.FieldNickName, field.TypeString, value)
-		_node.NickName = value
-	}
-	if value, ok := uc.mutation.EmergencyContact(); ok {
-		_spec.SetField(user.FieldEmergencyContact, field.TypeString, value)
-		_node.EmergencyContact = value
-	}
-	if value, ok := uc.mutation.EmergencyContactNumber(); ok {
-		_spec.SetField(user.FieldEmergencyContactNumber, field.TypeString, value)
-		_node.EmergencyContactNumber = value
-	}
-	if value, ok := uc.mutation.Mobile(); ok {
-		_spec.SetField(user.FieldMobile, field.TypeString, value)
-		_node.Mobile = value
-	}
-	if value, ok := uc.mutation.Wechat(); ok {
-		_spec.SetField(user.FieldWechat, field.TypeString, value)
-		_node.Wechat = value
-	}
-	if value, ok := uc.mutation.RegSource(); ok {
-		_spec.SetField(user.FieldRegSource, field.TypeInt32, value)
-		_node.RegSource = value
-	}
 	if value, ok := uc.mutation.Telephone(); ok {
 		_spec.SetField(user.FieldTelephone, field.TypeString, value)
 		_node.Telephone = value
-	}
-	if value, ok := uc.mutation.UpdateTime(); ok {
-		_spec.SetField(user.FieldUpdateTime, field.TypeTime, value)
-		_node.UpdateTime = value
 	}
 	if value, ok := uc.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)
 		_node.Avatar = value
 	}
-	if value, ok := uc.mutation.RealName(); ok {
-		_spec.SetField(user.FieldRealName, field.TypeString, value)
-		_node.RealName = value
-	}
-	if value, ok := uc.mutation.CreateTime(); ok {
-		_spec.SetField(user.FieldCreateTime, field.TypeTime, value)
-		_node.CreateTime = value
-	}
-	if value, ok := uc.mutation.PersonalSignature(); ok {
-		_spec.SetField(user.FieldPersonalSignature, field.TypeString, value)
-		_node.PersonalSignature = value
-	}
-	if value, ok := uc.mutation.CertificateNumber(); ok {
-		_spec.SetField(user.FieldCertificateNumber, field.TypeString, value)
-		_node.CertificateNumber = value
-	}
-	if value, ok := uc.mutation.Age(); ok {
-		_spec.SetField(user.FieldAge, field.TypeInt32, value)
-		_node.Age = value
-	}
-	if value, ok := uc.mutation.ResidenceAddress(); ok {
-		_spec.SetField(user.FieldResidenceAddress, field.TypeString, value)
-		_node.ResidenceAddress = value
-	}
 	if value, ok := uc.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
 		_node.Username = value
-	}
-	if value, ok := uc.mutation.CertificateType(); ok {
-		_spec.SetField(user.FieldCertificateType, field.TypeString, value)
-		_node.CertificateType = value
-	}
-	if nodes := uc.mutation.VipMemberIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.VipMemberTable,
-			Columns: []string{user.VipMemberColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(member.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }
@@ -599,6 +187,10 @@ func (ucb *UserCreateBulk) Save(ctx context.Context) ([]*User, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
+				if specs[i].ID.Value != nil {
+					id := specs[i].ID.Value.(int64)
+					nodes[i].ID = int(id)
+				}
 				mutation.done = true
 				return nodes[i], nil
 			})

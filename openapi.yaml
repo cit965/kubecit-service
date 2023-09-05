@@ -165,9 +165,11 @@ components:
                 categoryName:
                     type: string
                 id:
-                    type: string
+                    type: integer
+                    format: int32
                 parentId:
-                    type: string
+                    type: integer
+                    format: int32
                 level:
                     type: string
                 status:

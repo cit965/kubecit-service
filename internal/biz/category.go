@@ -9,8 +9,8 @@ import (
 // Category is a Category model.
 type Category struct {
 	CategoryName string
-	Id           string
-	ParentId     string
+	Id           int32
+	ParentId     int32
 	Level        string
 	Status       string
 }

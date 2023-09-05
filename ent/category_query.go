@@ -19,11 +19,13 @@ import (
 // CategoryQuery is the builder for querying Category entities.
 type CategoryQuery struct {
 	config
-	ctx        *QueryContext
-	order      []category.OrderOption
-	inters     []Interceptor
-	predicates []predicate.Category
-	withCourse *CourseQuery
+	ctx          *QueryContext
+	order        []category.OrderOption
+	inters       []Interceptor
+	predicates   []predicate.Category
+	withCourses  *CourseQuery
+	withParent   *CategoryQuery
+	withChildren *CategoryQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -60,8 +62,8 @@ func (cq *CategoryQuery) Order(o ...category.OrderOption) *CategoryQuery {
 	return cq
 }
 
-// QueryCourse chains the current query on the "course" edge.
-func (cq *CategoryQuery) QueryCourse() *CourseQuery {
+// QueryCourses chains the current query on the "courses" edge.
+func (cq *CategoryQuery) QueryCourses() *CourseQuery {
 	query := (&CourseClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := cq.prepareQuery(ctx); err != nil {
@@ -74,7 +76,51 @@ func (cq *CategoryQuery) QueryCourse() *CourseQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(category.Table, category.FieldID, selector),
 			sqlgraph.To(course.Table, course.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, category.CourseTable, category.CoursePrimaryKey...),
+			sqlgraph.Edge(sqlgraph.O2M, false, category.CoursesTable, category.CoursesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryParent chains the current query on the "parent" edge.
+func (cq *CategoryQuery) QueryParent() *CategoryQuery {
+	query := (&CategoryClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(category.Table, category.FieldID, selector),
+			sqlgraph.To(category.Table, category.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, category.ParentTable, category.ParentColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryChildren chains the current query on the "children" edge.
+func (cq *CategoryQuery) QueryChildren() *CategoryQuery {
+	query := (&CategoryClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(category.Table, category.FieldID, selector),
+			sqlgraph.To(category.Table, category.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, category.ChildrenTable, category.ChildrenColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -106,8 +152,8 @@ func (cq *CategoryQuery) FirstX(ctx context.Context) *Category {
 
 // FirstID returns the first Category ID from the query.
 // Returns a *NotFoundError when no Category ID was found.
-func (cq *CategoryQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (cq *CategoryQuery) FirstID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = cq.Limit(1).IDs(setContextOp(ctx, cq.ctx, "FirstID")); err != nil {
 		return
 	}
@@ -119,7 +165,7 @@ func (cq *CategoryQuery) FirstID(ctx context.Context) (id string, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (cq *CategoryQuery) FirstIDX(ctx context.Context) string {
+func (cq *CategoryQuery) FirstIDX(ctx context.Context) int {
 	id, err := cq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -157,8 +203,8 @@ func (cq *CategoryQuery) OnlyX(ctx context.Context) *Category {
 // OnlyID is like Only, but returns the only Category ID in the query.
 // Returns a *NotSingularError when more than one Category ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (cq *CategoryQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (cq *CategoryQuery) OnlyID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = cq.Limit(2).IDs(setContextOp(ctx, cq.ctx, "OnlyID")); err != nil {
 		return
 	}
@@ -174,7 +220,7 @@ func (cq *CategoryQuery) OnlyID(ctx context.Context) (id string, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (cq *CategoryQuery) OnlyIDX(ctx context.Context) string {
+func (cq *CategoryQuery) OnlyIDX(ctx context.Context) int {
 	id, err := cq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -202,7 +248,7 @@ func (cq *CategoryQuery) AllX(ctx context.Context) []*Category {
 }
 
 // IDs executes the query and returns a list of Category IDs.
-func (cq *CategoryQuery) IDs(ctx context.Context) (ids []string, err error) {
+func (cq *CategoryQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if cq.ctx.Unique == nil && cq.path != nil {
 		cq.Unique(true)
 	}
@@ -214,7 +260,7 @@ func (cq *CategoryQuery) IDs(ctx context.Context) (ids []string, err error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (cq *CategoryQuery) IDsX(ctx context.Context) []string {
+func (cq *CategoryQuery) IDsX(ctx context.Context) []int {
 	ids, err := cq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -269,26 +315,50 @@ func (cq *CategoryQuery) Clone() *CategoryQuery {
 		return nil
 	}
 	return &CategoryQuery{
-		config:     cq.config,
-		ctx:        cq.ctx.Clone(),
-		order:      append([]category.OrderOption{}, cq.order...),
-		inters:     append([]Interceptor{}, cq.inters...),
-		predicates: append([]predicate.Category{}, cq.predicates...),
-		withCourse: cq.withCourse.Clone(),
+		config:       cq.config,
+		ctx:          cq.ctx.Clone(),
+		order:        append([]category.OrderOption{}, cq.order...),
+		inters:       append([]Interceptor{}, cq.inters...),
+		predicates:   append([]predicate.Category{}, cq.predicates...),
+		withCourses:  cq.withCourses.Clone(),
+		withParent:   cq.withParent.Clone(),
+		withChildren: cq.withChildren.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
 	}
 }
 
-// WithCourse tells the query-builder to eager-load the nodes that are connected to
-// the "course" edge. The optional arguments are used to configure the query builder of the edge.
-func (cq *CategoryQuery) WithCourse(opts ...func(*CourseQuery)) *CategoryQuery {
+// WithCourses tells the query-builder to eager-load the nodes that are connected to
+// the "courses" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CategoryQuery) WithCourses(opts ...func(*CourseQuery)) *CategoryQuery {
 	query := (&CourseClient{config: cq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	cq.withCourse = query
+	cq.withCourses = query
+	return cq
+}
+
+// WithParent tells the query-builder to eager-load the nodes that are connected to
+// the "parent" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CategoryQuery) WithParent(opts ...func(*CategoryQuery)) *CategoryQuery {
+	query := (&CategoryClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withParent = query
+	return cq
+}
+
+// WithChildren tells the query-builder to eager-load the nodes that are connected to
+// the "children" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CategoryQuery) WithChildren(opts ...func(*CategoryQuery)) *CategoryQuery {
+	query := (&CategoryClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withChildren = query
 	return cq
 }
 
@@ -370,8 +440,10 @@ func (cq *CategoryQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cat
 	var (
 		nodes       = []*Category{}
 		_spec       = cq.querySpec()
-		loadedTypes = [1]bool{
-			cq.withCourse != nil,
+		loadedTypes = [3]bool{
+			cq.withCourses != nil,
+			cq.withParent != nil,
+			cq.withChildren != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -392,74 +464,115 @@ func (cq *CategoryQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cat
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := cq.withCourse; query != nil {
-		if err := cq.loadCourse(ctx, query, nodes,
-			func(n *Category) { n.Edges.Course = []*Course{} },
-			func(n *Category, e *Course) { n.Edges.Course = append(n.Edges.Course, e) }); err != nil {
+	if query := cq.withCourses; query != nil {
+		if err := cq.loadCourses(ctx, query, nodes,
+			func(n *Category) { n.Edges.Courses = []*Course{} },
+			func(n *Category, e *Course) { n.Edges.Courses = append(n.Edges.Courses, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withParent; query != nil {
+		if err := cq.loadParent(ctx, query, nodes, nil,
+			func(n *Category, e *Category) { n.Edges.Parent = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withChildren; query != nil {
+		if err := cq.loadChildren(ctx, query, nodes,
+			func(n *Category) { n.Edges.Children = []*Category{} },
+			func(n *Category, e *Category) { n.Edges.Children = append(n.Edges.Children, e) }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (cq *CategoryQuery) loadCourse(ctx context.Context, query *CourseQuery, nodes []*Category, init func(*Category), assign func(*Category, *Course)) error {
-	edgeIDs := make([]driver.Value, len(nodes))
-	byID := make(map[string]*Category)
-	nids := make(map[string]map[*Category]struct{})
-	for i, node := range nodes {
-		edgeIDs[i] = node.ID
-		byID[node.ID] = node
+func (cq *CategoryQuery) loadCourses(ctx context.Context, query *CourseQuery, nodes []*Category, init func(*Category), assign func(*Category, *Course)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Category)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
 		if init != nil {
-			init(node)
+			init(nodes[i])
 		}
 	}
-	query.Where(func(s *sql.Selector) {
-		joinT := sql.Table(category.CourseTable)
-		s.Join(joinT).On(s.C(course.FieldID), joinT.C(category.CoursePrimaryKey[0]))
-		s.Where(sql.InValues(joinT.C(category.CoursePrimaryKey[1]), edgeIDs...))
-		columns := s.SelectedColumns()
-		s.Select(joinT.C(category.CoursePrimaryKey[1]))
-		s.AppendSelect(columns...)
-		s.SetDistinct(false)
-	})
-	if err := query.prepareQuery(ctx); err != nil {
-		return err
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(course.FieldCategoryID)
 	}
-	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
-		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
-			assign := spec.Assign
-			values := spec.ScanValues
-			spec.ScanValues = func(columns []string) ([]any, error) {
-				values, err := values(columns[1:])
-				if err != nil {
-					return nil, err
-				}
-				return append([]any{new(sql.NullString)}, values...), nil
-			}
-			spec.Assign = func(columns []string, values []any) error {
-				outValue := values[0].(*sql.NullString).String
-				inValue := values[1].(*sql.NullString).String
-				if nids[inValue] == nil {
-					nids[inValue] = map[*Category]struct{}{byID[outValue]: {}}
-					return assign(columns[1:], values[1:])
-				}
-				nids[inValue][byID[outValue]] = struct{}{}
-				return nil
-			}
-		})
-	})
-	neighbors, err := withInterceptors[[]*Course](ctx, query, qr, query.inters)
+	query.Where(predicate.Course(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(category.CoursesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		nodes, ok := nids[n.ID]
+		fk := n.CategoryID
+		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected "course" node returned %v`, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "category_id" returned %v for node %v`, fk, n.ID)
 		}
-		for kn := range nodes {
-			assign(kn, n)
+		assign(node, n)
+	}
+	return nil
+}
+func (cq *CategoryQuery) loadParent(ctx context.Context, query *CategoryQuery, nodes []*Category, init func(*Category), assign func(*Category, *Category)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Category)
+	for i := range nodes {
+		fk := nodes[i].ParentID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
 		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(category.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "parent_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (cq *CategoryQuery) loadChildren(ctx context.Context, query *CategoryQuery, nodes []*Category, init func(*Category), assign func(*Category, *Category)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Category)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(category.FieldParentID)
+	}
+	query.Where(predicate.Category(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(category.ChildrenColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ParentID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "parent_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -474,7 +587,7 @@ func (cq *CategoryQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (cq *CategoryQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeString))
+	_spec := sqlgraph.NewQuerySpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt))
 	_spec.From = cq.sql
 	if unique := cq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique
@@ -488,6 +601,9 @@ func (cq *CategoryQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != category.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if cq.withParent != nil {
+			_spec.Node.AddColumnOnce(category.FieldParentID)
 		}
 	}
 	if ps := cq.predicates; len(ps) > 0 {

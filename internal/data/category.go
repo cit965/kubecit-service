@@ -30,10 +30,10 @@ func (c *categoryRepo) ListAll(ctx context.Context) ([]*biz.Category, error) {
 	for _, v := range categories {
 		categoryResult = append(categoryResult, &biz.Category{
 			CategoryName: v.Name,
-			Id:           v.ID,
-			ParentId:     v.ParentId,
-			Level:        v.Level,
-			Status:       v.Status,
+			Id:           int32(v.ID),
+
+			Level:  v.Level,
+			Status: v.Status,
 		})
 	}
 	return categoryResult, nil

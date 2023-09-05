@@ -4,6 +4,7 @@ package ent
 
 import (
 	"fmt"
+	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
 	"strings"
 	"time"
@@ -17,54 +18,26 @@ type Course struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID string `json:"id,omitempty"`
-	// IsRecommend holds the value of the "isRecommend" field.
-	IsRecommend bool `json:"isRecommend,omitempty"`
-	// IsIntegral holds the value of the "isIntegral" field.
-	IsIntegral bool `json:"isIntegral,omitempty"`
-	// SaleType holds the value of the "saleType" field.
-	SaleType int32 `json:"saleType,omitempty"`
-	// DiscountPrice holds the value of the "discountPrice" field.
-	DiscountPrice float32 `json:"discountPrice,omitempty"`
-	// TeachingType holds the value of the "teachingType" field.
-	TeachingType int32 `json:"teachingType,omitempty"`
-	// CourseLevel holds the value of the "courseLevel" field.
-	CourseLevel int32 `json:"courseLevel,omitempty"`
-	// UpdateBy holds the value of the "updateBy" field.
-	UpdateBy time.Time `json:"updateBy,omitempty"`
-	// LecturerName holds the value of the "lecturerName" field.
-	LecturerName string `json:"lecturerName,omitempty"`
-	// PurchaseCnt holds the value of the "purchaseCnt" field.
-	PurchaseCnt int32 `json:"purchaseCnt,omitempty"`
-	// TotalHour holds the value of the "totalHour" field.
-	TotalHour float32 `json:"totalHour,omitempty"`
-	// BizCourseDetail holds the value of the "bizCourseDetail" field.
-	BizCourseDetail string `json:"bizCourseDetail,omitempty"`
-	// CourseCover holds the value of the "courseCover" field.
-	CourseCover string `json:"courseCover,omitempty"`
-	// BizCourseChapters holds the value of the "bizCourseChapters" field.
-	BizCourseChapters string `json:"bizCourseChapters,omitempty"`
-	// SalePrice holds the value of the "salePrice" field.
-	SalePrice float32 `json:"salePrice,omitempty"`
-	// BizCourseTeacher holds the value of the "bizCourseTeacher" field.
-	BizCourseTeacher string `json:"bizCourseTeacher,omitempty"`
-	// BizCourseAttachments holds the value of the "bizCourseAttachments" field.
-	BizCourseAttachments string `json:"bizCourseAttachments,omitempty"`
-	// UpdateTime holds the value of the "updateTime" field.
-	UpdateTime time.Time `json:"updateTime,omitempty"`
+	// Level holds the value of the "level" field.
+	Level int32 `json:"level,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// Name holds the value of the "name" field.
+	Name string `json:"name,omitempty"`
+	// Detail holds the value of the "detail" field.
+	Detail string `json:"detail,omitempty"`
+	// Cover holds the value of the "cover" field.
+	Cover string `json:"cover,omitempty"`
+	// Price holds the value of the "price" field.
+	Price float32 `json:"price,omitempty"`
 	// Tags holds the value of the "tags" field.
 	Tags string `json:"tags,omitempty"`
-	// CourseName holds the value of the "courseName" field.
-	CourseName string `json:"courseName,omitempty"`
-	// CreateBy holds the value of the "createBy" field.
-	CreateBy string `json:"createBy,omitempty"`
-	// PurchaseCounter holds the value of the "purchaseCounter" field.
-	PurchaseCounter int32 `json:"purchaseCounter,omitempty"`
-	// CreateTime holds the value of the "createTime" field.
-	CreateTime time.Time `json:"createTime,omitempty"`
-	// Clicks holds the value of the "clicks" field.
-	Clicks int32 `json:"clicks,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt string `json:"created_at,omitempty"`
 	// Status holds the value of the "status" field.
-	Status string `json:"status,omitempty"`
+	Status int32 `json:"status,omitempty"`
+	// CategoryID holds the value of the "category_id" field.
+	CategoryID int `json:"category_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CourseQuery when eager-loading is set.
 	Edges        CourseEdges `json:"edges"`
@@ -73,20 +46,24 @@ type Course struct {
 
 // CourseEdges holds the relations/edges for other nodes in the graph.
 type CourseEdges struct {
-	// Categories holds the value of the categories edge.
-	Categories []*Category `json:"categories,omitempty"`
+	// Owner holds the value of the owner edge.
+	Owner *Category `json:"owner,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
-// CategoriesOrErr returns the Categories value or an error if the edge
-// was not loaded in eager-loading.
-func (e CourseEdges) CategoriesOrErr() ([]*Category, error) {
+// OwnerOrErr returns the Owner value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CourseEdges) OwnerOrErr() (*Category, error) {
 	if e.loadedTypes[0] {
-		return e.Categories, nil
+		if e.Owner == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: category.Label}
+		}
+		return e.Owner, nil
 	}
-	return nil, &NotLoadedError{edge: "categories"}
+	return nil, &NotLoadedError{edge: "owner"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -94,15 +71,13 @@ func (*Course) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case course.FieldIsRecommend, course.FieldIsIntegral:
-			values[i] = new(sql.NullBool)
-		case course.FieldDiscountPrice, course.FieldTotalHour, course.FieldSalePrice:
+		case course.FieldPrice:
 			values[i] = new(sql.NullFloat64)
-		case course.FieldSaleType, course.FieldTeachingType, course.FieldCourseLevel, course.FieldPurchaseCnt, course.FieldPurchaseCounter, course.FieldClicks:
+		case course.FieldLevel, course.FieldStatus, course.FieldCategoryID:
 			values[i] = new(sql.NullInt64)
-		case course.FieldID, course.FieldLecturerName, course.FieldBizCourseDetail, course.FieldCourseCover, course.FieldBizCourseChapters, course.FieldBizCourseTeacher, course.FieldBizCourseAttachments, course.FieldTags, course.FieldCourseName, course.FieldCreateBy, course.FieldStatus:
+		case course.FieldID, course.FieldName, course.FieldDetail, course.FieldCover, course.FieldTags, course.FieldCreatedAt:
 			values[i] = new(sql.NullString)
-		case course.FieldUpdateBy, course.FieldUpdateTime, course.FieldCreateTime:
+		case course.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -125,107 +100,41 @@ func (c *Course) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.ID = value.String
 			}
-		case course.FieldIsRecommend:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field isRecommend", values[i])
-			} else if value.Valid {
-				c.IsRecommend = value.Bool
-			}
-		case course.FieldIsIntegral:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field isIntegral", values[i])
-			} else if value.Valid {
-				c.IsIntegral = value.Bool
-			}
-		case course.FieldSaleType:
+		case course.FieldLevel:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field saleType", values[i])
+				return fmt.Errorf("unexpected type %T for field level", values[i])
 			} else if value.Valid {
-				c.SaleType = int32(value.Int64)
+				c.Level = int32(value.Int64)
 			}
-		case course.FieldDiscountPrice:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field discountPrice", values[i])
-			} else if value.Valid {
-				c.DiscountPrice = float32(value.Float64)
-			}
-		case course.FieldTeachingType:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field teachingType", values[i])
-			} else if value.Valid {
-				c.TeachingType = int32(value.Int64)
-			}
-		case course.FieldCourseLevel:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field courseLevel", values[i])
-			} else if value.Valid {
-				c.CourseLevel = int32(value.Int64)
-			}
-		case course.FieldUpdateBy:
+		case course.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updateBy", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				c.UpdateBy = value.Time
+				c.UpdatedAt = value.Time
 			}
-		case course.FieldLecturerName:
+		case course.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field lecturerName", values[i])
+				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				c.LecturerName = value.String
+				c.Name = value.String
 			}
-		case course.FieldPurchaseCnt:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field purchaseCnt", values[i])
+		case course.FieldDetail:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field detail", values[i])
 			} else if value.Valid {
-				c.PurchaseCnt = int32(value.Int64)
+				c.Detail = value.String
 			}
-		case course.FieldTotalHour:
+		case course.FieldCover:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field cover", values[i])
+			} else if value.Valid {
+				c.Cover = value.String
+			}
+		case course.FieldPrice:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field totalHour", values[i])
+				return fmt.Errorf("unexpected type %T for field price", values[i])
 			} else if value.Valid {
-				c.TotalHour = float32(value.Float64)
-			}
-		case course.FieldBizCourseDetail:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bizCourseDetail", values[i])
-			} else if value.Valid {
-				c.BizCourseDetail = value.String
-			}
-		case course.FieldCourseCover:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field courseCover", values[i])
-			} else if value.Valid {
-				c.CourseCover = value.String
-			}
-		case course.FieldBizCourseChapters:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bizCourseChapters", values[i])
-			} else if value.Valid {
-				c.BizCourseChapters = value.String
-			}
-		case course.FieldSalePrice:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field salePrice", values[i])
-			} else if value.Valid {
-				c.SalePrice = float32(value.Float64)
-			}
-		case course.FieldBizCourseTeacher:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bizCourseTeacher", values[i])
-			} else if value.Valid {
-				c.BizCourseTeacher = value.String
-			}
-		case course.FieldBizCourseAttachments:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bizCourseAttachments", values[i])
-			} else if value.Valid {
-				c.BizCourseAttachments = value.String
-			}
-		case course.FieldUpdateTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updateTime", values[i])
-			} else if value.Valid {
-				c.UpdateTime = value.Time
+				c.Price = float32(value.Float64)
 			}
 		case course.FieldTags:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -233,41 +142,23 @@ func (c *Course) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Tags = value.String
 			}
-		case course.FieldCourseName:
+		case course.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field courseName", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				c.CourseName = value.String
-			}
-		case course.FieldCreateBy:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field createBy", values[i])
-			} else if value.Valid {
-				c.CreateBy = value.String
-			}
-		case course.FieldPurchaseCounter:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field purchaseCounter", values[i])
-			} else if value.Valid {
-				c.PurchaseCounter = int32(value.Int64)
-			}
-		case course.FieldCreateTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createTime", values[i])
-			} else if value.Valid {
-				c.CreateTime = value.Time
-			}
-		case course.FieldClicks:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field clicks", values[i])
-			} else if value.Valid {
-				c.Clicks = int32(value.Int64)
+				c.CreatedAt = value.String
 			}
 		case course.FieldStatus:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				c.Status = value.String
+				c.Status = int32(value.Int64)
+			}
+		case course.FieldCategoryID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field category_id", values[i])
+			} else if value.Valid {
+				c.CategoryID = int(value.Int64)
 			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
@@ -282,9 +173,9 @@ func (c *Course) Value(name string) (ent.Value, error) {
 	return c.selectValues.Get(name)
 }
 
-// QueryCategories queries the "categories" edge of the Course entity.
-func (c *Course) QueryCategories() *CategoryQuery {
-	return NewCourseClient(c.config).QueryCategories(c)
+// QueryOwner queries the "owner" edge of the Course entity.
+func (c *Course) QueryOwner() *CategoryQuery {
+	return NewCourseClient(c.config).QueryOwner(c)
 }
 
 // Update returns a builder for updating this Course.
@@ -310,77 +201,35 @@ func (c *Course) String() string {
 	var builder strings.Builder
 	builder.WriteString("Course(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", c.ID))
-	builder.WriteString("isRecommend=")
-	builder.WriteString(fmt.Sprintf("%v", c.IsRecommend))
+	builder.WriteString("level=")
+	builder.WriteString(fmt.Sprintf("%v", c.Level))
 	builder.WriteString(", ")
-	builder.WriteString("isIntegral=")
-	builder.WriteString(fmt.Sprintf("%v", c.IsIntegral))
+	builder.WriteString("updated_at=")
+	builder.WriteString(c.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("saleType=")
-	builder.WriteString(fmt.Sprintf("%v", c.SaleType))
+	builder.WriteString("name=")
+	builder.WriteString(c.Name)
 	builder.WriteString(", ")
-	builder.WriteString("discountPrice=")
-	builder.WriteString(fmt.Sprintf("%v", c.DiscountPrice))
+	builder.WriteString("detail=")
+	builder.WriteString(c.Detail)
 	builder.WriteString(", ")
-	builder.WriteString("teachingType=")
-	builder.WriteString(fmt.Sprintf("%v", c.TeachingType))
+	builder.WriteString("cover=")
+	builder.WriteString(c.Cover)
 	builder.WriteString(", ")
-	builder.WriteString("courseLevel=")
-	builder.WriteString(fmt.Sprintf("%v", c.CourseLevel))
-	builder.WriteString(", ")
-	builder.WriteString("updateBy=")
-	builder.WriteString(c.UpdateBy.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("lecturerName=")
-	builder.WriteString(c.LecturerName)
-	builder.WriteString(", ")
-	builder.WriteString("purchaseCnt=")
-	builder.WriteString(fmt.Sprintf("%v", c.PurchaseCnt))
-	builder.WriteString(", ")
-	builder.WriteString("totalHour=")
-	builder.WriteString(fmt.Sprintf("%v", c.TotalHour))
-	builder.WriteString(", ")
-	builder.WriteString("bizCourseDetail=")
-	builder.WriteString(c.BizCourseDetail)
-	builder.WriteString(", ")
-	builder.WriteString("courseCover=")
-	builder.WriteString(c.CourseCover)
-	builder.WriteString(", ")
-	builder.WriteString("bizCourseChapters=")
-	builder.WriteString(c.BizCourseChapters)
-	builder.WriteString(", ")
-	builder.WriteString("salePrice=")
-	builder.WriteString(fmt.Sprintf("%v", c.SalePrice))
-	builder.WriteString(", ")
-	builder.WriteString("bizCourseTeacher=")
-	builder.WriteString(c.BizCourseTeacher)
-	builder.WriteString(", ")
-	builder.WriteString("bizCourseAttachments=")
-	builder.WriteString(c.BizCourseAttachments)
-	builder.WriteString(", ")
-	builder.WriteString("updateTime=")
-	builder.WriteString(c.UpdateTime.Format(time.ANSIC))
+	builder.WriteString("price=")
+	builder.WriteString(fmt.Sprintf("%v", c.Price))
 	builder.WriteString(", ")
 	builder.WriteString("tags=")
 	builder.WriteString(c.Tags)
 	builder.WriteString(", ")
-	builder.WriteString("courseName=")
-	builder.WriteString(c.CourseName)
-	builder.WriteString(", ")
-	builder.WriteString("createBy=")
-	builder.WriteString(c.CreateBy)
-	builder.WriteString(", ")
-	builder.WriteString("purchaseCounter=")
-	builder.WriteString(fmt.Sprintf("%v", c.PurchaseCounter))
-	builder.WriteString(", ")
-	builder.WriteString("createTime=")
-	builder.WriteString(c.CreateTime.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("clicks=")
-	builder.WriteString(fmt.Sprintf("%v", c.Clicks))
+	builder.WriteString("created_at=")
+	builder.WriteString(c.CreatedAt)
 	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(c.Status)
+	builder.WriteString(fmt.Sprintf("%v", c.Status))
+	builder.WriteString(", ")
+	builder.WriteString("category_id=")
+	builder.WriteString(fmt.Sprintf("%v", c.CategoryID))
 	builder.WriteByte(')')
 	return builder.String()
 }
