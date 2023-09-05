@@ -32,18 +32,6 @@ func (f CourseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CourseMutation", m)
 }
 
-// The MemberFunc type is an adapter to allow the use of ordinary
-// function as Member mutator.
-type MemberFunc func(context.Context, *ent.MemberMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f MemberFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	if mv, ok := m.(*ent.MemberMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.MemberMutation", m)
-}
-
 // The SliderFunc type is an adapter to allow the use of ordinary
 // function as Slider mutator.
 type SliderFunc func(context.Context, *ent.SliderMutation) (ent.Value, error)
@@ -54,18 +42,6 @@ func (f SliderFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SliderMutation", m)
-}
-
-// The TokenFunc type is an adapter to allow the use of ordinary
-// function as Token mutator.
-type TokenFunc func(context.Context, *ent.TokenMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f TokenFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	if mv, ok := m.(*ent.TokenMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TokenMutation", m)
 }
 
 // The UserFunc type is an adapter to allow the use of ordinary

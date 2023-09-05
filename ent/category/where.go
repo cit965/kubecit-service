@@ -10,68 +10,53 @@ import (
 )
 
 // ID filters vertices based on their ID field.
-func ID(id string) predicate.Category {
+func ID(id int) predicate.Category {
 	return predicate.Category(sql.FieldEQ(FieldID, id))
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id string) predicate.Category {
+func IDEQ(id int) predicate.Category {
 	return predicate.Category(sql.FieldEQ(FieldID, id))
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id string) predicate.Category {
+func IDNEQ(id int) predicate.Category {
 	return predicate.Category(sql.FieldNEQ(FieldID, id))
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...string) predicate.Category {
+func IDIn(ids ...int) predicate.Category {
 	return predicate.Category(sql.FieldIn(FieldID, ids...))
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...string) predicate.Category {
+func IDNotIn(ids ...int) predicate.Category {
 	return predicate.Category(sql.FieldNotIn(FieldID, ids...))
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id string) predicate.Category {
+func IDGT(id int) predicate.Category {
 	return predicate.Category(sql.FieldGT(FieldID, id))
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id string) predicate.Category {
+func IDGTE(id int) predicate.Category {
 	return predicate.Category(sql.FieldGTE(FieldID, id))
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id string) predicate.Category {
+func IDLT(id int) predicate.Category {
 	return predicate.Category(sql.FieldLT(FieldID, id))
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id string) predicate.Category {
+func IDLTE(id int) predicate.Category {
 	return predicate.Category(sql.FieldLTE(FieldID, id))
-}
-
-// IDEqualFold applies the EqualFold predicate on the ID field.
-func IDEqualFold(id string) predicate.Category {
-	return predicate.Category(sql.FieldEqualFold(FieldID, id))
-}
-
-// IDContainsFold applies the ContainsFold predicate on the ID field.
-func IDContainsFold(id string) predicate.Category {
-	return predicate.Category(sql.FieldContainsFold(FieldID, id))
 }
 
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.Category {
 	return predicate.Category(sql.FieldEQ(FieldName, v))
-}
-
-// ParentId applies equality check predicate on the "parentId" field. It's identical to ParentIdEQ.
-func ParentId(v string) predicate.Category {
-	return predicate.Category(sql.FieldEQ(FieldParentId, v))
 }
 
 // Level applies equality check predicate on the "level" field. It's identical to LevelEQ.
@@ -82,6 +67,11 @@ func Level(v string) predicate.Category {
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
 func Status(v string) predicate.Category {
 	return predicate.Category(sql.FieldEQ(FieldStatus, v))
+}
+
+// ParentID applies equality check predicate on the "parent_id" field. It's identical to ParentIDEQ.
+func ParentID(v int) predicate.Category {
+	return predicate.Category(sql.FieldEQ(FieldParentID, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.
@@ -147,71 +137,6 @@ func NameEqualFold(v string) predicate.Category {
 // NameContainsFold applies the ContainsFold predicate on the "name" field.
 func NameContainsFold(v string) predicate.Category {
 	return predicate.Category(sql.FieldContainsFold(FieldName, v))
-}
-
-// ParentIdEQ applies the EQ predicate on the "parentId" field.
-func ParentIdEQ(v string) predicate.Category {
-	return predicate.Category(sql.FieldEQ(FieldParentId, v))
-}
-
-// ParentIdNEQ applies the NEQ predicate on the "parentId" field.
-func ParentIdNEQ(v string) predicate.Category {
-	return predicate.Category(sql.FieldNEQ(FieldParentId, v))
-}
-
-// ParentIdIn applies the In predicate on the "parentId" field.
-func ParentIdIn(vs ...string) predicate.Category {
-	return predicate.Category(sql.FieldIn(FieldParentId, vs...))
-}
-
-// ParentIdNotIn applies the NotIn predicate on the "parentId" field.
-func ParentIdNotIn(vs ...string) predicate.Category {
-	return predicate.Category(sql.FieldNotIn(FieldParentId, vs...))
-}
-
-// ParentIdGT applies the GT predicate on the "parentId" field.
-func ParentIdGT(v string) predicate.Category {
-	return predicate.Category(sql.FieldGT(FieldParentId, v))
-}
-
-// ParentIdGTE applies the GTE predicate on the "parentId" field.
-func ParentIdGTE(v string) predicate.Category {
-	return predicate.Category(sql.FieldGTE(FieldParentId, v))
-}
-
-// ParentIdLT applies the LT predicate on the "parentId" field.
-func ParentIdLT(v string) predicate.Category {
-	return predicate.Category(sql.FieldLT(FieldParentId, v))
-}
-
-// ParentIdLTE applies the LTE predicate on the "parentId" field.
-func ParentIdLTE(v string) predicate.Category {
-	return predicate.Category(sql.FieldLTE(FieldParentId, v))
-}
-
-// ParentIdContains applies the Contains predicate on the "parentId" field.
-func ParentIdContains(v string) predicate.Category {
-	return predicate.Category(sql.FieldContains(FieldParentId, v))
-}
-
-// ParentIdHasPrefix applies the HasPrefix predicate on the "parentId" field.
-func ParentIdHasPrefix(v string) predicate.Category {
-	return predicate.Category(sql.FieldHasPrefix(FieldParentId, v))
-}
-
-// ParentIdHasSuffix applies the HasSuffix predicate on the "parentId" field.
-func ParentIdHasSuffix(v string) predicate.Category {
-	return predicate.Category(sql.FieldHasSuffix(FieldParentId, v))
-}
-
-// ParentIdEqualFold applies the EqualFold predicate on the "parentId" field.
-func ParentIdEqualFold(v string) predicate.Category {
-	return predicate.Category(sql.FieldEqualFold(FieldParentId, v))
-}
-
-// ParentIdContainsFold applies the ContainsFold predicate on the "parentId" field.
-func ParentIdContainsFold(v string) predicate.Category {
-	return predicate.Category(sql.FieldContainsFold(FieldParentId, v))
 }
 
 // LevelEQ applies the EQ predicate on the "level" field.
@@ -344,21 +269,97 @@ func StatusContainsFold(v string) predicate.Category {
 	return predicate.Category(sql.FieldContainsFold(FieldStatus, v))
 }
 
-// HasCourse applies the HasEdge predicate on the "course" edge.
-func HasCourse() predicate.Category {
+// ParentIDEQ applies the EQ predicate on the "parent_id" field.
+func ParentIDEQ(v int) predicate.Category {
+	return predicate.Category(sql.FieldEQ(FieldParentID, v))
+}
+
+// ParentIDNEQ applies the NEQ predicate on the "parent_id" field.
+func ParentIDNEQ(v int) predicate.Category {
+	return predicate.Category(sql.FieldNEQ(FieldParentID, v))
+}
+
+// ParentIDIn applies the In predicate on the "parent_id" field.
+func ParentIDIn(vs ...int) predicate.Category {
+	return predicate.Category(sql.FieldIn(FieldParentID, vs...))
+}
+
+// ParentIDNotIn applies the NotIn predicate on the "parent_id" field.
+func ParentIDNotIn(vs ...int) predicate.Category {
+	return predicate.Category(sql.FieldNotIn(FieldParentID, vs...))
+}
+
+// ParentIDIsNil applies the IsNil predicate on the "parent_id" field.
+func ParentIDIsNil() predicate.Category {
+	return predicate.Category(sql.FieldIsNull(FieldParentID))
+}
+
+// ParentIDNotNil applies the NotNil predicate on the "parent_id" field.
+func ParentIDNotNil() predicate.Category {
+	return predicate.Category(sql.FieldNotNull(FieldParentID))
+}
+
+// HasCourses applies the HasEdge predicate on the "courses" edge.
+func HasCourses() predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, CourseTable, CoursePrimaryKey...),
+			sqlgraph.Edge(sqlgraph.O2M, false, CoursesTable, CoursesColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasCourseWith applies the HasEdge predicate on the "course" edge with a given conditions (other predicates).
-func HasCourseWith(preds ...predicate.Course) predicate.Category {
+// HasCoursesWith applies the HasEdge predicate on the "courses" edge with a given conditions (other predicates).
+func HasCoursesWith(preds ...predicate.Course) predicate.Category {
 	return predicate.Category(func(s *sql.Selector) {
-		step := newCourseStep()
+		step := newCoursesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasParent applies the HasEdge predicate on the "parent" edge.
+func HasParent() predicate.Category {
+	return predicate.Category(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ParentTable, ParentColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasParentWith applies the HasEdge predicate on the "parent" edge with a given conditions (other predicates).
+func HasParentWith(preds ...predicate.Category) predicate.Category {
+	return predicate.Category(func(s *sql.Selector) {
+		step := newParentStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasChildren applies the HasEdge predicate on the "children" edge.
+func HasChildren() predicate.Category {
+	return predicate.Category(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ChildrenTable, ChildrenColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasChildrenWith applies the HasEdge predicate on the "children" edge with a given conditions (other predicates).
+func HasChildrenWith(preds ...predicate.Category) predicate.Category {
+	return predicate.Category(func(s *sql.Selector) {
+		step := newChildrenStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

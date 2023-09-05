@@ -16,16 +16,16 @@ func (Category) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").
 			Default("unknown"),
-		field.String("id").Unique(),
-		field.String("parentId"),
 		field.String("level"),
 		field.String("status"),
+		field.Int("parent_id").Optional(),
 	}
 }
 
 // Edges of the Category.
 func (Category) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("course", Course.Type).Ref("categories"),
+		edge.To("courses", Course.Type),
+		edge.To("children", Category.Type).From("parent").Unique().Field("parent_id"),
 	}
 }

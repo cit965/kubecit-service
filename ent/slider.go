@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"kubecit-service/ent/slider"
 	"strings"
-	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -16,25 +15,13 @@ import (
 type Slider struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID string `json:"id,omitempty"`
+	ID int `json:"id,omitempty"`
 	// CreateBy holds the value of the "createBy" field.
 	CreateBy string `json:"createBy,omitempty"`
-	// ImageName holds the value of the "imageName" field.
-	ImageName string `json:"imageName,omitempty"`
-	// CreateTime holds the value of the "createTime" field.
-	CreateTime time.Time `json:"createTime,omitempty"`
-	// UpdateBy holds the value of the "updateBy" field.
-	UpdateBy string `json:"updateBy,omitempty"`
-	// ImageRemark holds the value of the "imageRemark" field.
-	ImageRemark string `json:"imageRemark,omitempty"`
-	// ImageUrl holds the value of the "imageUrl" field.
-	ImageUrl string `json:"imageUrl,omitempty"`
-	// PcHref holds the value of the "pcHref" field.
-	PcHref string `json:"pcHref,omitempty"`
-	// UpdateTime holds the value of the "updateTime" field.
-	UpdateTime time.Time `json:"updateTime,omitempty"`
-	// AppHref holds the value of the "appHref" field.
-	AppHref      string `json:"appHref,omitempty"`
+	// ImageName holds the value of the "image_name" field.
+	ImageName string `json:"image_name,omitempty"`
+	// ImageURL holds the value of the "image_url" field.
+	ImageURL     string `json:"image_url,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -43,10 +30,10 @@ func (*Slider) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case slider.FieldID, slider.FieldCreateBy, slider.FieldImageName, slider.FieldUpdateBy, slider.FieldImageRemark, slider.FieldImageUrl, slider.FieldPcHref, slider.FieldAppHref:
+		case slider.FieldID:
+			values[i] = new(sql.NullInt64)
+		case slider.FieldCreateBy, slider.FieldImageName, slider.FieldImageURL:
 			values[i] = new(sql.NullString)
-		case slider.FieldCreateTime, slider.FieldUpdateTime:
-			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -63,11 +50,11 @@ func (s *Slider) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case slider.FieldID:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value.Valid {
-				s.ID = value.String
+			value, ok := values[i].(*sql.NullInt64)
+			if !ok {
+				return fmt.Errorf("unexpected type %T for field id", value)
 			}
+			s.ID = int(value.Int64)
 		case slider.FieldCreateBy:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field createBy", values[i])
@@ -76,51 +63,15 @@ func (s *Slider) assignValues(columns []string, values []any) error {
 			}
 		case slider.FieldImageName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field imageName", values[i])
+				return fmt.Errorf("unexpected type %T for field image_name", values[i])
 			} else if value.Valid {
 				s.ImageName = value.String
 			}
-		case slider.FieldCreateTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createTime", values[i])
-			} else if value.Valid {
-				s.CreateTime = value.Time
-			}
-		case slider.FieldUpdateBy:
+		case slider.FieldImageURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field updateBy", values[i])
+				return fmt.Errorf("unexpected type %T for field image_url", values[i])
 			} else if value.Valid {
-				s.UpdateBy = value.String
-			}
-		case slider.FieldImageRemark:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field imageRemark", values[i])
-			} else if value.Valid {
-				s.ImageRemark = value.String
-			}
-		case slider.FieldImageUrl:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field imageUrl", values[i])
-			} else if value.Valid {
-				s.ImageUrl = value.String
-			}
-		case slider.FieldPcHref:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field pcHref", values[i])
-			} else if value.Valid {
-				s.PcHref = value.String
-			}
-		case slider.FieldUpdateTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updateTime", values[i])
-			} else if value.Valid {
-				s.UpdateTime = value.Time
-			}
-		case slider.FieldAppHref:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field appHref", values[i])
-			} else if value.Valid {
-				s.AppHref = value.String
+				s.ImageURL = value.String
 			}
 		default:
 			s.selectValues.Set(columns[i], values[i])
@@ -161,29 +112,11 @@ func (s *Slider) String() string {
 	builder.WriteString("createBy=")
 	builder.WriteString(s.CreateBy)
 	builder.WriteString(", ")
-	builder.WriteString("imageName=")
+	builder.WriteString("image_name=")
 	builder.WriteString(s.ImageName)
 	builder.WriteString(", ")
-	builder.WriteString("createTime=")
-	builder.WriteString(s.CreateTime.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("updateBy=")
-	builder.WriteString(s.UpdateBy)
-	builder.WriteString(", ")
-	builder.WriteString("imageRemark=")
-	builder.WriteString(s.ImageRemark)
-	builder.WriteString(", ")
-	builder.WriteString("imageUrl=")
-	builder.WriteString(s.ImageUrl)
-	builder.WriteString(", ")
-	builder.WriteString("pcHref=")
-	builder.WriteString(s.PcHref)
-	builder.WriteString(", ")
-	builder.WriteString("updateTime=")
-	builder.WriteString(s.UpdateTime.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("appHref=")
-	builder.WriteString(s.AppHref)
+	builder.WriteString("image_url=")
+	builder.WriteString(s.ImageURL)
 	builder.WriteByte(')')
 	return builder.String()
 }

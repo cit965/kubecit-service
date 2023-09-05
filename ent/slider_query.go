@@ -81,8 +81,8 @@ func (sq *SliderQuery) FirstX(ctx context.Context) *Slider {
 
 // FirstID returns the first Slider ID from the query.
 // Returns a *NotFoundError when no Slider ID was found.
-func (sq *SliderQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (sq *SliderQuery) FirstID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = sq.Limit(1).IDs(setContextOp(ctx, sq.ctx, "FirstID")); err != nil {
 		return
 	}
@@ -94,7 +94,7 @@ func (sq *SliderQuery) FirstID(ctx context.Context) (id string, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (sq *SliderQuery) FirstIDX(ctx context.Context) string {
+func (sq *SliderQuery) FirstIDX(ctx context.Context) int {
 	id, err := sq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -132,8 +132,8 @@ func (sq *SliderQuery) OnlyX(ctx context.Context) *Slider {
 // OnlyID is like Only, but returns the only Slider ID in the query.
 // Returns a *NotSingularError when more than one Slider ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (sq *SliderQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (sq *SliderQuery) OnlyID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = sq.Limit(2).IDs(setContextOp(ctx, sq.ctx, "OnlyID")); err != nil {
 		return
 	}
@@ -149,7 +149,7 @@ func (sq *SliderQuery) OnlyID(ctx context.Context) (id string, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (sq *SliderQuery) OnlyIDX(ctx context.Context) string {
+func (sq *SliderQuery) OnlyIDX(ctx context.Context) int {
 	id, err := sq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -177,7 +177,7 @@ func (sq *SliderQuery) AllX(ctx context.Context) []*Slider {
 }
 
 // IDs executes the query and returns a list of Slider IDs.
-func (sq *SliderQuery) IDs(ctx context.Context) (ids []string, err error) {
+func (sq *SliderQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if sq.ctx.Unique == nil && sq.path != nil {
 		sq.Unique(true)
 	}
@@ -189,7 +189,7 @@ func (sq *SliderQuery) IDs(ctx context.Context) (ids []string, err error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (sq *SliderQuery) IDsX(ctx context.Context) []string {
+func (sq *SliderQuery) IDsX(ctx context.Context) []int {
 	ids, err := sq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -364,7 +364,7 @@ func (sq *SliderQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (sq *SliderQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(slider.Table, slider.Columns, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeString))
+	_spec := sqlgraph.NewQuerySpec(slider.Table, slider.Columns, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeInt))
 	_spec.From = sq.sql
 	if unique := sq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique

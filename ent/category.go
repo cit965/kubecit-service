@@ -15,15 +15,15 @@ import (
 type Category struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID string `json:"id,omitempty"`
+	ID int `json:"id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// ParentId holds the value of the "parentId" field.
-	ParentId string `json:"parentId,omitempty"`
 	// Level holds the value of the "level" field.
 	Level string `json:"level,omitempty"`
 	// Status holds the value of the "status" field.
 	Status string `json:"status,omitempty"`
+	// ParentID holds the value of the "parent_id" field.
+	ParentID int `json:"parent_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CategoryQuery when eager-loading is set.
 	Edges        CategoryEdges `json:"edges"`
@@ -32,20 +32,46 @@ type Category struct {
 
 // CategoryEdges holds the relations/edges for other nodes in the graph.
 type CategoryEdges struct {
-	// Course holds the value of the course edge.
-	Course []*Course `json:"course,omitempty"`
+	// Courses holds the value of the courses edge.
+	Courses []*Course `json:"courses,omitempty"`
+	// Parent holds the value of the parent edge.
+	Parent *Category `json:"parent,omitempty"`
+	// Children holds the value of the children edge.
+	Children []*Category `json:"children,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [3]bool
 }
 
-// CourseOrErr returns the Course value or an error if the edge
+// CoursesOrErr returns the Courses value or an error if the edge
 // was not loaded in eager-loading.
-func (e CategoryEdges) CourseOrErr() ([]*Course, error) {
+func (e CategoryEdges) CoursesOrErr() ([]*Course, error) {
 	if e.loadedTypes[0] {
-		return e.Course, nil
+		return e.Courses, nil
 	}
-	return nil, &NotLoadedError{edge: "course"}
+	return nil, &NotLoadedError{edge: "courses"}
+}
+
+// ParentOrErr returns the Parent value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CategoryEdges) ParentOrErr() (*Category, error) {
+	if e.loadedTypes[1] {
+		if e.Parent == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: category.Label}
+		}
+		return e.Parent, nil
+	}
+	return nil, &NotLoadedError{edge: "parent"}
+}
+
+// ChildrenOrErr returns the Children value or an error if the edge
+// was not loaded in eager-loading.
+func (e CategoryEdges) ChildrenOrErr() ([]*Category, error) {
+	if e.loadedTypes[2] {
+		return e.Children, nil
+	}
+	return nil, &NotLoadedError{edge: "children"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -53,7 +79,9 @@ func (*Category) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case category.FieldID, category.FieldName, category.FieldParentId, category.FieldLevel, category.FieldStatus:
+		case category.FieldID, category.FieldParentID:
+			values[i] = new(sql.NullInt64)
+		case category.FieldName, category.FieldLevel, category.FieldStatus:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -71,22 +99,16 @@ func (c *Category) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case category.FieldID:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value.Valid {
-				c.ID = value.String
+			value, ok := values[i].(*sql.NullInt64)
+			if !ok {
+				return fmt.Errorf("unexpected type %T for field id", value)
 			}
+			c.ID = int(value.Int64)
 		case category.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				c.Name = value.String
-			}
-		case category.FieldParentId:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field parentId", values[i])
-			} else if value.Valid {
-				c.ParentId = value.String
 			}
 		case category.FieldLevel:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -99,6 +121,12 @@ func (c *Category) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				c.Status = value.String
+			}
+		case category.FieldParentID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field parent_id", values[i])
+			} else if value.Valid {
+				c.ParentID = int(value.Int64)
 			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
@@ -113,9 +141,19 @@ func (c *Category) Value(name string) (ent.Value, error) {
 	return c.selectValues.Get(name)
 }
 
-// QueryCourse queries the "course" edge of the Category entity.
-func (c *Category) QueryCourse() *CourseQuery {
-	return NewCategoryClient(c.config).QueryCourse(c)
+// QueryCourses queries the "courses" edge of the Category entity.
+func (c *Category) QueryCourses() *CourseQuery {
+	return NewCategoryClient(c.config).QueryCourses(c)
+}
+
+// QueryParent queries the "parent" edge of the Category entity.
+func (c *Category) QueryParent() *CategoryQuery {
+	return NewCategoryClient(c.config).QueryParent(c)
+}
+
+// QueryChildren queries the "children" edge of the Category entity.
+func (c *Category) QueryChildren() *CategoryQuery {
+	return NewCategoryClient(c.config).QueryChildren(c)
 }
 
 // Update returns a builder for updating this Category.
@@ -144,14 +182,14 @@ func (c *Category) String() string {
 	builder.WriteString("name=")
 	builder.WriteString(c.Name)
 	builder.WriteString(", ")
-	builder.WriteString("parentId=")
-	builder.WriteString(c.ParentId)
-	builder.WriteString(", ")
 	builder.WriteString("level=")
 	builder.WriteString(c.Level)
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(c.Status)
+	builder.WriteString(", ")
+	builder.WriteString("parent_id=")
+	builder.WriteString(fmt.Sprintf("%v", c.ParentID))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -34,12 +34,6 @@ func (cc *CategoryCreate) SetNillableName(s *string) *CategoryCreate {
 	return cc
 }
 
-// SetParentId sets the "parentId" field.
-func (cc *CategoryCreate) SetParentId(s string) *CategoryCreate {
-	cc.mutation.SetParentId(s)
-	return cc
-}
-
 // SetLevel sets the "level" field.
 func (cc *CategoryCreate) SetLevel(s string) *CategoryCreate {
 	cc.mutation.SetLevel(s)
@@ -52,25 +46,53 @@ func (cc *CategoryCreate) SetStatus(s string) *CategoryCreate {
 	return cc
 }
 
-// SetID sets the "id" field.
-func (cc *CategoryCreate) SetID(s string) *CategoryCreate {
-	cc.mutation.SetID(s)
+// SetParentID sets the "parent_id" field.
+func (cc *CategoryCreate) SetParentID(i int) *CategoryCreate {
+	cc.mutation.SetParentID(i)
 	return cc
 }
 
-// AddCourseIDs adds the "course" edge to the Course entity by IDs.
+// SetNillableParentID sets the "parent_id" field if the given value is not nil.
+func (cc *CategoryCreate) SetNillableParentID(i *int) *CategoryCreate {
+	if i != nil {
+		cc.SetParentID(*i)
+	}
+	return cc
+}
+
+// AddCourseIDs adds the "courses" edge to the Course entity by IDs.
 func (cc *CategoryCreate) AddCourseIDs(ids ...string) *CategoryCreate {
 	cc.mutation.AddCourseIDs(ids...)
 	return cc
 }
 
-// AddCourse adds the "course" edges to the Course entity.
-func (cc *CategoryCreate) AddCourse(c ...*Course) *CategoryCreate {
+// AddCourses adds the "courses" edges to the Course entity.
+func (cc *CategoryCreate) AddCourses(c ...*Course) *CategoryCreate {
 	ids := make([]string, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
 	return cc.AddCourseIDs(ids...)
+}
+
+// SetParent sets the "parent" edge to the Category entity.
+func (cc *CategoryCreate) SetParent(c *Category) *CategoryCreate {
+	return cc.SetParentID(c.ID)
+}
+
+// AddChildIDs adds the "children" edge to the Category entity by IDs.
+func (cc *CategoryCreate) AddChildIDs(ids ...int) *CategoryCreate {
+	cc.mutation.AddChildIDs(ids...)
+	return cc
+}
+
+// AddChildren adds the "children" edges to the Category entity.
+func (cc *CategoryCreate) AddChildren(c ...*Category) *CategoryCreate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cc.AddChildIDs(ids...)
 }
 
 // Mutation returns the CategoryMutation object of the builder.
@@ -119,9 +141,6 @@ func (cc *CategoryCreate) check() error {
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Category.name"`)}
 	}
-	if _, ok := cc.mutation.ParentId(); !ok {
-		return &ValidationError{Name: "parentId", err: errors.New(`ent: missing required field "Category.parentId"`)}
-	}
 	if _, ok := cc.mutation.Level(); !ok {
 		return &ValidationError{Name: "level", err: errors.New(`ent: missing required field "Category.level"`)}
 	}
@@ -142,13 +161,8 @@ func (cc *CategoryCreate) sqlSave(ctx context.Context) (*Category, error) {
 		}
 		return nil, err
 	}
-	if _spec.ID.Value != nil {
-		if id, ok := _spec.ID.Value.(string); ok {
-			_node.ID = id
-		} else {
-			return nil, fmt.Errorf("unexpected Category.ID type: %T", _spec.ID.Value)
-		}
-	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
 	cc.mutation.id = &_node.ID
 	cc.mutation.done = true
 	return _node, nil
@@ -157,19 +171,11 @@ func (cc *CategoryCreate) sqlSave(ctx context.Context) (*Category, error) {
 func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Category{config: cc.config}
-		_spec = sqlgraph.NewCreateSpec(category.Table, sqlgraph.NewFieldSpec(category.FieldID, field.TypeString))
+		_spec = sqlgraph.NewCreateSpec(category.Table, sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt))
 	)
-	if id, ok := cc.mutation.ID(); ok {
-		_node.ID = id
-		_spec.ID.Value = id
-	}
 	if value, ok := cc.mutation.Name(); ok {
 		_spec.SetField(category.FieldName, field.TypeString, value)
 		_node.Name = value
-	}
-	if value, ok := cc.mutation.ParentId(); ok {
-		_spec.SetField(category.FieldParentId, field.TypeString, value)
-		_node.ParentId = value
 	}
 	if value, ok := cc.mutation.Level(); ok {
 		_spec.SetField(category.FieldLevel, field.TypeString, value)
@@ -179,15 +185,48 @@ func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 		_spec.SetField(category.FieldStatus, field.TypeString, value)
 		_node.Status = value
 	}
-	if nodes := cc.mutation.CourseIDs(); len(nodes) > 0 {
+	if nodes := cc.mutation.CoursesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   category.CourseTable,
-			Columns: category.CoursePrimaryKey,
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   category.CoursesTable,
+			Columns: []string{category.CoursesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.ParentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   category.ParentTable,
+			Columns: []string{category.ParentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ParentID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.ChildrenIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   category.ChildrenTable,
+			Columns: []string{category.ChildrenColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -239,6 +278,10 @@ func (ccb *CategoryCreateBulk) Save(ctx context.Context) ([]*Category, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
+				if specs[i].ID.Value != nil {
+					id := specs[i].ID.Value.(int64)
+					nodes[i].ID = int(id)
+				}
 				mutation.done = true
 				return nodes[i], nil
 			})

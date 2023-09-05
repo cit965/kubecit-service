@@ -14,37 +14,45 @@ const (
 	FieldID = "id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldParentId holds the string denoting the parentid field in the database.
-	FieldParentId = "parent_id"
 	// FieldLevel holds the string denoting the level field in the database.
 	FieldLevel = "level"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// EdgeCourse holds the string denoting the course edge name in mutations.
-	EdgeCourse = "course"
+	// FieldParentID holds the string denoting the parent_id field in the database.
+	FieldParentID = "parent_id"
+	// EdgeCourses holds the string denoting the courses edge name in mutations.
+	EdgeCourses = "courses"
+	// EdgeParent holds the string denoting the parent edge name in mutations.
+	EdgeParent = "parent"
+	// EdgeChildren holds the string denoting the children edge name in mutations.
+	EdgeChildren = "children"
 	// Table holds the table name of the category in the database.
 	Table = "categories"
-	// CourseTable is the table that holds the course relation/edge. The primary key declared below.
-	CourseTable = "course_categories"
-	// CourseInverseTable is the table name for the Course entity.
+	// CoursesTable is the table that holds the courses relation/edge.
+	CoursesTable = "courses"
+	// CoursesInverseTable is the table name for the Course entity.
 	// It exists in this package in order to avoid circular dependency with the "course" package.
-	CourseInverseTable = "courses"
+	CoursesInverseTable = "courses"
+	// CoursesColumn is the table column denoting the courses relation/edge.
+	CoursesColumn = "category_id"
+	// ParentTable is the table that holds the parent relation/edge.
+	ParentTable = "categories"
+	// ParentColumn is the table column denoting the parent relation/edge.
+	ParentColumn = "parent_id"
+	// ChildrenTable is the table that holds the children relation/edge.
+	ChildrenTable = "categories"
+	// ChildrenColumn is the table column denoting the children relation/edge.
+	ChildrenColumn = "parent_id"
 )
 
 // Columns holds all SQL columns for category fields.
 var Columns = []string{
 	FieldID,
 	FieldName,
-	FieldParentId,
 	FieldLevel,
 	FieldStatus,
+	FieldParentID,
 }
-
-var (
-	// CoursePrimaryKey and CourseColumn2 are the table columns denoting the
-	// primary key for the course relation (M2M).
-	CoursePrimaryKey = []string{"course_id", "category_id"}
-)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -74,11 +82,6 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByParentId orders the results by the parentId field.
-func ByParentId(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldParentId, opts...).ToFunc()
-}
-
 // ByLevel orders the results by the level field.
 func ByLevel(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLevel, opts...).ToFunc()
@@ -89,23 +92,63 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
-// ByCourseCount orders the results by course count.
-func ByCourseCount(opts ...sql.OrderTermOption) OrderOption {
+// ByParentID orders the results by the parent_id field.
+func ByParentID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldParentID, opts...).ToFunc()
+}
+
+// ByCoursesCount orders the results by courses count.
+func ByCoursesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newCourseStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newCoursesStep(), opts...)
 	}
 }
 
-// ByCourse orders the results by course terms.
-func ByCourse(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByCourses orders the results by courses terms.
+func ByCourses(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newCourseStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newCoursesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
-func newCourseStep() *sqlgraph.Step {
+
+// ByParentField orders the results by parent field.
+func ByParentField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newParentStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByChildrenCount orders the results by children count.
+func ByChildrenCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newChildrenStep(), opts...)
+	}
+}
+
+// ByChildren orders the results by children terms.
+func ByChildren(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newChildrenStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newCoursesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(CourseInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, true, CourseTable, CoursePrimaryKey...),
+		sqlgraph.To(CoursesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, CoursesTable, CoursesColumn),
+	)
+}
+func newParentStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(Table, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, ParentTable, ParentColumn),
+	)
+}
+func newChildrenStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(Table, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ChildrenTable, ChildrenColumn),
 	)
 }

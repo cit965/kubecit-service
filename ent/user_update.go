@@ -6,10 +6,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kubecit-service/ent/member"
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/user"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -29,82 +27,9 @@ func (uu *UserUpdate) Where(ps ...predicate.User) *UserUpdate {
 	return uu
 }
 
-// SetGender sets the "gender" field.
-func (uu *UserUpdate) SetGender(i int32) *UserUpdate {
-	uu.mutation.ResetGender()
-	uu.mutation.SetGender(i)
-	return uu
-}
-
-// AddGender adds i to the "gender" field.
-func (uu *UserUpdate) AddGender(i int32) *UserUpdate {
-	uu.mutation.AddGender(i)
-	return uu
-}
-
-// SetBirthday sets the "birthday" field.
-func (uu *UserUpdate) SetBirthday(t time.Time) *UserUpdate {
-	uu.mutation.SetBirthday(t)
-	return uu
-}
-
-// SetSysCode sets the "sysCode" field.
-func (uu *UserUpdate) SetSysCode(s string) *UserUpdate {
-	uu.mutation.SetSysCode(s)
-	return uu
-}
-
-// SetCity sets the "city" field.
-func (uu *UserUpdate) SetCity(s string) *UserUpdate {
-	uu.mutation.SetCity(s)
-	return uu
-}
-
-// SetCountry sets the "country" field.
-func (uu *UserUpdate) SetCountry(s string) *UserUpdate {
-	uu.mutation.SetCountry(s)
-	return uu
-}
-
-// SetHighestEducation sets the "highestEducation" field.
-func (uu *UserUpdate) SetHighestEducation(s string) *UserUpdate {
-	uu.mutation.SetHighestEducation(s)
-	return uu
-}
-
-// SetIsEnable sets the "isEnable" field.
-func (uu *UserUpdate) SetIsEnable(b bool) *UserUpdate {
-	uu.mutation.SetIsEnable(b)
-	return uu
-}
-
 // SetPassword sets the "password" field.
 func (uu *UserUpdate) SetPassword(s string) *UserUpdate {
 	uu.mutation.SetPassword(s)
-	return uu
-}
-
-// SetProvince sets the "province" field.
-func (uu *UserUpdate) SetProvince(s string) *UserUpdate {
-	uu.mutation.SetProvince(s)
-	return uu
-}
-
-// SetUpdateBy sets the "updateBy" field.
-func (uu *UserUpdate) SetUpdateBy(s string) *UserUpdate {
-	uu.mutation.SetUpdateBy(s)
-	return uu
-}
-
-// SetCreateBy sets the "createBy" field.
-func (uu *UserUpdate) SetCreateBy(s string) *UserUpdate {
-	uu.mutation.SetCreateBy(s)
-	return uu
-}
-
-// SetPlatformAuthUser sets the "platformAuthUser" field.
-func (uu *UserUpdate) SetPlatformAuthUser(s string) *UserUpdate {
-	uu.mutation.SetPlatformAuthUser(s)
 	return uu
 }
 
@@ -114,83 +39,9 @@ func (uu *UserUpdate) SetEmail(s string) *UserUpdate {
 	return uu
 }
 
-// SetTotalHour sets the "totalHour" field.
-func (uu *UserUpdate) SetTotalHour(f float32) *UserUpdate {
-	uu.mutation.ResetTotalHour()
-	uu.mutation.SetTotalHour(f)
-	return uu
-}
-
-// AddTotalHour adds f to the "totalHour" field.
-func (uu *UserUpdate) AddTotalHour(f float32) *UserUpdate {
-	uu.mutation.AddTotalHour(f)
-	return uu
-}
-
-// SetQq sets the "qq" field.
-func (uu *UserUpdate) SetQq(s string) *UserUpdate {
-	uu.mutation.SetQq(s)
-	return uu
-}
-
-// SetAddress sets the "address" field.
-func (uu *UserUpdate) SetAddress(s string) *UserUpdate {
-	uu.mutation.SetAddress(s)
-	return uu
-}
-
-// SetNickName sets the "nickName" field.
-func (uu *UserUpdate) SetNickName(s string) *UserUpdate {
-	uu.mutation.SetNickName(s)
-	return uu
-}
-
-// SetEmergencyContact sets the "emergencyContact" field.
-func (uu *UserUpdate) SetEmergencyContact(s string) *UserUpdate {
-	uu.mutation.SetEmergencyContact(s)
-	return uu
-}
-
-// SetEmergencyContactNumber sets the "emergencyContactNumber" field.
-func (uu *UserUpdate) SetEmergencyContactNumber(s string) *UserUpdate {
-	uu.mutation.SetEmergencyContactNumber(s)
-	return uu
-}
-
-// SetMobile sets the "mobile" field.
-func (uu *UserUpdate) SetMobile(s string) *UserUpdate {
-	uu.mutation.SetMobile(s)
-	return uu
-}
-
-// SetWechat sets the "wechat" field.
-func (uu *UserUpdate) SetWechat(s string) *UserUpdate {
-	uu.mutation.SetWechat(s)
-	return uu
-}
-
-// SetRegSource sets the "regSource" field.
-func (uu *UserUpdate) SetRegSource(i int32) *UserUpdate {
-	uu.mutation.ResetRegSource()
-	uu.mutation.SetRegSource(i)
-	return uu
-}
-
-// AddRegSource adds i to the "regSource" field.
-func (uu *UserUpdate) AddRegSource(i int32) *UserUpdate {
-	uu.mutation.AddRegSource(i)
-	return uu
-}
-
 // SetTelephone sets the "telephone" field.
 func (uu *UserUpdate) SetTelephone(s string) *UserUpdate {
 	uu.mutation.SetTelephone(s)
-	return uu
-}
-
-// SetUpdateTime sets the "updateTime" field.
-func (uu *UserUpdate) SetUpdateTime(t time.Time) *UserUpdate {
-	uu.mutation.SetUpdateTime(t)
 	return uu
 }
 
@@ -200,100 +51,15 @@ func (uu *UserUpdate) SetAvatar(s string) *UserUpdate {
 	return uu
 }
 
-// SetRealName sets the "realName" field.
-func (uu *UserUpdate) SetRealName(s string) *UserUpdate {
-	uu.mutation.SetRealName(s)
-	return uu
-}
-
-// SetCreateTime sets the "createTime" field.
-func (uu *UserUpdate) SetCreateTime(t time.Time) *UserUpdate {
-	uu.mutation.SetCreateTime(t)
-	return uu
-}
-
-// SetPersonalSignature sets the "personalSignature" field.
-func (uu *UserUpdate) SetPersonalSignature(s string) *UserUpdate {
-	uu.mutation.SetPersonalSignature(s)
-	return uu
-}
-
-// SetCertificateNumber sets the "certificateNumber" field.
-func (uu *UserUpdate) SetCertificateNumber(s string) *UserUpdate {
-	uu.mutation.SetCertificateNumber(s)
-	return uu
-}
-
-// SetAge sets the "age" field.
-func (uu *UserUpdate) SetAge(i int32) *UserUpdate {
-	uu.mutation.ResetAge()
-	uu.mutation.SetAge(i)
-	return uu
-}
-
-// AddAge adds i to the "age" field.
-func (uu *UserUpdate) AddAge(i int32) *UserUpdate {
-	uu.mutation.AddAge(i)
-	return uu
-}
-
-// SetResidenceAddress sets the "residenceAddress" field.
-func (uu *UserUpdate) SetResidenceAddress(s string) *UserUpdate {
-	uu.mutation.SetResidenceAddress(s)
-	return uu
-}
-
 // SetUsername sets the "username" field.
 func (uu *UserUpdate) SetUsername(s string) *UserUpdate {
 	uu.mutation.SetUsername(s)
 	return uu
 }
 
-// SetCertificateType sets the "certificateType" field.
-func (uu *UserUpdate) SetCertificateType(s string) *UserUpdate {
-	uu.mutation.SetCertificateType(s)
-	return uu
-}
-
-// AddVipMemberIDs adds the "vipMember" edge to the Member entity by IDs.
-func (uu *UserUpdate) AddVipMemberIDs(ids ...string) *UserUpdate {
-	uu.mutation.AddVipMemberIDs(ids...)
-	return uu
-}
-
-// AddVipMember adds the "vipMember" edges to the Member entity.
-func (uu *UserUpdate) AddVipMember(m ...*Member) *UserUpdate {
-	ids := make([]string, len(m))
-	for i := range m {
-		ids[i] = m[i].ID
-	}
-	return uu.AddVipMemberIDs(ids...)
-}
-
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
-}
-
-// ClearVipMember clears all "vipMember" edges to the Member entity.
-func (uu *UserUpdate) ClearVipMember() *UserUpdate {
-	uu.mutation.ClearVipMember()
-	return uu
-}
-
-// RemoveVipMemberIDs removes the "vipMember" edge to Member entities by IDs.
-func (uu *UserUpdate) RemoveVipMemberIDs(ids ...string) *UserUpdate {
-	uu.mutation.RemoveVipMemberIDs(ids...)
-	return uu
-}
-
-// RemoveVipMember removes "vipMember" edges to Member entities.
-func (uu *UserUpdate) RemoveVipMember(m ...*Member) *UserUpdate {
-	ids := make([]string, len(m))
-	for i := range m {
-		ids[i] = m[i].ID
-	}
-	return uu.RemoveVipMemberIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -324,7 +90,7 @@ func (uu *UserUpdate) ExecX(ctx context.Context) {
 }
 
 func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeString))
+	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
 	if ps := uu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -332,161 +98,20 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := uu.mutation.Gender(); ok {
-		_spec.SetField(user.FieldGender, field.TypeInt32, value)
-	}
-	if value, ok := uu.mutation.AddedGender(); ok {
-		_spec.AddField(user.FieldGender, field.TypeInt32, value)
-	}
-	if value, ok := uu.mutation.Birthday(); ok {
-		_spec.SetField(user.FieldBirthday, field.TypeTime, value)
-	}
-	if value, ok := uu.mutation.SysCode(); ok {
-		_spec.SetField(user.FieldSysCode, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.City(); ok {
-		_spec.SetField(user.FieldCity, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Country(); ok {
-		_spec.SetField(user.FieldCountry, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.HighestEducation(); ok {
-		_spec.SetField(user.FieldHighestEducation, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.IsEnable(); ok {
-		_spec.SetField(user.FieldIsEnable, field.TypeBool, value)
-	}
 	if value, ok := uu.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Province(); ok {
-		_spec.SetField(user.FieldProvince, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.UpdateBy(); ok {
-		_spec.SetField(user.FieldUpdateBy, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.CreateBy(); ok {
-		_spec.SetField(user.FieldCreateBy, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.PlatformAuthUser(); ok {
-		_spec.SetField(user.FieldPlatformAuthUser, field.TypeString, value)
 	}
 	if value, ok := uu.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.TotalHour(); ok {
-		_spec.SetField(user.FieldTotalHour, field.TypeFloat32, value)
-	}
-	if value, ok := uu.mutation.AddedTotalHour(); ok {
-		_spec.AddField(user.FieldTotalHour, field.TypeFloat32, value)
-	}
-	if value, ok := uu.mutation.Qq(); ok {
-		_spec.SetField(user.FieldQq, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Address(); ok {
-		_spec.SetField(user.FieldAddress, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.NickName(); ok {
-		_spec.SetField(user.FieldNickName, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.EmergencyContact(); ok {
-		_spec.SetField(user.FieldEmergencyContact, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.EmergencyContactNumber(); ok {
-		_spec.SetField(user.FieldEmergencyContactNumber, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Mobile(); ok {
-		_spec.SetField(user.FieldMobile, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Wechat(); ok {
-		_spec.SetField(user.FieldWechat, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.RegSource(); ok {
-		_spec.SetField(user.FieldRegSource, field.TypeInt32, value)
-	}
-	if value, ok := uu.mutation.AddedRegSource(); ok {
-		_spec.AddField(user.FieldRegSource, field.TypeInt32, value)
-	}
 	if value, ok := uu.mutation.Telephone(); ok {
 		_spec.SetField(user.FieldTelephone, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.UpdateTime(); ok {
-		_spec.SetField(user.FieldUpdateTime, field.TypeTime, value)
 	}
 	if value, ok := uu.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.RealName(); ok {
-		_spec.SetField(user.FieldRealName, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.CreateTime(); ok {
-		_spec.SetField(user.FieldCreateTime, field.TypeTime, value)
-	}
-	if value, ok := uu.mutation.PersonalSignature(); ok {
-		_spec.SetField(user.FieldPersonalSignature, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.CertificateNumber(); ok {
-		_spec.SetField(user.FieldCertificateNumber, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Age(); ok {
-		_spec.SetField(user.FieldAge, field.TypeInt32, value)
-	}
-	if value, ok := uu.mutation.AddedAge(); ok {
-		_spec.AddField(user.FieldAge, field.TypeInt32, value)
-	}
-	if value, ok := uu.mutation.ResidenceAddress(); ok {
-		_spec.SetField(user.FieldResidenceAddress, field.TypeString, value)
-	}
 	if value, ok := uu.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.CertificateType(); ok {
-		_spec.SetField(user.FieldCertificateType, field.TypeString, value)
-	}
-	if uu.mutation.VipMemberCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.VipMemberTable,
-			Columns: []string{user.VipMemberColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(member.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uu.mutation.RemovedVipMemberIDs(); len(nodes) > 0 && !uu.mutation.VipMemberCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.VipMemberTable,
-			Columns: []string{user.VipMemberColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(member.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uu.mutation.VipMemberIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.VipMemberTable,
-			Columns: []string{user.VipMemberColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(member.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -508,82 +133,9 @@ type UserUpdateOne struct {
 	mutation *UserMutation
 }
 
-// SetGender sets the "gender" field.
-func (uuo *UserUpdateOne) SetGender(i int32) *UserUpdateOne {
-	uuo.mutation.ResetGender()
-	uuo.mutation.SetGender(i)
-	return uuo
-}
-
-// AddGender adds i to the "gender" field.
-func (uuo *UserUpdateOne) AddGender(i int32) *UserUpdateOne {
-	uuo.mutation.AddGender(i)
-	return uuo
-}
-
-// SetBirthday sets the "birthday" field.
-func (uuo *UserUpdateOne) SetBirthday(t time.Time) *UserUpdateOne {
-	uuo.mutation.SetBirthday(t)
-	return uuo
-}
-
-// SetSysCode sets the "sysCode" field.
-func (uuo *UserUpdateOne) SetSysCode(s string) *UserUpdateOne {
-	uuo.mutation.SetSysCode(s)
-	return uuo
-}
-
-// SetCity sets the "city" field.
-func (uuo *UserUpdateOne) SetCity(s string) *UserUpdateOne {
-	uuo.mutation.SetCity(s)
-	return uuo
-}
-
-// SetCountry sets the "country" field.
-func (uuo *UserUpdateOne) SetCountry(s string) *UserUpdateOne {
-	uuo.mutation.SetCountry(s)
-	return uuo
-}
-
-// SetHighestEducation sets the "highestEducation" field.
-func (uuo *UserUpdateOne) SetHighestEducation(s string) *UserUpdateOne {
-	uuo.mutation.SetHighestEducation(s)
-	return uuo
-}
-
-// SetIsEnable sets the "isEnable" field.
-func (uuo *UserUpdateOne) SetIsEnable(b bool) *UserUpdateOne {
-	uuo.mutation.SetIsEnable(b)
-	return uuo
-}
-
 // SetPassword sets the "password" field.
 func (uuo *UserUpdateOne) SetPassword(s string) *UserUpdateOne {
 	uuo.mutation.SetPassword(s)
-	return uuo
-}
-
-// SetProvince sets the "province" field.
-func (uuo *UserUpdateOne) SetProvince(s string) *UserUpdateOne {
-	uuo.mutation.SetProvince(s)
-	return uuo
-}
-
-// SetUpdateBy sets the "updateBy" field.
-func (uuo *UserUpdateOne) SetUpdateBy(s string) *UserUpdateOne {
-	uuo.mutation.SetUpdateBy(s)
-	return uuo
-}
-
-// SetCreateBy sets the "createBy" field.
-func (uuo *UserUpdateOne) SetCreateBy(s string) *UserUpdateOne {
-	uuo.mutation.SetCreateBy(s)
-	return uuo
-}
-
-// SetPlatformAuthUser sets the "platformAuthUser" field.
-func (uuo *UserUpdateOne) SetPlatformAuthUser(s string) *UserUpdateOne {
-	uuo.mutation.SetPlatformAuthUser(s)
 	return uuo
 }
 
@@ -593,83 +145,9 @@ func (uuo *UserUpdateOne) SetEmail(s string) *UserUpdateOne {
 	return uuo
 }
 
-// SetTotalHour sets the "totalHour" field.
-func (uuo *UserUpdateOne) SetTotalHour(f float32) *UserUpdateOne {
-	uuo.mutation.ResetTotalHour()
-	uuo.mutation.SetTotalHour(f)
-	return uuo
-}
-
-// AddTotalHour adds f to the "totalHour" field.
-func (uuo *UserUpdateOne) AddTotalHour(f float32) *UserUpdateOne {
-	uuo.mutation.AddTotalHour(f)
-	return uuo
-}
-
-// SetQq sets the "qq" field.
-func (uuo *UserUpdateOne) SetQq(s string) *UserUpdateOne {
-	uuo.mutation.SetQq(s)
-	return uuo
-}
-
-// SetAddress sets the "address" field.
-func (uuo *UserUpdateOne) SetAddress(s string) *UserUpdateOne {
-	uuo.mutation.SetAddress(s)
-	return uuo
-}
-
-// SetNickName sets the "nickName" field.
-func (uuo *UserUpdateOne) SetNickName(s string) *UserUpdateOne {
-	uuo.mutation.SetNickName(s)
-	return uuo
-}
-
-// SetEmergencyContact sets the "emergencyContact" field.
-func (uuo *UserUpdateOne) SetEmergencyContact(s string) *UserUpdateOne {
-	uuo.mutation.SetEmergencyContact(s)
-	return uuo
-}
-
-// SetEmergencyContactNumber sets the "emergencyContactNumber" field.
-func (uuo *UserUpdateOne) SetEmergencyContactNumber(s string) *UserUpdateOne {
-	uuo.mutation.SetEmergencyContactNumber(s)
-	return uuo
-}
-
-// SetMobile sets the "mobile" field.
-func (uuo *UserUpdateOne) SetMobile(s string) *UserUpdateOne {
-	uuo.mutation.SetMobile(s)
-	return uuo
-}
-
-// SetWechat sets the "wechat" field.
-func (uuo *UserUpdateOne) SetWechat(s string) *UserUpdateOne {
-	uuo.mutation.SetWechat(s)
-	return uuo
-}
-
-// SetRegSource sets the "regSource" field.
-func (uuo *UserUpdateOne) SetRegSource(i int32) *UserUpdateOne {
-	uuo.mutation.ResetRegSource()
-	uuo.mutation.SetRegSource(i)
-	return uuo
-}
-
-// AddRegSource adds i to the "regSource" field.
-func (uuo *UserUpdateOne) AddRegSource(i int32) *UserUpdateOne {
-	uuo.mutation.AddRegSource(i)
-	return uuo
-}
-
 // SetTelephone sets the "telephone" field.
 func (uuo *UserUpdateOne) SetTelephone(s string) *UserUpdateOne {
 	uuo.mutation.SetTelephone(s)
-	return uuo
-}
-
-// SetUpdateTime sets the "updateTime" field.
-func (uuo *UserUpdateOne) SetUpdateTime(t time.Time) *UserUpdateOne {
-	uuo.mutation.SetUpdateTime(t)
 	return uuo
 }
 
@@ -679,100 +157,15 @@ func (uuo *UserUpdateOne) SetAvatar(s string) *UserUpdateOne {
 	return uuo
 }
 
-// SetRealName sets the "realName" field.
-func (uuo *UserUpdateOne) SetRealName(s string) *UserUpdateOne {
-	uuo.mutation.SetRealName(s)
-	return uuo
-}
-
-// SetCreateTime sets the "createTime" field.
-func (uuo *UserUpdateOne) SetCreateTime(t time.Time) *UserUpdateOne {
-	uuo.mutation.SetCreateTime(t)
-	return uuo
-}
-
-// SetPersonalSignature sets the "personalSignature" field.
-func (uuo *UserUpdateOne) SetPersonalSignature(s string) *UserUpdateOne {
-	uuo.mutation.SetPersonalSignature(s)
-	return uuo
-}
-
-// SetCertificateNumber sets the "certificateNumber" field.
-func (uuo *UserUpdateOne) SetCertificateNumber(s string) *UserUpdateOne {
-	uuo.mutation.SetCertificateNumber(s)
-	return uuo
-}
-
-// SetAge sets the "age" field.
-func (uuo *UserUpdateOne) SetAge(i int32) *UserUpdateOne {
-	uuo.mutation.ResetAge()
-	uuo.mutation.SetAge(i)
-	return uuo
-}
-
-// AddAge adds i to the "age" field.
-func (uuo *UserUpdateOne) AddAge(i int32) *UserUpdateOne {
-	uuo.mutation.AddAge(i)
-	return uuo
-}
-
-// SetResidenceAddress sets the "residenceAddress" field.
-func (uuo *UserUpdateOne) SetResidenceAddress(s string) *UserUpdateOne {
-	uuo.mutation.SetResidenceAddress(s)
-	return uuo
-}
-
 // SetUsername sets the "username" field.
 func (uuo *UserUpdateOne) SetUsername(s string) *UserUpdateOne {
 	uuo.mutation.SetUsername(s)
 	return uuo
 }
 
-// SetCertificateType sets the "certificateType" field.
-func (uuo *UserUpdateOne) SetCertificateType(s string) *UserUpdateOne {
-	uuo.mutation.SetCertificateType(s)
-	return uuo
-}
-
-// AddVipMemberIDs adds the "vipMember" edge to the Member entity by IDs.
-func (uuo *UserUpdateOne) AddVipMemberIDs(ids ...string) *UserUpdateOne {
-	uuo.mutation.AddVipMemberIDs(ids...)
-	return uuo
-}
-
-// AddVipMember adds the "vipMember" edges to the Member entity.
-func (uuo *UserUpdateOne) AddVipMember(m ...*Member) *UserUpdateOne {
-	ids := make([]string, len(m))
-	for i := range m {
-		ids[i] = m[i].ID
-	}
-	return uuo.AddVipMemberIDs(ids...)
-}
-
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
-}
-
-// ClearVipMember clears all "vipMember" edges to the Member entity.
-func (uuo *UserUpdateOne) ClearVipMember() *UserUpdateOne {
-	uuo.mutation.ClearVipMember()
-	return uuo
-}
-
-// RemoveVipMemberIDs removes the "vipMember" edge to Member entities by IDs.
-func (uuo *UserUpdateOne) RemoveVipMemberIDs(ids ...string) *UserUpdateOne {
-	uuo.mutation.RemoveVipMemberIDs(ids...)
-	return uuo
-}
-
-// RemoveVipMember removes "vipMember" edges to Member entities.
-func (uuo *UserUpdateOne) RemoveVipMember(m ...*Member) *UserUpdateOne {
-	ids := make([]string, len(m))
-	for i := range m {
-		ids[i] = m[i].ID
-	}
-	return uuo.RemoveVipMemberIDs(ids...)
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -816,7 +209,7 @@ func (uuo *UserUpdateOne) ExecX(ctx context.Context) {
 }
 
 func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
-	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeString))
+	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
 	id, ok := uuo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "User.id" for update`)}
@@ -841,161 +234,20 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			}
 		}
 	}
-	if value, ok := uuo.mutation.Gender(); ok {
-		_spec.SetField(user.FieldGender, field.TypeInt32, value)
-	}
-	if value, ok := uuo.mutation.AddedGender(); ok {
-		_spec.AddField(user.FieldGender, field.TypeInt32, value)
-	}
-	if value, ok := uuo.mutation.Birthday(); ok {
-		_spec.SetField(user.FieldBirthday, field.TypeTime, value)
-	}
-	if value, ok := uuo.mutation.SysCode(); ok {
-		_spec.SetField(user.FieldSysCode, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.City(); ok {
-		_spec.SetField(user.FieldCity, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Country(); ok {
-		_spec.SetField(user.FieldCountry, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.HighestEducation(); ok {
-		_spec.SetField(user.FieldHighestEducation, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.IsEnable(); ok {
-		_spec.SetField(user.FieldIsEnable, field.TypeBool, value)
-	}
 	if value, ok := uuo.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Province(); ok {
-		_spec.SetField(user.FieldProvince, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.UpdateBy(); ok {
-		_spec.SetField(user.FieldUpdateBy, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.CreateBy(); ok {
-		_spec.SetField(user.FieldCreateBy, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.PlatformAuthUser(); ok {
-		_spec.SetField(user.FieldPlatformAuthUser, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.TotalHour(); ok {
-		_spec.SetField(user.FieldTotalHour, field.TypeFloat32, value)
-	}
-	if value, ok := uuo.mutation.AddedTotalHour(); ok {
-		_spec.AddField(user.FieldTotalHour, field.TypeFloat32, value)
-	}
-	if value, ok := uuo.mutation.Qq(); ok {
-		_spec.SetField(user.FieldQq, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Address(); ok {
-		_spec.SetField(user.FieldAddress, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.NickName(); ok {
-		_spec.SetField(user.FieldNickName, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.EmergencyContact(); ok {
-		_spec.SetField(user.FieldEmergencyContact, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.EmergencyContactNumber(); ok {
-		_spec.SetField(user.FieldEmergencyContactNumber, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Mobile(); ok {
-		_spec.SetField(user.FieldMobile, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Wechat(); ok {
-		_spec.SetField(user.FieldWechat, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.RegSource(); ok {
-		_spec.SetField(user.FieldRegSource, field.TypeInt32, value)
-	}
-	if value, ok := uuo.mutation.AddedRegSource(); ok {
-		_spec.AddField(user.FieldRegSource, field.TypeInt32, value)
-	}
 	if value, ok := uuo.mutation.Telephone(); ok {
 		_spec.SetField(user.FieldTelephone, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.UpdateTime(); ok {
-		_spec.SetField(user.FieldUpdateTime, field.TypeTime, value)
 	}
 	if value, ok := uuo.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.RealName(); ok {
-		_spec.SetField(user.FieldRealName, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.CreateTime(); ok {
-		_spec.SetField(user.FieldCreateTime, field.TypeTime, value)
-	}
-	if value, ok := uuo.mutation.PersonalSignature(); ok {
-		_spec.SetField(user.FieldPersonalSignature, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.CertificateNumber(); ok {
-		_spec.SetField(user.FieldCertificateNumber, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Age(); ok {
-		_spec.SetField(user.FieldAge, field.TypeInt32, value)
-	}
-	if value, ok := uuo.mutation.AddedAge(); ok {
-		_spec.AddField(user.FieldAge, field.TypeInt32, value)
-	}
-	if value, ok := uuo.mutation.ResidenceAddress(); ok {
-		_spec.SetField(user.FieldResidenceAddress, field.TypeString, value)
-	}
 	if value, ok := uuo.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.CertificateType(); ok {
-		_spec.SetField(user.FieldCertificateType, field.TypeString, value)
-	}
-	if uuo.mutation.VipMemberCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.VipMemberTable,
-			Columns: []string{user.VipMemberColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(member.FieldID, field.TypeString),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uuo.mutation.RemovedVipMemberIDs(); len(nodes) > 0 && !uuo.mutation.VipMemberCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.VipMemberTable,
-			Columns: []string{user.VipMemberColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(member.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uuo.mutation.VipMemberIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.VipMemberTable,
-			Columns: []string{user.VipMemberColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(member.FieldID, field.TypeString),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &User{config: uuo.config}
 	_spec.Assign = _node.assignValues
