@@ -22,6 +22,8 @@ type Tx struct {
 	Slider *SliderClient
 	// Token is the client for interacting with the Token builders.
 	Token *TokenClient
+	// User is the client for interacting with the User builders.
+	User *UserClient
 
 	// lazily loaded.
 	client     *Client
@@ -158,6 +160,7 @@ func (tx *Tx) init() {
 	tx.Member = NewMemberClient(tx.config)
 	tx.Slider = NewSliderClient(tx.config)
 	tx.Token = NewTokenClient(tx.config)
+	tx.User = NewUserClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

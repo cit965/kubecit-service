@@ -4,6 +4,7 @@ package member
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -11,19 +12,66 @@ const (
 	Label = "member"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldOrderNumber holds the string denoting the ordernumber field in the database.
+	FieldOrderNumber = "order_number"
+	// FieldVipName holds the string denoting the vipname field in the database.
+	FieldVipName = "vip_name"
+	// FieldVipId holds the string denoting the vipid field in the database.
+	FieldVipId = "vip_id"
+	// FieldVipDesc holds the string denoting the vipdesc field in the database.
+	FieldVipDesc = "vip_desc"
+	// FieldStartTime holds the string denoting the starttime field in the database.
+	FieldStartTime = "start_time"
+	// FieldEndTime holds the string denoting the endtime field in the database.
+	FieldEndTime = "end_time"
+	// FieldIsExpired holds the string denoting the isexpired field in the database.
+	FieldIsExpired = "is_expired"
+	// FieldMemberId holds the string denoting the memberid field in the database.
+	FieldMemberId = "member_id"
+	// FieldVipIcon holds the string denoting the vipicon field in the database.
+	FieldVipIcon = "vip_icon"
+	// EdgeUser holds the string denoting the user edge name in mutations.
+	EdgeUser = "user"
 	// Table holds the table name of the member in the database.
 	Table = "members"
+	// UserTable is the table that holds the user relation/edge.
+	UserTable = "members"
+	// UserInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	UserInverseTable = "users"
+	// UserColumn is the table column denoting the user relation/edge.
+	UserColumn = "user_vip_member"
 )
 
 // Columns holds all SQL columns for member fields.
 var Columns = []string{
 	FieldID,
+	FieldOrderNumber,
+	FieldVipName,
+	FieldVipId,
+	FieldVipDesc,
+	FieldStartTime,
+	FieldEndTime,
+	FieldIsExpired,
+	FieldMemberId,
+	FieldVipIcon,
+}
+
+// ForeignKeys holds the SQL foreign-keys that are owned by the "members"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"user_vip_member",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -36,4 +84,63 @@ type OrderOption func(*sql.Selector)
 // ByID orders the results by the id field.
 func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
+}
+
+// ByOrderNumber orders the results by the orderNumber field.
+func ByOrderNumber(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOrderNumber, opts...).ToFunc()
+}
+
+// ByVipName orders the results by the vipName field.
+func ByVipName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldVipName, opts...).ToFunc()
+}
+
+// ByVipId orders the results by the vipId field.
+func ByVipId(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldVipId, opts...).ToFunc()
+}
+
+// ByVipDesc orders the results by the vipDesc field.
+func ByVipDesc(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldVipDesc, opts...).ToFunc()
+}
+
+// ByStartTime orders the results by the startTime field.
+func ByStartTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStartTime, opts...).ToFunc()
+}
+
+// ByEndTime orders the results by the endTime field.
+func ByEndTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldEndTime, opts...).ToFunc()
+}
+
+// ByIsExpired orders the results by the isExpired field.
+func ByIsExpired(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsExpired, opts...).ToFunc()
+}
+
+// ByMemberId orders the results by the memberId field.
+func ByMemberId(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMemberId, opts...).ToFunc()
+}
+
+// ByVipIcon orders the results by the vipIcon field.
+func ByVipIcon(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldVipIcon, opts...).ToFunc()
+}
+
+// ByUserField orders the results by user field.
+func ByUserField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newUserStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newUserStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(UserInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
+	)
 }

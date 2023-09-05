@@ -2,6 +2,7 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -15,10 +16,8 @@ func (Course) Fields() []ent.Field {
 	return []ent.Field{
 		field.Bool("isRecommend").Default(false),
 		field.Bool("isIntegral").Default(false),
-		field.String("secondCategory"),
 		field.Int32("saleType"),
 		field.Float32("discountPrice"),
-		field.String("firstCategoryName"),
 		field.Int32("teachingType"),
 		field.Int32("courseLevel"),
 		field.Time("updateBy"),
@@ -28,10 +27,7 @@ func (Course) Fields() []ent.Field {
 		field.String("id"),
 		field.String("bizCourseDetail"),
 		field.String("courseCover"),
-		field.String("ext3"),
-		field.String("ext2"),
 		field.String("bizCourseChapters"),
-		field.String("ext1"),
 		field.Float32("salePrice"),
 		field.String("bizCourseTeacher"),
 		field.String("bizCourseAttachments"),
@@ -42,12 +38,13 @@ func (Course) Fields() []ent.Field {
 		field.Int32("purchaseCounter"),
 		field.Time("createTime"),
 		field.Int32("clicks"),
-		field.String("secondCategoryName"),
 		field.String("status"),
 	}
 }
 
 // Edges of the Course.
 func (Course) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("categories", Category.Type),
+	}
 }

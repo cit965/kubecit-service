@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 
 	"entgo.io/ent/dialect/sql"
@@ -59,9 +60,45 @@ func (cu *CategoryUpdate) SetStatus(s string) *CategoryUpdate {
 	return cu
 }
 
+// AddCourseIDs adds the "course" edge to the Course entity by IDs.
+func (cu *CategoryUpdate) AddCourseIDs(ids ...string) *CategoryUpdate {
+	cu.mutation.AddCourseIDs(ids...)
+	return cu
+}
+
+// AddCourse adds the "course" edges to the Course entity.
+func (cu *CategoryUpdate) AddCourse(c ...*Course) *CategoryUpdate {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.AddCourseIDs(ids...)
+}
+
 // Mutation returns the CategoryMutation object of the builder.
 func (cu *CategoryUpdate) Mutation() *CategoryMutation {
 	return cu.mutation
+}
+
+// ClearCourse clears all "course" edges to the Course entity.
+func (cu *CategoryUpdate) ClearCourse() *CategoryUpdate {
+	cu.mutation.ClearCourse()
+	return cu
+}
+
+// RemoveCourseIDs removes the "course" edge to Course entities by IDs.
+func (cu *CategoryUpdate) RemoveCourseIDs(ids ...string) *CategoryUpdate {
+	cu.mutation.RemoveCourseIDs(ids...)
+	return cu
+}
+
+// RemoveCourse removes "course" edges to Course entities.
+func (cu *CategoryUpdate) RemoveCourse(c ...*Course) *CategoryUpdate {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.RemoveCourseIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -111,6 +148,51 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.Status(); ok {
 		_spec.SetField(category.FieldStatus, field.TypeString, value)
+	}
+	if cu.mutation.CourseCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   category.CourseTable,
+			Columns: category.CoursePrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedCourseIDs(); len(nodes) > 0 && !cu.mutation.CourseCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   category.CourseTable,
+			Columns: category.CoursePrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.CourseIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   category.CourseTable,
+			Columns: category.CoursePrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -164,9 +246,45 @@ func (cuo *CategoryUpdateOne) SetStatus(s string) *CategoryUpdateOne {
 	return cuo
 }
 
+// AddCourseIDs adds the "course" edge to the Course entity by IDs.
+func (cuo *CategoryUpdateOne) AddCourseIDs(ids ...string) *CategoryUpdateOne {
+	cuo.mutation.AddCourseIDs(ids...)
+	return cuo
+}
+
+// AddCourse adds the "course" edges to the Course entity.
+func (cuo *CategoryUpdateOne) AddCourse(c ...*Course) *CategoryUpdateOne {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.AddCourseIDs(ids...)
+}
+
 // Mutation returns the CategoryMutation object of the builder.
 func (cuo *CategoryUpdateOne) Mutation() *CategoryMutation {
 	return cuo.mutation
+}
+
+// ClearCourse clears all "course" edges to the Course entity.
+func (cuo *CategoryUpdateOne) ClearCourse() *CategoryUpdateOne {
+	cuo.mutation.ClearCourse()
+	return cuo
+}
+
+// RemoveCourseIDs removes the "course" edge to Course entities by IDs.
+func (cuo *CategoryUpdateOne) RemoveCourseIDs(ids ...string) *CategoryUpdateOne {
+	cuo.mutation.RemoveCourseIDs(ids...)
+	return cuo
+}
+
+// RemoveCourse removes "course" edges to Course entities.
+func (cuo *CategoryUpdateOne) RemoveCourse(c ...*Course) *CategoryUpdateOne {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.RemoveCourseIDs(ids...)
 }
 
 // Where appends a list predicates to the CategoryUpdate builder.
@@ -246,6 +364,51 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 	}
 	if value, ok := cuo.mutation.Status(); ok {
 		_spec.SetField(category.FieldStatus, field.TypeString, value)
+	}
+	if cuo.mutation.CourseCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   category.CourseTable,
+			Columns: category.CoursePrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedCourseIDs(); len(nodes) > 0 && !cuo.mutation.CourseCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   category.CourseTable,
+			Columns: category.CoursePrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.CourseIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   category.CourseTable,
+			Columns: category.CoursePrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Category{config: cuo.config}
 	_spec.Assign = _node.assignValues

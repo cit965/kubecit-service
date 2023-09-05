@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
 	"time"
 
@@ -48,12 +49,6 @@ func (cc *CourseCreate) SetNillableIsIntegral(b *bool) *CourseCreate {
 	return cc
 }
 
-// SetSecondCategory sets the "secondCategory" field.
-func (cc *CourseCreate) SetSecondCategory(s string) *CourseCreate {
-	cc.mutation.SetSecondCategory(s)
-	return cc
-}
-
 // SetSaleType sets the "saleType" field.
 func (cc *CourseCreate) SetSaleType(i int32) *CourseCreate {
 	cc.mutation.SetSaleType(i)
@@ -63,12 +58,6 @@ func (cc *CourseCreate) SetSaleType(i int32) *CourseCreate {
 // SetDiscountPrice sets the "discountPrice" field.
 func (cc *CourseCreate) SetDiscountPrice(f float32) *CourseCreate {
 	cc.mutation.SetDiscountPrice(f)
-	return cc
-}
-
-// SetFirstCategoryName sets the "firstCategoryName" field.
-func (cc *CourseCreate) SetFirstCategoryName(s string) *CourseCreate {
-	cc.mutation.SetFirstCategoryName(s)
 	return cc
 }
 
@@ -120,27 +109,9 @@ func (cc *CourseCreate) SetCourseCover(s string) *CourseCreate {
 	return cc
 }
 
-// SetExt3 sets the "ext3" field.
-func (cc *CourseCreate) SetExt3(s string) *CourseCreate {
-	cc.mutation.SetExt3(s)
-	return cc
-}
-
-// SetExt2 sets the "ext2" field.
-func (cc *CourseCreate) SetExt2(s string) *CourseCreate {
-	cc.mutation.SetExt2(s)
-	return cc
-}
-
 // SetBizCourseChapters sets the "bizCourseChapters" field.
 func (cc *CourseCreate) SetBizCourseChapters(s string) *CourseCreate {
 	cc.mutation.SetBizCourseChapters(s)
-	return cc
-}
-
-// SetExt1 sets the "ext1" field.
-func (cc *CourseCreate) SetExt1(s string) *CourseCreate {
-	cc.mutation.SetExt1(s)
 	return cc
 }
 
@@ -204,12 +175,6 @@ func (cc *CourseCreate) SetClicks(i int32) *CourseCreate {
 	return cc
 }
 
-// SetSecondCategoryName sets the "secondCategoryName" field.
-func (cc *CourseCreate) SetSecondCategoryName(s string) *CourseCreate {
-	cc.mutation.SetSecondCategoryName(s)
-	return cc
-}
-
 // SetStatus sets the "status" field.
 func (cc *CourseCreate) SetStatus(s string) *CourseCreate {
 	cc.mutation.SetStatus(s)
@@ -220,6 +185,21 @@ func (cc *CourseCreate) SetStatus(s string) *CourseCreate {
 func (cc *CourseCreate) SetID(s string) *CourseCreate {
 	cc.mutation.SetID(s)
 	return cc
+}
+
+// AddCategoryIDs adds the "categories" edge to the Category entity by IDs.
+func (cc *CourseCreate) AddCategoryIDs(ids ...string) *CourseCreate {
+	cc.mutation.AddCategoryIDs(ids...)
+	return cc
+}
+
+// AddCategories adds the "categories" edges to the Category entity.
+func (cc *CourseCreate) AddCategories(c ...*Category) *CourseCreate {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cc.AddCategoryIDs(ids...)
 }
 
 // Mutation returns the CourseMutation object of the builder.
@@ -275,17 +255,11 @@ func (cc *CourseCreate) check() error {
 	if _, ok := cc.mutation.IsIntegral(); !ok {
 		return &ValidationError{Name: "isIntegral", err: errors.New(`ent: missing required field "Course.isIntegral"`)}
 	}
-	if _, ok := cc.mutation.SecondCategory(); !ok {
-		return &ValidationError{Name: "secondCategory", err: errors.New(`ent: missing required field "Course.secondCategory"`)}
-	}
 	if _, ok := cc.mutation.SaleType(); !ok {
 		return &ValidationError{Name: "saleType", err: errors.New(`ent: missing required field "Course.saleType"`)}
 	}
 	if _, ok := cc.mutation.DiscountPrice(); !ok {
 		return &ValidationError{Name: "discountPrice", err: errors.New(`ent: missing required field "Course.discountPrice"`)}
-	}
-	if _, ok := cc.mutation.FirstCategoryName(); !ok {
-		return &ValidationError{Name: "firstCategoryName", err: errors.New(`ent: missing required field "Course.firstCategoryName"`)}
 	}
 	if _, ok := cc.mutation.TeachingType(); !ok {
 		return &ValidationError{Name: "teachingType", err: errors.New(`ent: missing required field "Course.teachingType"`)}
@@ -311,17 +285,8 @@ func (cc *CourseCreate) check() error {
 	if _, ok := cc.mutation.CourseCover(); !ok {
 		return &ValidationError{Name: "courseCover", err: errors.New(`ent: missing required field "Course.courseCover"`)}
 	}
-	if _, ok := cc.mutation.Ext3(); !ok {
-		return &ValidationError{Name: "ext3", err: errors.New(`ent: missing required field "Course.ext3"`)}
-	}
-	if _, ok := cc.mutation.Ext2(); !ok {
-		return &ValidationError{Name: "ext2", err: errors.New(`ent: missing required field "Course.ext2"`)}
-	}
 	if _, ok := cc.mutation.BizCourseChapters(); !ok {
 		return &ValidationError{Name: "bizCourseChapters", err: errors.New(`ent: missing required field "Course.bizCourseChapters"`)}
-	}
-	if _, ok := cc.mutation.Ext1(); !ok {
-		return &ValidationError{Name: "ext1", err: errors.New(`ent: missing required field "Course.ext1"`)}
 	}
 	if _, ok := cc.mutation.SalePrice(); !ok {
 		return &ValidationError{Name: "salePrice", err: errors.New(`ent: missing required field "Course.salePrice"`)}
@@ -352,9 +317,6 @@ func (cc *CourseCreate) check() error {
 	}
 	if _, ok := cc.mutation.Clicks(); !ok {
 		return &ValidationError{Name: "clicks", err: errors.New(`ent: missing required field "Course.clicks"`)}
-	}
-	if _, ok := cc.mutation.SecondCategoryName(); !ok {
-		return &ValidationError{Name: "secondCategoryName", err: errors.New(`ent: missing required field "Course.secondCategoryName"`)}
 	}
 	if _, ok := cc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Course.status"`)}
@@ -402,10 +364,6 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 		_spec.SetField(course.FieldIsIntegral, field.TypeBool, value)
 		_node.IsIntegral = value
 	}
-	if value, ok := cc.mutation.SecondCategory(); ok {
-		_spec.SetField(course.FieldSecondCategory, field.TypeString, value)
-		_node.SecondCategory = value
-	}
 	if value, ok := cc.mutation.SaleType(); ok {
 		_spec.SetField(course.FieldSaleType, field.TypeInt32, value)
 		_node.SaleType = value
@@ -413,10 +371,6 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.DiscountPrice(); ok {
 		_spec.SetField(course.FieldDiscountPrice, field.TypeFloat32, value)
 		_node.DiscountPrice = value
-	}
-	if value, ok := cc.mutation.FirstCategoryName(); ok {
-		_spec.SetField(course.FieldFirstCategoryName, field.TypeString, value)
-		_node.FirstCategoryName = value
 	}
 	if value, ok := cc.mutation.TeachingType(); ok {
 		_spec.SetField(course.FieldTeachingType, field.TypeInt32, value)
@@ -450,21 +404,9 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 		_spec.SetField(course.FieldCourseCover, field.TypeString, value)
 		_node.CourseCover = value
 	}
-	if value, ok := cc.mutation.Ext3(); ok {
-		_spec.SetField(course.FieldExt3, field.TypeString, value)
-		_node.Ext3 = value
-	}
-	if value, ok := cc.mutation.Ext2(); ok {
-		_spec.SetField(course.FieldExt2, field.TypeString, value)
-		_node.Ext2 = value
-	}
 	if value, ok := cc.mutation.BizCourseChapters(); ok {
 		_spec.SetField(course.FieldBizCourseChapters, field.TypeString, value)
 		_node.BizCourseChapters = value
-	}
-	if value, ok := cc.mutation.Ext1(); ok {
-		_spec.SetField(course.FieldExt1, field.TypeString, value)
-		_node.Ext1 = value
 	}
 	if value, ok := cc.mutation.SalePrice(); ok {
 		_spec.SetField(course.FieldSalePrice, field.TypeFloat32, value)
@@ -506,13 +448,25 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 		_spec.SetField(course.FieldClicks, field.TypeInt32, value)
 		_node.Clicks = value
 	}
-	if value, ok := cc.mutation.SecondCategoryName(); ok {
-		_spec.SetField(course.FieldSecondCategoryName, field.TypeString, value)
-		_node.SecondCategoryName = value
-	}
 	if value, ok := cc.mutation.Status(); ok {
 		_spec.SetField(course.FieldStatus, field.TypeString, value)
 		_node.Status = value
+	}
+	if nodes := cc.mutation.CategoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

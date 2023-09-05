@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 	"time"
@@ -56,12 +57,6 @@ func (cu *CourseUpdate) SetNillableIsIntegral(b *bool) *CourseUpdate {
 	return cu
 }
 
-// SetSecondCategory sets the "secondCategory" field.
-func (cu *CourseUpdate) SetSecondCategory(s string) *CourseUpdate {
-	cu.mutation.SetSecondCategory(s)
-	return cu
-}
-
 // SetSaleType sets the "saleType" field.
 func (cu *CourseUpdate) SetSaleType(i int32) *CourseUpdate {
 	cu.mutation.ResetSaleType()
@@ -85,12 +80,6 @@ func (cu *CourseUpdate) SetDiscountPrice(f float32) *CourseUpdate {
 // AddDiscountPrice adds f to the "discountPrice" field.
 func (cu *CourseUpdate) AddDiscountPrice(f float32) *CourseUpdate {
 	cu.mutation.AddDiscountPrice(f)
-	return cu
-}
-
-// SetFirstCategoryName sets the "firstCategoryName" field.
-func (cu *CourseUpdate) SetFirstCategoryName(s string) *CourseUpdate {
-	cu.mutation.SetFirstCategoryName(s)
 	return cu
 }
 
@@ -170,27 +159,9 @@ func (cu *CourseUpdate) SetCourseCover(s string) *CourseUpdate {
 	return cu
 }
 
-// SetExt3 sets the "ext3" field.
-func (cu *CourseUpdate) SetExt3(s string) *CourseUpdate {
-	cu.mutation.SetExt3(s)
-	return cu
-}
-
-// SetExt2 sets the "ext2" field.
-func (cu *CourseUpdate) SetExt2(s string) *CourseUpdate {
-	cu.mutation.SetExt2(s)
-	return cu
-}
-
 // SetBizCourseChapters sets the "bizCourseChapters" field.
 func (cu *CourseUpdate) SetBizCourseChapters(s string) *CourseUpdate {
 	cu.mutation.SetBizCourseChapters(s)
-	return cu
-}
-
-// SetExt1 sets the "ext1" field.
-func (cu *CourseUpdate) SetExt1(s string) *CourseUpdate {
-	cu.mutation.SetExt1(s)
 	return cu
 }
 
@@ -275,21 +246,51 @@ func (cu *CourseUpdate) AddClicks(i int32) *CourseUpdate {
 	return cu
 }
 
-// SetSecondCategoryName sets the "secondCategoryName" field.
-func (cu *CourseUpdate) SetSecondCategoryName(s string) *CourseUpdate {
-	cu.mutation.SetSecondCategoryName(s)
-	return cu
-}
-
 // SetStatus sets the "status" field.
 func (cu *CourseUpdate) SetStatus(s string) *CourseUpdate {
 	cu.mutation.SetStatus(s)
 	return cu
 }
 
+// AddCategoryIDs adds the "categories" edge to the Category entity by IDs.
+func (cu *CourseUpdate) AddCategoryIDs(ids ...string) *CourseUpdate {
+	cu.mutation.AddCategoryIDs(ids...)
+	return cu
+}
+
+// AddCategories adds the "categories" edges to the Category entity.
+func (cu *CourseUpdate) AddCategories(c ...*Category) *CourseUpdate {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.AddCategoryIDs(ids...)
+}
+
 // Mutation returns the CourseMutation object of the builder.
 func (cu *CourseUpdate) Mutation() *CourseMutation {
 	return cu.mutation
+}
+
+// ClearCategories clears all "categories" edges to the Category entity.
+func (cu *CourseUpdate) ClearCategories() *CourseUpdate {
+	cu.mutation.ClearCategories()
+	return cu
+}
+
+// RemoveCategoryIDs removes the "categories" edge to Category entities by IDs.
+func (cu *CourseUpdate) RemoveCategoryIDs(ids ...string) *CourseUpdate {
+	cu.mutation.RemoveCategoryIDs(ids...)
+	return cu
+}
+
+// RemoveCategories removes "categories" edges to Category entities.
+func (cu *CourseUpdate) RemoveCategories(c ...*Category) *CourseUpdate {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.RemoveCategoryIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -334,9 +335,6 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.IsIntegral(); ok {
 		_spec.SetField(course.FieldIsIntegral, field.TypeBool, value)
 	}
-	if value, ok := cu.mutation.SecondCategory(); ok {
-		_spec.SetField(course.FieldSecondCategory, field.TypeString, value)
-	}
 	if value, ok := cu.mutation.SaleType(); ok {
 		_spec.SetField(course.FieldSaleType, field.TypeInt32, value)
 	}
@@ -348,9 +346,6 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.AddedDiscountPrice(); ok {
 		_spec.AddField(course.FieldDiscountPrice, field.TypeFloat32, value)
-	}
-	if value, ok := cu.mutation.FirstCategoryName(); ok {
-		_spec.SetField(course.FieldFirstCategoryName, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.TeachingType(); ok {
 		_spec.SetField(course.FieldTeachingType, field.TypeInt32, value)
@@ -388,17 +383,8 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.CourseCover(); ok {
 		_spec.SetField(course.FieldCourseCover, field.TypeString, value)
 	}
-	if value, ok := cu.mutation.Ext3(); ok {
-		_spec.SetField(course.FieldExt3, field.TypeString, value)
-	}
-	if value, ok := cu.mutation.Ext2(); ok {
-		_spec.SetField(course.FieldExt2, field.TypeString, value)
-	}
 	if value, ok := cu.mutation.BizCourseChapters(); ok {
 		_spec.SetField(course.FieldBizCourseChapters, field.TypeString, value)
-	}
-	if value, ok := cu.mutation.Ext1(); ok {
-		_spec.SetField(course.FieldExt1, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.SalePrice(); ok {
 		_spec.SetField(course.FieldSalePrice, field.TypeFloat32, value)
@@ -439,11 +425,53 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.AddedClicks(); ok {
 		_spec.AddField(course.FieldClicks, field.TypeInt32, value)
 	}
-	if value, ok := cu.mutation.SecondCategoryName(); ok {
-		_spec.SetField(course.FieldSecondCategoryName, field.TypeString, value)
-	}
 	if value, ok := cu.mutation.Status(); ok {
 		_spec.SetField(course.FieldStatus, field.TypeString, value)
+	}
+	if cu.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedCategoriesIDs(); len(nodes) > 0 && !cu.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.CategoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -493,12 +521,6 @@ func (cuo *CourseUpdateOne) SetNillableIsIntegral(b *bool) *CourseUpdateOne {
 	return cuo
 }
 
-// SetSecondCategory sets the "secondCategory" field.
-func (cuo *CourseUpdateOne) SetSecondCategory(s string) *CourseUpdateOne {
-	cuo.mutation.SetSecondCategory(s)
-	return cuo
-}
-
 // SetSaleType sets the "saleType" field.
 func (cuo *CourseUpdateOne) SetSaleType(i int32) *CourseUpdateOne {
 	cuo.mutation.ResetSaleType()
@@ -522,12 +544,6 @@ func (cuo *CourseUpdateOne) SetDiscountPrice(f float32) *CourseUpdateOne {
 // AddDiscountPrice adds f to the "discountPrice" field.
 func (cuo *CourseUpdateOne) AddDiscountPrice(f float32) *CourseUpdateOne {
 	cuo.mutation.AddDiscountPrice(f)
-	return cuo
-}
-
-// SetFirstCategoryName sets the "firstCategoryName" field.
-func (cuo *CourseUpdateOne) SetFirstCategoryName(s string) *CourseUpdateOne {
-	cuo.mutation.SetFirstCategoryName(s)
 	return cuo
 }
 
@@ -607,27 +623,9 @@ func (cuo *CourseUpdateOne) SetCourseCover(s string) *CourseUpdateOne {
 	return cuo
 }
 
-// SetExt3 sets the "ext3" field.
-func (cuo *CourseUpdateOne) SetExt3(s string) *CourseUpdateOne {
-	cuo.mutation.SetExt3(s)
-	return cuo
-}
-
-// SetExt2 sets the "ext2" field.
-func (cuo *CourseUpdateOne) SetExt2(s string) *CourseUpdateOne {
-	cuo.mutation.SetExt2(s)
-	return cuo
-}
-
 // SetBizCourseChapters sets the "bizCourseChapters" field.
 func (cuo *CourseUpdateOne) SetBizCourseChapters(s string) *CourseUpdateOne {
 	cuo.mutation.SetBizCourseChapters(s)
-	return cuo
-}
-
-// SetExt1 sets the "ext1" field.
-func (cuo *CourseUpdateOne) SetExt1(s string) *CourseUpdateOne {
-	cuo.mutation.SetExt1(s)
 	return cuo
 }
 
@@ -712,21 +710,51 @@ func (cuo *CourseUpdateOne) AddClicks(i int32) *CourseUpdateOne {
 	return cuo
 }
 
-// SetSecondCategoryName sets the "secondCategoryName" field.
-func (cuo *CourseUpdateOne) SetSecondCategoryName(s string) *CourseUpdateOne {
-	cuo.mutation.SetSecondCategoryName(s)
-	return cuo
-}
-
 // SetStatus sets the "status" field.
 func (cuo *CourseUpdateOne) SetStatus(s string) *CourseUpdateOne {
 	cuo.mutation.SetStatus(s)
 	return cuo
 }
 
+// AddCategoryIDs adds the "categories" edge to the Category entity by IDs.
+func (cuo *CourseUpdateOne) AddCategoryIDs(ids ...string) *CourseUpdateOne {
+	cuo.mutation.AddCategoryIDs(ids...)
+	return cuo
+}
+
+// AddCategories adds the "categories" edges to the Category entity.
+func (cuo *CourseUpdateOne) AddCategories(c ...*Category) *CourseUpdateOne {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.AddCategoryIDs(ids...)
+}
+
 // Mutation returns the CourseMutation object of the builder.
 func (cuo *CourseUpdateOne) Mutation() *CourseMutation {
 	return cuo.mutation
+}
+
+// ClearCategories clears all "categories" edges to the Category entity.
+func (cuo *CourseUpdateOne) ClearCategories() *CourseUpdateOne {
+	cuo.mutation.ClearCategories()
+	return cuo
+}
+
+// RemoveCategoryIDs removes the "categories" edge to Category entities by IDs.
+func (cuo *CourseUpdateOne) RemoveCategoryIDs(ids ...string) *CourseUpdateOne {
+	cuo.mutation.RemoveCategoryIDs(ids...)
+	return cuo
+}
+
+// RemoveCategories removes "categories" edges to Category entities.
+func (cuo *CourseUpdateOne) RemoveCategories(c ...*Category) *CourseUpdateOne {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.RemoveCategoryIDs(ids...)
 }
 
 // Where appends a list predicates to the CourseUpdate builder.
@@ -801,9 +829,6 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 	if value, ok := cuo.mutation.IsIntegral(); ok {
 		_spec.SetField(course.FieldIsIntegral, field.TypeBool, value)
 	}
-	if value, ok := cuo.mutation.SecondCategory(); ok {
-		_spec.SetField(course.FieldSecondCategory, field.TypeString, value)
-	}
 	if value, ok := cuo.mutation.SaleType(); ok {
 		_spec.SetField(course.FieldSaleType, field.TypeInt32, value)
 	}
@@ -815,9 +840,6 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 	}
 	if value, ok := cuo.mutation.AddedDiscountPrice(); ok {
 		_spec.AddField(course.FieldDiscountPrice, field.TypeFloat32, value)
-	}
-	if value, ok := cuo.mutation.FirstCategoryName(); ok {
-		_spec.SetField(course.FieldFirstCategoryName, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.TeachingType(); ok {
 		_spec.SetField(course.FieldTeachingType, field.TypeInt32, value)
@@ -855,17 +877,8 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 	if value, ok := cuo.mutation.CourseCover(); ok {
 		_spec.SetField(course.FieldCourseCover, field.TypeString, value)
 	}
-	if value, ok := cuo.mutation.Ext3(); ok {
-		_spec.SetField(course.FieldExt3, field.TypeString, value)
-	}
-	if value, ok := cuo.mutation.Ext2(); ok {
-		_spec.SetField(course.FieldExt2, field.TypeString, value)
-	}
 	if value, ok := cuo.mutation.BizCourseChapters(); ok {
 		_spec.SetField(course.FieldBizCourseChapters, field.TypeString, value)
-	}
-	if value, ok := cuo.mutation.Ext1(); ok {
-		_spec.SetField(course.FieldExt1, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.SalePrice(); ok {
 		_spec.SetField(course.FieldSalePrice, field.TypeFloat32, value)
@@ -906,11 +919,53 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 	if value, ok := cuo.mutation.AddedClicks(); ok {
 		_spec.AddField(course.FieldClicks, field.TypeInt32, value)
 	}
-	if value, ok := cuo.mutation.SecondCategoryName(); ok {
-		_spec.SetField(course.FieldSecondCategoryName, field.TypeString, value)
-	}
 	if value, ok := cuo.mutation.Status(); ok {
 		_spec.SetField(course.FieldStatus, field.TypeString, value)
+	}
+	if cuo.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedCategoriesIDs(); len(nodes) > 0 && !cuo.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.CategoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Course{config: cuo.config}
 	_spec.Assign = _node.assignValues
