@@ -32,9 +32,26 @@ func (s *KubecitService) Category(ctx context.Context, req *pb.Empty) (*pb.Categ
 func (s *KubecitService) MostNew(ctx context.Context, req *pb.PageRequest) (*pb.MostNewReply, error) {
 	return &pb.MostNewReply{}, nil
 }
+
 func (s *KubecitService) GetFirstCategories(ctx context.Context, req *pb.GetFirstCategoriesRequest) (*pb.GetFirstCategoriesReply, error) {
-	return &pb.GetFirstCategoriesReply{}, nil
+	categories, err := s.cc.ListCategory(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var cs []*pb.CategoryInfo
+	for _, v := range categories {
+		cs = append(cs, &pb.CategoryInfo{
+			CategoryName: v.CategoryName,
+			Id:           v.Id,
+			ParentId:     v.ParentId,
+			Level:        v.Level,
+			Status:       v.Status,
+		})
+	}
+	return &pb.GetFirstCategoriesReply{Categories: cs}, nil
 }
+
 func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) (*pb.TagsListReply, error) {
 	return &pb.TagsListReply{}, nil
 }

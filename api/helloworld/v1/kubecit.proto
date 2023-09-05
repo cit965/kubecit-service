@@ -180,8 +180,7 @@ message GetFirstCategoriesRequest {
 }
 
 message GetFirstCategoriesReply {
-  Metadata meta = 1;
-  getFirstCategoriesReplyData data = 2;
+  repeated CategoryInfo categories = 1;
 }
 
 message getFirstCategoriesReplyData {
