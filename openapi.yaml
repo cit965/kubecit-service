@@ -260,60 +260,13 @@ components:
                     type: object
                     additionalProperties:
                         type: string
-        helloworld.v1.FirstCategory:
-            type: object
-            properties:
-                thumbnail:
-                    type: string
-                level:
-                    type: integer
-                    format: int32
-                description:
-                    type: string
-                updateTime:
-                    type: string
-                    format: date-time
-                sort:
-                    type: integer
-                    format: int32
-                categoryName:
-                    type: string
-                parentId:
-                    type: string
-                createBy:
-                    type: string
-                createTime:
-                    type: string
-                    format: date-time
-                updateBy:
-                    type: string
-                children:
-                    type: array
-                    items:
-                        type: string
-                parentCategory:
-                    type: array
-                    items:
-                        type: string
-                id:
-                    type: string
-                status:
-                    type: integer
-                    format: int32
         helloworld.v1.GetFirstCategoriesReply:
             type: object
             properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
-                data:
-                    $ref: '#/components/schemas/helloworld.v1.GetFirstCategoriesReplyData'
-        helloworld.v1.GetFirstCategoriesReplyData:
-            type: object
-            properties:
-                list:
+                categories:
                     type: array
                     items:
-                        $ref: '#/components/schemas/helloworld.v1.FirstCategory'
+                        $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
         helloworld.v1.GetInfoReply:
             type: object
             properties:
