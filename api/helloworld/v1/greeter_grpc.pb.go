@@ -20,7 +20,6 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Greeter_SayHello_FullMethodName = "/helloworld.v1.Greeter/SayHello"
-	Greeter_Category_FullMethodName = "/helloworld.v1.Greeter/Category"
 )
 
 // GreeterClient is the client API for Greeter service.
@@ -29,7 +28,6 @@ const (
 type GreeterClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
-	Category(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CategoryResp, error)
 }
 
 type greeterClient struct {
@@ -49,22 +47,12 @@ func (c *greeterClient) SayHello(ctx context.Context, in *HelloRequest, opts ...
 	return out, nil
 }
 
-func (c *greeterClient) Category(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CategoryResp, error) {
-	out := new(CategoryResp)
-	err := c.cc.Invoke(ctx, Greeter_Category_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // GreeterServer is the server API for Greeter service.
 // All implementations must embed UnimplementedGreeterServer
 // for forward compatibility
 type GreeterServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
-	Category(context.Context, *Empty) (*CategoryResp, error)
 	mustEmbedUnimplementedGreeterServer()
 }
 
@@ -74,9 +62,6 @@ type UnimplementedGreeterServer struct {
 
 func (UnimplementedGreeterServer) SayHello(context.Context, *HelloRequest) (*HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
-}
-func (UnimplementedGreeterServer) Category(context.Context, *Empty) (*CategoryResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
 }
 func (UnimplementedGreeterServer) mustEmbedUnimplementedGreeterServer() {}
 
@@ -109,24 +94,6 @@ func _Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Greeter_Category_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GreeterServer).Category(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Greeter_Category_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GreeterServer).Category(ctx, req.(*Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Greeter_ServiceDesc is the grpc.ServiceDesc for Greeter service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -138,9 +105,95 @@ var Greeter_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "SayHello",
 			Handler:    _Greeter_SayHello_Handler,
 		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "helloworld/v1/greeter.proto",
+}
+
+const (
+	Category_Category_FullMethodName = "/helloworld.v1.Category/Category"
+)
+
+// CategoryClient is the client API for Category service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type CategoryClient interface {
+	Category(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CategoryResp, error)
+}
+
+type categoryClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewCategoryClient(cc grpc.ClientConnInterface) CategoryClient {
+	return &categoryClient{cc}
+}
+
+func (c *categoryClient) Category(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CategoryResp, error) {
+	out := new(CategoryResp)
+	err := c.cc.Invoke(ctx, Category_Category_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// CategoryServer is the server API for Category service.
+// All implementations must embed UnimplementedCategoryServer
+// for forward compatibility
+type CategoryServer interface {
+	Category(context.Context, *Empty) (*CategoryResp, error)
+	mustEmbedUnimplementedCategoryServer()
+}
+
+// UnimplementedCategoryServer must be embedded to have forward compatible implementations.
+type UnimplementedCategoryServer struct {
+}
+
+func (UnimplementedCategoryServer) Category(context.Context, *Empty) (*CategoryResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
+}
+func (UnimplementedCategoryServer) mustEmbedUnimplementedCategoryServer() {}
+
+// UnsafeCategoryServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CategoryServer will
+// result in compilation errors.
+type UnsafeCategoryServer interface {
+	mustEmbedUnimplementedCategoryServer()
+}
+
+func RegisterCategoryServer(s grpc.ServiceRegistrar, srv CategoryServer) {
+	s.RegisterService(&Category_ServiceDesc, srv)
+}
+
+func _Category_Category_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CategoryServer).Category(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Category_Category_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CategoryServer).Category(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Category_ServiceDesc is the grpc.ServiceDesc for Category service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var Category_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "helloworld.v1.Category",
+	HandlerType: (*CategoryServer)(nil),
+	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Category",
-			Handler:    _Greeter_Category_Handler,
+			Handler:    _Category_Category_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

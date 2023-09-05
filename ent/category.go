@@ -15,9 +15,15 @@ import (
 type Category struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 	// Name holds the value of the "name" field.
-	Name         string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
+	// ParentId holds the value of the "parentId" field.
+	ParentId string `json:"parentId,omitempty"`
+	// Level holds the value of the "level" field.
+	Level string `json:"level,omitempty"`
+	// Status holds the value of the "status" field.
+	Status       string `json:"status,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -26,9 +32,7 @@ func (*Category) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case category.FieldID:
-			values[i] = new(sql.NullInt64)
-		case category.FieldName:
+		case category.FieldID, category.FieldName, category.FieldParentId, category.FieldLevel, category.FieldStatus:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -46,16 +50,34 @@ func (c *Category) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case category.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value.Valid {
+				c.ID = value.String
 			}
-			c.ID = int(value.Int64)
 		case category.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				c.Name = value.String
+			}
+		case category.FieldParentId:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field parentId", values[i])
+			} else if value.Valid {
+				c.ParentId = value.String
+			}
+		case category.FieldLevel:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field level", values[i])
+			} else if value.Valid {
+				c.Level = value.String
+			}
+		case category.FieldStatus:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				c.Status = value.String
 			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
@@ -95,6 +117,15 @@ func (c *Category) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v, ", c.ID))
 	builder.WriteString("name=")
 	builder.WriteString(c.Name)
+	builder.WriteString(", ")
+	builder.WriteString("parentId=")
+	builder.WriteString(c.ParentId)
+	builder.WriteString(", ")
+	builder.WriteString("level=")
+	builder.WriteString(c.Level)
+	builder.WriteString(", ")
+	builder.WriteString("status=")
+	builder.WriteString(c.Status)
 	builder.WriteByte(')')
 	return builder.String()
 }

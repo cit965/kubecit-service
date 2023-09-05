@@ -19,11 +19,9 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationGreeterCategory = "/helloworld.v1.Greeter/Category"
 const OperationGreeterSayHello = "/helloworld.v1.Greeter/SayHello"
 
 type GreeterHTTPServer interface {
-	Category(context.Context, *Empty) (*CategoryResp, error)
 	// SayHello Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 }
@@ -31,7 +29,6 @@ type GreeterHTTPServer interface {
 func RegisterGreeterHTTPServer(s *http.Server, srv GreeterHTTPServer) {
 	r := s.Route("/")
 	r.GET("/helloworld/{name}", _Greeter_SayHello0_HTTP_Handler(srv))
-	r.GET("/category", _Greeter_Category0_HTTP_Handler(srv))
 }
 
 func _Greeter_SayHello0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Context) error {
@@ -56,13 +53,49 @@ func _Greeter_SayHello0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Contex
 	}
 }
 
-func _Greeter_Category0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Context) error {
+type GreeterHTTPClient interface {
+	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
+}
+
+type GreeterHTTPClientImpl struct {
+	cc *http.Client
+}
+
+func NewGreeterHTTPClient(client *http.Client) GreeterHTTPClient {
+	return &GreeterHTTPClientImpl{client}
+}
+
+func (c *GreeterHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloReply, error) {
+	var out HelloReply
+	pattern := "/helloworld/{name}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationGreeterSayHello))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+const OperationCategoryCategory = "/helloworld.v1.Category/Category"
+
+type CategoryHTTPServer interface {
+	Category(context.Context, *Empty) (*CategoryResp, error)
+}
+
+func RegisterCategoryHTTPServer(s *http.Server, srv CategoryHTTPServer) {
+	r := s.Route("/")
+	r.GET("/api/categories", _Category_Category0_HTTP_Handler(srv))
+}
+
+func _Category_Category0_HTTP_Handler(srv CategoryHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in Empty
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationGreeterCategory)
+		http.SetOperation(ctx, OperationCategoryCategory)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.Category(ctx, req.(*Empty))
 		})
@@ -75,37 +108,23 @@ func _Greeter_Category0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Contex
 	}
 }
 
-type GreeterHTTPClient interface {
+type CategoryHTTPClient interface {
 	Category(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *CategoryResp, err error)
-	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
 }
 
-type GreeterHTTPClientImpl struct {
+type CategoryHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewGreeterHTTPClient(client *http.Client) GreeterHTTPClient {
-	return &GreeterHTTPClientImpl{client}
+func NewCategoryHTTPClient(client *http.Client) CategoryHTTPClient {
+	return &CategoryHTTPClientImpl{client}
 }
 
-func (c *GreeterHTTPClientImpl) Category(ctx context.Context, in *Empty, opts ...http.CallOption) (*CategoryResp, error) {
+func (c *CategoryHTTPClientImpl) Category(ctx context.Context, in *Empty, opts ...http.CallOption) (*CategoryResp, error) {
 	var out CategoryResp
-	pattern := "/category"
+	pattern := "/api/categories"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationGreeterCategory))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *GreeterHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloReply, error) {
-	var out HelloReply
-	pattern := "/helloworld/{name}"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationGreeterSayHello))
+	opts = append(opts, http.Operation(OperationCategoryCategory))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

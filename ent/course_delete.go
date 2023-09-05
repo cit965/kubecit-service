@@ -4,7 +4,7 @@ package ent
 
 import (
 	"context"
-	"kubecit-service/ent/category"
+	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 
 	"entgo.io/ent/dialect/sql"
@@ -12,26 +12,26 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// CategoryDelete is the builder for deleting a Category entity.
-type CategoryDelete struct {
+// CourseDelete is the builder for deleting a Course entity.
+type CourseDelete struct {
 	config
 	hooks    []Hook
-	mutation *CategoryMutation
+	mutation *CourseMutation
 }
 
-// Where appends a list predicates to the CategoryDelete builder.
-func (cd *CategoryDelete) Where(ps ...predicate.Category) *CategoryDelete {
+// Where appends a list predicates to the CourseDelete builder.
+func (cd *CourseDelete) Where(ps ...predicate.Course) *CourseDelete {
 	cd.mutation.Where(ps...)
 	return cd
 }
 
 // Exec executes the deletion query and returns how many vertices were deleted.
-func (cd *CategoryDelete) Exec(ctx context.Context) (int, error) {
+func (cd *CourseDelete) Exec(ctx context.Context) (int, error) {
 	return withHooks(ctx, cd.sqlExec, cd.mutation, cd.hooks)
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (cd *CategoryDelete) ExecX(ctx context.Context) int {
+func (cd *CourseDelete) ExecX(ctx context.Context) int {
 	n, err := cd.Exec(ctx)
 	if err != nil {
 		panic(err)
@@ -39,8 +39,8 @@ func (cd *CategoryDelete) ExecX(ctx context.Context) int {
 	return n
 }
 
-func (cd *CategoryDelete) sqlExec(ctx context.Context) (int, error) {
-	_spec := sqlgraph.NewDeleteSpec(category.Table, sqlgraph.NewFieldSpec(category.FieldID, field.TypeString))
+func (cd *CourseDelete) sqlExec(ctx context.Context) (int, error) {
+	_spec := sqlgraph.NewDeleteSpec(course.Table, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
 	if ps := cd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -56,32 +56,32 @@ func (cd *CategoryDelete) sqlExec(ctx context.Context) (int, error) {
 	return affected, err
 }
 
-// CategoryDeleteOne is the builder for deleting a single Category entity.
-type CategoryDeleteOne struct {
-	cd *CategoryDelete
+// CourseDeleteOne is the builder for deleting a single Course entity.
+type CourseDeleteOne struct {
+	cd *CourseDelete
 }
 
-// Where appends a list predicates to the CategoryDelete builder.
-func (cdo *CategoryDeleteOne) Where(ps ...predicate.Category) *CategoryDeleteOne {
+// Where appends a list predicates to the CourseDelete builder.
+func (cdo *CourseDeleteOne) Where(ps ...predicate.Course) *CourseDeleteOne {
 	cdo.cd.mutation.Where(ps...)
 	return cdo
 }
 
 // Exec executes the deletion query.
-func (cdo *CategoryDeleteOne) Exec(ctx context.Context) error {
+func (cdo *CourseDeleteOne) Exec(ctx context.Context) error {
 	n, err := cdo.cd.Exec(ctx)
 	switch {
 	case err != nil:
 		return err
 	case n == 0:
-		return &NotFoundError{category.Label}
+		return &NotFoundError{course.Label}
 	default:
 		return nil
 	}
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (cdo *CategoryDeleteOne) ExecX(ctx context.Context) {
+func (cdo *CourseDeleteOne) ExecX(ctx context.Context) {
 	if err := cdo.Exec(ctx); err != nil {
 		panic(err)
 	}

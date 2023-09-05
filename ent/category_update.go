@@ -41,6 +41,24 @@ func (cu *CategoryUpdate) SetNillableName(s *string) *CategoryUpdate {
 	return cu
 }
 
+// SetParentId sets the "parentId" field.
+func (cu *CategoryUpdate) SetParentId(s string) *CategoryUpdate {
+	cu.mutation.SetParentId(s)
+	return cu
+}
+
+// SetLevel sets the "level" field.
+func (cu *CategoryUpdate) SetLevel(s string) *CategoryUpdate {
+	cu.mutation.SetLevel(s)
+	return cu
+}
+
+// SetStatus sets the "status" field.
+func (cu *CategoryUpdate) SetStatus(s string) *CategoryUpdate {
+	cu.mutation.SetStatus(s)
+	return cu
+}
+
 // Mutation returns the CategoryMutation object of the builder.
 func (cu *CategoryUpdate) Mutation() *CategoryMutation {
 	return cu.mutation
@@ -74,7 +92,7 @@ func (cu *CategoryUpdate) ExecX(ctx context.Context) {
 }
 
 func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeString))
 	if ps := cu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -84,6 +102,15 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.Name(); ok {
 		_spec.SetField(category.FieldName, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.ParentId(); ok {
+		_spec.SetField(category.FieldParentId, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Level(); ok {
+		_spec.SetField(category.FieldLevel, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Status(); ok {
+		_spec.SetField(category.FieldStatus, field.TypeString, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -116,6 +143,24 @@ func (cuo *CategoryUpdateOne) SetNillableName(s *string) *CategoryUpdateOne {
 	if s != nil {
 		cuo.SetName(*s)
 	}
+	return cuo
+}
+
+// SetParentId sets the "parentId" field.
+func (cuo *CategoryUpdateOne) SetParentId(s string) *CategoryUpdateOne {
+	cuo.mutation.SetParentId(s)
+	return cuo
+}
+
+// SetLevel sets the "level" field.
+func (cuo *CategoryUpdateOne) SetLevel(s string) *CategoryUpdateOne {
+	cuo.mutation.SetLevel(s)
+	return cuo
+}
+
+// SetStatus sets the "status" field.
+func (cuo *CategoryUpdateOne) SetStatus(s string) *CategoryUpdateOne {
+	cuo.mutation.SetStatus(s)
 	return cuo
 }
 
@@ -165,7 +210,7 @@ func (cuo *CategoryUpdateOne) ExecX(ctx context.Context) {
 }
 
 func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err error) {
-	_spec := sqlgraph.NewUpdateSpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeString))
 	id, ok := cuo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Category.id" for update`)}
@@ -192,6 +237,15 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 	}
 	if value, ok := cuo.mutation.Name(); ok {
 		_spec.SetField(category.FieldName, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.ParentId(); ok {
+		_spec.SetField(category.FieldParentId, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Level(); ok {
+		_spec.SetField(category.FieldLevel, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Status(); ok {
+		_spec.SetField(category.FieldStatus, field.TypeString, value)
 	}
 	_node = &Category{config: cuo.config}
 	_spec.Assign = _node.assignValues

@@ -14,6 +14,14 @@ type Tx struct {
 	config
 	// Category is the client for interacting with the Category builders.
 	Category *CategoryClient
+	// Course is the client for interacting with the Course builders.
+	Course *CourseClient
+	// Member is the client for interacting with the Member builders.
+	Member *MemberClient
+	// Slider is the client for interacting with the Slider builders.
+	Slider *SliderClient
+	// Token is the client for interacting with the Token builders.
+	Token *TokenClient
 
 	// lazily loaded.
 	client     *Client
@@ -146,6 +154,10 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Category = NewCategoryClient(tx.config)
+	tx.Course = NewCourseClient(tx.config)
+	tx.Member = NewMemberClient(tx.config)
+	tx.Slider = NewSliderClient(tx.config)
+	tx.Token = NewTokenClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

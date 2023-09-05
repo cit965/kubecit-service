@@ -7,6 +7,10 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/course"
+	"kubecit-service/ent/member"
+	"kubecit-service/ent/slider"
+	"kubecit-service/ent/token"
 	"reflect"
 	"sync"
 
@@ -74,6 +78,10 @@ func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			category.Table: category.ValidColumn,
+			course.Table:   course.ValidColumn,
+			member.Table:   member.ValidColumn,
+			slider.Table:   slider.ValidColumn,
+			token.Table:    token.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

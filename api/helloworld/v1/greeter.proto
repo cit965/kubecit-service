@@ -18,12 +18,6 @@ service Greeter {
       get: "/helloworld/{name}"
     };
   }
-
-  rpc Category (Empty) returns (CategoryResp) {
-    option (google.api.http) = {
-      get: "/category"
-    };
-  }
 }
 
 // The request message containing the user's name.
@@ -35,12 +29,24 @@ message Empty {
 
 }
 
-message CategoryResp {
-  repeated Category categories = 1;
+service Category {
+  rpc Category (Empty) returns (CategoryResp) {
+    option (google.api.http) = {
+      get: "/api/categories"
+    };
+  }
 }
-message Category {
+
+message CategoryResp {
+  repeated CategoryInfo categories = 1;
+}
+
+message CategoryInfo {
   string categoryName = 1;
   string id = 2;
+  string parentId = 3;
+  string level = 4;
+  string status = 5;
 }
 
 // The response message containing the greetings

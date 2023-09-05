@@ -5,7 +5,7 @@ package ent
 import (
 	"context"
 	"fmt"
-	"kubecit-service/ent/category"
+	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 	"math"
 
@@ -14,64 +14,64 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// CategoryQuery is the builder for querying Category entities.
-type CategoryQuery struct {
+// CourseQuery is the builder for querying Course entities.
+type CourseQuery struct {
 	config
 	ctx        *QueryContext
-	order      []category.OrderOption
+	order      []course.OrderOption
 	inters     []Interceptor
-	predicates []predicate.Category
+	predicates []predicate.Course
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
 }
 
-// Where adds a new predicate for the CategoryQuery builder.
-func (cq *CategoryQuery) Where(ps ...predicate.Category) *CategoryQuery {
+// Where adds a new predicate for the CourseQuery builder.
+func (cq *CourseQuery) Where(ps ...predicate.Course) *CourseQuery {
 	cq.predicates = append(cq.predicates, ps...)
 	return cq
 }
 
 // Limit the number of records to be returned by this query.
-func (cq *CategoryQuery) Limit(limit int) *CategoryQuery {
+func (cq *CourseQuery) Limit(limit int) *CourseQuery {
 	cq.ctx.Limit = &limit
 	return cq
 }
 
 // Offset to start from.
-func (cq *CategoryQuery) Offset(offset int) *CategoryQuery {
+func (cq *CourseQuery) Offset(offset int) *CourseQuery {
 	cq.ctx.Offset = &offset
 	return cq
 }
 
 // Unique configures the query builder to filter duplicate records on query.
 // By default, unique is set to true, and can be disabled using this method.
-func (cq *CategoryQuery) Unique(unique bool) *CategoryQuery {
+func (cq *CourseQuery) Unique(unique bool) *CourseQuery {
 	cq.ctx.Unique = &unique
 	return cq
 }
 
 // Order specifies how the records should be ordered.
-func (cq *CategoryQuery) Order(o ...category.OrderOption) *CategoryQuery {
+func (cq *CourseQuery) Order(o ...course.OrderOption) *CourseQuery {
 	cq.order = append(cq.order, o...)
 	return cq
 }
 
-// First returns the first Category entity from the query.
-// Returns a *NotFoundError when no Category was found.
-func (cq *CategoryQuery) First(ctx context.Context) (*Category, error) {
+// First returns the first Course entity from the query.
+// Returns a *NotFoundError when no Course was found.
+func (cq *CourseQuery) First(ctx context.Context) (*Course, error) {
 	nodes, err := cq.Limit(1).All(setContextOp(ctx, cq.ctx, "First"))
 	if err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
-		return nil, &NotFoundError{category.Label}
+		return nil, &NotFoundError{course.Label}
 	}
 	return nodes[0], nil
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (cq *CategoryQuery) FirstX(ctx context.Context) *Category {
+func (cq *CourseQuery) FirstX(ctx context.Context) *Course {
 	node, err := cq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -79,22 +79,22 @@ func (cq *CategoryQuery) FirstX(ctx context.Context) *Category {
 	return node
 }
 
-// FirstID returns the first Category ID from the query.
-// Returns a *NotFoundError when no Category ID was found.
-func (cq *CategoryQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+// FirstID returns the first Course ID from the query.
+// Returns a *NotFoundError when no Course ID was found.
+func (cq *CourseQuery) FirstID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = cq.Limit(1).IDs(setContextOp(ctx, cq.ctx, "FirstID")); err != nil {
 		return
 	}
 	if len(ids) == 0 {
-		err = &NotFoundError{category.Label}
+		err = &NotFoundError{course.Label}
 		return
 	}
 	return ids[0], nil
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (cq *CategoryQuery) FirstIDX(ctx context.Context) string {
+func (cq *CourseQuery) FirstIDX(ctx context.Context) int {
 	id, err := cq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -102,10 +102,10 @@ func (cq *CategoryQuery) FirstIDX(ctx context.Context) string {
 	return id
 }
 
-// Only returns a single Category entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when more than one Category entity is found.
-// Returns a *NotFoundError when no Category entities are found.
-func (cq *CategoryQuery) Only(ctx context.Context) (*Category, error) {
+// Only returns a single Course entity found by the query, ensuring it only returns one.
+// Returns a *NotSingularError when more than one Course entity is found.
+// Returns a *NotFoundError when no Course entities are found.
+func (cq *CourseQuery) Only(ctx context.Context) (*Course, error) {
 	nodes, err := cq.Limit(2).All(setContextOp(ctx, cq.ctx, "Only"))
 	if err != nil {
 		return nil, err
@@ -114,14 +114,14 @@ func (cq *CategoryQuery) Only(ctx context.Context) (*Category, error) {
 	case 1:
 		return nodes[0], nil
 	case 0:
-		return nil, &NotFoundError{category.Label}
+		return nil, &NotFoundError{course.Label}
 	default:
-		return nil, &NotSingularError{category.Label}
+		return nil, &NotSingularError{course.Label}
 	}
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (cq *CategoryQuery) OnlyX(ctx context.Context) *Category {
+func (cq *CourseQuery) OnlyX(ctx context.Context) *Course {
 	node, err := cq.Only(ctx)
 	if err != nil {
 		panic(err)
@@ -129,11 +129,11 @@ func (cq *CategoryQuery) OnlyX(ctx context.Context) *Category {
 	return node
 }
 
-// OnlyID is like Only, but returns the only Category ID in the query.
-// Returns a *NotSingularError when more than one Category ID is found.
+// OnlyID is like Only, but returns the only Course ID in the query.
+// Returns a *NotSingularError when more than one Course ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (cq *CategoryQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (cq *CourseQuery) OnlyID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = cq.Limit(2).IDs(setContextOp(ctx, cq.ctx, "OnlyID")); err != nil {
 		return
 	}
@@ -141,15 +141,15 @@ func (cq *CategoryQuery) OnlyID(ctx context.Context) (id string, err error) {
 	case 1:
 		id = ids[0]
 	case 0:
-		err = &NotFoundError{category.Label}
+		err = &NotFoundError{course.Label}
 	default:
-		err = &NotSingularError{category.Label}
+		err = &NotSingularError{course.Label}
 	}
 	return
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (cq *CategoryQuery) OnlyIDX(ctx context.Context) string {
+func (cq *CourseQuery) OnlyIDX(ctx context.Context) int {
 	id, err := cq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -157,18 +157,18 @@ func (cq *CategoryQuery) OnlyIDX(ctx context.Context) string {
 	return id
 }
 
-// All executes the query and returns a list of Categories.
-func (cq *CategoryQuery) All(ctx context.Context) ([]*Category, error) {
+// All executes the query and returns a list of Courses.
+func (cq *CourseQuery) All(ctx context.Context) ([]*Course, error) {
 	ctx = setContextOp(ctx, cq.ctx, "All")
 	if err := cq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
-	qr := querierAll[[]*Category, *CategoryQuery]()
-	return withInterceptors[[]*Category](ctx, cq, qr, cq.inters)
+	qr := querierAll[[]*Course, *CourseQuery]()
+	return withInterceptors[[]*Course](ctx, cq, qr, cq.inters)
 }
 
 // AllX is like All, but panics if an error occurs.
-func (cq *CategoryQuery) AllX(ctx context.Context) []*Category {
+func (cq *CourseQuery) AllX(ctx context.Context) []*Course {
 	nodes, err := cq.All(ctx)
 	if err != nil {
 		panic(err)
@@ -176,20 +176,20 @@ func (cq *CategoryQuery) AllX(ctx context.Context) []*Category {
 	return nodes
 }
 
-// IDs executes the query and returns a list of Category IDs.
-func (cq *CategoryQuery) IDs(ctx context.Context) (ids []string, err error) {
+// IDs executes the query and returns a list of Course IDs.
+func (cq *CourseQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if cq.ctx.Unique == nil && cq.path != nil {
 		cq.Unique(true)
 	}
 	ctx = setContextOp(ctx, cq.ctx, "IDs")
-	if err = cq.Select(category.FieldID).Scan(ctx, &ids); err != nil {
+	if err = cq.Select(course.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (cq *CategoryQuery) IDsX(ctx context.Context) []string {
+func (cq *CourseQuery) IDsX(ctx context.Context) []int {
 	ids, err := cq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -198,16 +198,16 @@ func (cq *CategoryQuery) IDsX(ctx context.Context) []string {
 }
 
 // Count returns the count of the given query.
-func (cq *CategoryQuery) Count(ctx context.Context) (int, error) {
+func (cq *CourseQuery) Count(ctx context.Context) (int, error) {
 	ctx = setContextOp(ctx, cq.ctx, "Count")
 	if err := cq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
-	return withInterceptors[int](ctx, cq, querierCount[*CategoryQuery](), cq.inters)
+	return withInterceptors[int](ctx, cq, querierCount[*CourseQuery](), cq.inters)
 }
 
 // CountX is like Count, but panics if an error occurs.
-func (cq *CategoryQuery) CountX(ctx context.Context) int {
+func (cq *CourseQuery) CountX(ctx context.Context) int {
 	count, err := cq.Count(ctx)
 	if err != nil {
 		panic(err)
@@ -216,7 +216,7 @@ func (cq *CategoryQuery) CountX(ctx context.Context) int {
 }
 
 // Exist returns true if the query has elements in the graph.
-func (cq *CategoryQuery) Exist(ctx context.Context) (bool, error) {
+func (cq *CourseQuery) Exist(ctx context.Context) (bool, error) {
 	ctx = setContextOp(ctx, cq.ctx, "Exist")
 	switch _, err := cq.FirstID(ctx); {
 	case IsNotFound(err):
@@ -229,7 +229,7 @@ func (cq *CategoryQuery) Exist(ctx context.Context) (bool, error) {
 }
 
 // ExistX is like Exist, but panics if an error occurs.
-func (cq *CategoryQuery) ExistX(ctx context.Context) bool {
+func (cq *CourseQuery) ExistX(ctx context.Context) bool {
 	exist, err := cq.Exist(ctx)
 	if err != nil {
 		panic(err)
@@ -237,18 +237,18 @@ func (cq *CategoryQuery) ExistX(ctx context.Context) bool {
 	return exist
 }
 
-// Clone returns a duplicate of the CategoryQuery builder, including all associated steps. It can be
+// Clone returns a duplicate of the CourseQuery builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
-func (cq *CategoryQuery) Clone() *CategoryQuery {
+func (cq *CourseQuery) Clone() *CourseQuery {
 	if cq == nil {
 		return nil
 	}
-	return &CategoryQuery{
+	return &CourseQuery{
 		config:     cq.config,
 		ctx:        cq.ctx.Clone(),
-		order:      append([]category.OrderOption{}, cq.order...),
+		order:      append([]course.OrderOption{}, cq.order...),
 		inters:     append([]Interceptor{}, cq.inters...),
-		predicates: append([]predicate.Category{}, cq.predicates...),
+		predicates: append([]predicate.Course{}, cq.predicates...),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
@@ -257,53 +257,31 @@ func (cq *CategoryQuery) Clone() *CategoryQuery {
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
-//
-// Example:
-//
-//	var v []struct {
-//		Name string `json:"name,omitempty"`
-//		Count int `json:"count,omitempty"`
-//	}
-//
-//	client.Category.Query().
-//		GroupBy(category.FieldName).
-//		Aggregate(ent.Count()).
-//		Scan(ctx, &v)
-func (cq *CategoryQuery) GroupBy(field string, fields ...string) *CategoryGroupBy {
+func (cq *CourseQuery) GroupBy(field string, fields ...string) *CourseGroupBy {
 	cq.ctx.Fields = append([]string{field}, fields...)
-	grbuild := &CategoryGroupBy{build: cq}
+	grbuild := &CourseGroupBy{build: cq}
 	grbuild.flds = &cq.ctx.Fields
-	grbuild.label = category.Label
+	grbuild.label = course.Label
 	grbuild.scan = grbuild.Scan
 	return grbuild
 }
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
-//
-// Example:
-//
-//	var v []struct {
-//		Name string `json:"name,omitempty"`
-//	}
-//
-//	client.Category.Query().
-//		Select(category.FieldName).
-//		Scan(ctx, &v)
-func (cq *CategoryQuery) Select(fields ...string) *CategorySelect {
+func (cq *CourseQuery) Select(fields ...string) *CourseSelect {
 	cq.ctx.Fields = append(cq.ctx.Fields, fields...)
-	sbuild := &CategorySelect{CategoryQuery: cq}
-	sbuild.label = category.Label
+	sbuild := &CourseSelect{CourseQuery: cq}
+	sbuild.label = course.Label
 	sbuild.flds, sbuild.scan = &cq.ctx.Fields, sbuild.Scan
 	return sbuild
 }
 
-// Aggregate returns a CategorySelect configured with the given aggregations.
-func (cq *CategoryQuery) Aggregate(fns ...AggregateFunc) *CategorySelect {
+// Aggregate returns a CourseSelect configured with the given aggregations.
+func (cq *CourseQuery) Aggregate(fns ...AggregateFunc) *CourseSelect {
 	return cq.Select().Aggregate(fns...)
 }
 
-func (cq *CategoryQuery) prepareQuery(ctx context.Context) error {
+func (cq *CourseQuery) prepareQuery(ctx context.Context) error {
 	for _, inter := range cq.inters {
 		if inter == nil {
 			return fmt.Errorf("ent: uninitialized interceptor (forgotten import ent/runtime?)")
@@ -315,7 +293,7 @@ func (cq *CategoryQuery) prepareQuery(ctx context.Context) error {
 		}
 	}
 	for _, f := range cq.ctx.Fields {
-		if !category.ValidColumn(f) {
+		if !course.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
@@ -329,16 +307,16 @@ func (cq *CategoryQuery) prepareQuery(ctx context.Context) error {
 	return nil
 }
 
-func (cq *CategoryQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Category, error) {
+func (cq *CourseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Course, error) {
 	var (
-		nodes = []*Category{}
+		nodes = []*Course{}
 		_spec = cq.querySpec()
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
-		return (*Category).scanValues(nil, columns)
+		return (*Course).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
-		node := &Category{config: cq.config}
+		node := &Course{config: cq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
 	}
@@ -354,7 +332,7 @@ func (cq *CategoryQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cat
 	return nodes, nil
 }
 
-func (cq *CategoryQuery) sqlCount(ctx context.Context) (int, error) {
+func (cq *CourseQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := cq.querySpec()
 	_spec.Node.Columns = cq.ctx.Fields
 	if len(cq.ctx.Fields) > 0 {
@@ -363,8 +341,8 @@ func (cq *CategoryQuery) sqlCount(ctx context.Context) (int, error) {
 	return sqlgraph.CountNodes(ctx, cq.driver, _spec)
 }
 
-func (cq *CategoryQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeString))
+func (cq *CourseQuery) querySpec() *sqlgraph.QuerySpec {
+	_spec := sqlgraph.NewQuerySpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
 	_spec.From = cq.sql
 	if unique := cq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique
@@ -373,9 +351,9 @@ func (cq *CategoryQuery) querySpec() *sqlgraph.QuerySpec {
 	}
 	if fields := cq.ctx.Fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, category.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, course.FieldID)
 		for i := range fields {
-			if fields[i] != category.FieldID {
+			if fields[i] != course.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
@@ -403,12 +381,12 @@ func (cq *CategoryQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (cq *CategoryQuery) sqlQuery(ctx context.Context) *sql.Selector {
+func (cq *CourseQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(cq.driver.Dialect())
-	t1 := builder.Table(category.Table)
+	t1 := builder.Table(course.Table)
 	columns := cq.ctx.Fields
 	if len(columns) == 0 {
-		columns = category.Columns
+		columns = course.Columns
 	}
 	selector := builder.Select(t1.Columns(columns...)...).From(t1)
 	if cq.sql != nil {
@@ -435,28 +413,28 @@ func (cq *CategoryQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	return selector
 }
 
-// CategoryGroupBy is the group-by builder for Category entities.
-type CategoryGroupBy struct {
+// CourseGroupBy is the group-by builder for Course entities.
+type CourseGroupBy struct {
 	selector
-	build *CategoryQuery
+	build *CourseQuery
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
-func (cgb *CategoryGroupBy) Aggregate(fns ...AggregateFunc) *CategoryGroupBy {
+func (cgb *CourseGroupBy) Aggregate(fns ...AggregateFunc) *CourseGroupBy {
 	cgb.fns = append(cgb.fns, fns...)
 	return cgb
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (cgb *CategoryGroupBy) Scan(ctx context.Context, v any) error {
+func (cgb *CourseGroupBy) Scan(ctx context.Context, v any) error {
 	ctx = setContextOp(ctx, cgb.build.ctx, "GroupBy")
 	if err := cgb.build.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*CategoryQuery, *CategoryGroupBy](ctx, cgb.build, cgb, cgb.build.inters, v)
+	return scanWithInterceptors[*CourseQuery, *CourseGroupBy](ctx, cgb.build, cgb, cgb.build.inters, v)
 }
 
-func (cgb *CategoryGroupBy) sqlScan(ctx context.Context, root *CategoryQuery, v any) error {
+func (cgb *CourseGroupBy) sqlScan(ctx context.Context, root *CourseQuery, v any) error {
 	selector := root.sqlQuery(ctx).Select()
 	aggregation := make([]string, 0, len(cgb.fns))
 	for _, fn := range cgb.fns {
@@ -483,28 +461,28 @@ func (cgb *CategoryGroupBy) sqlScan(ctx context.Context, root *CategoryQuery, v 
 	return sql.ScanSlice(rows, v)
 }
 
-// CategorySelect is the builder for selecting fields of Category entities.
-type CategorySelect struct {
-	*CategoryQuery
+// CourseSelect is the builder for selecting fields of Course entities.
+type CourseSelect struct {
+	*CourseQuery
 	selector
 }
 
 // Aggregate adds the given aggregation functions to the selector query.
-func (cs *CategorySelect) Aggregate(fns ...AggregateFunc) *CategorySelect {
+func (cs *CourseSelect) Aggregate(fns ...AggregateFunc) *CourseSelect {
 	cs.fns = append(cs.fns, fns...)
 	return cs
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (cs *CategorySelect) Scan(ctx context.Context, v any) error {
+func (cs *CourseSelect) Scan(ctx context.Context, v any) error {
 	ctx = setContextOp(ctx, cs.ctx, "Select")
 	if err := cs.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*CategoryQuery, *CategorySelect](ctx, cs.CategoryQuery, cs, cs.inters, v)
+	return scanWithInterceptors[*CourseQuery, *CourseSelect](ctx, cs.CourseQuery, cs, cs.inters, v)
 }
 
-func (cs *CategorySelect) sqlScan(ctx context.Context, root *CategoryQuery, v any) error {
+func (cs *CourseSelect) sqlScan(ctx context.Context, root *CourseQuery, v any) error {
 	selector := root.sqlQuery(ctx)
 	aggregation := make([]string, 0, len(cs.fns))
 	for _, fn := range cs.fns {

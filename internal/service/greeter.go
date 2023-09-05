@@ -27,19 +27,3 @@ func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1
 	}
 	return &v1.HelloReply{Message: "Hello " + g.Hello}, nil
 }
-
-func (s *GreeterService) Category(ctx context.Context, in *v1.Empty) (*v1.CategoryResp, error) {
-	categories, err := s.uc.ListCategory(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	var cs []*v1.Category
-	for _, v := range categories {
-		cs = append(cs, &v1.Category{
-			CategoryName: v.CategoryName,
-			Id:           v.Id,
-		})
-	}
-	return &v1.CategoryResp{Categories: cs}, nil
-}
