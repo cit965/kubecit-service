@@ -4,6 +4,7 @@ package category
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -19,8 +20,15 @@ const (
 	FieldLevel = "level"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// EdgeCourse holds the string denoting the course edge name in mutations.
+	EdgeCourse = "course"
 	// Table holds the table name of the category in the database.
 	Table = "categories"
+	// CourseTable is the table that holds the course relation/edge. The primary key declared below.
+	CourseTable = "course_categories"
+	// CourseInverseTable is the table name for the Course entity.
+	// It exists in this package in order to avoid circular dependency with the "course" package.
+	CourseInverseTable = "courses"
 )
 
 // Columns holds all SQL columns for category fields.
@@ -31,6 +39,12 @@ var Columns = []string{
 	FieldLevel,
 	FieldStatus,
 }
+
+var (
+	// CoursePrimaryKey and CourseColumn2 are the table columns denoting the
+	// primary key for the course relation (M2M).
+	CoursePrimaryKey = []string{"course_id", "category_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -73,4 +87,25 @@ func ByLevel(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
+// ByCourseCount orders the results by course count.
+func ByCourseCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCourseStep(), opts...)
+	}
+}
+
+// ByCourse orders the results by course terms.
+func ByCourse(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCourseStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newCourseStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CourseInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, CourseTable, CoursePrimaryKey...),
+	)
 }

@@ -4,8 +4,11 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -18,6 +21,187 @@ type CourseCreate struct {
 	hooks    []Hook
 }
 
+// SetIsRecommend sets the "isRecommend" field.
+func (cc *CourseCreate) SetIsRecommend(b bool) *CourseCreate {
+	cc.mutation.SetIsRecommend(b)
+	return cc
+}
+
+// SetNillableIsRecommend sets the "isRecommend" field if the given value is not nil.
+func (cc *CourseCreate) SetNillableIsRecommend(b *bool) *CourseCreate {
+	if b != nil {
+		cc.SetIsRecommend(*b)
+	}
+	return cc
+}
+
+// SetIsIntegral sets the "isIntegral" field.
+func (cc *CourseCreate) SetIsIntegral(b bool) *CourseCreate {
+	cc.mutation.SetIsIntegral(b)
+	return cc
+}
+
+// SetNillableIsIntegral sets the "isIntegral" field if the given value is not nil.
+func (cc *CourseCreate) SetNillableIsIntegral(b *bool) *CourseCreate {
+	if b != nil {
+		cc.SetIsIntegral(*b)
+	}
+	return cc
+}
+
+// SetSaleType sets the "saleType" field.
+func (cc *CourseCreate) SetSaleType(i int32) *CourseCreate {
+	cc.mutation.SetSaleType(i)
+	return cc
+}
+
+// SetDiscountPrice sets the "discountPrice" field.
+func (cc *CourseCreate) SetDiscountPrice(f float32) *CourseCreate {
+	cc.mutation.SetDiscountPrice(f)
+	return cc
+}
+
+// SetTeachingType sets the "teachingType" field.
+func (cc *CourseCreate) SetTeachingType(i int32) *CourseCreate {
+	cc.mutation.SetTeachingType(i)
+	return cc
+}
+
+// SetCourseLevel sets the "courseLevel" field.
+func (cc *CourseCreate) SetCourseLevel(i int32) *CourseCreate {
+	cc.mutation.SetCourseLevel(i)
+	return cc
+}
+
+// SetUpdateBy sets the "updateBy" field.
+func (cc *CourseCreate) SetUpdateBy(t time.Time) *CourseCreate {
+	cc.mutation.SetUpdateBy(t)
+	return cc
+}
+
+// SetLecturerName sets the "lecturerName" field.
+func (cc *CourseCreate) SetLecturerName(s string) *CourseCreate {
+	cc.mutation.SetLecturerName(s)
+	return cc
+}
+
+// SetPurchaseCnt sets the "purchaseCnt" field.
+func (cc *CourseCreate) SetPurchaseCnt(i int32) *CourseCreate {
+	cc.mutation.SetPurchaseCnt(i)
+	return cc
+}
+
+// SetTotalHour sets the "totalHour" field.
+func (cc *CourseCreate) SetTotalHour(f float32) *CourseCreate {
+	cc.mutation.SetTotalHour(f)
+	return cc
+}
+
+// SetBizCourseDetail sets the "bizCourseDetail" field.
+func (cc *CourseCreate) SetBizCourseDetail(s string) *CourseCreate {
+	cc.mutation.SetBizCourseDetail(s)
+	return cc
+}
+
+// SetCourseCover sets the "courseCover" field.
+func (cc *CourseCreate) SetCourseCover(s string) *CourseCreate {
+	cc.mutation.SetCourseCover(s)
+	return cc
+}
+
+// SetBizCourseChapters sets the "bizCourseChapters" field.
+func (cc *CourseCreate) SetBizCourseChapters(s string) *CourseCreate {
+	cc.mutation.SetBizCourseChapters(s)
+	return cc
+}
+
+// SetSalePrice sets the "salePrice" field.
+func (cc *CourseCreate) SetSalePrice(f float32) *CourseCreate {
+	cc.mutation.SetSalePrice(f)
+	return cc
+}
+
+// SetBizCourseTeacher sets the "bizCourseTeacher" field.
+func (cc *CourseCreate) SetBizCourseTeacher(s string) *CourseCreate {
+	cc.mutation.SetBizCourseTeacher(s)
+	return cc
+}
+
+// SetBizCourseAttachments sets the "bizCourseAttachments" field.
+func (cc *CourseCreate) SetBizCourseAttachments(s string) *CourseCreate {
+	cc.mutation.SetBizCourseAttachments(s)
+	return cc
+}
+
+// SetUpdateTime sets the "updateTime" field.
+func (cc *CourseCreate) SetUpdateTime(t time.Time) *CourseCreate {
+	cc.mutation.SetUpdateTime(t)
+	return cc
+}
+
+// SetTags sets the "tags" field.
+func (cc *CourseCreate) SetTags(s string) *CourseCreate {
+	cc.mutation.SetTags(s)
+	return cc
+}
+
+// SetCourseName sets the "courseName" field.
+func (cc *CourseCreate) SetCourseName(s string) *CourseCreate {
+	cc.mutation.SetCourseName(s)
+	return cc
+}
+
+// SetCreateBy sets the "createBy" field.
+func (cc *CourseCreate) SetCreateBy(s string) *CourseCreate {
+	cc.mutation.SetCreateBy(s)
+	return cc
+}
+
+// SetPurchaseCounter sets the "purchaseCounter" field.
+func (cc *CourseCreate) SetPurchaseCounter(i int32) *CourseCreate {
+	cc.mutation.SetPurchaseCounter(i)
+	return cc
+}
+
+// SetCreateTime sets the "createTime" field.
+func (cc *CourseCreate) SetCreateTime(t time.Time) *CourseCreate {
+	cc.mutation.SetCreateTime(t)
+	return cc
+}
+
+// SetClicks sets the "clicks" field.
+func (cc *CourseCreate) SetClicks(i int32) *CourseCreate {
+	cc.mutation.SetClicks(i)
+	return cc
+}
+
+// SetStatus sets the "status" field.
+func (cc *CourseCreate) SetStatus(s string) *CourseCreate {
+	cc.mutation.SetStatus(s)
+	return cc
+}
+
+// SetID sets the "id" field.
+func (cc *CourseCreate) SetID(s string) *CourseCreate {
+	cc.mutation.SetID(s)
+	return cc
+}
+
+// AddCategoryIDs adds the "categories" edge to the Category entity by IDs.
+func (cc *CourseCreate) AddCategoryIDs(ids ...string) *CourseCreate {
+	cc.mutation.AddCategoryIDs(ids...)
+	return cc
+}
+
+// AddCategories adds the "categories" edges to the Category entity.
+func (cc *CourseCreate) AddCategories(c ...*Category) *CourseCreate {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cc.AddCategoryIDs(ids...)
+}
+
 // Mutation returns the CourseMutation object of the builder.
 func (cc *CourseCreate) Mutation() *CourseMutation {
 	return cc.mutation
@@ -25,6 +209,7 @@ func (cc *CourseCreate) Mutation() *CourseMutation {
 
 // Save creates the Course in the database.
 func (cc *CourseCreate) Save(ctx context.Context) (*Course, error) {
+	cc.defaults()
 	return withHooks(ctx, cc.sqlSave, cc.mutation, cc.hooks)
 }
 
@@ -50,8 +235,92 @@ func (cc *CourseCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (cc *CourseCreate) defaults() {
+	if _, ok := cc.mutation.IsRecommend(); !ok {
+		v := course.DefaultIsRecommend
+		cc.mutation.SetIsRecommend(v)
+	}
+	if _, ok := cc.mutation.IsIntegral(); !ok {
+		v := course.DefaultIsIntegral
+		cc.mutation.SetIsIntegral(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (cc *CourseCreate) check() error {
+	if _, ok := cc.mutation.IsRecommend(); !ok {
+		return &ValidationError{Name: "isRecommend", err: errors.New(`ent: missing required field "Course.isRecommend"`)}
+	}
+	if _, ok := cc.mutation.IsIntegral(); !ok {
+		return &ValidationError{Name: "isIntegral", err: errors.New(`ent: missing required field "Course.isIntegral"`)}
+	}
+	if _, ok := cc.mutation.SaleType(); !ok {
+		return &ValidationError{Name: "saleType", err: errors.New(`ent: missing required field "Course.saleType"`)}
+	}
+	if _, ok := cc.mutation.DiscountPrice(); !ok {
+		return &ValidationError{Name: "discountPrice", err: errors.New(`ent: missing required field "Course.discountPrice"`)}
+	}
+	if _, ok := cc.mutation.TeachingType(); !ok {
+		return &ValidationError{Name: "teachingType", err: errors.New(`ent: missing required field "Course.teachingType"`)}
+	}
+	if _, ok := cc.mutation.CourseLevel(); !ok {
+		return &ValidationError{Name: "courseLevel", err: errors.New(`ent: missing required field "Course.courseLevel"`)}
+	}
+	if _, ok := cc.mutation.UpdateBy(); !ok {
+		return &ValidationError{Name: "updateBy", err: errors.New(`ent: missing required field "Course.updateBy"`)}
+	}
+	if _, ok := cc.mutation.LecturerName(); !ok {
+		return &ValidationError{Name: "lecturerName", err: errors.New(`ent: missing required field "Course.lecturerName"`)}
+	}
+	if _, ok := cc.mutation.PurchaseCnt(); !ok {
+		return &ValidationError{Name: "purchaseCnt", err: errors.New(`ent: missing required field "Course.purchaseCnt"`)}
+	}
+	if _, ok := cc.mutation.TotalHour(); !ok {
+		return &ValidationError{Name: "totalHour", err: errors.New(`ent: missing required field "Course.totalHour"`)}
+	}
+	if _, ok := cc.mutation.BizCourseDetail(); !ok {
+		return &ValidationError{Name: "bizCourseDetail", err: errors.New(`ent: missing required field "Course.bizCourseDetail"`)}
+	}
+	if _, ok := cc.mutation.CourseCover(); !ok {
+		return &ValidationError{Name: "courseCover", err: errors.New(`ent: missing required field "Course.courseCover"`)}
+	}
+	if _, ok := cc.mutation.BizCourseChapters(); !ok {
+		return &ValidationError{Name: "bizCourseChapters", err: errors.New(`ent: missing required field "Course.bizCourseChapters"`)}
+	}
+	if _, ok := cc.mutation.SalePrice(); !ok {
+		return &ValidationError{Name: "salePrice", err: errors.New(`ent: missing required field "Course.salePrice"`)}
+	}
+	if _, ok := cc.mutation.BizCourseTeacher(); !ok {
+		return &ValidationError{Name: "bizCourseTeacher", err: errors.New(`ent: missing required field "Course.bizCourseTeacher"`)}
+	}
+	if _, ok := cc.mutation.BizCourseAttachments(); !ok {
+		return &ValidationError{Name: "bizCourseAttachments", err: errors.New(`ent: missing required field "Course.bizCourseAttachments"`)}
+	}
+	if _, ok := cc.mutation.UpdateTime(); !ok {
+		return &ValidationError{Name: "updateTime", err: errors.New(`ent: missing required field "Course.updateTime"`)}
+	}
+	if _, ok := cc.mutation.Tags(); !ok {
+		return &ValidationError{Name: "tags", err: errors.New(`ent: missing required field "Course.tags"`)}
+	}
+	if _, ok := cc.mutation.CourseName(); !ok {
+		return &ValidationError{Name: "courseName", err: errors.New(`ent: missing required field "Course.courseName"`)}
+	}
+	if _, ok := cc.mutation.CreateBy(); !ok {
+		return &ValidationError{Name: "createBy", err: errors.New(`ent: missing required field "Course.createBy"`)}
+	}
+	if _, ok := cc.mutation.PurchaseCounter(); !ok {
+		return &ValidationError{Name: "purchaseCounter", err: errors.New(`ent: missing required field "Course.purchaseCounter"`)}
+	}
+	if _, ok := cc.mutation.CreateTime(); !ok {
+		return &ValidationError{Name: "createTime", err: errors.New(`ent: missing required field "Course.createTime"`)}
+	}
+	if _, ok := cc.mutation.Clicks(); !ok {
+		return &ValidationError{Name: "clicks", err: errors.New(`ent: missing required field "Course.clicks"`)}
+	}
+	if _, ok := cc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Course.status"`)}
+	}
 	return nil
 }
 
@@ -66,8 +335,13 @@ func (cc *CourseCreate) sqlSave(ctx context.Context) (*Course, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		if id, ok := _spec.ID.Value.(string); ok {
+			_node.ID = id
+		} else {
+			return nil, fmt.Errorf("unexpected Course.ID type: %T", _spec.ID.Value)
+		}
+	}
 	cc.mutation.id = &_node.ID
 	cc.mutation.done = true
 	return _node, nil
@@ -76,8 +350,124 @@ func (cc *CourseCreate) sqlSave(ctx context.Context) (*Course, error) {
 func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Course{config: cc.config}
-		_spec = sqlgraph.NewCreateSpec(course.Table, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
+		_spec = sqlgraph.NewCreateSpec(course.Table, sqlgraph.NewFieldSpec(course.FieldID, field.TypeString))
 	)
+	if id, ok := cc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
+	if value, ok := cc.mutation.IsRecommend(); ok {
+		_spec.SetField(course.FieldIsRecommend, field.TypeBool, value)
+		_node.IsRecommend = value
+	}
+	if value, ok := cc.mutation.IsIntegral(); ok {
+		_spec.SetField(course.FieldIsIntegral, field.TypeBool, value)
+		_node.IsIntegral = value
+	}
+	if value, ok := cc.mutation.SaleType(); ok {
+		_spec.SetField(course.FieldSaleType, field.TypeInt32, value)
+		_node.SaleType = value
+	}
+	if value, ok := cc.mutation.DiscountPrice(); ok {
+		_spec.SetField(course.FieldDiscountPrice, field.TypeFloat32, value)
+		_node.DiscountPrice = value
+	}
+	if value, ok := cc.mutation.TeachingType(); ok {
+		_spec.SetField(course.FieldTeachingType, field.TypeInt32, value)
+		_node.TeachingType = value
+	}
+	if value, ok := cc.mutation.CourseLevel(); ok {
+		_spec.SetField(course.FieldCourseLevel, field.TypeInt32, value)
+		_node.CourseLevel = value
+	}
+	if value, ok := cc.mutation.UpdateBy(); ok {
+		_spec.SetField(course.FieldUpdateBy, field.TypeTime, value)
+		_node.UpdateBy = value
+	}
+	if value, ok := cc.mutation.LecturerName(); ok {
+		_spec.SetField(course.FieldLecturerName, field.TypeString, value)
+		_node.LecturerName = value
+	}
+	if value, ok := cc.mutation.PurchaseCnt(); ok {
+		_spec.SetField(course.FieldPurchaseCnt, field.TypeInt32, value)
+		_node.PurchaseCnt = value
+	}
+	if value, ok := cc.mutation.TotalHour(); ok {
+		_spec.SetField(course.FieldTotalHour, field.TypeFloat32, value)
+		_node.TotalHour = value
+	}
+	if value, ok := cc.mutation.BizCourseDetail(); ok {
+		_spec.SetField(course.FieldBizCourseDetail, field.TypeString, value)
+		_node.BizCourseDetail = value
+	}
+	if value, ok := cc.mutation.CourseCover(); ok {
+		_spec.SetField(course.FieldCourseCover, field.TypeString, value)
+		_node.CourseCover = value
+	}
+	if value, ok := cc.mutation.BizCourseChapters(); ok {
+		_spec.SetField(course.FieldBizCourseChapters, field.TypeString, value)
+		_node.BizCourseChapters = value
+	}
+	if value, ok := cc.mutation.SalePrice(); ok {
+		_spec.SetField(course.FieldSalePrice, field.TypeFloat32, value)
+		_node.SalePrice = value
+	}
+	if value, ok := cc.mutation.BizCourseTeacher(); ok {
+		_spec.SetField(course.FieldBizCourseTeacher, field.TypeString, value)
+		_node.BizCourseTeacher = value
+	}
+	if value, ok := cc.mutation.BizCourseAttachments(); ok {
+		_spec.SetField(course.FieldBizCourseAttachments, field.TypeString, value)
+		_node.BizCourseAttachments = value
+	}
+	if value, ok := cc.mutation.UpdateTime(); ok {
+		_spec.SetField(course.FieldUpdateTime, field.TypeTime, value)
+		_node.UpdateTime = value
+	}
+	if value, ok := cc.mutation.Tags(); ok {
+		_spec.SetField(course.FieldTags, field.TypeString, value)
+		_node.Tags = value
+	}
+	if value, ok := cc.mutation.CourseName(); ok {
+		_spec.SetField(course.FieldCourseName, field.TypeString, value)
+		_node.CourseName = value
+	}
+	if value, ok := cc.mutation.CreateBy(); ok {
+		_spec.SetField(course.FieldCreateBy, field.TypeString, value)
+		_node.CreateBy = value
+	}
+	if value, ok := cc.mutation.PurchaseCounter(); ok {
+		_spec.SetField(course.FieldPurchaseCounter, field.TypeInt32, value)
+		_node.PurchaseCounter = value
+	}
+	if value, ok := cc.mutation.CreateTime(); ok {
+		_spec.SetField(course.FieldCreateTime, field.TypeTime, value)
+		_node.CreateTime = value
+	}
+	if value, ok := cc.mutation.Clicks(); ok {
+		_spec.SetField(course.FieldClicks, field.TypeInt32, value)
+		_node.Clicks = value
+	}
+	if value, ok := cc.mutation.Status(); ok {
+		_spec.SetField(course.FieldStatus, field.TypeString, value)
+		_node.Status = value
+	}
+	if nodes := cc.mutation.CategoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	return _node, _spec
 }
 
@@ -95,6 +485,7 @@ func (ccb *CourseCreateBulk) Save(ctx context.Context) ([]*Course, error) {
 	for i := range ccb.builders {
 		func(i int, root context.Context) {
 			builder := ccb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*CourseMutation)
 				if !ok {
@@ -121,10 +512,6 @@ func (ccb *CourseCreateBulk) Save(ctx context.Context) ([]*Course, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				mutation.done = true
 				return nodes[i], nil
 			})

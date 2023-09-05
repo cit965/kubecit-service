@@ -4,7 +4,9 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
+	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 	"math"
@@ -17,10 +19,11 @@ import (
 // CourseQuery is the builder for querying Course entities.
 type CourseQuery struct {
 	config
-	ctx        *QueryContext
-	order      []course.OrderOption
-	inters     []Interceptor
-	predicates []predicate.Course
+	ctx            *QueryContext
+	order          []course.OrderOption
+	inters         []Interceptor
+	predicates     []predicate.Course
+	withCategories *CategoryQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +60,28 @@ func (cq *CourseQuery) Order(o ...course.OrderOption) *CourseQuery {
 	return cq
 }
 
+// QueryCategories chains the current query on the "categories" edge.
+func (cq *CourseQuery) QueryCategories() *CategoryQuery {
+	query := (&CategoryClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(course.Table, course.FieldID, selector),
+			sqlgraph.To(category.Table, category.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, course.CategoriesTable, course.CategoriesPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
 // First returns the first Course entity from the query.
 // Returns a *NotFoundError when no Course was found.
 func (cq *CourseQuery) First(ctx context.Context) (*Course, error) {
@@ -81,8 +106,8 @@ func (cq *CourseQuery) FirstX(ctx context.Context) *Course {
 
 // FirstID returns the first Course ID from the query.
 // Returns a *NotFoundError when no Course ID was found.
-func (cq *CourseQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (cq *CourseQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = cq.Limit(1).IDs(setContextOp(ctx, cq.ctx, "FirstID")); err != nil {
 		return
 	}
@@ -94,7 +119,7 @@ func (cq *CourseQuery) FirstID(ctx context.Context) (id int, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (cq *CourseQuery) FirstIDX(ctx context.Context) int {
+func (cq *CourseQuery) FirstIDX(ctx context.Context) string {
 	id, err := cq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -132,8 +157,8 @@ func (cq *CourseQuery) OnlyX(ctx context.Context) *Course {
 // OnlyID is like Only, but returns the only Course ID in the query.
 // Returns a *NotSingularError when more than one Course ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (cq *CourseQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (cq *CourseQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = cq.Limit(2).IDs(setContextOp(ctx, cq.ctx, "OnlyID")); err != nil {
 		return
 	}
@@ -149,7 +174,7 @@ func (cq *CourseQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (cq *CourseQuery) OnlyIDX(ctx context.Context) int {
+func (cq *CourseQuery) OnlyIDX(ctx context.Context) string {
 	id, err := cq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -177,7 +202,7 @@ func (cq *CourseQuery) AllX(ctx context.Context) []*Course {
 }
 
 // IDs executes the query and returns a list of Course IDs.
-func (cq *CourseQuery) IDs(ctx context.Context) (ids []int, err error) {
+func (cq *CourseQuery) IDs(ctx context.Context) (ids []string, err error) {
 	if cq.ctx.Unique == nil && cq.path != nil {
 		cq.Unique(true)
 	}
@@ -189,7 +214,7 @@ func (cq *CourseQuery) IDs(ctx context.Context) (ids []int, err error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (cq *CourseQuery) IDsX(ctx context.Context) []int {
+func (cq *CourseQuery) IDsX(ctx context.Context) []string {
 	ids, err := cq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -244,19 +269,43 @@ func (cq *CourseQuery) Clone() *CourseQuery {
 		return nil
 	}
 	return &CourseQuery{
-		config:     cq.config,
-		ctx:        cq.ctx.Clone(),
-		order:      append([]course.OrderOption{}, cq.order...),
-		inters:     append([]Interceptor{}, cq.inters...),
-		predicates: append([]predicate.Course{}, cq.predicates...),
+		config:         cq.config,
+		ctx:            cq.ctx.Clone(),
+		order:          append([]course.OrderOption{}, cq.order...),
+		inters:         append([]Interceptor{}, cq.inters...),
+		predicates:     append([]predicate.Course{}, cq.predicates...),
+		withCategories: cq.withCategories.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
 	}
 }
 
+// WithCategories tells the query-builder to eager-load the nodes that are connected to
+// the "categories" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CourseQuery) WithCategories(opts ...func(*CategoryQuery)) *CourseQuery {
+	query := (&CategoryClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withCategories = query
+	return cq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		IsRecommend bool `json:"isRecommend,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.Course.Query().
+//		GroupBy(course.FieldIsRecommend).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
 func (cq *CourseQuery) GroupBy(field string, fields ...string) *CourseGroupBy {
 	cq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &CourseGroupBy{build: cq}
@@ -268,6 +317,16 @@ func (cq *CourseQuery) GroupBy(field string, fields ...string) *CourseGroupBy {
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		IsRecommend bool `json:"isRecommend,omitempty"`
+//	}
+//
+//	client.Course.Query().
+//		Select(course.FieldIsRecommend).
+//		Scan(ctx, &v)
 func (cq *CourseQuery) Select(fields ...string) *CourseSelect {
 	cq.ctx.Fields = append(cq.ctx.Fields, fields...)
 	sbuild := &CourseSelect{CourseQuery: cq}
@@ -309,8 +368,11 @@ func (cq *CourseQuery) prepareQuery(ctx context.Context) error {
 
 func (cq *CourseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Course, error) {
 	var (
-		nodes = []*Course{}
-		_spec = cq.querySpec()
+		nodes       = []*Course{}
+		_spec       = cq.querySpec()
+		loadedTypes = [1]bool{
+			cq.withCategories != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Course).scanValues(nil, columns)
@@ -318,6 +380,7 @@ func (cq *CourseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cours
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &Course{config: cq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -329,7 +392,76 @@ func (cq *CourseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cours
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := cq.withCategories; query != nil {
+		if err := cq.loadCategories(ctx, query, nodes,
+			func(n *Course) { n.Edges.Categories = []*Category{} },
+			func(n *Course, e *Category) { n.Edges.Categories = append(n.Edges.Categories, e) }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (cq *CourseQuery) loadCategories(ctx context.Context, query *CategoryQuery, nodes []*Course, init func(*Course), assign func(*Course, *Category)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[string]*Course)
+	nids := make(map[string]map[*Course]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(course.CategoriesTable)
+		s.Join(joinT).On(s.C(category.FieldID), joinT.C(course.CategoriesPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(course.CategoriesPrimaryKey[0]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(course.CategoriesPrimaryKey[0]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(sql.NullString)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := values[0].(*sql.NullString).String
+				inValue := values[1].(*sql.NullString).String
+				if nids[inValue] == nil {
+					nids[inValue] = map[*Course]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*Category](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "categories" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
 }
 
 func (cq *CourseQuery) sqlCount(ctx context.Context) (int, error) {
@@ -342,7 +474,7 @@ func (cq *CourseQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (cq *CourseQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewQuerySpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeString))
 	_spec.From = cq.sql
 	if unique := cq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique

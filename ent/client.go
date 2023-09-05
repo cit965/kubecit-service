@@ -15,10 +15,12 @@ import (
 	"kubecit-service/ent/member"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/token"
+	"kubecit-service/ent/user"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // Client is the client that holds all ent builders.
@@ -36,6 +38,8 @@ type Client struct {
 	Slider *SliderClient
 	// Token is the client for interacting with the Token builders.
 	Token *TokenClient
+	// User is the client for interacting with the User builders.
+	User *UserClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -54,6 +58,7 @@ func (c *Client) init() {
 	c.Member = NewMemberClient(c.config)
 	c.Slider = NewSliderClient(c.config)
 	c.Token = NewTokenClient(c.config)
+	c.User = NewUserClient(c.config)
 }
 
 type (
@@ -141,6 +146,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Member:   NewMemberClient(cfg),
 		Slider:   NewSliderClient(cfg),
 		Token:    NewTokenClient(cfg),
+		User:     NewUserClient(cfg),
 	}, nil
 }
 
@@ -165,6 +171,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Member:   NewMemberClient(cfg),
 		Slider:   NewSliderClient(cfg),
 		Token:    NewTokenClient(cfg),
+		User:     NewUserClient(cfg),
 	}, nil
 }
 
@@ -193,21 +200,21 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Category.Use(hooks...)
-	c.Course.Use(hooks...)
-	c.Member.Use(hooks...)
-	c.Slider.Use(hooks...)
-	c.Token.Use(hooks...)
+	for _, n := range []interface{ Use(...Hook) }{
+		c.Category, c.Course, c.Member, c.Slider, c.Token, c.User,
+	} {
+		n.Use(hooks...)
+	}
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.Category.Intercept(interceptors...)
-	c.Course.Intercept(interceptors...)
-	c.Member.Intercept(interceptors...)
-	c.Slider.Intercept(interceptors...)
-	c.Token.Intercept(interceptors...)
+	for _, n := range []interface{ Intercept(...Interceptor) }{
+		c.Category, c.Course, c.Member, c.Slider, c.Token, c.User,
+	} {
+		n.Intercept(interceptors...)
+	}
 }
 
 // Mutate implements the ent.Mutator interface.
@@ -223,6 +230,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Slider.mutate(ctx, m)
 	case *TokenMutation:
 		return c.Token.mutate(ctx, m)
+	case *UserMutation:
+		return c.User.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
 	}
@@ -321,6 +330,22 @@ func (c *CategoryClient) GetX(ctx context.Context, id string) *Category {
 	return obj
 }
 
+// QueryCourse queries the course edge of a Category.
+func (c *CategoryClient) QueryCourse(ca *Category) *CourseQuery {
+	query := (&CourseClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ca.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(category.Table, category.FieldID, id),
+			sqlgraph.To(course.Table, course.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, category.CourseTable, category.CoursePrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(ca.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *CategoryClient) Hooks() []Hook {
 	return c.hooks.Category
@@ -392,7 +417,7 @@ func (c *CourseClient) UpdateOne(co *Course) *CourseUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *CourseClient) UpdateOneID(id int) *CourseUpdateOne {
+func (c *CourseClient) UpdateOneID(id string) *CourseUpdateOne {
 	mutation := newCourseMutation(c.config, OpUpdateOne, withCourseID(id))
 	return &CourseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -409,7 +434,7 @@ func (c *CourseClient) DeleteOne(co *Course) *CourseDeleteOne {
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *CourseClient) DeleteOneID(id int) *CourseDeleteOne {
+func (c *CourseClient) DeleteOneID(id string) *CourseDeleteOne {
 	builder := c.Delete().Where(course.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -426,17 +451,33 @@ func (c *CourseClient) Query() *CourseQuery {
 }
 
 // Get returns a Course entity by its id.
-func (c *CourseClient) Get(ctx context.Context, id int) (*Course, error) {
+func (c *CourseClient) Get(ctx context.Context, id string) (*Course, error) {
 	return c.Query().Where(course.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *CourseClient) GetX(ctx context.Context, id int) *Course {
+func (c *CourseClient) GetX(ctx context.Context, id string) *Course {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryCategories queries the categories edge of a Course.
+func (c *CourseClient) QueryCategories(co *Course) *CategoryQuery {
+	query := (&CategoryClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(course.Table, course.FieldID, id),
+			sqlgraph.To(category.Table, category.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, course.CategoriesTable, course.CategoriesPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -510,7 +551,7 @@ func (c *MemberClient) UpdateOne(m *Member) *MemberUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *MemberClient) UpdateOneID(id int) *MemberUpdateOne {
+func (c *MemberClient) UpdateOneID(id string) *MemberUpdateOne {
 	mutation := newMemberMutation(c.config, OpUpdateOne, withMemberID(id))
 	return &MemberUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -527,7 +568,7 @@ func (c *MemberClient) DeleteOne(m *Member) *MemberDeleteOne {
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *MemberClient) DeleteOneID(id int) *MemberDeleteOne {
+func (c *MemberClient) DeleteOneID(id string) *MemberDeleteOne {
 	builder := c.Delete().Where(member.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -544,17 +585,33 @@ func (c *MemberClient) Query() *MemberQuery {
 }
 
 // Get returns a Member entity by its id.
-func (c *MemberClient) Get(ctx context.Context, id int) (*Member, error) {
+func (c *MemberClient) Get(ctx context.Context, id string) (*Member, error) {
 	return c.Query().Where(member.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *MemberClient) GetX(ctx context.Context, id int) *Member {
+func (c *MemberClient) GetX(ctx context.Context, id string) *Member {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryUser queries the user edge of a Member.
+func (c *MemberClient) QueryUser(m *Member) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(member.Table, member.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, member.UserTable, member.UserColumn),
+		)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -628,7 +685,7 @@ func (c *SliderClient) UpdateOne(s *Slider) *SliderUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SliderClient) UpdateOneID(id int) *SliderUpdateOne {
+func (c *SliderClient) UpdateOneID(id string) *SliderUpdateOne {
 	mutation := newSliderMutation(c.config, OpUpdateOne, withSliderID(id))
 	return &SliderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -645,7 +702,7 @@ func (c *SliderClient) DeleteOne(s *Slider) *SliderDeleteOne {
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *SliderClient) DeleteOneID(id int) *SliderDeleteOne {
+func (c *SliderClient) DeleteOneID(id string) *SliderDeleteOne {
 	builder := c.Delete().Where(slider.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -662,12 +719,12 @@ func (c *SliderClient) Query() *SliderQuery {
 }
 
 // Get returns a Slider entity by its id.
-func (c *SliderClient) Get(ctx context.Context, id int) (*Slider, error) {
+func (c *SliderClient) Get(ctx context.Context, id string) (*Slider, error) {
 	return c.Query().Where(slider.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SliderClient) GetX(ctx context.Context, id int) *Slider {
+func (c *SliderClient) GetX(ctx context.Context, id string) *Slider {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -818,12 +875,146 @@ func (c *TokenClient) mutate(ctx context.Context, m *TokenMutation) (Value, erro
 	}
 }
 
+// UserClient is a client for the User schema.
+type UserClient struct {
+	config
+}
+
+// NewUserClient returns a client for the User from the given config.
+func NewUserClient(c config) *UserClient {
+	return &UserClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `user.Hooks(f(g(h())))`.
+func (c *UserClient) Use(hooks ...Hook) {
+	c.hooks.User = append(c.hooks.User, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `user.Intercept(f(g(h())))`.
+func (c *UserClient) Intercept(interceptors ...Interceptor) {
+	c.inters.User = append(c.inters.User, interceptors...)
+}
+
+// Create returns a builder for creating a User entity.
+func (c *UserClient) Create() *UserCreate {
+	mutation := newUserMutation(c.config, OpCreate)
+	return &UserCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of User entities.
+func (c *UserClient) CreateBulk(builders ...*UserCreate) *UserCreateBulk {
+	return &UserCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for User.
+func (c *UserClient) Update() *UserUpdate {
+	mutation := newUserMutation(c.config, OpUpdate)
+	return &UserUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *UserClient) UpdateOne(u *User) *UserUpdateOne {
+	mutation := newUserMutation(c.config, OpUpdateOne, withUser(u))
+	return &UserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *UserClient) UpdateOneID(id string) *UserUpdateOne {
+	mutation := newUserMutation(c.config, OpUpdateOne, withUserID(id))
+	return &UserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for User.
+func (c *UserClient) Delete() *UserDelete {
+	mutation := newUserMutation(c.config, OpDelete)
+	return &UserDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *UserClient) DeleteOne(u *User) *UserDeleteOne {
+	return c.DeleteOneID(u.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *UserClient) DeleteOneID(id string) *UserDeleteOne {
+	builder := c.Delete().Where(user.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &UserDeleteOne{builder}
+}
+
+// Query returns a query builder for User.
+func (c *UserClient) Query() *UserQuery {
+	return &UserQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeUser},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a User entity by its id.
+func (c *UserClient) Get(ctx context.Context, id string) (*User, error) {
+	return c.Query().Where(user.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *UserClient) GetX(ctx context.Context, id string) *User {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryVipMember queries the vipMember edge of a User.
+func (c *UserClient) QueryVipMember(u *User) *MemberQuery {
+	query := (&MemberClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(member.Table, member.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.VipMemberTable, user.VipMemberColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *UserClient) Hooks() []Hook {
+	return c.hooks.User
+}
+
+// Interceptors returns the client interceptors.
+func (c *UserClient) Interceptors() []Interceptor {
+	return c.inters.User
+}
+
+func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&UserCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&UserUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&UserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&UserDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown User mutation op: %q", m.Op())
+	}
+}
+
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Category, Course, Member, Slider, Token []ent.Hook
+		Category, Course, Member, Slider, Token, User []ent.Hook
 	}
 	inters struct {
-		Category, Course, Member, Slider, Token []ent.Interceptor
+		Category, Course, Member, Slider, Token, User []ent.Interceptor
 	}
 )

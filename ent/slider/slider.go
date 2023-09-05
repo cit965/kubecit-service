@@ -11,6 +11,24 @@ const (
 	Label = "slider"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldCreateBy holds the string denoting the createby field in the database.
+	FieldCreateBy = "create_by"
+	// FieldImageName holds the string denoting the imagename field in the database.
+	FieldImageName = "image_name"
+	// FieldCreateTime holds the string denoting the createtime field in the database.
+	FieldCreateTime = "create_time"
+	// FieldUpdateBy holds the string denoting the updateby field in the database.
+	FieldUpdateBy = "update_by"
+	// FieldImageRemark holds the string denoting the imageremark field in the database.
+	FieldImageRemark = "image_remark"
+	// FieldImageUrl holds the string denoting the imageurl field in the database.
+	FieldImageUrl = "image_url"
+	// FieldPcHref holds the string denoting the pchref field in the database.
+	FieldPcHref = "pc_href"
+	// FieldUpdateTime holds the string denoting the updatetime field in the database.
+	FieldUpdateTime = "update_time"
+	// FieldAppHref holds the string denoting the apphref field in the database.
+	FieldAppHref = "app_href"
 	// Table holds the table name of the slider in the database.
 	Table = "sliders"
 )
@@ -18,6 +36,15 @@ const (
 // Columns holds all SQL columns for slider fields.
 var Columns = []string{
 	FieldID,
+	FieldCreateBy,
+	FieldImageName,
+	FieldCreateTime,
+	FieldUpdateBy,
+	FieldImageRemark,
+	FieldImageUrl,
+	FieldPcHref,
+	FieldUpdateTime,
+	FieldAppHref,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -36,4 +63,49 @@ type OrderOption func(*sql.Selector)
 // ByID orders the results by the id field.
 func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
+}
+
+// ByCreateBy orders the results by the createBy field.
+func ByCreateBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreateBy, opts...).ToFunc()
+}
+
+// ByImageName orders the results by the imageName field.
+func ByImageName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldImageName, opts...).ToFunc()
+}
+
+// ByCreateTime orders the results by the createTime field.
+func ByCreateTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreateTime, opts...).ToFunc()
+}
+
+// ByUpdateBy orders the results by the updateBy field.
+func ByUpdateBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdateBy, opts...).ToFunc()
+}
+
+// ByImageRemark orders the results by the imageRemark field.
+func ByImageRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldImageRemark, opts...).ToFunc()
+}
+
+// ByImageUrl orders the results by the imageUrl field.
+func ByImageUrl(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldImageUrl, opts...).ToFunc()
+}
+
+// ByPcHref orders the results by the pcHref field.
+func ByPcHref(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPcHref, opts...).ToFunc()
+}
+
+// ByUpdateTime orders the results by the updateTime field.
+func ByUpdateTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdateTime, opts...).ToFunc()
+}
+
+// ByAppHref orders the results by the appHref field.
+func ByAppHref(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAppHref, opts...).ToFunc()
 }

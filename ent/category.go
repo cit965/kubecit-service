@@ -23,8 +23,29 @@ type Category struct {
 	// Level holds the value of the "level" field.
 	Level string `json:"level,omitempty"`
 	// Status holds the value of the "status" field.
-	Status       string `json:"status,omitempty"`
+	Status string `json:"status,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the CategoryQuery when eager-loading is set.
+	Edges        CategoryEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// CategoryEdges holds the relations/edges for other nodes in the graph.
+type CategoryEdges struct {
+	// Course holds the value of the course edge.
+	Course []*Course `json:"course,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// CourseOrErr returns the Course value or an error if the edge
+// was not loaded in eager-loading.
+func (e CategoryEdges) CourseOrErr() ([]*Course, error) {
+	if e.loadedTypes[0] {
+		return e.Course, nil
+	}
+	return nil, &NotLoadedError{edge: "course"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -90,6 +111,11 @@ func (c *Category) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (c *Category) Value(name string) (ent.Value, error) {
 	return c.selectValues.Get(name)
+}
+
+// QueryCourse queries the "course" edge of the Category entity.
+func (c *Category) QueryCourse() *CourseQuery {
+	return NewCategoryClient(c.config).QueryCourse(c)
 }
 
 // Update returns a builder for updating this Category.

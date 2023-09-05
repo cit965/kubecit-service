@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/course"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -55,6 +56,21 @@ func (cc *CategoryCreate) SetStatus(s string) *CategoryCreate {
 func (cc *CategoryCreate) SetID(s string) *CategoryCreate {
 	cc.mutation.SetID(s)
 	return cc
+}
+
+// AddCourseIDs adds the "course" edge to the Course entity by IDs.
+func (cc *CategoryCreate) AddCourseIDs(ids ...string) *CategoryCreate {
+	cc.mutation.AddCourseIDs(ids...)
+	return cc
+}
+
+// AddCourse adds the "course" edges to the Course entity.
+func (cc *CategoryCreate) AddCourse(c ...*Course) *CategoryCreate {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cc.AddCourseIDs(ids...)
 }
 
 // Mutation returns the CategoryMutation object of the builder.
@@ -162,6 +178,22 @@ func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.Status(); ok {
 		_spec.SetField(category.FieldStatus, field.TypeString, value)
 		_node.Status = value
+	}
+	if nodes := cc.mutation.CourseIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   category.CourseTable,
+			Columns: category.CoursePrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

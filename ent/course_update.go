@@ -6,8 +6,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -27,9 +29,268 @@ func (cu *CourseUpdate) Where(ps ...predicate.Course) *CourseUpdate {
 	return cu
 }
 
+// SetIsRecommend sets the "isRecommend" field.
+func (cu *CourseUpdate) SetIsRecommend(b bool) *CourseUpdate {
+	cu.mutation.SetIsRecommend(b)
+	return cu
+}
+
+// SetNillableIsRecommend sets the "isRecommend" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillableIsRecommend(b *bool) *CourseUpdate {
+	if b != nil {
+		cu.SetIsRecommend(*b)
+	}
+	return cu
+}
+
+// SetIsIntegral sets the "isIntegral" field.
+func (cu *CourseUpdate) SetIsIntegral(b bool) *CourseUpdate {
+	cu.mutation.SetIsIntegral(b)
+	return cu
+}
+
+// SetNillableIsIntegral sets the "isIntegral" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillableIsIntegral(b *bool) *CourseUpdate {
+	if b != nil {
+		cu.SetIsIntegral(*b)
+	}
+	return cu
+}
+
+// SetSaleType sets the "saleType" field.
+func (cu *CourseUpdate) SetSaleType(i int32) *CourseUpdate {
+	cu.mutation.ResetSaleType()
+	cu.mutation.SetSaleType(i)
+	return cu
+}
+
+// AddSaleType adds i to the "saleType" field.
+func (cu *CourseUpdate) AddSaleType(i int32) *CourseUpdate {
+	cu.mutation.AddSaleType(i)
+	return cu
+}
+
+// SetDiscountPrice sets the "discountPrice" field.
+func (cu *CourseUpdate) SetDiscountPrice(f float32) *CourseUpdate {
+	cu.mutation.ResetDiscountPrice()
+	cu.mutation.SetDiscountPrice(f)
+	return cu
+}
+
+// AddDiscountPrice adds f to the "discountPrice" field.
+func (cu *CourseUpdate) AddDiscountPrice(f float32) *CourseUpdate {
+	cu.mutation.AddDiscountPrice(f)
+	return cu
+}
+
+// SetTeachingType sets the "teachingType" field.
+func (cu *CourseUpdate) SetTeachingType(i int32) *CourseUpdate {
+	cu.mutation.ResetTeachingType()
+	cu.mutation.SetTeachingType(i)
+	return cu
+}
+
+// AddTeachingType adds i to the "teachingType" field.
+func (cu *CourseUpdate) AddTeachingType(i int32) *CourseUpdate {
+	cu.mutation.AddTeachingType(i)
+	return cu
+}
+
+// SetCourseLevel sets the "courseLevel" field.
+func (cu *CourseUpdate) SetCourseLevel(i int32) *CourseUpdate {
+	cu.mutation.ResetCourseLevel()
+	cu.mutation.SetCourseLevel(i)
+	return cu
+}
+
+// AddCourseLevel adds i to the "courseLevel" field.
+func (cu *CourseUpdate) AddCourseLevel(i int32) *CourseUpdate {
+	cu.mutation.AddCourseLevel(i)
+	return cu
+}
+
+// SetUpdateBy sets the "updateBy" field.
+func (cu *CourseUpdate) SetUpdateBy(t time.Time) *CourseUpdate {
+	cu.mutation.SetUpdateBy(t)
+	return cu
+}
+
+// SetLecturerName sets the "lecturerName" field.
+func (cu *CourseUpdate) SetLecturerName(s string) *CourseUpdate {
+	cu.mutation.SetLecturerName(s)
+	return cu
+}
+
+// SetPurchaseCnt sets the "purchaseCnt" field.
+func (cu *CourseUpdate) SetPurchaseCnt(i int32) *CourseUpdate {
+	cu.mutation.ResetPurchaseCnt()
+	cu.mutation.SetPurchaseCnt(i)
+	return cu
+}
+
+// AddPurchaseCnt adds i to the "purchaseCnt" field.
+func (cu *CourseUpdate) AddPurchaseCnt(i int32) *CourseUpdate {
+	cu.mutation.AddPurchaseCnt(i)
+	return cu
+}
+
+// SetTotalHour sets the "totalHour" field.
+func (cu *CourseUpdate) SetTotalHour(f float32) *CourseUpdate {
+	cu.mutation.ResetTotalHour()
+	cu.mutation.SetTotalHour(f)
+	return cu
+}
+
+// AddTotalHour adds f to the "totalHour" field.
+func (cu *CourseUpdate) AddTotalHour(f float32) *CourseUpdate {
+	cu.mutation.AddTotalHour(f)
+	return cu
+}
+
+// SetBizCourseDetail sets the "bizCourseDetail" field.
+func (cu *CourseUpdate) SetBizCourseDetail(s string) *CourseUpdate {
+	cu.mutation.SetBizCourseDetail(s)
+	return cu
+}
+
+// SetCourseCover sets the "courseCover" field.
+func (cu *CourseUpdate) SetCourseCover(s string) *CourseUpdate {
+	cu.mutation.SetCourseCover(s)
+	return cu
+}
+
+// SetBizCourseChapters sets the "bizCourseChapters" field.
+func (cu *CourseUpdate) SetBizCourseChapters(s string) *CourseUpdate {
+	cu.mutation.SetBizCourseChapters(s)
+	return cu
+}
+
+// SetSalePrice sets the "salePrice" field.
+func (cu *CourseUpdate) SetSalePrice(f float32) *CourseUpdate {
+	cu.mutation.ResetSalePrice()
+	cu.mutation.SetSalePrice(f)
+	return cu
+}
+
+// AddSalePrice adds f to the "salePrice" field.
+func (cu *CourseUpdate) AddSalePrice(f float32) *CourseUpdate {
+	cu.mutation.AddSalePrice(f)
+	return cu
+}
+
+// SetBizCourseTeacher sets the "bizCourseTeacher" field.
+func (cu *CourseUpdate) SetBizCourseTeacher(s string) *CourseUpdate {
+	cu.mutation.SetBizCourseTeacher(s)
+	return cu
+}
+
+// SetBizCourseAttachments sets the "bizCourseAttachments" field.
+func (cu *CourseUpdate) SetBizCourseAttachments(s string) *CourseUpdate {
+	cu.mutation.SetBizCourseAttachments(s)
+	return cu
+}
+
+// SetUpdateTime sets the "updateTime" field.
+func (cu *CourseUpdate) SetUpdateTime(t time.Time) *CourseUpdate {
+	cu.mutation.SetUpdateTime(t)
+	return cu
+}
+
+// SetTags sets the "tags" field.
+func (cu *CourseUpdate) SetTags(s string) *CourseUpdate {
+	cu.mutation.SetTags(s)
+	return cu
+}
+
+// SetCourseName sets the "courseName" field.
+func (cu *CourseUpdate) SetCourseName(s string) *CourseUpdate {
+	cu.mutation.SetCourseName(s)
+	return cu
+}
+
+// SetCreateBy sets the "createBy" field.
+func (cu *CourseUpdate) SetCreateBy(s string) *CourseUpdate {
+	cu.mutation.SetCreateBy(s)
+	return cu
+}
+
+// SetPurchaseCounter sets the "purchaseCounter" field.
+func (cu *CourseUpdate) SetPurchaseCounter(i int32) *CourseUpdate {
+	cu.mutation.ResetPurchaseCounter()
+	cu.mutation.SetPurchaseCounter(i)
+	return cu
+}
+
+// AddPurchaseCounter adds i to the "purchaseCounter" field.
+func (cu *CourseUpdate) AddPurchaseCounter(i int32) *CourseUpdate {
+	cu.mutation.AddPurchaseCounter(i)
+	return cu
+}
+
+// SetCreateTime sets the "createTime" field.
+func (cu *CourseUpdate) SetCreateTime(t time.Time) *CourseUpdate {
+	cu.mutation.SetCreateTime(t)
+	return cu
+}
+
+// SetClicks sets the "clicks" field.
+func (cu *CourseUpdate) SetClicks(i int32) *CourseUpdate {
+	cu.mutation.ResetClicks()
+	cu.mutation.SetClicks(i)
+	return cu
+}
+
+// AddClicks adds i to the "clicks" field.
+func (cu *CourseUpdate) AddClicks(i int32) *CourseUpdate {
+	cu.mutation.AddClicks(i)
+	return cu
+}
+
+// SetStatus sets the "status" field.
+func (cu *CourseUpdate) SetStatus(s string) *CourseUpdate {
+	cu.mutation.SetStatus(s)
+	return cu
+}
+
+// AddCategoryIDs adds the "categories" edge to the Category entity by IDs.
+func (cu *CourseUpdate) AddCategoryIDs(ids ...string) *CourseUpdate {
+	cu.mutation.AddCategoryIDs(ids...)
+	return cu
+}
+
+// AddCategories adds the "categories" edges to the Category entity.
+func (cu *CourseUpdate) AddCategories(c ...*Category) *CourseUpdate {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.AddCategoryIDs(ids...)
+}
+
 // Mutation returns the CourseMutation object of the builder.
 func (cu *CourseUpdate) Mutation() *CourseMutation {
 	return cu.mutation
+}
+
+// ClearCategories clears all "categories" edges to the Category entity.
+func (cu *CourseUpdate) ClearCategories() *CourseUpdate {
+	cu.mutation.ClearCategories()
+	return cu
+}
+
+// RemoveCategoryIDs removes the "categories" edge to Category entities by IDs.
+func (cu *CourseUpdate) RemoveCategoryIDs(ids ...string) *CourseUpdate {
+	cu.mutation.RemoveCategoryIDs(ids...)
+	return cu
+}
+
+// RemoveCategories removes "categories" edges to Category entities.
+func (cu *CourseUpdate) RemoveCategories(c ...*Category) *CourseUpdate {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.RemoveCategoryIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -60,13 +321,157 @@ func (cu *CourseUpdate) ExecX(ctx context.Context) {
 }
 
 func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeString))
 	if ps := cu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := cu.mutation.IsRecommend(); ok {
+		_spec.SetField(course.FieldIsRecommend, field.TypeBool, value)
+	}
+	if value, ok := cu.mutation.IsIntegral(); ok {
+		_spec.SetField(course.FieldIsIntegral, field.TypeBool, value)
+	}
+	if value, ok := cu.mutation.SaleType(); ok {
+		_spec.SetField(course.FieldSaleType, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedSaleType(); ok {
+		_spec.AddField(course.FieldSaleType, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.DiscountPrice(); ok {
+		_spec.SetField(course.FieldDiscountPrice, field.TypeFloat32, value)
+	}
+	if value, ok := cu.mutation.AddedDiscountPrice(); ok {
+		_spec.AddField(course.FieldDiscountPrice, field.TypeFloat32, value)
+	}
+	if value, ok := cu.mutation.TeachingType(); ok {
+		_spec.SetField(course.FieldTeachingType, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedTeachingType(); ok {
+		_spec.AddField(course.FieldTeachingType, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.CourseLevel(); ok {
+		_spec.SetField(course.FieldCourseLevel, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedCourseLevel(); ok {
+		_spec.AddField(course.FieldCourseLevel, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.UpdateBy(); ok {
+		_spec.SetField(course.FieldUpdateBy, field.TypeTime, value)
+	}
+	if value, ok := cu.mutation.LecturerName(); ok {
+		_spec.SetField(course.FieldLecturerName, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.PurchaseCnt(); ok {
+		_spec.SetField(course.FieldPurchaseCnt, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedPurchaseCnt(); ok {
+		_spec.AddField(course.FieldPurchaseCnt, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.TotalHour(); ok {
+		_spec.SetField(course.FieldTotalHour, field.TypeFloat32, value)
+	}
+	if value, ok := cu.mutation.AddedTotalHour(); ok {
+		_spec.AddField(course.FieldTotalHour, field.TypeFloat32, value)
+	}
+	if value, ok := cu.mutation.BizCourseDetail(); ok {
+		_spec.SetField(course.FieldBizCourseDetail, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.CourseCover(); ok {
+		_spec.SetField(course.FieldCourseCover, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.BizCourseChapters(); ok {
+		_spec.SetField(course.FieldBizCourseChapters, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.SalePrice(); ok {
+		_spec.SetField(course.FieldSalePrice, field.TypeFloat32, value)
+	}
+	if value, ok := cu.mutation.AddedSalePrice(); ok {
+		_spec.AddField(course.FieldSalePrice, field.TypeFloat32, value)
+	}
+	if value, ok := cu.mutation.BizCourseTeacher(); ok {
+		_spec.SetField(course.FieldBizCourseTeacher, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.BizCourseAttachments(); ok {
+		_spec.SetField(course.FieldBizCourseAttachments, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.UpdateTime(); ok {
+		_spec.SetField(course.FieldUpdateTime, field.TypeTime, value)
+	}
+	if value, ok := cu.mutation.Tags(); ok {
+		_spec.SetField(course.FieldTags, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.CourseName(); ok {
+		_spec.SetField(course.FieldCourseName, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.CreateBy(); ok {
+		_spec.SetField(course.FieldCreateBy, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.PurchaseCounter(); ok {
+		_spec.SetField(course.FieldPurchaseCounter, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedPurchaseCounter(); ok {
+		_spec.AddField(course.FieldPurchaseCounter, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.CreateTime(); ok {
+		_spec.SetField(course.FieldCreateTime, field.TypeTime, value)
+	}
+	if value, ok := cu.mutation.Clicks(); ok {
+		_spec.SetField(course.FieldClicks, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedClicks(); ok {
+		_spec.AddField(course.FieldClicks, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.Status(); ok {
+		_spec.SetField(course.FieldStatus, field.TypeString, value)
+	}
+	if cu.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedCategoriesIDs(); len(nodes) > 0 && !cu.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.CategoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -88,9 +493,268 @@ type CourseUpdateOne struct {
 	mutation *CourseMutation
 }
 
+// SetIsRecommend sets the "isRecommend" field.
+func (cuo *CourseUpdateOne) SetIsRecommend(b bool) *CourseUpdateOne {
+	cuo.mutation.SetIsRecommend(b)
+	return cuo
+}
+
+// SetNillableIsRecommend sets the "isRecommend" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillableIsRecommend(b *bool) *CourseUpdateOne {
+	if b != nil {
+		cuo.SetIsRecommend(*b)
+	}
+	return cuo
+}
+
+// SetIsIntegral sets the "isIntegral" field.
+func (cuo *CourseUpdateOne) SetIsIntegral(b bool) *CourseUpdateOne {
+	cuo.mutation.SetIsIntegral(b)
+	return cuo
+}
+
+// SetNillableIsIntegral sets the "isIntegral" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillableIsIntegral(b *bool) *CourseUpdateOne {
+	if b != nil {
+		cuo.SetIsIntegral(*b)
+	}
+	return cuo
+}
+
+// SetSaleType sets the "saleType" field.
+func (cuo *CourseUpdateOne) SetSaleType(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetSaleType()
+	cuo.mutation.SetSaleType(i)
+	return cuo
+}
+
+// AddSaleType adds i to the "saleType" field.
+func (cuo *CourseUpdateOne) AddSaleType(i int32) *CourseUpdateOne {
+	cuo.mutation.AddSaleType(i)
+	return cuo
+}
+
+// SetDiscountPrice sets the "discountPrice" field.
+func (cuo *CourseUpdateOne) SetDiscountPrice(f float32) *CourseUpdateOne {
+	cuo.mutation.ResetDiscountPrice()
+	cuo.mutation.SetDiscountPrice(f)
+	return cuo
+}
+
+// AddDiscountPrice adds f to the "discountPrice" field.
+func (cuo *CourseUpdateOne) AddDiscountPrice(f float32) *CourseUpdateOne {
+	cuo.mutation.AddDiscountPrice(f)
+	return cuo
+}
+
+// SetTeachingType sets the "teachingType" field.
+func (cuo *CourseUpdateOne) SetTeachingType(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetTeachingType()
+	cuo.mutation.SetTeachingType(i)
+	return cuo
+}
+
+// AddTeachingType adds i to the "teachingType" field.
+func (cuo *CourseUpdateOne) AddTeachingType(i int32) *CourseUpdateOne {
+	cuo.mutation.AddTeachingType(i)
+	return cuo
+}
+
+// SetCourseLevel sets the "courseLevel" field.
+func (cuo *CourseUpdateOne) SetCourseLevel(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetCourseLevel()
+	cuo.mutation.SetCourseLevel(i)
+	return cuo
+}
+
+// AddCourseLevel adds i to the "courseLevel" field.
+func (cuo *CourseUpdateOne) AddCourseLevel(i int32) *CourseUpdateOne {
+	cuo.mutation.AddCourseLevel(i)
+	return cuo
+}
+
+// SetUpdateBy sets the "updateBy" field.
+func (cuo *CourseUpdateOne) SetUpdateBy(t time.Time) *CourseUpdateOne {
+	cuo.mutation.SetUpdateBy(t)
+	return cuo
+}
+
+// SetLecturerName sets the "lecturerName" field.
+func (cuo *CourseUpdateOne) SetLecturerName(s string) *CourseUpdateOne {
+	cuo.mutation.SetLecturerName(s)
+	return cuo
+}
+
+// SetPurchaseCnt sets the "purchaseCnt" field.
+func (cuo *CourseUpdateOne) SetPurchaseCnt(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetPurchaseCnt()
+	cuo.mutation.SetPurchaseCnt(i)
+	return cuo
+}
+
+// AddPurchaseCnt adds i to the "purchaseCnt" field.
+func (cuo *CourseUpdateOne) AddPurchaseCnt(i int32) *CourseUpdateOne {
+	cuo.mutation.AddPurchaseCnt(i)
+	return cuo
+}
+
+// SetTotalHour sets the "totalHour" field.
+func (cuo *CourseUpdateOne) SetTotalHour(f float32) *CourseUpdateOne {
+	cuo.mutation.ResetTotalHour()
+	cuo.mutation.SetTotalHour(f)
+	return cuo
+}
+
+// AddTotalHour adds f to the "totalHour" field.
+func (cuo *CourseUpdateOne) AddTotalHour(f float32) *CourseUpdateOne {
+	cuo.mutation.AddTotalHour(f)
+	return cuo
+}
+
+// SetBizCourseDetail sets the "bizCourseDetail" field.
+func (cuo *CourseUpdateOne) SetBizCourseDetail(s string) *CourseUpdateOne {
+	cuo.mutation.SetBizCourseDetail(s)
+	return cuo
+}
+
+// SetCourseCover sets the "courseCover" field.
+func (cuo *CourseUpdateOne) SetCourseCover(s string) *CourseUpdateOne {
+	cuo.mutation.SetCourseCover(s)
+	return cuo
+}
+
+// SetBizCourseChapters sets the "bizCourseChapters" field.
+func (cuo *CourseUpdateOne) SetBizCourseChapters(s string) *CourseUpdateOne {
+	cuo.mutation.SetBizCourseChapters(s)
+	return cuo
+}
+
+// SetSalePrice sets the "salePrice" field.
+func (cuo *CourseUpdateOne) SetSalePrice(f float32) *CourseUpdateOne {
+	cuo.mutation.ResetSalePrice()
+	cuo.mutation.SetSalePrice(f)
+	return cuo
+}
+
+// AddSalePrice adds f to the "salePrice" field.
+func (cuo *CourseUpdateOne) AddSalePrice(f float32) *CourseUpdateOne {
+	cuo.mutation.AddSalePrice(f)
+	return cuo
+}
+
+// SetBizCourseTeacher sets the "bizCourseTeacher" field.
+func (cuo *CourseUpdateOne) SetBizCourseTeacher(s string) *CourseUpdateOne {
+	cuo.mutation.SetBizCourseTeacher(s)
+	return cuo
+}
+
+// SetBizCourseAttachments sets the "bizCourseAttachments" field.
+func (cuo *CourseUpdateOne) SetBizCourseAttachments(s string) *CourseUpdateOne {
+	cuo.mutation.SetBizCourseAttachments(s)
+	return cuo
+}
+
+// SetUpdateTime sets the "updateTime" field.
+func (cuo *CourseUpdateOne) SetUpdateTime(t time.Time) *CourseUpdateOne {
+	cuo.mutation.SetUpdateTime(t)
+	return cuo
+}
+
+// SetTags sets the "tags" field.
+func (cuo *CourseUpdateOne) SetTags(s string) *CourseUpdateOne {
+	cuo.mutation.SetTags(s)
+	return cuo
+}
+
+// SetCourseName sets the "courseName" field.
+func (cuo *CourseUpdateOne) SetCourseName(s string) *CourseUpdateOne {
+	cuo.mutation.SetCourseName(s)
+	return cuo
+}
+
+// SetCreateBy sets the "createBy" field.
+func (cuo *CourseUpdateOne) SetCreateBy(s string) *CourseUpdateOne {
+	cuo.mutation.SetCreateBy(s)
+	return cuo
+}
+
+// SetPurchaseCounter sets the "purchaseCounter" field.
+func (cuo *CourseUpdateOne) SetPurchaseCounter(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetPurchaseCounter()
+	cuo.mutation.SetPurchaseCounter(i)
+	return cuo
+}
+
+// AddPurchaseCounter adds i to the "purchaseCounter" field.
+func (cuo *CourseUpdateOne) AddPurchaseCounter(i int32) *CourseUpdateOne {
+	cuo.mutation.AddPurchaseCounter(i)
+	return cuo
+}
+
+// SetCreateTime sets the "createTime" field.
+func (cuo *CourseUpdateOne) SetCreateTime(t time.Time) *CourseUpdateOne {
+	cuo.mutation.SetCreateTime(t)
+	return cuo
+}
+
+// SetClicks sets the "clicks" field.
+func (cuo *CourseUpdateOne) SetClicks(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetClicks()
+	cuo.mutation.SetClicks(i)
+	return cuo
+}
+
+// AddClicks adds i to the "clicks" field.
+func (cuo *CourseUpdateOne) AddClicks(i int32) *CourseUpdateOne {
+	cuo.mutation.AddClicks(i)
+	return cuo
+}
+
+// SetStatus sets the "status" field.
+func (cuo *CourseUpdateOne) SetStatus(s string) *CourseUpdateOne {
+	cuo.mutation.SetStatus(s)
+	return cuo
+}
+
+// AddCategoryIDs adds the "categories" edge to the Category entity by IDs.
+func (cuo *CourseUpdateOne) AddCategoryIDs(ids ...string) *CourseUpdateOne {
+	cuo.mutation.AddCategoryIDs(ids...)
+	return cuo
+}
+
+// AddCategories adds the "categories" edges to the Category entity.
+func (cuo *CourseUpdateOne) AddCategories(c ...*Category) *CourseUpdateOne {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.AddCategoryIDs(ids...)
+}
+
 // Mutation returns the CourseMutation object of the builder.
 func (cuo *CourseUpdateOne) Mutation() *CourseMutation {
 	return cuo.mutation
+}
+
+// ClearCategories clears all "categories" edges to the Category entity.
+func (cuo *CourseUpdateOne) ClearCategories() *CourseUpdateOne {
+	cuo.mutation.ClearCategories()
+	return cuo
+}
+
+// RemoveCategoryIDs removes the "categories" edge to Category entities by IDs.
+func (cuo *CourseUpdateOne) RemoveCategoryIDs(ids ...string) *CourseUpdateOne {
+	cuo.mutation.RemoveCategoryIDs(ids...)
+	return cuo
+}
+
+// RemoveCategories removes "categories" edges to Category entities.
+func (cuo *CourseUpdateOne) RemoveCategories(c ...*Category) *CourseUpdateOne {
+	ids := make([]string, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.RemoveCategoryIDs(ids...)
 }
 
 // Where appends a list predicates to the CourseUpdate builder.
@@ -134,7 +798,7 @@ func (cuo *CourseUpdateOne) ExecX(ctx context.Context) {
 }
 
 func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err error) {
-	_spec := sqlgraph.NewUpdateSpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeString))
 	id, ok := cuo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Course.id" for update`)}
@@ -158,6 +822,150 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := cuo.mutation.IsRecommend(); ok {
+		_spec.SetField(course.FieldIsRecommend, field.TypeBool, value)
+	}
+	if value, ok := cuo.mutation.IsIntegral(); ok {
+		_spec.SetField(course.FieldIsIntegral, field.TypeBool, value)
+	}
+	if value, ok := cuo.mutation.SaleType(); ok {
+		_spec.SetField(course.FieldSaleType, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedSaleType(); ok {
+		_spec.AddField(course.FieldSaleType, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.DiscountPrice(); ok {
+		_spec.SetField(course.FieldDiscountPrice, field.TypeFloat32, value)
+	}
+	if value, ok := cuo.mutation.AddedDiscountPrice(); ok {
+		_spec.AddField(course.FieldDiscountPrice, field.TypeFloat32, value)
+	}
+	if value, ok := cuo.mutation.TeachingType(); ok {
+		_spec.SetField(course.FieldTeachingType, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedTeachingType(); ok {
+		_spec.AddField(course.FieldTeachingType, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.CourseLevel(); ok {
+		_spec.SetField(course.FieldCourseLevel, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedCourseLevel(); ok {
+		_spec.AddField(course.FieldCourseLevel, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.UpdateBy(); ok {
+		_spec.SetField(course.FieldUpdateBy, field.TypeTime, value)
+	}
+	if value, ok := cuo.mutation.LecturerName(); ok {
+		_spec.SetField(course.FieldLecturerName, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.PurchaseCnt(); ok {
+		_spec.SetField(course.FieldPurchaseCnt, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedPurchaseCnt(); ok {
+		_spec.AddField(course.FieldPurchaseCnt, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.TotalHour(); ok {
+		_spec.SetField(course.FieldTotalHour, field.TypeFloat32, value)
+	}
+	if value, ok := cuo.mutation.AddedTotalHour(); ok {
+		_spec.AddField(course.FieldTotalHour, field.TypeFloat32, value)
+	}
+	if value, ok := cuo.mutation.BizCourseDetail(); ok {
+		_spec.SetField(course.FieldBizCourseDetail, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.CourseCover(); ok {
+		_spec.SetField(course.FieldCourseCover, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.BizCourseChapters(); ok {
+		_spec.SetField(course.FieldBizCourseChapters, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.SalePrice(); ok {
+		_spec.SetField(course.FieldSalePrice, field.TypeFloat32, value)
+	}
+	if value, ok := cuo.mutation.AddedSalePrice(); ok {
+		_spec.AddField(course.FieldSalePrice, field.TypeFloat32, value)
+	}
+	if value, ok := cuo.mutation.BizCourseTeacher(); ok {
+		_spec.SetField(course.FieldBizCourseTeacher, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.BizCourseAttachments(); ok {
+		_spec.SetField(course.FieldBizCourseAttachments, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.UpdateTime(); ok {
+		_spec.SetField(course.FieldUpdateTime, field.TypeTime, value)
+	}
+	if value, ok := cuo.mutation.Tags(); ok {
+		_spec.SetField(course.FieldTags, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.CourseName(); ok {
+		_spec.SetField(course.FieldCourseName, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.CreateBy(); ok {
+		_spec.SetField(course.FieldCreateBy, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.PurchaseCounter(); ok {
+		_spec.SetField(course.FieldPurchaseCounter, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedPurchaseCounter(); ok {
+		_spec.AddField(course.FieldPurchaseCounter, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.CreateTime(); ok {
+		_spec.SetField(course.FieldCreateTime, field.TypeTime, value)
+	}
+	if value, ok := cuo.mutation.Clicks(); ok {
+		_spec.SetField(course.FieldClicks, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedClicks(); ok {
+		_spec.AddField(course.FieldClicks, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.Status(); ok {
+		_spec.SetField(course.FieldStatus, field.TypeString, value)
+	}
+	if cuo.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedCategoriesIDs(); len(nodes) > 0 && !cuo.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.CategoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   course.CategoriesTable,
+			Columns: course.CategoriesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Course{config: cuo.config}
 	_spec.Assign = _node.assignValues
