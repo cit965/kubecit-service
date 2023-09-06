@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"kubecit-service/ent/slider"
 	"strings"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -16,12 +17,20 @@ type Slider struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreateBy holds the value of the "createBy" field.
-	CreateBy string `json:"createBy,omitempty"`
-	// ImageName holds the value of the "image_name" field.
-	ImageName string `json:"image_name,omitempty"`
-	// ImageURL holds the value of the "image_url" field.
-	ImageURL     string `json:"image_url,omitempty"`
+	// 轮播图标题
+	Title string `json:"title,omitempty"`
+	// 轮播图内容简介
+	Content string `json:"content,omitempty"`
+	// 轮播图链接
+	ImageLink string `json:"image_link,omitempty"`
+	// 创建时间
+	CreateAt time.Time `json:"create_at,omitempty"`
+	// 修改时间
+	UpdateAt time.Time `json:"update_at,omitempty"`
+	// 是否有效
+	IsValid bool `json:"is_valid,omitempty"`
+	// 优先级
+	Priority     int `json:"priority,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -30,10 +39,14 @@ func (*Slider) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case slider.FieldID:
+		case slider.FieldIsValid:
+			values[i] = new(sql.NullBool)
+		case slider.FieldID, slider.FieldPriority:
 			values[i] = new(sql.NullInt64)
-		case slider.FieldCreateBy, slider.FieldImageName, slider.FieldImageURL:
+		case slider.FieldTitle, slider.FieldContent, slider.FieldImageLink:
 			values[i] = new(sql.NullString)
+		case slider.FieldCreateAt, slider.FieldUpdateAt:
+			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -55,23 +68,47 @@ func (s *Slider) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			s.ID = int(value.Int64)
-		case slider.FieldCreateBy:
+		case slider.FieldTitle:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field createBy", values[i])
+				return fmt.Errorf("unexpected type %T for field title", values[i])
 			} else if value.Valid {
-				s.CreateBy = value.String
+				s.Title = value.String
 			}
-		case slider.FieldImageName:
+		case slider.FieldContent:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field image_name", values[i])
+				return fmt.Errorf("unexpected type %T for field content", values[i])
 			} else if value.Valid {
-				s.ImageName = value.String
+				s.Content = value.String
 			}
-		case slider.FieldImageURL:
+		case slider.FieldImageLink:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field image_url", values[i])
+				return fmt.Errorf("unexpected type %T for field image_link", values[i])
 			} else if value.Valid {
-				s.ImageURL = value.String
+				s.ImageLink = value.String
+			}
+		case slider.FieldCreateAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field create_at", values[i])
+			} else if value.Valid {
+				s.CreateAt = value.Time
+			}
+		case slider.FieldUpdateAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field update_at", values[i])
+			} else if value.Valid {
+				s.UpdateAt = value.Time
+			}
+		case slider.FieldIsValid:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_valid", values[i])
+			} else if value.Valid {
+				s.IsValid = value.Bool
+			}
+		case slider.FieldPriority:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field priority", values[i])
+			} else if value.Valid {
+				s.Priority = int(value.Int64)
 			}
 		default:
 			s.selectValues.Set(columns[i], values[i])
@@ -109,14 +146,26 @@ func (s *Slider) String() string {
 	var builder strings.Builder
 	builder.WriteString("Slider(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", s.ID))
-	builder.WriteString("createBy=")
-	builder.WriteString(s.CreateBy)
+	builder.WriteString("title=")
+	builder.WriteString(s.Title)
 	builder.WriteString(", ")
-	builder.WriteString("image_name=")
-	builder.WriteString(s.ImageName)
+	builder.WriteString("content=")
+	builder.WriteString(s.Content)
 	builder.WriteString(", ")
-	builder.WriteString("image_url=")
-	builder.WriteString(s.ImageURL)
+	builder.WriteString("image_link=")
+	builder.WriteString(s.ImageLink)
+	builder.WriteString(", ")
+	builder.WriteString("create_at=")
+	builder.WriteString(s.CreateAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("update_at=")
+	builder.WriteString(s.UpdateAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("is_valid=")
+	builder.WriteString(fmt.Sprintf("%v", s.IsValid))
+	builder.WriteString(", ")
+	builder.WriteString("priority=")
+	builder.WriteString(fmt.Sprintf("%v", s.Priority))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -3,6 +3,8 @@
 package slider
 
 import (
+	"time"
+
 	"entgo.io/ent/dialect/sql"
 )
 
@@ -11,12 +13,20 @@ const (
 	Label = "slider"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreateBy holds the string denoting the createby field in the database.
-	FieldCreateBy = "create_by"
-	// FieldImageName holds the string denoting the image_name field in the database.
-	FieldImageName = "image_name"
-	// FieldImageURL holds the string denoting the image_url field in the database.
-	FieldImageURL = "image_url"
+	// FieldTitle holds the string denoting the title field in the database.
+	FieldTitle = "title"
+	// FieldContent holds the string denoting the content field in the database.
+	FieldContent = "content"
+	// FieldImageLink holds the string denoting the image_link field in the database.
+	FieldImageLink = "image_link"
+	// FieldCreateAt holds the string denoting the create_at field in the database.
+	FieldCreateAt = "create_at"
+	// FieldUpdateAt holds the string denoting the update_at field in the database.
+	FieldUpdateAt = "update_at"
+	// FieldIsValid holds the string denoting the is_valid field in the database.
+	FieldIsValid = "is_valid"
+	// FieldPriority holds the string denoting the priority field in the database.
+	FieldPriority = "priority"
 	// Table holds the table name of the slider in the database.
 	Table = "sliders"
 )
@@ -24,9 +34,13 @@ const (
 // Columns holds all SQL columns for slider fields.
 var Columns = []string{
 	FieldID,
-	FieldCreateBy,
-	FieldImageName,
-	FieldImageURL,
+	FieldTitle,
+	FieldContent,
+	FieldImageLink,
+	FieldCreateAt,
+	FieldUpdateAt,
+	FieldIsValid,
+	FieldPriority,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -39,6 +53,23 @@ func ValidColumn(column string) bool {
 	return false
 }
 
+var (
+	// TitleValidator is a validator for the "title" field. It is called by the builders before save.
+	TitleValidator func(string) error
+	// ContentValidator is a validator for the "content" field. It is called by the builders before save.
+	ContentValidator func(string) error
+	// ImageLinkValidator is a validator for the "image_link" field. It is called by the builders before save.
+	ImageLinkValidator func(string) error
+	// DefaultCreateAt holds the default value on creation for the "create_at" field.
+	DefaultCreateAt time.Time
+	// DefaultUpdateAt holds the default value on creation for the "update_at" field.
+	DefaultUpdateAt time.Time
+	// UpdateDefaultUpdateAt holds the default value on update for the "update_at" field.
+	UpdateDefaultUpdateAt func() time.Time
+	// DefaultIsValid holds the default value on creation for the "is_valid" field.
+	DefaultIsValid bool
+)
+
 // OrderOption defines the ordering options for the Slider queries.
 type OrderOption func(*sql.Selector)
 
@@ -47,17 +78,37 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreateBy orders the results by the createBy field.
-func ByCreateBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreateBy, opts...).ToFunc()
+// ByTitle orders the results by the title field.
+func ByTitle(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTitle, opts...).ToFunc()
 }
 
-// ByImageName orders the results by the image_name field.
-func ByImageName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldImageName, opts...).ToFunc()
+// ByContent orders the results by the content field.
+func ByContent(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContent, opts...).ToFunc()
 }
 
-// ByImageURL orders the results by the image_url field.
-func ByImageURL(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldImageURL, opts...).ToFunc()
+// ByImageLink orders the results by the image_link field.
+func ByImageLink(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldImageLink, opts...).ToFunc()
+}
+
+// ByCreateAt orders the results by the create_at field.
+func ByCreateAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreateAt, opts...).ToFunc()
+}
+
+// ByUpdateAt orders the results by the update_at field.
+func ByUpdateAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdateAt, opts...).ToFunc()
+}
+
+// ByIsValid orders the results by the is_valid field.
+func ByIsValid(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsValid, opts...).ToFunc()
+}
+
+// ByPriority orders the results by the priority field.
+func ByPriority(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPriority, opts...).ToFunc()
 }

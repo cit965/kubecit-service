@@ -261,12 +261,12 @@ func (sq *SliderQuery) Clone() *SliderQuery {
 // Example:
 //
 //	var v []struct {
-//		CreateBy string `json:"createBy,omitempty"`
+//		Title string `json:"title,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Slider.Query().
-//		GroupBy(slider.FieldCreateBy).
+//		GroupBy(slider.FieldTitle).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (sq *SliderQuery) GroupBy(field string, fields ...string) *SliderGroupBy {
@@ -284,11 +284,11 @@ func (sq *SliderQuery) GroupBy(field string, fields ...string) *SliderGroupBy {
 // Example:
 //
 //	var v []struct {
-//		CreateBy string `json:"createBy,omitempty"`
+//		Title string `json:"title,omitempty"`
 //	}
 //
 //	client.Slider.Query().
-//		Select(slider.FieldCreateBy).
+//		Select(slider.FieldTitle).
 //		Scan(ctx, &v)
 func (sq *SliderQuery) Select(fields ...string) *SliderSelect {
 	sq.ctx.Fields = append(sq.ctx.Fields, fields...)

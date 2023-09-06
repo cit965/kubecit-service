@@ -4,6 +4,7 @@ package slider
 
 import (
 	"kubecit-service/ent/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 )
@@ -53,214 +54,364 @@ func IDLTE(id int) predicate.Slider {
 	return predicate.Slider(sql.FieldLTE(FieldID, id))
 }
 
-// CreateBy applies equality check predicate on the "createBy" field. It's identical to CreateByEQ.
-func CreateBy(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldEQ(FieldCreateBy, v))
+// Title applies equality check predicate on the "title" field. It's identical to TitleEQ.
+func Title(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldTitle, v))
 }
 
-// ImageName applies equality check predicate on the "image_name" field. It's identical to ImageNameEQ.
-func ImageName(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldEQ(FieldImageName, v))
+// Content applies equality check predicate on the "content" field. It's identical to ContentEQ.
+func Content(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldContent, v))
 }
 
-// ImageURL applies equality check predicate on the "image_url" field. It's identical to ImageURLEQ.
-func ImageURL(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldEQ(FieldImageURL, v))
+// ImageLink applies equality check predicate on the "image_link" field. It's identical to ImageLinkEQ.
+func ImageLink(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldImageLink, v))
 }
 
-// CreateByEQ applies the EQ predicate on the "createBy" field.
-func CreateByEQ(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldEQ(FieldCreateBy, v))
+// CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
+func CreateAt(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldCreateAt, v))
 }
 
-// CreateByNEQ applies the NEQ predicate on the "createBy" field.
-func CreateByNEQ(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldNEQ(FieldCreateBy, v))
+// UpdateAt applies equality check predicate on the "update_at" field. It's identical to UpdateAtEQ.
+func UpdateAt(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldUpdateAt, v))
 }
 
-// CreateByIn applies the In predicate on the "createBy" field.
-func CreateByIn(vs ...string) predicate.Slider {
-	return predicate.Slider(sql.FieldIn(FieldCreateBy, vs...))
+// IsValid applies equality check predicate on the "is_valid" field. It's identical to IsValidEQ.
+func IsValid(v bool) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldIsValid, v))
 }
 
-// CreateByNotIn applies the NotIn predicate on the "createBy" field.
-func CreateByNotIn(vs ...string) predicate.Slider {
-	return predicate.Slider(sql.FieldNotIn(FieldCreateBy, vs...))
+// Priority applies equality check predicate on the "priority" field. It's identical to PriorityEQ.
+func Priority(v int) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldPriority, v))
 }
 
-// CreateByGT applies the GT predicate on the "createBy" field.
-func CreateByGT(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldGT(FieldCreateBy, v))
+// TitleEQ applies the EQ predicate on the "title" field.
+func TitleEQ(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldTitle, v))
 }
 
-// CreateByGTE applies the GTE predicate on the "createBy" field.
-func CreateByGTE(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldGTE(FieldCreateBy, v))
+// TitleNEQ applies the NEQ predicate on the "title" field.
+func TitleNEQ(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldNEQ(FieldTitle, v))
 }
 
-// CreateByLT applies the LT predicate on the "createBy" field.
-func CreateByLT(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldLT(FieldCreateBy, v))
+// TitleIn applies the In predicate on the "title" field.
+func TitleIn(vs ...string) predicate.Slider {
+	return predicate.Slider(sql.FieldIn(FieldTitle, vs...))
 }
 
-// CreateByLTE applies the LTE predicate on the "createBy" field.
-func CreateByLTE(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldLTE(FieldCreateBy, v))
+// TitleNotIn applies the NotIn predicate on the "title" field.
+func TitleNotIn(vs ...string) predicate.Slider {
+	return predicate.Slider(sql.FieldNotIn(FieldTitle, vs...))
 }
 
-// CreateByContains applies the Contains predicate on the "createBy" field.
-func CreateByContains(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldContains(FieldCreateBy, v))
+// TitleGT applies the GT predicate on the "title" field.
+func TitleGT(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldGT(FieldTitle, v))
 }
 
-// CreateByHasPrefix applies the HasPrefix predicate on the "createBy" field.
-func CreateByHasPrefix(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldHasPrefix(FieldCreateBy, v))
+// TitleGTE applies the GTE predicate on the "title" field.
+func TitleGTE(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldGTE(FieldTitle, v))
 }
 
-// CreateByHasSuffix applies the HasSuffix predicate on the "createBy" field.
-func CreateByHasSuffix(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldHasSuffix(FieldCreateBy, v))
+// TitleLT applies the LT predicate on the "title" field.
+func TitleLT(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldLT(FieldTitle, v))
 }
 
-// CreateByEqualFold applies the EqualFold predicate on the "createBy" field.
-func CreateByEqualFold(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldEqualFold(FieldCreateBy, v))
+// TitleLTE applies the LTE predicate on the "title" field.
+func TitleLTE(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldLTE(FieldTitle, v))
 }
 
-// CreateByContainsFold applies the ContainsFold predicate on the "createBy" field.
-func CreateByContainsFold(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldContainsFold(FieldCreateBy, v))
+// TitleContains applies the Contains predicate on the "title" field.
+func TitleContains(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldContains(FieldTitle, v))
 }
 
-// ImageNameEQ applies the EQ predicate on the "image_name" field.
-func ImageNameEQ(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldEQ(FieldImageName, v))
+// TitleHasPrefix applies the HasPrefix predicate on the "title" field.
+func TitleHasPrefix(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldHasPrefix(FieldTitle, v))
 }
 
-// ImageNameNEQ applies the NEQ predicate on the "image_name" field.
-func ImageNameNEQ(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldNEQ(FieldImageName, v))
+// TitleHasSuffix applies the HasSuffix predicate on the "title" field.
+func TitleHasSuffix(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldHasSuffix(FieldTitle, v))
 }
 
-// ImageNameIn applies the In predicate on the "image_name" field.
-func ImageNameIn(vs ...string) predicate.Slider {
-	return predicate.Slider(sql.FieldIn(FieldImageName, vs...))
+// TitleEqualFold applies the EqualFold predicate on the "title" field.
+func TitleEqualFold(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldEqualFold(FieldTitle, v))
 }
 
-// ImageNameNotIn applies the NotIn predicate on the "image_name" field.
-func ImageNameNotIn(vs ...string) predicate.Slider {
-	return predicate.Slider(sql.FieldNotIn(FieldImageName, vs...))
+// TitleContainsFold applies the ContainsFold predicate on the "title" field.
+func TitleContainsFold(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldContainsFold(FieldTitle, v))
 }
 
-// ImageNameGT applies the GT predicate on the "image_name" field.
-func ImageNameGT(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldGT(FieldImageName, v))
+// ContentEQ applies the EQ predicate on the "content" field.
+func ContentEQ(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldContent, v))
 }
 
-// ImageNameGTE applies the GTE predicate on the "image_name" field.
-func ImageNameGTE(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldGTE(FieldImageName, v))
+// ContentNEQ applies the NEQ predicate on the "content" field.
+func ContentNEQ(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldNEQ(FieldContent, v))
 }
 
-// ImageNameLT applies the LT predicate on the "image_name" field.
-func ImageNameLT(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldLT(FieldImageName, v))
+// ContentIn applies the In predicate on the "content" field.
+func ContentIn(vs ...string) predicate.Slider {
+	return predicate.Slider(sql.FieldIn(FieldContent, vs...))
 }
 
-// ImageNameLTE applies the LTE predicate on the "image_name" field.
-func ImageNameLTE(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldLTE(FieldImageName, v))
+// ContentNotIn applies the NotIn predicate on the "content" field.
+func ContentNotIn(vs ...string) predicate.Slider {
+	return predicate.Slider(sql.FieldNotIn(FieldContent, vs...))
 }
 
-// ImageNameContains applies the Contains predicate on the "image_name" field.
-func ImageNameContains(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldContains(FieldImageName, v))
+// ContentGT applies the GT predicate on the "content" field.
+func ContentGT(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldGT(FieldContent, v))
 }
 
-// ImageNameHasPrefix applies the HasPrefix predicate on the "image_name" field.
-func ImageNameHasPrefix(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldHasPrefix(FieldImageName, v))
+// ContentGTE applies the GTE predicate on the "content" field.
+func ContentGTE(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldGTE(FieldContent, v))
 }
 
-// ImageNameHasSuffix applies the HasSuffix predicate on the "image_name" field.
-func ImageNameHasSuffix(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldHasSuffix(FieldImageName, v))
+// ContentLT applies the LT predicate on the "content" field.
+func ContentLT(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldLT(FieldContent, v))
 }
 
-// ImageNameEqualFold applies the EqualFold predicate on the "image_name" field.
-func ImageNameEqualFold(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldEqualFold(FieldImageName, v))
+// ContentLTE applies the LTE predicate on the "content" field.
+func ContentLTE(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldLTE(FieldContent, v))
 }
 
-// ImageNameContainsFold applies the ContainsFold predicate on the "image_name" field.
-func ImageNameContainsFold(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldContainsFold(FieldImageName, v))
+// ContentContains applies the Contains predicate on the "content" field.
+func ContentContains(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldContains(FieldContent, v))
 }
 
-// ImageURLEQ applies the EQ predicate on the "image_url" field.
-func ImageURLEQ(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldEQ(FieldImageURL, v))
+// ContentHasPrefix applies the HasPrefix predicate on the "content" field.
+func ContentHasPrefix(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldHasPrefix(FieldContent, v))
 }
 
-// ImageURLNEQ applies the NEQ predicate on the "image_url" field.
-func ImageURLNEQ(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldNEQ(FieldImageURL, v))
+// ContentHasSuffix applies the HasSuffix predicate on the "content" field.
+func ContentHasSuffix(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldHasSuffix(FieldContent, v))
 }
 
-// ImageURLIn applies the In predicate on the "image_url" field.
-func ImageURLIn(vs ...string) predicate.Slider {
-	return predicate.Slider(sql.FieldIn(FieldImageURL, vs...))
+// ContentEqualFold applies the EqualFold predicate on the "content" field.
+func ContentEqualFold(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldEqualFold(FieldContent, v))
 }
 
-// ImageURLNotIn applies the NotIn predicate on the "image_url" field.
-func ImageURLNotIn(vs ...string) predicate.Slider {
-	return predicate.Slider(sql.FieldNotIn(FieldImageURL, vs...))
+// ContentContainsFold applies the ContainsFold predicate on the "content" field.
+func ContentContainsFold(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldContainsFold(FieldContent, v))
 }
 
-// ImageURLGT applies the GT predicate on the "image_url" field.
-func ImageURLGT(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldGT(FieldImageURL, v))
+// ImageLinkEQ applies the EQ predicate on the "image_link" field.
+func ImageLinkEQ(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldImageLink, v))
 }
 
-// ImageURLGTE applies the GTE predicate on the "image_url" field.
-func ImageURLGTE(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldGTE(FieldImageURL, v))
+// ImageLinkNEQ applies the NEQ predicate on the "image_link" field.
+func ImageLinkNEQ(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldNEQ(FieldImageLink, v))
 }
 
-// ImageURLLT applies the LT predicate on the "image_url" field.
-func ImageURLLT(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldLT(FieldImageURL, v))
+// ImageLinkIn applies the In predicate on the "image_link" field.
+func ImageLinkIn(vs ...string) predicate.Slider {
+	return predicate.Slider(sql.FieldIn(FieldImageLink, vs...))
 }
 
-// ImageURLLTE applies the LTE predicate on the "image_url" field.
-func ImageURLLTE(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldLTE(FieldImageURL, v))
+// ImageLinkNotIn applies the NotIn predicate on the "image_link" field.
+func ImageLinkNotIn(vs ...string) predicate.Slider {
+	return predicate.Slider(sql.FieldNotIn(FieldImageLink, vs...))
 }
 
-// ImageURLContains applies the Contains predicate on the "image_url" field.
-func ImageURLContains(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldContains(FieldImageURL, v))
+// ImageLinkGT applies the GT predicate on the "image_link" field.
+func ImageLinkGT(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldGT(FieldImageLink, v))
 }
 
-// ImageURLHasPrefix applies the HasPrefix predicate on the "image_url" field.
-func ImageURLHasPrefix(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldHasPrefix(FieldImageURL, v))
+// ImageLinkGTE applies the GTE predicate on the "image_link" field.
+func ImageLinkGTE(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldGTE(FieldImageLink, v))
 }
 
-// ImageURLHasSuffix applies the HasSuffix predicate on the "image_url" field.
-func ImageURLHasSuffix(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldHasSuffix(FieldImageURL, v))
+// ImageLinkLT applies the LT predicate on the "image_link" field.
+func ImageLinkLT(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldLT(FieldImageLink, v))
 }
 
-// ImageURLEqualFold applies the EqualFold predicate on the "image_url" field.
-func ImageURLEqualFold(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldEqualFold(FieldImageURL, v))
+// ImageLinkLTE applies the LTE predicate on the "image_link" field.
+func ImageLinkLTE(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldLTE(FieldImageLink, v))
 }
 
-// ImageURLContainsFold applies the ContainsFold predicate on the "image_url" field.
-func ImageURLContainsFold(v string) predicate.Slider {
-	return predicate.Slider(sql.FieldContainsFold(FieldImageURL, v))
+// ImageLinkContains applies the Contains predicate on the "image_link" field.
+func ImageLinkContains(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldContains(FieldImageLink, v))
+}
+
+// ImageLinkHasPrefix applies the HasPrefix predicate on the "image_link" field.
+func ImageLinkHasPrefix(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldHasPrefix(FieldImageLink, v))
+}
+
+// ImageLinkHasSuffix applies the HasSuffix predicate on the "image_link" field.
+func ImageLinkHasSuffix(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldHasSuffix(FieldImageLink, v))
+}
+
+// ImageLinkEqualFold applies the EqualFold predicate on the "image_link" field.
+func ImageLinkEqualFold(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldEqualFold(FieldImageLink, v))
+}
+
+// ImageLinkContainsFold applies the ContainsFold predicate on the "image_link" field.
+func ImageLinkContainsFold(v string) predicate.Slider {
+	return predicate.Slider(sql.FieldContainsFold(FieldImageLink, v))
+}
+
+// CreateAtEQ applies the EQ predicate on the "create_at" field.
+func CreateAtEQ(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldCreateAt, v))
+}
+
+// CreateAtNEQ applies the NEQ predicate on the "create_at" field.
+func CreateAtNEQ(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldNEQ(FieldCreateAt, v))
+}
+
+// CreateAtIn applies the In predicate on the "create_at" field.
+func CreateAtIn(vs ...time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldIn(FieldCreateAt, vs...))
+}
+
+// CreateAtNotIn applies the NotIn predicate on the "create_at" field.
+func CreateAtNotIn(vs ...time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldNotIn(FieldCreateAt, vs...))
+}
+
+// CreateAtGT applies the GT predicate on the "create_at" field.
+func CreateAtGT(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldGT(FieldCreateAt, v))
+}
+
+// CreateAtGTE applies the GTE predicate on the "create_at" field.
+func CreateAtGTE(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldGTE(FieldCreateAt, v))
+}
+
+// CreateAtLT applies the LT predicate on the "create_at" field.
+func CreateAtLT(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldLT(FieldCreateAt, v))
+}
+
+// CreateAtLTE applies the LTE predicate on the "create_at" field.
+func CreateAtLTE(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldLTE(FieldCreateAt, v))
+}
+
+// UpdateAtEQ applies the EQ predicate on the "update_at" field.
+func UpdateAtEQ(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldUpdateAt, v))
+}
+
+// UpdateAtNEQ applies the NEQ predicate on the "update_at" field.
+func UpdateAtNEQ(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldNEQ(FieldUpdateAt, v))
+}
+
+// UpdateAtIn applies the In predicate on the "update_at" field.
+func UpdateAtIn(vs ...time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldIn(FieldUpdateAt, vs...))
+}
+
+// UpdateAtNotIn applies the NotIn predicate on the "update_at" field.
+func UpdateAtNotIn(vs ...time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldNotIn(FieldUpdateAt, vs...))
+}
+
+// UpdateAtGT applies the GT predicate on the "update_at" field.
+func UpdateAtGT(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldGT(FieldUpdateAt, v))
+}
+
+// UpdateAtGTE applies the GTE predicate on the "update_at" field.
+func UpdateAtGTE(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldGTE(FieldUpdateAt, v))
+}
+
+// UpdateAtLT applies the LT predicate on the "update_at" field.
+func UpdateAtLT(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldLT(FieldUpdateAt, v))
+}
+
+// UpdateAtLTE applies the LTE predicate on the "update_at" field.
+func UpdateAtLTE(v time.Time) predicate.Slider {
+	return predicate.Slider(sql.FieldLTE(FieldUpdateAt, v))
+}
+
+// IsValidEQ applies the EQ predicate on the "is_valid" field.
+func IsValidEQ(v bool) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldIsValid, v))
+}
+
+// IsValidNEQ applies the NEQ predicate on the "is_valid" field.
+func IsValidNEQ(v bool) predicate.Slider {
+	return predicate.Slider(sql.FieldNEQ(FieldIsValid, v))
+}
+
+// PriorityEQ applies the EQ predicate on the "priority" field.
+func PriorityEQ(v int) predicate.Slider {
+	return predicate.Slider(sql.FieldEQ(FieldPriority, v))
+}
+
+// PriorityNEQ applies the NEQ predicate on the "priority" field.
+func PriorityNEQ(v int) predicate.Slider {
+	return predicate.Slider(sql.FieldNEQ(FieldPriority, v))
+}
+
+// PriorityIn applies the In predicate on the "priority" field.
+func PriorityIn(vs ...int) predicate.Slider {
+	return predicate.Slider(sql.FieldIn(FieldPriority, vs...))
+}
+
+// PriorityNotIn applies the NotIn predicate on the "priority" field.
+func PriorityNotIn(vs ...int) predicate.Slider {
+	return predicate.Slider(sql.FieldNotIn(FieldPriority, vs...))
+}
+
+// PriorityGT applies the GT predicate on the "priority" field.
+func PriorityGT(v int) predicate.Slider {
+	return predicate.Slider(sql.FieldGT(FieldPriority, v))
+}
+
+// PriorityGTE applies the GTE predicate on the "priority" field.
+func PriorityGTE(v int) predicate.Slider {
+	return predicate.Slider(sql.FieldGTE(FieldPriority, v))
+}
+
+// PriorityLT applies the LT predicate on the "priority" field.
+func PriorityLT(v int) predicate.Slider {
+	return predicate.Slider(sql.FieldLT(FieldPriority, v))
+}
+
+// PriorityLTE applies the LTE predicate on the "priority" field.
+func PriorityLTE(v int) predicate.Slider {
+	return predicate.Slider(sql.FieldLTE(FieldPriority, v))
 }
 
 // And groups predicates with the AND operator between them.
