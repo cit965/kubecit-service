@@ -14,10 +14,10 @@ type KubecitService struct {
 	v1.UnimplementedGreeterServer
 
 	cc *biz.CourseUsecase
-	su *biz.SliderUsecase
+	su *biz.SystemUsecase
 }
 
 // NewGreeterService new a greeter service.
-func NewKubecitService(cc *biz.CourseUsecase, su *biz.SliderUsecase) *KubecitService {
+func NewKubecitService(cc *biz.CourseUsecase, su *biz.SystemUsecase) *KubecitService {
 	return &KubecitService{cc: cc, su: su}
 }

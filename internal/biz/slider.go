@@ -26,34 +26,34 @@ type SliderRepo interface {
 	ListByPriority(ctx context.Context, priority int, count int) ([]*Slider, error)
 }
 
-type SliderUsecase struct {
+type SystemUsecase struct {
 	repo SliderRepo
 	log  *log.Helper
 }
 
-func NewSliderUsecase(repo SliderRepo, logger log.Logger) *SliderUsecase {
-	return &SliderUsecase{
+func NewSystemUsecase(repo SliderRepo, logger log.Logger) *SystemUsecase {
+	return &SystemUsecase{
 		repo: repo,
 		log:  log.NewHelper(logger),
 	}
 }
 
-func (su *SliderUsecase) CreateSlider(ctx context.Context, slider *Slider) (*Slider, error) {
+func (su *SystemUsecase) CreateSlider(ctx context.Context, slider *Slider) (*Slider, error) {
 	return su.repo.Create(ctx, slider)
 }
 
-func (su *SliderUsecase) GetSliderById(ctx context.Context, id int) (*Slider, error) {
+func (su *SystemUsecase) GetSliderById(ctx context.Context, id int) (*Slider, error) {
 	return su.repo.Get(ctx, id)
 }
 
-func (su *SliderUsecase) DeleteById(ctx context.Context, id int) (int, error) {
+func (su *SystemUsecase) DeleteById(ctx context.Context, id int) (int, error) {
 	return su.repo.Delete(ctx, id)
 }
 
-func (su *SliderUsecase) UpdateById(ctx context.Context, id int, slider *Slider) (*Slider, error) {
+func (su *SystemUsecase) UpdateById(ctx context.Context, id int, slider *Slider) (*Slider, error) {
 	return su.repo.Update(ctx, id, slider)
 }
 
-func (su *SliderUsecase) ListByPriority(ctx context.Context, priority, count int) ([]*Slider, error) {
+func (su *SystemUsecase) ListByPriority(ctx context.Context, priority, count int) ([]*Slider, error) {
 	return su.repo.ListByPriority(ctx, priority, count)
 }
