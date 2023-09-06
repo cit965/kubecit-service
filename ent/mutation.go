@@ -1781,9 +1781,14 @@ type SliderMutation struct {
 	op            Op
 	typ           string
 	id            *int
-	createBy      *string
-	image_name    *string
-	image_url     *string
+	title         *string
+	content       *string
+	image_link    *string
+	create_at     *time.Time
+	update_at     *time.Time
+	is_valid      *bool
+	priority      *int
+	addpriority   *int
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*Slider, error)
@@ -1888,112 +1893,276 @@ func (m *SliderMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreateBy sets the "createBy" field.
-func (m *SliderMutation) SetCreateBy(s string) {
-	m.createBy = &s
+// SetTitle sets the "title" field.
+func (m *SliderMutation) SetTitle(s string) {
+	m.title = &s
 }
 
-// CreateBy returns the value of the "createBy" field in the mutation.
-func (m *SliderMutation) CreateBy() (r string, exists bool) {
-	v := m.createBy
+// Title returns the value of the "title" field in the mutation.
+func (m *SliderMutation) Title() (r string, exists bool) {
+	v := m.title
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateBy returns the old "createBy" field's value of the Slider entity.
+// OldTitle returns the old "title" field's value of the Slider entity.
 // If the Slider object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SliderMutation) OldCreateBy(ctx context.Context) (v string, err error) {
+func (m *SliderMutation) OldTitle(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateBy is only allowed on UpdateOne operations")
+		return v, errors.New("OldTitle is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateBy requires an ID field in the mutation")
+		return v, errors.New("OldTitle requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateBy: %w", err)
+		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
 	}
-	return oldValue.CreateBy, nil
+	return oldValue.Title, nil
 }
 
-// ResetCreateBy resets all changes to the "createBy" field.
-func (m *SliderMutation) ResetCreateBy() {
-	m.createBy = nil
+// ResetTitle resets all changes to the "title" field.
+func (m *SliderMutation) ResetTitle() {
+	m.title = nil
 }
 
-// SetImageName sets the "image_name" field.
-func (m *SliderMutation) SetImageName(s string) {
-	m.image_name = &s
+// SetContent sets the "content" field.
+func (m *SliderMutation) SetContent(s string) {
+	m.content = &s
 }
 
-// ImageName returns the value of the "image_name" field in the mutation.
-func (m *SliderMutation) ImageName() (r string, exists bool) {
-	v := m.image_name
+// Content returns the value of the "content" field in the mutation.
+func (m *SliderMutation) Content() (r string, exists bool) {
+	v := m.content
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldImageName returns the old "image_name" field's value of the Slider entity.
+// OldContent returns the old "content" field's value of the Slider entity.
 // If the Slider object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SliderMutation) OldImageName(ctx context.Context) (v string, err error) {
+func (m *SliderMutation) OldContent(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldImageName is only allowed on UpdateOne operations")
+		return v, errors.New("OldContent is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldImageName requires an ID field in the mutation")
+		return v, errors.New("OldContent requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldImageName: %w", err)
+		return v, fmt.Errorf("querying old value for OldContent: %w", err)
 	}
-	return oldValue.ImageName, nil
+	return oldValue.Content, nil
 }
 
-// ResetImageName resets all changes to the "image_name" field.
-func (m *SliderMutation) ResetImageName() {
-	m.image_name = nil
+// ResetContent resets all changes to the "content" field.
+func (m *SliderMutation) ResetContent() {
+	m.content = nil
 }
 
-// SetImageURL sets the "image_url" field.
-func (m *SliderMutation) SetImageURL(s string) {
-	m.image_url = &s
+// SetImageLink sets the "image_link" field.
+func (m *SliderMutation) SetImageLink(s string) {
+	m.image_link = &s
 }
 
-// ImageURL returns the value of the "image_url" field in the mutation.
-func (m *SliderMutation) ImageURL() (r string, exists bool) {
-	v := m.image_url
+// ImageLink returns the value of the "image_link" field in the mutation.
+func (m *SliderMutation) ImageLink() (r string, exists bool) {
+	v := m.image_link
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldImageURL returns the old "image_url" field's value of the Slider entity.
+// OldImageLink returns the old "image_link" field's value of the Slider entity.
 // If the Slider object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SliderMutation) OldImageURL(ctx context.Context) (v string, err error) {
+func (m *SliderMutation) OldImageLink(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldImageURL is only allowed on UpdateOne operations")
+		return v, errors.New("OldImageLink is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldImageURL requires an ID field in the mutation")
+		return v, errors.New("OldImageLink requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldImageURL: %w", err)
+		return v, fmt.Errorf("querying old value for OldImageLink: %w", err)
 	}
-	return oldValue.ImageURL, nil
+	return oldValue.ImageLink, nil
 }
 
-// ResetImageURL resets all changes to the "image_url" field.
-func (m *SliderMutation) ResetImageURL() {
-	m.image_url = nil
+// ResetImageLink resets all changes to the "image_link" field.
+func (m *SliderMutation) ResetImageLink() {
+	m.image_link = nil
+}
+
+// SetCreateAt sets the "create_at" field.
+func (m *SliderMutation) SetCreateAt(t time.Time) {
+	m.create_at = &t
+}
+
+// CreateAt returns the value of the "create_at" field in the mutation.
+func (m *SliderMutation) CreateAt() (r time.Time, exists bool) {
+	v := m.create_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateAt returns the old "create_at" field's value of the Slider entity.
+// If the Slider object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SliderMutation) OldCreateAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+	}
+	return oldValue.CreateAt, nil
+}
+
+// ResetCreateAt resets all changes to the "create_at" field.
+func (m *SliderMutation) ResetCreateAt() {
+	m.create_at = nil
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (m *SliderMutation) SetUpdateAt(t time.Time) {
+	m.update_at = &t
+}
+
+// UpdateAt returns the value of the "update_at" field in the mutation.
+func (m *SliderMutation) UpdateAt() (r time.Time, exists bool) {
+	v := m.update_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateAt returns the old "update_at" field's value of the Slider entity.
+// If the Slider object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SliderMutation) OldUpdateAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+	}
+	return oldValue.UpdateAt, nil
+}
+
+// ResetUpdateAt resets all changes to the "update_at" field.
+func (m *SliderMutation) ResetUpdateAt() {
+	m.update_at = nil
+}
+
+// SetIsValid sets the "is_valid" field.
+func (m *SliderMutation) SetIsValid(b bool) {
+	m.is_valid = &b
+}
+
+// IsValid returns the value of the "is_valid" field in the mutation.
+func (m *SliderMutation) IsValid() (r bool, exists bool) {
+	v := m.is_valid
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsValid returns the old "is_valid" field's value of the Slider entity.
+// If the Slider object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SliderMutation) OldIsValid(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsValid is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsValid requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsValid: %w", err)
+	}
+	return oldValue.IsValid, nil
+}
+
+// ResetIsValid resets all changes to the "is_valid" field.
+func (m *SliderMutation) ResetIsValid() {
+	m.is_valid = nil
+}
+
+// SetPriority sets the "priority" field.
+func (m *SliderMutation) SetPriority(i int) {
+	m.priority = &i
+	m.addpriority = nil
+}
+
+// Priority returns the value of the "priority" field in the mutation.
+func (m *SliderMutation) Priority() (r int, exists bool) {
+	v := m.priority
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPriority returns the old "priority" field's value of the Slider entity.
+// If the Slider object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SliderMutation) OldPriority(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPriority is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPriority requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPriority: %w", err)
+	}
+	return oldValue.Priority, nil
+}
+
+// AddPriority adds i to the "priority" field.
+func (m *SliderMutation) AddPriority(i int) {
+	if m.addpriority != nil {
+		*m.addpriority += i
+	} else {
+		m.addpriority = &i
+	}
+}
+
+// AddedPriority returns the value that was added to the "priority" field in this mutation.
+func (m *SliderMutation) AddedPriority() (r int, exists bool) {
+	v := m.addpriority
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPriority resets all changes to the "priority" field.
+func (m *SliderMutation) ResetPriority() {
+	m.priority = nil
+	m.addpriority = nil
 }
 
 // Where appends a list predicates to the SliderMutation builder.
@@ -2030,15 +2199,27 @@ func (m *SliderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SliderMutation) Fields() []string {
-	fields := make([]string, 0, 3)
-	if m.createBy != nil {
-		fields = append(fields, slider.FieldCreateBy)
+	fields := make([]string, 0, 7)
+	if m.title != nil {
+		fields = append(fields, slider.FieldTitle)
 	}
-	if m.image_name != nil {
-		fields = append(fields, slider.FieldImageName)
+	if m.content != nil {
+		fields = append(fields, slider.FieldContent)
 	}
-	if m.image_url != nil {
-		fields = append(fields, slider.FieldImageURL)
+	if m.image_link != nil {
+		fields = append(fields, slider.FieldImageLink)
+	}
+	if m.create_at != nil {
+		fields = append(fields, slider.FieldCreateAt)
+	}
+	if m.update_at != nil {
+		fields = append(fields, slider.FieldUpdateAt)
+	}
+	if m.is_valid != nil {
+		fields = append(fields, slider.FieldIsValid)
+	}
+	if m.priority != nil {
+		fields = append(fields, slider.FieldPriority)
 	}
 	return fields
 }
@@ -2048,12 +2229,20 @@ func (m *SliderMutation) Fields() []string {
 // schema.
 func (m *SliderMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case slider.FieldCreateBy:
-		return m.CreateBy()
-	case slider.FieldImageName:
-		return m.ImageName()
-	case slider.FieldImageURL:
-		return m.ImageURL()
+	case slider.FieldTitle:
+		return m.Title()
+	case slider.FieldContent:
+		return m.Content()
+	case slider.FieldImageLink:
+		return m.ImageLink()
+	case slider.FieldCreateAt:
+		return m.CreateAt()
+	case slider.FieldUpdateAt:
+		return m.UpdateAt()
+	case slider.FieldIsValid:
+		return m.IsValid()
+	case slider.FieldPriority:
+		return m.Priority()
 	}
 	return nil, false
 }
@@ -2063,12 +2252,20 @@ func (m *SliderMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SliderMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case slider.FieldCreateBy:
-		return m.OldCreateBy(ctx)
-	case slider.FieldImageName:
-		return m.OldImageName(ctx)
-	case slider.FieldImageURL:
-		return m.OldImageURL(ctx)
+	case slider.FieldTitle:
+		return m.OldTitle(ctx)
+	case slider.FieldContent:
+		return m.OldContent(ctx)
+	case slider.FieldImageLink:
+		return m.OldImageLink(ctx)
+	case slider.FieldCreateAt:
+		return m.OldCreateAt(ctx)
+	case slider.FieldUpdateAt:
+		return m.OldUpdateAt(ctx)
+	case slider.FieldIsValid:
+		return m.OldIsValid(ctx)
+	case slider.FieldPriority:
+		return m.OldPriority(ctx)
 	}
 	return nil, fmt.Errorf("unknown Slider field %s", name)
 }
@@ -2078,26 +2275,54 @@ func (m *SliderMutation) OldField(ctx context.Context, name string) (ent.Value, 
 // type.
 func (m *SliderMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case slider.FieldCreateBy:
+	case slider.FieldTitle:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateBy(v)
+		m.SetTitle(v)
 		return nil
-	case slider.FieldImageName:
+	case slider.FieldContent:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetImageName(v)
+		m.SetContent(v)
 		return nil
-	case slider.FieldImageURL:
+	case slider.FieldImageLink:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetImageURL(v)
+		m.SetImageLink(v)
+		return nil
+	case slider.FieldCreateAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateAt(v)
+		return nil
+	case slider.FieldUpdateAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateAt(v)
+		return nil
+	case slider.FieldIsValid:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsValid(v)
+		return nil
+	case slider.FieldPriority:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPriority(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Slider field %s", name)
@@ -2106,13 +2331,21 @@ func (m *SliderMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *SliderMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addpriority != nil {
+		fields = append(fields, slider.FieldPriority)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *SliderMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case slider.FieldPriority:
+		return m.AddedPriority()
+	}
 	return nil, false
 }
 
@@ -2121,6 +2354,13 @@ func (m *SliderMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *SliderMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case slider.FieldPriority:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPriority(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Slider numeric field %s", name)
 }
@@ -2148,14 +2388,26 @@ func (m *SliderMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SliderMutation) ResetField(name string) error {
 	switch name {
-	case slider.FieldCreateBy:
-		m.ResetCreateBy()
+	case slider.FieldTitle:
+		m.ResetTitle()
 		return nil
-	case slider.FieldImageName:
-		m.ResetImageName()
+	case slider.FieldContent:
+		m.ResetContent()
 		return nil
-	case slider.FieldImageURL:
-		m.ResetImageURL()
+	case slider.FieldImageLink:
+		m.ResetImageLink()
+		return nil
+	case slider.FieldCreateAt:
+		m.ResetCreateAt()
+		return nil
+	case slider.FieldUpdateAt:
+		m.ResetUpdateAt()
+		return nil
+	case slider.FieldIsValid:
+		m.ResetIsValid()
+		return nil
+	case slider.FieldPriority:
+		m.ResetPriority()
 		return nil
 	}
 	return fmt.Errorf("unknown Slider field %s", name)

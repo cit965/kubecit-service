@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/slider"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -27,21 +28,68 @@ func (su *SliderUpdate) Where(ps ...predicate.Slider) *SliderUpdate {
 	return su
 }
 
-// SetCreateBy sets the "createBy" field.
-func (su *SliderUpdate) SetCreateBy(s string) *SliderUpdate {
-	su.mutation.SetCreateBy(s)
+// SetTitle sets the "title" field.
+func (su *SliderUpdate) SetTitle(s string) *SliderUpdate {
+	su.mutation.SetTitle(s)
 	return su
 }
 
-// SetImageName sets the "image_name" field.
-func (su *SliderUpdate) SetImageName(s string) *SliderUpdate {
-	su.mutation.SetImageName(s)
+// SetContent sets the "content" field.
+func (su *SliderUpdate) SetContent(s string) *SliderUpdate {
+	su.mutation.SetContent(s)
 	return su
 }
 
-// SetImageURL sets the "image_url" field.
-func (su *SliderUpdate) SetImageURL(s string) *SliderUpdate {
-	su.mutation.SetImageURL(s)
+// SetImageLink sets the "image_link" field.
+func (su *SliderUpdate) SetImageLink(s string) *SliderUpdate {
+	su.mutation.SetImageLink(s)
+	return su
+}
+
+// SetCreateAt sets the "create_at" field.
+func (su *SliderUpdate) SetCreateAt(t time.Time) *SliderUpdate {
+	su.mutation.SetCreateAt(t)
+	return su
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (su *SliderUpdate) SetNillableCreateAt(t *time.Time) *SliderUpdate {
+	if t != nil {
+		su.SetCreateAt(*t)
+	}
+	return su
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (su *SliderUpdate) SetUpdateAt(t time.Time) *SliderUpdate {
+	su.mutation.SetUpdateAt(t)
+	return su
+}
+
+// SetIsValid sets the "is_valid" field.
+func (su *SliderUpdate) SetIsValid(b bool) *SliderUpdate {
+	su.mutation.SetIsValid(b)
+	return su
+}
+
+// SetNillableIsValid sets the "is_valid" field if the given value is not nil.
+func (su *SliderUpdate) SetNillableIsValid(b *bool) *SliderUpdate {
+	if b != nil {
+		su.SetIsValid(*b)
+	}
+	return su
+}
+
+// SetPriority sets the "priority" field.
+func (su *SliderUpdate) SetPriority(i int) *SliderUpdate {
+	su.mutation.ResetPriority()
+	su.mutation.SetPriority(i)
+	return su
+}
+
+// AddPriority adds i to the "priority" field.
+func (su *SliderUpdate) AddPriority(i int) *SliderUpdate {
+	su.mutation.AddPriority(i)
 	return su
 }
 
@@ -52,6 +100,7 @@ func (su *SliderUpdate) Mutation() *SliderMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (su *SliderUpdate) Save(ctx context.Context) (int, error) {
+	su.defaults()
 	return withHooks(ctx, su.sqlSave, su.mutation, su.hooks)
 }
 
@@ -77,7 +126,38 @@ func (su *SliderUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (su *SliderUpdate) defaults() {
+	if _, ok := su.mutation.UpdateAt(); !ok {
+		v := slider.UpdateDefaultUpdateAt()
+		su.mutation.SetUpdateAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (su *SliderUpdate) check() error {
+	if v, ok := su.mutation.Title(); ok {
+		if err := slider.TitleValidator(v); err != nil {
+			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Slider.title": %w`, err)}
+		}
+	}
+	if v, ok := su.mutation.Content(); ok {
+		if err := slider.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "Slider.content": %w`, err)}
+		}
+	}
+	if v, ok := su.mutation.ImageLink(); ok {
+		if err := slider.ImageLinkValidator(v); err != nil {
+			return &ValidationError{Name: "image_link", err: fmt.Errorf(`ent: validator failed for field "Slider.image_link": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (su *SliderUpdate) sqlSave(ctx context.Context) (n int, err error) {
+	if err := su.check(); err != nil {
+		return n, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(slider.Table, slider.Columns, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeInt))
 	if ps := su.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -86,14 +166,29 @@ func (su *SliderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := su.mutation.CreateBy(); ok {
-		_spec.SetField(slider.FieldCreateBy, field.TypeString, value)
+	if value, ok := su.mutation.Title(); ok {
+		_spec.SetField(slider.FieldTitle, field.TypeString, value)
 	}
-	if value, ok := su.mutation.ImageName(); ok {
-		_spec.SetField(slider.FieldImageName, field.TypeString, value)
+	if value, ok := su.mutation.Content(); ok {
+		_spec.SetField(slider.FieldContent, field.TypeString, value)
 	}
-	if value, ok := su.mutation.ImageURL(); ok {
-		_spec.SetField(slider.FieldImageURL, field.TypeString, value)
+	if value, ok := su.mutation.ImageLink(); ok {
+		_spec.SetField(slider.FieldImageLink, field.TypeString, value)
+	}
+	if value, ok := su.mutation.CreateAt(); ok {
+		_spec.SetField(slider.FieldCreateAt, field.TypeTime, value)
+	}
+	if value, ok := su.mutation.UpdateAt(); ok {
+		_spec.SetField(slider.FieldUpdateAt, field.TypeTime, value)
+	}
+	if value, ok := su.mutation.IsValid(); ok {
+		_spec.SetField(slider.FieldIsValid, field.TypeBool, value)
+	}
+	if value, ok := su.mutation.Priority(); ok {
+		_spec.SetField(slider.FieldPriority, field.TypeInt, value)
+	}
+	if value, ok := su.mutation.AddedPriority(); ok {
+		_spec.AddField(slider.FieldPriority, field.TypeInt, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -115,21 +210,68 @@ type SliderUpdateOne struct {
 	mutation *SliderMutation
 }
 
-// SetCreateBy sets the "createBy" field.
-func (suo *SliderUpdateOne) SetCreateBy(s string) *SliderUpdateOne {
-	suo.mutation.SetCreateBy(s)
+// SetTitle sets the "title" field.
+func (suo *SliderUpdateOne) SetTitle(s string) *SliderUpdateOne {
+	suo.mutation.SetTitle(s)
 	return suo
 }
 
-// SetImageName sets the "image_name" field.
-func (suo *SliderUpdateOne) SetImageName(s string) *SliderUpdateOne {
-	suo.mutation.SetImageName(s)
+// SetContent sets the "content" field.
+func (suo *SliderUpdateOne) SetContent(s string) *SliderUpdateOne {
+	suo.mutation.SetContent(s)
 	return suo
 }
 
-// SetImageURL sets the "image_url" field.
-func (suo *SliderUpdateOne) SetImageURL(s string) *SliderUpdateOne {
-	suo.mutation.SetImageURL(s)
+// SetImageLink sets the "image_link" field.
+func (suo *SliderUpdateOne) SetImageLink(s string) *SliderUpdateOne {
+	suo.mutation.SetImageLink(s)
+	return suo
+}
+
+// SetCreateAt sets the "create_at" field.
+func (suo *SliderUpdateOne) SetCreateAt(t time.Time) *SliderUpdateOne {
+	suo.mutation.SetCreateAt(t)
+	return suo
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (suo *SliderUpdateOne) SetNillableCreateAt(t *time.Time) *SliderUpdateOne {
+	if t != nil {
+		suo.SetCreateAt(*t)
+	}
+	return suo
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (suo *SliderUpdateOne) SetUpdateAt(t time.Time) *SliderUpdateOne {
+	suo.mutation.SetUpdateAt(t)
+	return suo
+}
+
+// SetIsValid sets the "is_valid" field.
+func (suo *SliderUpdateOne) SetIsValid(b bool) *SliderUpdateOne {
+	suo.mutation.SetIsValid(b)
+	return suo
+}
+
+// SetNillableIsValid sets the "is_valid" field if the given value is not nil.
+func (suo *SliderUpdateOne) SetNillableIsValid(b *bool) *SliderUpdateOne {
+	if b != nil {
+		suo.SetIsValid(*b)
+	}
+	return suo
+}
+
+// SetPriority sets the "priority" field.
+func (suo *SliderUpdateOne) SetPriority(i int) *SliderUpdateOne {
+	suo.mutation.ResetPriority()
+	suo.mutation.SetPriority(i)
+	return suo
+}
+
+// AddPriority adds i to the "priority" field.
+func (suo *SliderUpdateOne) AddPriority(i int) *SliderUpdateOne {
+	suo.mutation.AddPriority(i)
 	return suo
 }
 
@@ -153,6 +295,7 @@ func (suo *SliderUpdateOne) Select(field string, fields ...string) *SliderUpdate
 
 // Save executes the query and returns the updated Slider entity.
 func (suo *SliderUpdateOne) Save(ctx context.Context) (*Slider, error) {
+	suo.defaults()
 	return withHooks(ctx, suo.sqlSave, suo.mutation, suo.hooks)
 }
 
@@ -178,7 +321,38 @@ func (suo *SliderUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (suo *SliderUpdateOne) defaults() {
+	if _, ok := suo.mutation.UpdateAt(); !ok {
+		v := slider.UpdateDefaultUpdateAt()
+		suo.mutation.SetUpdateAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (suo *SliderUpdateOne) check() error {
+	if v, ok := suo.mutation.Title(); ok {
+		if err := slider.TitleValidator(v); err != nil {
+			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Slider.title": %w`, err)}
+		}
+	}
+	if v, ok := suo.mutation.Content(); ok {
+		if err := slider.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "Slider.content": %w`, err)}
+		}
+	}
+	if v, ok := suo.mutation.ImageLink(); ok {
+		if err := slider.ImageLinkValidator(v); err != nil {
+			return &ValidationError{Name: "image_link", err: fmt.Errorf(`ent: validator failed for field "Slider.image_link": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (suo *SliderUpdateOne) sqlSave(ctx context.Context) (_node *Slider, err error) {
+	if err := suo.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(slider.Table, slider.Columns, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeInt))
 	id, ok := suo.mutation.ID()
 	if !ok {
@@ -204,14 +378,29 @@ func (suo *SliderUpdateOne) sqlSave(ctx context.Context) (_node *Slider, err err
 			}
 		}
 	}
-	if value, ok := suo.mutation.CreateBy(); ok {
-		_spec.SetField(slider.FieldCreateBy, field.TypeString, value)
+	if value, ok := suo.mutation.Title(); ok {
+		_spec.SetField(slider.FieldTitle, field.TypeString, value)
 	}
-	if value, ok := suo.mutation.ImageName(); ok {
-		_spec.SetField(slider.FieldImageName, field.TypeString, value)
+	if value, ok := suo.mutation.Content(); ok {
+		_spec.SetField(slider.FieldContent, field.TypeString, value)
 	}
-	if value, ok := suo.mutation.ImageURL(); ok {
-		_spec.SetField(slider.FieldImageURL, field.TypeString, value)
+	if value, ok := suo.mutation.ImageLink(); ok {
+		_spec.SetField(slider.FieldImageLink, field.TypeString, value)
+	}
+	if value, ok := suo.mutation.CreateAt(); ok {
+		_spec.SetField(slider.FieldCreateAt, field.TypeTime, value)
+	}
+	if value, ok := suo.mutation.UpdateAt(); ok {
+		_spec.SetField(slider.FieldUpdateAt, field.TypeTime, value)
+	}
+	if value, ok := suo.mutation.IsValid(); ok {
+		_spec.SetField(slider.FieldIsValid, field.TypeBool, value)
+	}
+	if value, ok := suo.mutation.Priority(); ok {
+		_spec.SetField(slider.FieldPriority, field.TypeInt, value)
+	}
+	if value, ok := suo.mutation.AddedPriority(); ok {
+		_spec.AddField(slider.FieldPriority, field.TypeInt, value)
 	}
 	_node = &Slider{config: suo.config}
 	_spec.Assign = _node.assignValues

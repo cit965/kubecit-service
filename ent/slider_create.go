@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/slider"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -19,21 +20,69 @@ type SliderCreate struct {
 	hooks    []Hook
 }
 
-// SetCreateBy sets the "createBy" field.
-func (sc *SliderCreate) SetCreateBy(s string) *SliderCreate {
-	sc.mutation.SetCreateBy(s)
+// SetTitle sets the "title" field.
+func (sc *SliderCreate) SetTitle(s string) *SliderCreate {
+	sc.mutation.SetTitle(s)
 	return sc
 }
 
-// SetImageName sets the "image_name" field.
-func (sc *SliderCreate) SetImageName(s string) *SliderCreate {
-	sc.mutation.SetImageName(s)
+// SetContent sets the "content" field.
+func (sc *SliderCreate) SetContent(s string) *SliderCreate {
+	sc.mutation.SetContent(s)
 	return sc
 }
 
-// SetImageURL sets the "image_url" field.
-func (sc *SliderCreate) SetImageURL(s string) *SliderCreate {
-	sc.mutation.SetImageURL(s)
+// SetImageLink sets the "image_link" field.
+func (sc *SliderCreate) SetImageLink(s string) *SliderCreate {
+	sc.mutation.SetImageLink(s)
+	return sc
+}
+
+// SetCreateAt sets the "create_at" field.
+func (sc *SliderCreate) SetCreateAt(t time.Time) *SliderCreate {
+	sc.mutation.SetCreateAt(t)
+	return sc
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (sc *SliderCreate) SetNillableCreateAt(t *time.Time) *SliderCreate {
+	if t != nil {
+		sc.SetCreateAt(*t)
+	}
+	return sc
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (sc *SliderCreate) SetUpdateAt(t time.Time) *SliderCreate {
+	sc.mutation.SetUpdateAt(t)
+	return sc
+}
+
+// SetNillableUpdateAt sets the "update_at" field if the given value is not nil.
+func (sc *SliderCreate) SetNillableUpdateAt(t *time.Time) *SliderCreate {
+	if t != nil {
+		sc.SetUpdateAt(*t)
+	}
+	return sc
+}
+
+// SetIsValid sets the "is_valid" field.
+func (sc *SliderCreate) SetIsValid(b bool) *SliderCreate {
+	sc.mutation.SetIsValid(b)
+	return sc
+}
+
+// SetNillableIsValid sets the "is_valid" field if the given value is not nil.
+func (sc *SliderCreate) SetNillableIsValid(b *bool) *SliderCreate {
+	if b != nil {
+		sc.SetIsValid(*b)
+	}
+	return sc
+}
+
+// SetPriority sets the "priority" field.
+func (sc *SliderCreate) SetPriority(i int) *SliderCreate {
+	sc.mutation.SetPriority(i)
 	return sc
 }
 
@@ -44,6 +93,7 @@ func (sc *SliderCreate) Mutation() *SliderMutation {
 
 // Save creates the Slider in the database.
 func (sc *SliderCreate) Save(ctx context.Context) (*Slider, error) {
+	sc.defaults()
 	return withHooks(ctx, sc.sqlSave, sc.mutation, sc.hooks)
 }
 
@@ -69,16 +119,59 @@ func (sc *SliderCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (sc *SliderCreate) defaults() {
+	if _, ok := sc.mutation.CreateAt(); !ok {
+		v := slider.DefaultCreateAt
+		sc.mutation.SetCreateAt(v)
+	}
+	if _, ok := sc.mutation.UpdateAt(); !ok {
+		v := slider.DefaultUpdateAt
+		sc.mutation.SetUpdateAt(v)
+	}
+	if _, ok := sc.mutation.IsValid(); !ok {
+		v := slider.DefaultIsValid
+		sc.mutation.SetIsValid(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (sc *SliderCreate) check() error {
-	if _, ok := sc.mutation.CreateBy(); !ok {
-		return &ValidationError{Name: "createBy", err: errors.New(`ent: missing required field "Slider.createBy"`)}
+	if _, ok := sc.mutation.Title(); !ok {
+		return &ValidationError{Name: "title", err: errors.New(`ent: missing required field "Slider.title"`)}
 	}
-	if _, ok := sc.mutation.ImageName(); !ok {
-		return &ValidationError{Name: "image_name", err: errors.New(`ent: missing required field "Slider.image_name"`)}
+	if v, ok := sc.mutation.Title(); ok {
+		if err := slider.TitleValidator(v); err != nil {
+			return &ValidationError{Name: "title", err: fmt.Errorf(`ent: validator failed for field "Slider.title": %w`, err)}
+		}
 	}
-	if _, ok := sc.mutation.ImageURL(); !ok {
-		return &ValidationError{Name: "image_url", err: errors.New(`ent: missing required field "Slider.image_url"`)}
+	if _, ok := sc.mutation.Content(); !ok {
+		return &ValidationError{Name: "content", err: errors.New(`ent: missing required field "Slider.content"`)}
+	}
+	if v, ok := sc.mutation.Content(); ok {
+		if err := slider.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "Slider.content": %w`, err)}
+		}
+	}
+	if _, ok := sc.mutation.ImageLink(); !ok {
+		return &ValidationError{Name: "image_link", err: errors.New(`ent: missing required field "Slider.image_link"`)}
+	}
+	if v, ok := sc.mutation.ImageLink(); ok {
+		if err := slider.ImageLinkValidator(v); err != nil {
+			return &ValidationError{Name: "image_link", err: fmt.Errorf(`ent: validator failed for field "Slider.image_link": %w`, err)}
+		}
+	}
+	if _, ok := sc.mutation.CreateAt(); !ok {
+		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "Slider.create_at"`)}
+	}
+	if _, ok := sc.mutation.UpdateAt(); !ok {
+		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "Slider.update_at"`)}
+	}
+	if _, ok := sc.mutation.IsValid(); !ok {
+		return &ValidationError{Name: "is_valid", err: errors.New(`ent: missing required field "Slider.is_valid"`)}
+	}
+	if _, ok := sc.mutation.Priority(); !ok {
+		return &ValidationError{Name: "priority", err: errors.New(`ent: missing required field "Slider.priority"`)}
 	}
 	return nil
 }
@@ -106,17 +199,33 @@ func (sc *SliderCreate) createSpec() (*Slider, *sqlgraph.CreateSpec) {
 		_node = &Slider{config: sc.config}
 		_spec = sqlgraph.NewCreateSpec(slider.Table, sqlgraph.NewFieldSpec(slider.FieldID, field.TypeInt))
 	)
-	if value, ok := sc.mutation.CreateBy(); ok {
-		_spec.SetField(slider.FieldCreateBy, field.TypeString, value)
-		_node.CreateBy = value
+	if value, ok := sc.mutation.Title(); ok {
+		_spec.SetField(slider.FieldTitle, field.TypeString, value)
+		_node.Title = value
 	}
-	if value, ok := sc.mutation.ImageName(); ok {
-		_spec.SetField(slider.FieldImageName, field.TypeString, value)
-		_node.ImageName = value
+	if value, ok := sc.mutation.Content(); ok {
+		_spec.SetField(slider.FieldContent, field.TypeString, value)
+		_node.Content = value
 	}
-	if value, ok := sc.mutation.ImageURL(); ok {
-		_spec.SetField(slider.FieldImageURL, field.TypeString, value)
-		_node.ImageURL = value
+	if value, ok := sc.mutation.ImageLink(); ok {
+		_spec.SetField(slider.FieldImageLink, field.TypeString, value)
+		_node.ImageLink = value
+	}
+	if value, ok := sc.mutation.CreateAt(); ok {
+		_spec.SetField(slider.FieldCreateAt, field.TypeTime, value)
+		_node.CreateAt = value
+	}
+	if value, ok := sc.mutation.UpdateAt(); ok {
+		_spec.SetField(slider.FieldUpdateAt, field.TypeTime, value)
+		_node.UpdateAt = value
+	}
+	if value, ok := sc.mutation.IsValid(); ok {
+		_spec.SetField(slider.FieldIsValid, field.TypeBool, value)
+		_node.IsValid = value
+	}
+	if value, ok := sc.mutation.Priority(); ok {
+		_spec.SetField(slider.FieldPriority, field.TypeInt, value)
+		_node.Priority = value
 	}
 	return _node, _spec
 }
@@ -135,6 +244,7 @@ func (scb *SliderCreateBulk) Save(ctx context.Context) ([]*Slider, error) {
 	for i := range scb.builders {
 		func(i int, root context.Context) {
 			builder := scb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*SliderMutation)
 				if !ok {

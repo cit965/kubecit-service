@@ -6,10 +6,6 @@ import (
 	pb "kubecit-service/api/helloworld/v1"
 )
 
-func (s *KubecitService) GetSliders(ctx context.Context, req *pb.GetSlidersRequest) (*pb.GetSlidersReply, error) {
-	return &pb.GetSlidersReply{}, nil
-}
-
 func (s *KubecitService) Category(ctx context.Context, req *pb.Empty) (*pb.CategoryResp, error) {
 	categories, err := s.cc.ListCategory(ctx)
 	if err != nil {

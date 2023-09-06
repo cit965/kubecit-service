@@ -97,18 +97,103 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.GetInfoReply'
-    /api/slider/getSliders:
-        get:
+    /api/slider:
+        post:
             tags:
                 - Greeter
-            operationId: Greeter_GetSliders
+            operationId: Greeter_CreateSlider
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.CreateSliderRequest'
+                required: true
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/helloworld.v1.GetSlidersReply'
+                                $ref: '#/components/schemas/helloworld.v1.CreateSliderReply'
+    /api/slider/{id}:
+        get:
+            tags:
+                - Greeter
+            operationId: Greeter_GetSlider
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.GetSliderReply'
+        put:
+            tags:
+                - Greeter
+            operationId: Greeter_UpdateSlider
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.UpdateSliderRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.UpdateSliderReply'
+        delete:
+            tags:
+                - Greeter
+            operationId: Greeter_DeleteSlider
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.DeleteSliderReply'
+    /api/sliders:
+        post:
+            tags:
+                - Greeter
+            operationId: Greeter_ListSlidersByPriority
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.ListSlidersByPriorityRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.ListSlidersByPriorityReply'
     /api/token/createToken:
         get:
             tags:
@@ -251,6 +336,25 @@ components:
                 status:
                     type: integer
                     format: int32
+        helloworld.v1.CreateSliderReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.SliderInfo'
+        helloworld.v1.CreateSliderRequest:
+            type: object
+            properties:
+                title:
+                    type: string
+                content:
+                    type: string
+                imageLink:
+                    type: string
+                isValid:
+                    type: boolean
+                priority:
+                    type: integer
+                    format: int32
         helloworld.v1.CreateTokenReply:
             type: object
             properties:
@@ -260,6 +364,12 @@ components:
                     type: object
                     additionalProperties:
                         type: string
+        helloworld.v1.DeleteSliderReply:
+            type: object
+            properties:
+                count:
+                    type: integer
+                    format: int32
         helloworld.v1.GetFirstCategoriesReply:
             type: object
             properties:
@@ -359,20 +469,27 @@ components:
                     type: string
                 certificateType:
                     type: string
-        helloworld.v1.GetSlidersReply:
+        helloworld.v1.GetSliderReply:
             type: object
             properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
                 data:
-                    $ref: '#/components/schemas/helloworld.v1.GetSlidersReplyData'
-        helloworld.v1.GetSlidersReplyData:
+                    $ref: '#/components/schemas/helloworld.v1.SliderInfo'
+        helloworld.v1.ListSlidersByPriorityReply:
             type: object
             properties:
-                list:
+                data:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.SliderInfo'
+        helloworld.v1.ListSlidersByPriorityRequest:
+            type: object
+            properties:
+                priority:
+                    type: integer
+                    format: int32
+                count:
+                    type: integer
+                    format: int32
         helloworld.v1.LoginByJsonReply:
             type: object
             properties:
@@ -537,28 +654,26 @@ components:
         helloworld.v1.SliderInfo:
             type: object
             properties:
-                createBy:
-                    type: string
-                imageName:
-                    type: string
-                createTime:
-                    type: string
-                    format: date-time
-                updateBy:
-                    type: string
-                imageRemark:
-                    type: string
-                imageUrl:
-                    type: string
-                pcHref:
-                    type: string
-                updateTime:
-                    type: string
-                    format: date-time
                 id:
+                    type: integer
+                    format: int32
+                title:
                     type: string
-                appHref:
+                content:
                     type: string
+                imageLink:
+                    type: string
+                createAt:
+                    type: string
+                    format: date-time
+                updateAt:
+                    type: string
+                    format: date-time
+                isValid:
+                    type: boolean
+                priority:
+                    type: integer
+                    format: int32
         helloworld.v1.TagsListReply:
             type: object
             properties:
@@ -579,5 +694,27 @@ components:
                     type: object
                     additionalProperties:
                         type: string
+        helloworld.v1.UpdateSliderReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.SliderInfo'
+        helloworld.v1.UpdateSliderRequest:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                title:
+                    type: string
+                content:
+                    type: string
+                imageLink:
+                    type: string
+                isValid:
+                    type: boolean
+                priority:
+                    type: integer
+                    format: int32
 tags:
     - name: Greeter
