@@ -43,11 +43,6 @@ service Greeter {
     };
   }
 
-  rpc GetSliders (GetSlidersRequest) returns (GetSlidersReply) {
-    option (google.api.http) = {
-      get: "/api/slider/getSliders",
-    };
-  }
   rpc GetInfo (GetInfoRequest) returns (GetInfoReply) {
     option (google.api.http) = {
       get: "/api/member/getInfo",
@@ -66,6 +61,39 @@ service Greeter {
       get: "/api/token/createToken",
     };
   }
+
+  rpc CreateSlider (CreateSliderRequest) returns (CreateSliderReply) {
+    option (google.api.http) = {
+      post: "/api/slider",
+      body: "*"
+    };
+  }
+
+  rpc GetSlider (GetSliderRequest) returns (GetSliderReply) {
+    option (google.api.http) = {
+      get: "/api/slider/{id}",
+    };
+  }
+
+  rpc DeleteSlider (DeleteSliderRequest) returns (DeleteSliderReply) {
+    option (google.api.http) = {
+      delete: "/api/slider/{id}",
+    };
+  }
+
+  rpc UpdateSlider (UpdateSliderRequest) returns (UpdateSliderReply) {
+    option (google.api.http) = {
+      post: "/api/slider/{id}",
+      body: "*"
+    };
+  }
+
+  rpc GetSliders (GetSlidersRequest) returns (GetSlidersReply) {
+    option (google.api.http) = {
+      get: "/api/sliders",
+    };
+  }
+
 }
 
 // The request message containing the user's name.
@@ -237,16 +265,59 @@ message GetSlidersReplyData {
 }
 
 message SliderInfo {
-  string createBy = 1;
-  string imageName = 2;
-  google.protobuf.Timestamp createTime = 3;
-  string updateBy = 4;
-  string imageRemark = 5;
-  string imageUrl = 6;
-  string pcHref = 7;
-  google.protobuf.Timestamp updateTime = 8;
-  string id = 9;
-  string appHref = 10;
+  int32 id = 1;
+  string title = 2;
+  string content = 3;
+  string imageLink = 4;
+  google.protobuf.Timestamp createAt = 5;
+  google.protobuf.Timestamp updateAt = 6;
+  bool isValid = 7;
+  int32 priority = 8;
+}
+
+message CreateSliderRequest {
+  string title = 1;
+  string content = 2;
+  string imageLink = 3;
+  bool isValid = 4;
+  int32 priority = 5;
+}
+
+message CreateSliderReply {
+  Metadata meta = 1;
+  SliderInfo data = 2;
+}
+
+message GetSliderRequest {
+  int32 id = 1;
+}
+
+message GetSliderReply {
+  Metadata meta = 1;
+  SliderInfo data = 2;
+}
+
+message DeleteSliderRequest {
+  int32 id = 1;
+}
+
+message DeleteSliderReply {
+  Metadata meta = 1;
+  SliderInfo data = 2;
+}
+
+message UpdateSliderRequest {
+  int32 id = 1;
+  string title = 2;
+  string content = 3;
+  string imageLink = 4;
+  bool isValid = 5;
+  int32 priority = 6;
+}
+
+message UpdateSliderReply {
+  Metadata meta = 1;
+  SliderInfo data = 2;
 }
 
 message CreateTokenRequest {}
