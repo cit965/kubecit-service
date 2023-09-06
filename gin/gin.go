@@ -51,8 +51,9 @@ func Cors() gin.HandlerFunc {
 		}
 
 		defer func() {
+			var nil any
 			if err := recover(); err != nil {
-				fmt.Printf("Panic info is: %v", err)
+				fmt.Printf("Panic info is: %v\n", err)
 			}
 		}()
 
