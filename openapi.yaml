@@ -134,7 +134,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.GetSliderReply'
-        post:
+        put:
             tags:
                 - Greeter
             operationId: Greeter_UpdateSlider
@@ -177,17 +177,23 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.DeleteSliderReply'
     /api/sliders:
-        get:
+        post:
             tags:
                 - Greeter
-            operationId: Greeter_GetSliders
+            operationId: Greeter_ListSlidersByPriority
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.ListSlidersByPriorityRequest'
+                required: true
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/helloworld.v1.GetSlidersReply'
+                                $ref: '#/components/schemas/helloworld.v1.ListSlidersByPriorityReply'
     /api/token/createToken:
         get:
             tags:
@@ -333,8 +339,6 @@ components:
         helloworld.v1.CreateSliderReply:
             type: object
             properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
                 data:
                     $ref: '#/components/schemas/helloworld.v1.SliderInfo'
         helloworld.v1.CreateSliderRequest:
@@ -363,10 +367,9 @@ components:
         helloworld.v1.DeleteSliderReply:
             type: object
             properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
-                data:
-                    $ref: '#/components/schemas/helloworld.v1.SliderInfo'
+                count:
+                    type: integer
+                    format: int32
         helloworld.v1.GetFirstCategoriesReply:
             type: object
             properties:
@@ -469,24 +472,24 @@ components:
         helloworld.v1.GetSliderReply:
             type: object
             properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
                 data:
                     $ref: '#/components/schemas/helloworld.v1.SliderInfo'
-        helloworld.v1.GetSlidersReply:
+        helloworld.v1.ListSlidersByPriorityReply:
             type: object
             properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
                 data:
-                    $ref: '#/components/schemas/helloworld.v1.GetSlidersReplyData'
-        helloworld.v1.GetSlidersReplyData:
-            type: object
-            properties:
-                list:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.SliderInfo'
+        helloworld.v1.ListSlidersByPriorityRequest:
+            type: object
+            properties:
+                priority:
+                    type: integer
+                    format: int32
+                count:
+                    type: integer
+                    format: int32
         helloworld.v1.LoginByJsonReply:
             type: object
             properties:
@@ -694,8 +697,6 @@ components:
         helloworld.v1.UpdateSliderReply:
             type: object
             properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
                 data:
                     $ref: '#/components/schemas/helloworld.v1.SliderInfo'
         helloworld.v1.UpdateSliderRequest:

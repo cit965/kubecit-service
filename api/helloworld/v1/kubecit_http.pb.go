@@ -26,7 +26,7 @@ const OperationGreeterDeleteSlider = "/helloworld.v1.Greeter/DeleteSlider"
 const OperationGreeterGetFirstCategories = "/helloworld.v1.Greeter/GetFirstCategories"
 const OperationGreeterGetInfo = "/helloworld.v1.Greeter/GetInfo"
 const OperationGreeterGetSlider = "/helloworld.v1.Greeter/GetSlider"
-const OperationGreeterGetSliders = "/helloworld.v1.Greeter/GetSliders"
+const OperationGreeterListSlidersByPriority = "/helloworld.v1.Greeter/ListSlidersByPriority"
 const OperationGreeterLoginByJson = "/helloworld.v1.Greeter/LoginByJson"
 const OperationGreeterMostNew = "/helloworld.v1.Greeter/MostNew"
 const OperationGreeterSearchCourse = "/helloworld.v1.Greeter/SearchCourse"
@@ -41,7 +41,7 @@ type GreeterHTTPServer interface {
 	GetFirstCategories(context.Context, *GetFirstCategoriesRequest) (*GetFirstCategoriesReply, error)
 	GetInfo(context.Context, *GetInfoRequest) (*GetInfoReply, error)
 	GetSlider(context.Context, *GetSliderRequest) (*GetSliderReply, error)
-	GetSliders(context.Context, *GetSlidersRequest) (*GetSlidersReply, error)
+	ListSlidersByPriority(context.Context, *ListSlidersByPriorityRequest) (*ListSlidersByPriorityReply, error)
 	LoginByJson(context.Context, *LoginByJsonRequest) (*LoginByJsonReply, error)
 	MostNew(context.Context, *PageRequest) (*MostNewReply, error)
 	SearchCourse(context.Context, *SearchCourseRequest) (*SearchCourseReply, error)
@@ -62,8 +62,8 @@ func RegisterGreeterHTTPServer(s *http.Server, srv GreeterHTTPServer) {
 	r.POST("/api/slider", _Greeter_CreateSlider0_HTTP_Handler(srv))
 	r.GET("/api/slider/{id}", _Greeter_GetSlider0_HTTP_Handler(srv))
 	r.DELETE("/api/slider/{id}", _Greeter_DeleteSlider0_HTTP_Handler(srv))
-	r.POST("/api/slider/{id}", _Greeter_UpdateSlider0_HTTP_Handler(srv))
-	r.GET("/api/sliders", _Greeter_GetSliders0_HTTP_Handler(srv))
+	r.PUT("/api/slider/{id}", _Greeter_UpdateSlider0_HTTP_Handler(srv))
+	r.POST("/api/sliders", _Greeter_ListSlidersByPriority0_HTTP_Handler(srv))
 }
 
 func _Greeter_MostNew0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Context) error {
@@ -321,21 +321,24 @@ func _Greeter_UpdateSlider0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Co
 	}
 }
 
-func _Greeter_GetSliders0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Context) error {
+func _Greeter_ListSlidersByPriority0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in GetSlidersRequest
+		var in ListSlidersByPriorityRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationGreeterGetSliders)
+		http.SetOperation(ctx, OperationGreeterListSlidersByPriority)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetSliders(ctx, req.(*GetSlidersRequest))
+			return srv.ListSlidersByPriority(ctx, req.(*ListSlidersByPriorityRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetSlidersReply)
+		reply := out.(*ListSlidersByPriorityReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -348,7 +351,7 @@ type GreeterHTTPClient interface {
 	GetFirstCategories(ctx context.Context, req *GetFirstCategoriesRequest, opts ...http.CallOption) (rsp *GetFirstCategoriesReply, err error)
 	GetInfo(ctx context.Context, req *GetInfoRequest, opts ...http.CallOption) (rsp *GetInfoReply, err error)
 	GetSlider(ctx context.Context, req *GetSliderRequest, opts ...http.CallOption) (rsp *GetSliderReply, err error)
-	GetSliders(ctx context.Context, req *GetSlidersRequest, opts ...http.CallOption) (rsp *GetSlidersReply, err error)
+	ListSlidersByPriority(ctx context.Context, req *ListSlidersByPriorityRequest, opts ...http.CallOption) (rsp *ListSlidersByPriorityReply, err error)
 	LoginByJson(ctx context.Context, req *LoginByJsonRequest, opts ...http.CallOption) (rsp *LoginByJsonReply, err error)
 	MostNew(ctx context.Context, req *PageRequest, opts ...http.CallOption) (rsp *MostNewReply, err error)
 	SearchCourse(ctx context.Context, req *SearchCourseRequest, opts ...http.CallOption) (rsp *SearchCourseReply, err error)
@@ -455,13 +458,13 @@ func (c *GreeterHTTPClientImpl) GetSlider(ctx context.Context, in *GetSliderRequ
 	return &out, err
 }
 
-func (c *GreeterHTTPClientImpl) GetSliders(ctx context.Context, in *GetSlidersRequest, opts ...http.CallOption) (*GetSlidersReply, error) {
-	var out GetSlidersReply
+func (c *GreeterHTTPClientImpl) ListSlidersByPriority(ctx context.Context, in *ListSlidersByPriorityRequest, opts ...http.CallOption) (*ListSlidersByPriorityReply, error) {
+	var out ListSlidersByPriorityReply
 	pattern := "/api/sliders"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationGreeterGetSliders))
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationGreeterListSlidersByPriority))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -526,7 +529,7 @@ func (c *GreeterHTTPClientImpl) UpdateSlider(ctx context.Context, in *UpdateSlid
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationGreeterUpdateSlider))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

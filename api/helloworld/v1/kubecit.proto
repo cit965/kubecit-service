@@ -83,14 +83,15 @@ service Greeter {
 
   rpc UpdateSlider (UpdateSliderRequest) returns (UpdateSliderReply) {
     option (google.api.http) = {
-      post: "/api/slider/{id}",
+      put: "/api/slider/{id}",
       body: "*"
     };
   }
 
-  rpc GetSliders (GetSlidersRequest) returns (GetSlidersReply) {
+  rpc ListSlidersByPriority (ListSlidersByPriorityRequest) returns (ListSlidersByPriorityReply) {
     option (google.api.http) = {
-      get: "/api/sliders",
+      post: "/api/sliders",
+      body: "*"
     };
   }
 
@@ -254,16 +255,6 @@ message SearchCourseReply {
   PageInfo data = 2;
 }
 
-message GetSlidersRequest {}
-message GetSlidersReply {
-  Metadata meta = 1;
-  GetSlidersReplyData data = 2;
-}
-
-message GetSlidersReplyData {
-  repeated SliderInfo list = 1;
-}
-
 message SliderInfo {
   int32 id = 1;
   string title = 2;
@@ -284,7 +275,6 @@ message CreateSliderRequest {
 }
 
 message CreateSliderReply {
-  Metadata meta = 1;
   SliderInfo data = 2;
 }
 
@@ -293,7 +283,6 @@ message GetSliderRequest {
 }
 
 message GetSliderReply {
-  Metadata meta = 1;
   SliderInfo data = 2;
 }
 
@@ -302,8 +291,7 @@ message DeleteSliderRequest {
 }
 
 message DeleteSliderReply {
-  Metadata meta = 1;
-  SliderInfo data = 2;
+  int32 count = 2;
 }
 
 message UpdateSliderRequest {
@@ -316,8 +304,16 @@ message UpdateSliderRequest {
 }
 
 message UpdateSliderReply {
-  Metadata meta = 1;
   SliderInfo data = 2;
+}
+
+message ListSlidersByPriorityRequest {
+  int32 priority = 1;
+  int32 count = 2;
+}
+
+message ListSlidersByPriorityReply {
+  repeated SliderInfo data = 1;
 }
 
 message CreateTokenRequest {}

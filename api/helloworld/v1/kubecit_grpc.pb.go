@@ -19,19 +19,19 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Greeter_MostNew_FullMethodName            = "/helloworld.v1.Greeter/MostNew"
-	Greeter_GetFirstCategories_FullMethodName = "/helloworld.v1.Greeter/GetFirstCategories"
-	Greeter_TagsList_FullMethodName           = "/helloworld.v1.Greeter/TagsList"
-	Greeter_SearchCourse_FullMethodName       = "/helloworld.v1.Greeter/SearchCourse"
-	Greeter_Category_FullMethodName           = "/helloworld.v1.Greeter/Category"
-	Greeter_GetInfo_FullMethodName            = "/helloworld.v1.Greeter/GetInfo"
-	Greeter_LoginByJson_FullMethodName        = "/helloworld.v1.Greeter/LoginByJson"
-	Greeter_CreateToken_FullMethodName        = "/helloworld.v1.Greeter/CreateToken"
-	Greeter_CreateSlider_FullMethodName       = "/helloworld.v1.Greeter/CreateSlider"
-	Greeter_GetSlider_FullMethodName          = "/helloworld.v1.Greeter/GetSlider"
-	Greeter_DeleteSlider_FullMethodName       = "/helloworld.v1.Greeter/DeleteSlider"
-	Greeter_UpdateSlider_FullMethodName       = "/helloworld.v1.Greeter/UpdateSlider"
-	Greeter_GetSliders_FullMethodName         = "/helloworld.v1.Greeter/GetSliders"
+	Greeter_MostNew_FullMethodName               = "/helloworld.v1.Greeter/MostNew"
+	Greeter_GetFirstCategories_FullMethodName    = "/helloworld.v1.Greeter/GetFirstCategories"
+	Greeter_TagsList_FullMethodName              = "/helloworld.v1.Greeter/TagsList"
+	Greeter_SearchCourse_FullMethodName          = "/helloworld.v1.Greeter/SearchCourse"
+	Greeter_Category_FullMethodName              = "/helloworld.v1.Greeter/Category"
+	Greeter_GetInfo_FullMethodName               = "/helloworld.v1.Greeter/GetInfo"
+	Greeter_LoginByJson_FullMethodName           = "/helloworld.v1.Greeter/LoginByJson"
+	Greeter_CreateToken_FullMethodName           = "/helloworld.v1.Greeter/CreateToken"
+	Greeter_CreateSlider_FullMethodName          = "/helloworld.v1.Greeter/CreateSlider"
+	Greeter_GetSlider_FullMethodName             = "/helloworld.v1.Greeter/GetSlider"
+	Greeter_DeleteSlider_FullMethodName          = "/helloworld.v1.Greeter/DeleteSlider"
+	Greeter_UpdateSlider_FullMethodName          = "/helloworld.v1.Greeter/UpdateSlider"
+	Greeter_ListSlidersByPriority_FullMethodName = "/helloworld.v1.Greeter/ListSlidersByPriority"
 )
 
 // GreeterClient is the client API for Greeter service.
@@ -50,7 +50,7 @@ type GreeterClient interface {
 	GetSlider(ctx context.Context, in *GetSliderRequest, opts ...grpc.CallOption) (*GetSliderReply, error)
 	DeleteSlider(ctx context.Context, in *DeleteSliderRequest, opts ...grpc.CallOption) (*DeleteSliderReply, error)
 	UpdateSlider(ctx context.Context, in *UpdateSliderRequest, opts ...grpc.CallOption) (*UpdateSliderReply, error)
-	GetSliders(ctx context.Context, in *GetSlidersRequest, opts ...grpc.CallOption) (*GetSlidersReply, error)
+	ListSlidersByPriority(ctx context.Context, in *ListSlidersByPriorityRequest, opts ...grpc.CallOption) (*ListSlidersByPriorityReply, error)
 }
 
 type greeterClient struct {
@@ -169,9 +169,9 @@ func (c *greeterClient) UpdateSlider(ctx context.Context, in *UpdateSliderReques
 	return out, nil
 }
 
-func (c *greeterClient) GetSliders(ctx context.Context, in *GetSlidersRequest, opts ...grpc.CallOption) (*GetSlidersReply, error) {
-	out := new(GetSlidersReply)
-	err := c.cc.Invoke(ctx, Greeter_GetSliders_FullMethodName, in, out, opts...)
+func (c *greeterClient) ListSlidersByPriority(ctx context.Context, in *ListSlidersByPriorityRequest, opts ...grpc.CallOption) (*ListSlidersByPriorityReply, error) {
+	out := new(ListSlidersByPriorityReply)
+	err := c.cc.Invoke(ctx, Greeter_ListSlidersByPriority_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -194,7 +194,7 @@ type GreeterServer interface {
 	GetSlider(context.Context, *GetSliderRequest) (*GetSliderReply, error)
 	DeleteSlider(context.Context, *DeleteSliderRequest) (*DeleteSliderReply, error)
 	UpdateSlider(context.Context, *UpdateSliderRequest) (*UpdateSliderReply, error)
-	GetSliders(context.Context, *GetSlidersRequest) (*GetSlidersReply, error)
+	ListSlidersByPriority(context.Context, *ListSlidersByPriorityRequest) (*ListSlidersByPriorityReply, error)
 	mustEmbedUnimplementedGreeterServer()
 }
 
@@ -238,8 +238,8 @@ func (UnimplementedGreeterServer) DeleteSlider(context.Context, *DeleteSliderReq
 func (UnimplementedGreeterServer) UpdateSlider(context.Context, *UpdateSliderRequest) (*UpdateSliderReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSlider not implemented")
 }
-func (UnimplementedGreeterServer) GetSliders(context.Context, *GetSlidersRequest) (*GetSlidersReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSliders not implemented")
+func (UnimplementedGreeterServer) ListSlidersByPriority(context.Context, *ListSlidersByPriorityRequest) (*ListSlidersByPriorityReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSlidersByPriority not implemented")
 }
 func (UnimplementedGreeterServer) mustEmbedUnimplementedGreeterServer() {}
 
@@ -470,20 +470,20 @@ func _Greeter_UpdateSlider_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Greeter_GetSliders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetSlidersRequest)
+func _Greeter_ListSlidersByPriority_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSlidersByPriorityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GreeterServer).GetSliders(ctx, in)
+		return srv.(GreeterServer).ListSlidersByPriority(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Greeter_GetSliders_FullMethodName,
+		FullMethod: Greeter_ListSlidersByPriority_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GreeterServer).GetSliders(ctx, req.(*GetSlidersRequest))
+		return srv.(GreeterServer).ListSlidersByPriority(ctx, req.(*ListSlidersByPriorityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -544,8 +544,8 @@ var Greeter_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Greeter_UpdateSlider_Handler,
 		},
 		{
-			MethodName: "GetSliders",
-			Handler:    _Greeter_GetSliders_Handler,
+			MethodName: "ListSlidersByPriority",
+			Handler:    _Greeter_ListSlidersByPriority_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
