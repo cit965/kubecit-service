@@ -2,20 +2,18 @@ package biz
 
 import (
 	"context"
-	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
-	v1 "kubecit-service/api/helloworld/v1"
 )
 
 // ProviderSet is biz providers.
 var ProviderSet = wire.NewSet(NewCourseUsecase, NewUserUsecase, NewSystemUsecase)
 
 // 以下代码为示例代码
-var (
-	// ErrUserNotFound is user not found.
-	ErrUserNotFound = errors.NotFound(v1.ErrorReason_USER_NOT_FOUND.String(), "user not found")
-)
+//var (
+//	// ErrUserNotFound is user not found.
+//	ErrUserNotFound = errors.NotFound(v1.ErrorReason_USER_NOT_FOUND.String(), "user not found")
+//)
 
 // Greeter is a Greeter model.
 type Greeter struct {

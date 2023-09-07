@@ -7,7 +7,11 @@ option java_multiple_files = true;
 option java_package = "helloworld.v1";
 option objc_class_prefix = "APIHelloworldV1";
 
+// Notice 可以在下面一直往下定义错误码了，都是字符串类型的～
 enum ErrorReason {
   GREETER_UNSPECIFIED = 0;
-  USER_NOT_FOUND = 1;
+  UserModel_UserNotFound = 1; // 下划线左边表示模块、下划线右边表示具体的错误，可以跟前端约定好，只要收到了400错误(biz层控制)，就去解析这些错误字符串！
+  UserModel_UserHasBeenBaned = 2;
+  UserModel_UserInBlankList = 3;
+  // ...
 }

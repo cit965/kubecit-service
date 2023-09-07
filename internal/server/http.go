@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"kubecit-service/internal/pkg/encoder"
 
 	v1 "kubecit-service/api/helloworld/v1"
 	"kubecit-service/gin"
@@ -16,6 +17,25 @@ import (
 // NewHTTPServer new an HTTP server.
 func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
+
+		// Notice 封装一下响应的结构，加上后正确返回的效果如下：
+		/*
+			{
+			  "code": 200,
+			  "reason": "",
+			  "message": {
+					"desc": {
+						  "gender": "whw",
+						  "hobby": [
+								"football",
+								"basketball"
+						  ]
+					},
+					"name": "whw"
+			  }
+			}
+		*/
+		http.ResponseEncoder(encoder.RespEncoder),
 		http.Middleware(
 			recovery.Recovery(),
 			Auth(),
