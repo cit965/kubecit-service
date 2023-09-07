@@ -3,6 +3,7 @@
 package ent
 
 import (
+	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/schema"
 	"kubecit-service/ent/slider"
@@ -13,6 +14,20 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	accountFields := schema.Account{}.Fields()
+	_ = accountFields
+	// accountDescOpenid is the schema descriptor for openid field.
+	accountDescOpenid := accountFields[1].Descriptor()
+	// account.OpenidValidator is a validator for the "openid" field. It is called by the builders before save.
+	account.OpenidValidator = accountDescOpenid.Validators[0].(func(string) error)
+	// accountDescPassword is the schema descriptor for password field.
+	accountDescPassword := accountFields[2].Descriptor()
+	// account.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
+	account.PasswordValidator = accountDescPassword.Validators[0].(func(string) error)
+	// accountDescMethod is the schema descriptor for method field.
+	accountDescMethod := accountFields[3].Descriptor()
+	// account.MethodValidator is a validator for the "method" field. It is called by the builders before save.
+	account.MethodValidator = accountDescMethod.Validators[0].(func(string) error)
 	categoryFields := schema.Category{}.Fields()
 	_ = categoryFields
 	// categoryDescName is the schema descriptor for name field.

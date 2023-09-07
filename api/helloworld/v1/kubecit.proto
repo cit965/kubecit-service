@@ -56,6 +56,13 @@ service Greeter {
     };
   }
 
+  rpc RegisterUsername (RegisterUsernameRequest) returns (RegisterUsernameReply) {
+    option (google.api.http) = {
+      post: "/api/u/registerUsername",
+      body: "*"
+    };
+  }
+
   rpc CreateToken (CreateTokenRequest) returns (CreateTokenReply) {
     option (google.api.http) = {
       get: "/api/token/createToken",
@@ -389,6 +396,18 @@ message LoginByJsonReply {
   Metadata meta = 1;
   LoginByJsonReplyData data = 2;
 }
+
+message RegisterUsernameRequest {
+  string username = 1;
+  string password = 2;
+}
+
+
+message RegisterUsernameReply {
+  Metadata meta = 1;
+  LoginByJsonReplyData data = 2;
+}
+
 
 message LoginByJsonReplyData {
   string accessToken = 1;

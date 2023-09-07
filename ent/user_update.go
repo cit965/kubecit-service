@@ -27,33 +27,28 @@ func (uu *UserUpdate) Where(ps ...predicate.User) *UserUpdate {
 	return uu
 }
 
-// SetPassword sets the "password" field.
-func (uu *UserUpdate) SetPassword(s string) *UserUpdate {
-	uu.mutation.SetPassword(s)
-	return uu
-}
-
-// SetEmail sets the "email" field.
-func (uu *UserUpdate) SetEmail(s string) *UserUpdate {
-	uu.mutation.SetEmail(s)
-	return uu
-}
-
-// SetTelephone sets the "telephone" field.
-func (uu *UserUpdate) SetTelephone(s string) *UserUpdate {
-	uu.mutation.SetTelephone(s)
-	return uu
-}
-
-// SetAvatar sets the "avatar" field.
-func (uu *UserUpdate) SetAvatar(s string) *UserUpdate {
-	uu.mutation.SetAvatar(s)
-	return uu
-}
-
 // SetUsername sets the "username" field.
 func (uu *UserUpdate) SetUsername(s string) *UserUpdate {
 	uu.mutation.SetUsername(s)
+	return uu
+}
+
+// SetChannel sets the "channel" field.
+func (uu *UserUpdate) SetChannel(s string) *UserUpdate {
+	uu.mutation.SetChannel(s)
+	return uu
+}
+
+// SetRoleID sets the "role_id" field.
+func (uu *UserUpdate) SetRoleID(u uint8) *UserUpdate {
+	uu.mutation.ResetRoleID()
+	uu.mutation.SetRoleID(u)
+	return uu
+}
+
+// AddRoleID adds u to the "role_id" field.
+func (uu *UserUpdate) AddRoleID(u int8) *UserUpdate {
+	uu.mutation.AddRoleID(u)
 	return uu
 }
 
@@ -98,20 +93,17 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := uu.mutation.Password(); ok {
-		_spec.SetField(user.FieldPassword, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Email(); ok {
-		_spec.SetField(user.FieldEmail, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Telephone(); ok {
-		_spec.SetField(user.FieldTelephone, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Avatar(); ok {
-		_spec.SetField(user.FieldAvatar, field.TypeString, value)
-	}
 	if value, ok := uu.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.Channel(); ok {
+		_spec.SetField(user.FieldChannel, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.RoleID(); ok {
+		_spec.SetField(user.FieldRoleID, field.TypeUint8, value)
+	}
+	if value, ok := uu.mutation.AddedRoleID(); ok {
+		_spec.AddField(user.FieldRoleID, field.TypeUint8, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -133,33 +125,28 @@ type UserUpdateOne struct {
 	mutation *UserMutation
 }
 
-// SetPassword sets the "password" field.
-func (uuo *UserUpdateOne) SetPassword(s string) *UserUpdateOne {
-	uuo.mutation.SetPassword(s)
-	return uuo
-}
-
-// SetEmail sets the "email" field.
-func (uuo *UserUpdateOne) SetEmail(s string) *UserUpdateOne {
-	uuo.mutation.SetEmail(s)
-	return uuo
-}
-
-// SetTelephone sets the "telephone" field.
-func (uuo *UserUpdateOne) SetTelephone(s string) *UserUpdateOne {
-	uuo.mutation.SetTelephone(s)
-	return uuo
-}
-
-// SetAvatar sets the "avatar" field.
-func (uuo *UserUpdateOne) SetAvatar(s string) *UserUpdateOne {
-	uuo.mutation.SetAvatar(s)
-	return uuo
-}
-
 // SetUsername sets the "username" field.
 func (uuo *UserUpdateOne) SetUsername(s string) *UserUpdateOne {
 	uuo.mutation.SetUsername(s)
+	return uuo
+}
+
+// SetChannel sets the "channel" field.
+func (uuo *UserUpdateOne) SetChannel(s string) *UserUpdateOne {
+	uuo.mutation.SetChannel(s)
+	return uuo
+}
+
+// SetRoleID sets the "role_id" field.
+func (uuo *UserUpdateOne) SetRoleID(u uint8) *UserUpdateOne {
+	uuo.mutation.ResetRoleID()
+	uuo.mutation.SetRoleID(u)
+	return uuo
+}
+
+// AddRoleID adds u to the "role_id" field.
+func (uuo *UserUpdateOne) AddRoleID(u int8) *UserUpdateOne {
+	uuo.mutation.AddRoleID(u)
 	return uuo
 }
 
@@ -234,20 +221,17 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			}
 		}
 	}
-	if value, ok := uuo.mutation.Password(); ok {
-		_spec.SetField(user.FieldPassword, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Email(); ok {
-		_spec.SetField(user.FieldEmail, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Telephone(); ok {
-		_spec.SetField(user.FieldTelephone, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Avatar(); ok {
-		_spec.SetField(user.FieldAvatar, field.TypeString, value)
-	}
 	if value, ok := uuo.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.Channel(); ok {
+		_spec.SetField(user.FieldChannel, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.RoleID(); ok {
+		_spec.SetField(user.FieldRoleID, field.TypeUint8, value)
+	}
+	if value, ok := uuo.mutation.AddedRoleID(); ok {
+		_spec.AddField(user.FieldRoleID, field.TypeUint8, value)
 	}
 	_node = &User{config: uuo.config}
 	_spec.Assign = _node.assignValues

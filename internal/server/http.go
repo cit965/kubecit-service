@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+
 	v1 "kubecit-service/api/helloworld/v1"
 	"kubecit-service/gin"
 	"kubecit-service/internal/conf"
@@ -17,8 +18,10 @@ func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.L
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
+			Auth(),
 		),
 	}
+
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
 	}
