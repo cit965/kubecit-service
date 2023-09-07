@@ -204,3 +204,16 @@ func (usecase *UserUsecase) errorMeta(msg string, code int) *pb.Metadata {
 	}
 
 }
+
+func (usecase *UserUsecase) CurrentUserInfo(ctx context.Context) (*pb.UserInfoReply, error) {
+	UserId := ctx.Value("user_id").(uint64)
+	userPO, err := usecase.userRepo.FindById(ctx, UserId)
+	if err != nil {
+		return &pb.UserInfoReply{}, err
+	}
+	return &pb.UserInfoReply{
+		Username: userPO.Username,
+		Channel:  userPO.Channel,
+		RoleId:   uint32(int32(userPO.RoleId)),
+	}, nil
+}

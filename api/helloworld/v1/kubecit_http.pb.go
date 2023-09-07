@@ -40,7 +40,7 @@ type GreeterHTTPServer interface {
 	CreateToken(context.Context, *CreateTokenRequest) (*CreateTokenReply, error)
 	DeleteSlider(context.Context, *DeleteSliderRequest) (*DeleteSliderReply, error)
 	GetFirstCategories(context.Context, *GetFirstCategoriesRequest) (*GetFirstCategoriesReply, error)
-	GetInfo(context.Context, *GetInfoRequest) (*GetInfoReply, error)
+	GetInfo(context.Context, *GetInfoRequest) (*UserInfoReply, error)
 	GetSlider(context.Context, *GetSliderRequest) (*GetSliderReply, error)
 	ListSlidersByPriority(context.Context, *ListSlidersByPriorityRequest) (*ListSlidersByPriorityReply, error)
 	LoginByJson(context.Context, *LoginByJsonRequest) (*LoginByJsonReply, error)
@@ -187,7 +187,7 @@ func _Greeter_GetInfo0_HTTP_Handler(srv GreeterHTTPServer) func(ctx http.Context
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetInfoReply)
+		reply := out.(*UserInfoReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -374,7 +374,7 @@ type GreeterHTTPClient interface {
 	CreateToken(ctx context.Context, req *CreateTokenRequest, opts ...http.CallOption) (rsp *CreateTokenReply, err error)
 	DeleteSlider(ctx context.Context, req *DeleteSliderRequest, opts ...http.CallOption) (rsp *DeleteSliderReply, err error)
 	GetFirstCategories(ctx context.Context, req *GetFirstCategoriesRequest, opts ...http.CallOption) (rsp *GetFirstCategoriesReply, err error)
-	GetInfo(ctx context.Context, req *GetInfoRequest, opts ...http.CallOption) (rsp *GetInfoReply, err error)
+	GetInfo(ctx context.Context, req *GetInfoRequest, opts ...http.CallOption) (rsp *UserInfoReply, err error)
 	GetSlider(ctx context.Context, req *GetSliderRequest, opts ...http.CallOption) (rsp *GetSliderReply, err error)
 	ListSlidersByPriority(ctx context.Context, req *ListSlidersByPriorityRequest, opts ...http.CallOption) (rsp *ListSlidersByPriorityReply, err error)
 	LoginByJson(ctx context.Context, req *LoginByJsonRequest, opts ...http.CallOption) (rsp *LoginByJsonReply, err error)
@@ -458,8 +458,8 @@ func (c *GreeterHTTPClientImpl) GetFirstCategories(ctx context.Context, in *GetF
 	return &out, err
 }
 
-func (c *GreeterHTTPClientImpl) GetInfo(ctx context.Context, in *GetInfoRequest, opts ...http.CallOption) (*GetInfoReply, error) {
-	var out GetInfoReply
+func (c *GreeterHTTPClientImpl) GetInfo(ctx context.Context, in *GetInfoRequest, opts ...http.CallOption) (*UserInfoReply, error) {
+	var out UserInfoReply
 	pattern := "/api/member/getInfo"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationGreeterGetInfo))

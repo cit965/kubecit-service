@@ -44,7 +44,7 @@ type GreeterClient interface {
 	TagsList(ctx context.Context, in *TagsListRequest, opts ...grpc.CallOption) (*TagsListReply, error)
 	SearchCourse(ctx context.Context, in *SearchCourseRequest, opts ...grpc.CallOption) (*SearchCourseReply, error)
 	Category(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CategoryResp, error)
-	GetInfo(ctx context.Context, in *GetInfoRequest, opts ...grpc.CallOption) (*GetInfoReply, error)
+	GetInfo(ctx context.Context, in *GetInfoRequest, opts ...grpc.CallOption) (*UserInfoReply, error)
 	LoginByJson(ctx context.Context, in *LoginByJsonRequest, opts ...grpc.CallOption) (*LoginByJsonReply, error)
 	RegisterUsername(ctx context.Context, in *RegisterUsernameRequest, opts ...grpc.CallOption) (*RegisterUsernameReply, error)
 	CreateToken(ctx context.Context, in *CreateTokenRequest, opts ...grpc.CallOption) (*CreateTokenReply, error)
@@ -108,8 +108,8 @@ func (c *greeterClient) Category(ctx context.Context, in *Empty, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *greeterClient) GetInfo(ctx context.Context, in *GetInfoRequest, opts ...grpc.CallOption) (*GetInfoReply, error) {
-	out := new(GetInfoReply)
+func (c *greeterClient) GetInfo(ctx context.Context, in *GetInfoRequest, opts ...grpc.CallOption) (*UserInfoReply, error) {
+	out := new(UserInfoReply)
 	err := c.cc.Invoke(ctx, Greeter_GetInfo_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -198,7 +198,7 @@ type GreeterServer interface {
 	TagsList(context.Context, *TagsListRequest) (*TagsListReply, error)
 	SearchCourse(context.Context, *SearchCourseRequest) (*SearchCourseReply, error)
 	Category(context.Context, *Empty) (*CategoryResp, error)
-	GetInfo(context.Context, *GetInfoRequest) (*GetInfoReply, error)
+	GetInfo(context.Context, *GetInfoRequest) (*UserInfoReply, error)
 	LoginByJson(context.Context, *LoginByJsonRequest) (*LoginByJsonReply, error)
 	RegisterUsername(context.Context, *RegisterUsernameRequest) (*RegisterUsernameReply, error)
 	CreateToken(context.Context, *CreateTokenRequest) (*CreateTokenReply, error)
@@ -229,7 +229,7 @@ func (UnimplementedGreeterServer) SearchCourse(context.Context, *SearchCourseReq
 func (UnimplementedGreeterServer) Category(context.Context, *Empty) (*CategoryResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Category not implemented")
 }
-func (UnimplementedGreeterServer) GetInfo(context.Context, *GetInfoRequest) (*GetInfoReply, error) {
+func (UnimplementedGreeterServer) GetInfo(context.Context, *GetInfoRequest) (*UserInfoReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInfo not implemented")
 }
 func (UnimplementedGreeterServer) LoginByJson(context.Context, *LoginByJsonRequest) (*LoginByJsonReply, error) {
