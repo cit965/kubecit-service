@@ -559,7 +559,7 @@ func (c *CourseClient) UpdateOne(co *Course) *CourseUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *CourseClient) UpdateOneID(id string) *CourseUpdateOne {
+func (c *CourseClient) UpdateOneID(id int) *CourseUpdateOne {
 	mutation := newCourseMutation(c.config, OpUpdateOne, withCourseID(id))
 	return &CourseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -576,7 +576,7 @@ func (c *CourseClient) DeleteOne(co *Course) *CourseDeleteOne {
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *CourseClient) DeleteOneID(id string) *CourseDeleteOne {
+func (c *CourseClient) DeleteOneID(id int) *CourseDeleteOne {
 	builder := c.Delete().Where(course.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -593,12 +593,12 @@ func (c *CourseClient) Query() *CourseQuery {
 }
 
 // Get returns a Course entity by its id.
-func (c *CourseClient) Get(ctx context.Context, id string) (*Course, error) {
+func (c *CourseClient) Get(ctx context.Context, id int) (*Course, error) {
 	return c.Query().Where(course.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *CourseClient) GetX(ctx context.Context, id string) *Course {
+func (c *CourseClient) GetX(ctx context.Context, id int) *Course {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

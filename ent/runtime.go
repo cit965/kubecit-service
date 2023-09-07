@@ -5,6 +5,7 @@ package ent
 import (
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/course"
 	"kubecit-service/ent/schema"
 	"kubecit-service/ent/slider"
 	"time"
@@ -34,6 +35,12 @@ func init() {
 	categoryDescName := categoryFields[0].Descriptor()
 	// category.DefaultName holds the default value on creation for the name field.
 	category.DefaultName = categoryDescName.Default.(string)
+	courseFields := schema.Course{}.Fields()
+	_ = courseFields
+	// courseDescCreatedAt is the schema descriptor for created_at field.
+	courseDescCreatedAt := courseFields[7].Descriptor()
+	// course.DefaultCreatedAt holds the default value on creation for the created_at field.
+	course.DefaultCreatedAt = courseDescCreatedAt.Default.(time.Time)
 	sliderFields := schema.Slider{}.Fields()
 	_ = sliderFields
 	// sliderDescTitle is the schema descriptor for title field.

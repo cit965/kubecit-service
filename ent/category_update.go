@@ -75,14 +75,14 @@ func (cu *CategoryUpdate) ClearParentID() *CategoryUpdate {
 }
 
 // AddCourseIDs adds the "courses" edge to the Course entity by IDs.
-func (cu *CategoryUpdate) AddCourseIDs(ids ...string) *CategoryUpdate {
+func (cu *CategoryUpdate) AddCourseIDs(ids ...int) *CategoryUpdate {
 	cu.mutation.AddCourseIDs(ids...)
 	return cu
 }
 
 // AddCourses adds the "courses" edges to the Course entity.
 func (cu *CategoryUpdate) AddCourses(c ...*Course) *CategoryUpdate {
-	ids := make([]string, len(c))
+	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
@@ -121,14 +121,14 @@ func (cu *CategoryUpdate) ClearCourses() *CategoryUpdate {
 }
 
 // RemoveCourseIDs removes the "courses" edge to Course entities by IDs.
-func (cu *CategoryUpdate) RemoveCourseIDs(ids ...string) *CategoryUpdate {
+func (cu *CategoryUpdate) RemoveCourseIDs(ids ...int) *CategoryUpdate {
 	cu.mutation.RemoveCourseIDs(ids...)
 	return cu
 }
 
 // RemoveCourses removes "courses" edges to Course entities.
 func (cu *CategoryUpdate) RemoveCourses(c ...*Course) *CategoryUpdate {
-	ids := make([]string, len(c))
+	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
@@ -215,7 +215,7 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: []string{category.CoursesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -228,7 +228,7 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: []string{category.CoursesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -244,7 +244,7 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: []string{category.CoursesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -393,14 +393,14 @@ func (cuo *CategoryUpdateOne) ClearParentID() *CategoryUpdateOne {
 }
 
 // AddCourseIDs adds the "courses" edge to the Course entity by IDs.
-func (cuo *CategoryUpdateOne) AddCourseIDs(ids ...string) *CategoryUpdateOne {
+func (cuo *CategoryUpdateOne) AddCourseIDs(ids ...int) *CategoryUpdateOne {
 	cuo.mutation.AddCourseIDs(ids...)
 	return cuo
 }
 
 // AddCourses adds the "courses" edges to the Course entity.
 func (cuo *CategoryUpdateOne) AddCourses(c ...*Course) *CategoryUpdateOne {
-	ids := make([]string, len(c))
+	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
@@ -439,14 +439,14 @@ func (cuo *CategoryUpdateOne) ClearCourses() *CategoryUpdateOne {
 }
 
 // RemoveCourseIDs removes the "courses" edge to Course entities by IDs.
-func (cuo *CategoryUpdateOne) RemoveCourseIDs(ids ...string) *CategoryUpdateOne {
+func (cuo *CategoryUpdateOne) RemoveCourseIDs(ids ...int) *CategoryUpdateOne {
 	cuo.mutation.RemoveCourseIDs(ids...)
 	return cuo
 }
 
 // RemoveCourses removes "courses" edges to Course entities.
 func (cuo *CategoryUpdateOne) RemoveCourses(c ...*Course) *CategoryUpdateOne {
-	ids := make([]string, len(c))
+	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
@@ -563,7 +563,7 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 			Columns: []string{category.CoursesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -576,7 +576,7 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 			Columns: []string{category.CoursesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -592,7 +592,7 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 			Columns: []string{category.CoursesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

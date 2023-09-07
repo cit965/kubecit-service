@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"strconv"
 
 	pb "kubecit-service/api/helloworld/v1"
 )
@@ -52,5 +54,55 @@ func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) 
 	return &pb.TagsListReply{}, nil
 }
 func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseRequest) (*pb.SearchCourseReply, error) {
-	return &pb.SearchCourseReply{}, nil
+	pageNum := req.GetPageNum()
+	pageSize := req.GetPageSize()
+	entity := req.GetEntity()
+	var categoryId *int
+	var level *int32
+	var reverse *bool
+	if v, ok := entity["categoryId"]; ok {
+		atoi, err := strconv.Atoi(v)
+		if err != nil {
+			return nil, err
+		}
+		categoryId = &atoi
+	}
+	if v, ok := entity["level"]; ok {
+		atoi, err := strconv.Atoi(v)
+		b := int32(atoi)
+		if err != nil {
+			return nil, err
+		}
+		level = &b
+	}
+	if v, ok := entity["reverse"]; ok {
+		parseBool, err := strconv.ParseBool(v)
+		if err != nil {
+			return nil, err
+		}
+		reverse = &parseBool
+	}
+	courses, err := s.cc.SearchCourse(ctx, int(pageNum), int(pageSize), categoryId, level, reverse)
+	if err != nil {
+		return nil, err
+	}
+	list := make([]*pb.CourseInfo, 0, 0)
+	for _, course := range courses {
+		list = append(list, &pb.CourseInfo{
+			CourseLevel:     course.Level,
+			Id:              string(course.Id),
+			BizCourseDetail: []string{course.Detail},
+			CourseCover:     course.Cover,
+			SalePrice:       course.Price,
+			UpdateTime:      timestamppb.New(course.CreatedAt),
+			Tags:            course.Tags,
+			CourseName:      course.Name,
+			Status:          course.Status,
+		})
+	}
+	return &pb.SearchCourseReply{
+		Data: &pb.PageInfo{
+			List: list,
+		},
+	}, nil
 }

@@ -61,14 +61,14 @@ func (cc *CategoryCreate) SetNillableParentID(i *int) *CategoryCreate {
 }
 
 // AddCourseIDs adds the "courses" edge to the Course entity by IDs.
-func (cc *CategoryCreate) AddCourseIDs(ids ...string) *CategoryCreate {
+func (cc *CategoryCreate) AddCourseIDs(ids ...int) *CategoryCreate {
 	cc.mutation.AddCourseIDs(ids...)
 	return cc
 }
 
 // AddCourses adds the "courses" edges to the Course entity.
 func (cc *CategoryCreate) AddCourses(c ...*Course) *CategoryCreate {
-	ids := make([]string, len(c))
+	ids := make([]int, len(c))
 	for i := range c {
 		ids[i] = c[i].ID
 	}
@@ -193,7 +193,7 @@ func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 			Columns: []string{category.CoursesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeString),
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

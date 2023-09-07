@@ -29,7 +29,8 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 		return nil, nil, err
 	}
 	categoryRepo := data.NewCategoryRepo(dataData, logger)
-	courseUsecase := biz.NewCourseUsecase(categoryRepo, logger)
+	courseRepo := data.NewCourseRepo(dataData, logger)
+	courseUsecase := biz.NewCourseUsecase(categoryRepo, courseRepo, logger)
 	sliderRepo := data.NewSliderRepo(dataData, logger)
 	systemUsecase := biz.NewSystemUsecase(sliderRepo, logger)
 	accountRepo := data.NewAccountRepo(dataData, logger)
