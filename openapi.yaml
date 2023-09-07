@@ -96,7 +96,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/helloworld.v1.GetInfoReply'
+                                $ref: '#/components/schemas/helloworld.v1.UserInfoReply'
     /api/slider:
         post:
             tags:
@@ -395,98 +395,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
-        helloworld.v1.GetInfoReply:
-            type: object
-            properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
-                data:
-                    $ref: '#/components/schemas/helloworld.v1.GetInfoReplyData'
-        helloworld.v1.GetInfoReplyData:
-            type: object
-            properties:
-                birthday:
-                    type: string
-                    format: date-time
-                sysCode:
-                    type: string
-                gender:
-                    type: integer
-                    format: int32
-                city:
-                    type: string
-                loginType:
-                    type: array
-                    items:
-                        type: string
-                county:
-                    type: string
-                highestEducation:
-                    type: string
-                isEnable:
-                    type: integer
-                    format: int32
-                password:
-                    type: string
-                province:
-                    type: string
-                updateBy:
-                    type: string
-                totalHour:
-                    type: number
-                    format: float
-                id:
-                    type: string
-                platformAuthuser:
-                    type: string
-                email:
-                    type: string
-                qq:
-                    type: string
-                address:
-                    type: string
-                nickName:
-                    type: string
-                emergencyContact:
-                    type: string
-                emergencyContactNumber:
-                    type: string
-                mobile:
-                    type: string
-                wechat:
-                    type: string
-                regSource:
-                    type: integer
-                    format: int32
-                telephone:
-                    type: string
-                updateTime:
-                    type: string
-                    format: date-time
-                avatar:
-                    type: string
-                realName:
-                    type: string
-                createBy:
-                    type: string
-                vipInfo:
-                    $ref: '#/components/schemas/helloworld.v1.MemberVIPInfo'
-                personalSignature:
-                    type: string
-                certificateNumber:
-                    type: string
-                createTime:
-                    type: string
-                    format: date-time
-                age:
-                    type: integer
-                    format: int32
-                residenceAddress:
-                    type: string
-                username:
-                    type: string
-                certificateType:
-                    type: string
         helloworld.v1.GetSliderReply:
             type: object
             properties:
@@ -526,32 +434,6 @@ components:
                 username:
                     type: string
                 password:
-                    type: string
-        helloworld.v1.MemberVIPInfo:
-            type: object
-            properties:
-                orderNumber:
-                    type: string
-                vipName:
-                    type: string
-                vipId:
-                    type: string
-                vipDesc:
-                    type: string
-                startTime:
-                    type: string
-                    format: date-time
-                id:
-                    type: string
-                endTime:
-                    type: string
-                    format: date-time
-                isExpired:
-                    type: integer
-                    format: int32
-                memberId:
-                    type: string
-                vipIcon:
                     type: string
         helloworld.v1.Metadata:
             type: object
@@ -748,5 +630,15 @@ components:
                 priority:
                     type: integer
                     format: int32
+        helloworld.v1.UserInfoReply:
+            type: object
+            properties:
+                username:
+                    type: string
+                roleId:
+                    type: integer
+                    format: uint32
+                channel:
+                    type: string
 tags:
     - name: Greeter

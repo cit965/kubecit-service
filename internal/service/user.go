@@ -16,3 +16,7 @@ func (s *KubecitService) RegisterUsername(ctx context.Context, req *pb.RegisterU
 func (s *KubecitService) CreateToken(ctx context.Context, req *pb.CreateTokenRequest) (*pb.CreateTokenReply, error) {
 	return &pb.CreateTokenReply{}, nil
 }
+
+func (s *KubecitService) GetInfo(ctx context.Context, req *pb.GetInfoRequest) (*pb.UserInfoReply, error) {
+	return s.userUseCase.CurrentUserInfo(ctx)
+}
