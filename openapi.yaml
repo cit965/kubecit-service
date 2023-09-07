@@ -224,6 +224,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.LoginByJsonReply'
+    /api/u/registerUsername:
+        post:
+            tags:
+                - Greeter
+            operationId: Greeter_RegisterUsername
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.RegisterUsernameRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.RegisterUsernameReply'
 components:
     schemas:
         helloworld.v1.CategoryInfo:
@@ -631,6 +649,20 @@ components:
                 pageSize:
                     type: integer
                     format: int32
+        helloworld.v1.RegisterUsernameReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.LoginByJsonReplyData'
+        helloworld.v1.RegisterUsernameRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
         helloworld.v1.SearchCourseReply:
             type: object
             properties:

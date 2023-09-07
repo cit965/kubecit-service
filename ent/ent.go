@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/slider"
@@ -76,6 +77,7 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
+			account.Table:  account.ValidColumn,
 			category.Table: category.ValidColumn,
 			course.Table:   course.ValidColumn,
 			slider.Table:   slider.ValidColumn,

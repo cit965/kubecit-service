@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	"kubecit-service/ent"
 	"kubecit-service/internal/biz"
 	"kubecit-service/internal/conf"
@@ -12,7 +13,9 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewCategoryRepo, NewSliderRepo, NewCourseRepo)
+
+var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewCategoryRepo, NewSliderRepo, NewAccountRepo, NewUserRepo, NewUserAggregateRepo, NewCourseRepo)
+
 
 // Data .
 type Data struct {

@@ -8,6 +8,20 @@ import (
 )
 
 var (
+	// AccountsColumns holds the columns for the "accounts" table.
+	AccountsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "user_id", Type: field.TypeUint64},
+		{Name: "openid", Type: field.TypeString, Size: 32},
+		{Name: "password", Type: field.TypeString, Size: 32},
+		{Name: "method", Type: field.TypeString, Size: 32},
+	}
+	// AccountsTable holds the schema information for the "accounts" table.
+	AccountsTable = &schema.Table{
+		Name:       "accounts",
+		Columns:    AccountsColumns,
+		PrimaryKey: []*schema.Column{AccountsColumns[0]},
+	}
 	// CategoriesColumns holds the columns for the "categories" table.
 	CategoriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -78,11 +92,9 @@ var (
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "password", Type: field.TypeString},
-		{Name: "email", Type: field.TypeString},
-		{Name: "telephone", Type: field.TypeString},
-		{Name: "avatar", Type: field.TypeString},
 		{Name: "username", Type: field.TypeString},
+		{Name: "channel", Type: field.TypeString},
+		{Name: "role_id", Type: field.TypeUint8},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
@@ -92,6 +104,7 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		AccountsTable,
 		CategoriesTable,
 		CoursesTable,
 		SlidersTable,

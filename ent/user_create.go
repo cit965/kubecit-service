@@ -19,33 +19,21 @@ type UserCreate struct {
 	hooks    []Hook
 }
 
-// SetPassword sets the "password" field.
-func (uc *UserCreate) SetPassword(s string) *UserCreate {
-	uc.mutation.SetPassword(s)
-	return uc
-}
-
-// SetEmail sets the "email" field.
-func (uc *UserCreate) SetEmail(s string) *UserCreate {
-	uc.mutation.SetEmail(s)
-	return uc
-}
-
-// SetTelephone sets the "telephone" field.
-func (uc *UserCreate) SetTelephone(s string) *UserCreate {
-	uc.mutation.SetTelephone(s)
-	return uc
-}
-
-// SetAvatar sets the "avatar" field.
-func (uc *UserCreate) SetAvatar(s string) *UserCreate {
-	uc.mutation.SetAvatar(s)
-	return uc
-}
-
 // SetUsername sets the "username" field.
 func (uc *UserCreate) SetUsername(s string) *UserCreate {
 	uc.mutation.SetUsername(s)
+	return uc
+}
+
+// SetChannel sets the "channel" field.
+func (uc *UserCreate) SetChannel(s string) *UserCreate {
+	uc.mutation.SetChannel(s)
+	return uc
+}
+
+// SetRoleID sets the "role_id" field.
+func (uc *UserCreate) SetRoleID(u uint8) *UserCreate {
+	uc.mutation.SetRoleID(u)
 	return uc
 }
 
@@ -83,20 +71,14 @@ func (uc *UserCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (uc *UserCreate) check() error {
-	if _, ok := uc.mutation.Password(); !ok {
-		return &ValidationError{Name: "password", err: errors.New(`ent: missing required field "User.password"`)}
-	}
-	if _, ok := uc.mutation.Email(); !ok {
-		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "User.email"`)}
-	}
-	if _, ok := uc.mutation.Telephone(); !ok {
-		return &ValidationError{Name: "telephone", err: errors.New(`ent: missing required field "User.telephone"`)}
-	}
-	if _, ok := uc.mutation.Avatar(); !ok {
-		return &ValidationError{Name: "avatar", err: errors.New(`ent: missing required field "User.avatar"`)}
-	}
 	if _, ok := uc.mutation.Username(); !ok {
 		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "User.username"`)}
+	}
+	if _, ok := uc.mutation.Channel(); !ok {
+		return &ValidationError{Name: "channel", err: errors.New(`ent: missing required field "User.channel"`)}
+	}
+	if _, ok := uc.mutation.RoleID(); !ok {
+		return &ValidationError{Name: "role_id", err: errors.New(`ent: missing required field "User.role_id"`)}
 	}
 	return nil
 }
@@ -124,25 +106,17 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_node = &User{config: uc.config}
 		_spec = sqlgraph.NewCreateSpec(user.Table, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
 	)
-	if value, ok := uc.mutation.Password(); ok {
-		_spec.SetField(user.FieldPassword, field.TypeString, value)
-		_node.Password = value
-	}
-	if value, ok := uc.mutation.Email(); ok {
-		_spec.SetField(user.FieldEmail, field.TypeString, value)
-		_node.Email = value
-	}
-	if value, ok := uc.mutation.Telephone(); ok {
-		_spec.SetField(user.FieldTelephone, field.TypeString, value)
-		_node.Telephone = value
-	}
-	if value, ok := uc.mutation.Avatar(); ok {
-		_spec.SetField(user.FieldAvatar, field.TypeString, value)
-		_node.Avatar = value
-	}
 	if value, ok := uc.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
 		_node.Username = value
+	}
+	if value, ok := uc.mutation.Channel(); ok {
+		_spec.SetField(user.FieldChannel, field.TypeString, value)
+		_node.Channel = value
+	}
+	if value, ok := uc.mutation.RoleID(); ok {
+		_spec.SetField(user.FieldRoleID, field.TypeUint8, value)
+		_node.RoleID = value
 	}
 	return _node, _spec
 }
