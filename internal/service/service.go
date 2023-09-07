@@ -13,11 +13,12 @@ var ProviderSet = wire.NewSet(NewKubecitService)
 type KubecitService struct {
 	v1.UnimplementedGreeterServer
 
-	cc *biz.CourseUsecase
-	su *biz.SystemUsecase
+	cc          *biz.CourseUsecase
+	su          *biz.SystemUsecase
+	userUseCase *biz.UserUsecase
 }
 
 // NewGreeterService new a greeter service.
-func NewKubecitService(cc *biz.CourseUsecase, su *biz.SystemUsecase) *KubecitService {
-	return &KubecitService{cc: cc, su: su}
+func NewKubecitService(cc *biz.CourseUsecase, su *biz.SystemUsecase, userUseCase *biz.UserUsecase) *KubecitService {
+	return &KubecitService{cc: cc, su: su, userUseCase: userUseCase}
 }
