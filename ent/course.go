@@ -17,7 +17,7 @@ import (
 type Course struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID string `json:"id,omitempty"`
+	ID int `json:"id,omitempty"`
 	// Level holds the value of the "level" field.
 	Level int32 `json:"level,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
@@ -32,8 +32,8 @@ type Course struct {
 	Price float32 `json:"price,omitempty"`
 	// Tags holds the value of the "tags" field.
 	Tags string `json:"tags,omitempty"`
-	// CreatedAt holds the value of the "created_at" field.
-	CreatedAt string `json:"created_at,omitempty"`
+	// 创建时间
+	CreatedAt time.Time `json:"created_at,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int32 `json:"status,omitempty"`
 	// CategoryID holds the value of the "category_id" field.
@@ -73,11 +73,11 @@ func (*Course) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case course.FieldPrice:
 			values[i] = new(sql.NullFloat64)
-		case course.FieldLevel, course.FieldStatus, course.FieldCategoryID:
+		case course.FieldID, course.FieldLevel, course.FieldStatus, course.FieldCategoryID:
 			values[i] = new(sql.NullInt64)
-		case course.FieldID, course.FieldName, course.FieldDetail, course.FieldCover, course.FieldTags, course.FieldCreatedAt:
+		case course.FieldName, course.FieldDetail, course.FieldCover, course.FieldTags:
 			values[i] = new(sql.NullString)
-		case course.FieldUpdatedAt:
+		case course.FieldUpdatedAt, course.FieldCreatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -95,11 +95,11 @@ func (c *Course) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case course.FieldID:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value.Valid {
-				c.ID = value.String
+			value, ok := values[i].(*sql.NullInt64)
+			if !ok {
+				return fmt.Errorf("unexpected type %T for field id", value)
 			}
+			c.ID = int(value.Int64)
 		case course.FieldLevel:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field level", values[i])
@@ -143,10 +143,10 @@ func (c *Course) assignValues(columns []string, values []any) error {
 				c.Tags = value.String
 			}
 		case course.FieldCreatedAt:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				c.CreatedAt = value.String
+				c.CreatedAt = value.Time
 			}
 		case course.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -223,7 +223,7 @@ func (c *Course) String() string {
 	builder.WriteString(c.Tags)
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
-	builder.WriteString(c.CreatedAt)
+	builder.WriteString(c.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", c.Status))

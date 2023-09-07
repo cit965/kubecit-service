@@ -86,8 +86,16 @@ func (cu *CourseUpdate) SetTags(s string) *CourseUpdate {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (cu *CourseUpdate) SetCreatedAt(s string) *CourseUpdate {
-	cu.mutation.SetCreatedAt(s)
+func (cu *CourseUpdate) SetCreatedAt(t time.Time) *CourseUpdate {
+	cu.mutation.SetCreatedAt(t)
+	return cu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillableCreatedAt(t *time.Time) *CourseUpdate {
+	if t != nil {
+		cu.SetCreatedAt(*t)
+	}
 	return cu
 }
 
@@ -182,7 +190,7 @@ func (cu *CourseUpdate) ExecX(ctx context.Context) {
 }
 
 func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeString))
+	_spec := sqlgraph.NewUpdateSpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
 	if ps := cu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -218,7 +226,7 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(course.FieldTags, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.CreatedAt(); ok {
-		_spec.SetField(course.FieldCreatedAt, field.TypeString, value)
+		_spec.SetField(course.FieldCreatedAt, field.TypeTime, value)
 	}
 	if value, ok := cu.mutation.Status(); ok {
 		_spec.SetField(course.FieldStatus, field.TypeInt32, value)
@@ -332,8 +340,16 @@ func (cuo *CourseUpdateOne) SetTags(s string) *CourseUpdateOne {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (cuo *CourseUpdateOne) SetCreatedAt(s string) *CourseUpdateOne {
-	cuo.mutation.SetCreatedAt(s)
+func (cuo *CourseUpdateOne) SetCreatedAt(t time.Time) *CourseUpdateOne {
+	cuo.mutation.SetCreatedAt(t)
+	return cuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillableCreatedAt(t *time.Time) *CourseUpdateOne {
+	if t != nil {
+		cuo.SetCreatedAt(*t)
+	}
 	return cuo
 }
 
@@ -441,7 +457,7 @@ func (cuo *CourseUpdateOne) ExecX(ctx context.Context) {
 }
 
 func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err error) {
-	_spec := sqlgraph.NewUpdateSpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeString))
+	_spec := sqlgraph.NewUpdateSpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
 	id, ok := cuo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Course.id" for update`)}
@@ -494,7 +510,7 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 		_spec.SetField(course.FieldTags, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.CreatedAt(); ok {
-		_spec.SetField(course.FieldCreatedAt, field.TypeString, value)
+		_spec.SetField(course.FieldCreatedAt, field.TypeTime, value)
 	}
 	if value, ok := cuo.mutation.Status(); ok {
 		_spec.SetField(course.FieldStatus, field.TypeInt32, value)

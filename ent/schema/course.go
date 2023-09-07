@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
+	"time"
 )
 
 // Course holds the schema definition for the Course entity.
@@ -14,7 +15,6 @@ type Course struct {
 // Fields of the Course.
 func (Course) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("id").Unique(),
 		field.Int32("level"),
 		field.Time("updated_at"),
 		field.String("name"),
@@ -22,7 +22,7 @@ func (Course) Fields() []ent.Field {
 		field.String("cover"),
 		field.Float32("price"),
 		field.String("tags"),
-		field.String("created_at"),
+		field.Time("created_at").Default(time.Now()).Comment("创建时间"),
 		field.Int32("status"),
 		field.Int("category_id").Optional(),
 	}

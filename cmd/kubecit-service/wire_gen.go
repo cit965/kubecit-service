@@ -29,10 +29,11 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 		return nil, nil, err
 	}
 	categoryRepo := data.NewCategoryRepo(dataData, logger)
-	courseUsecase := biz.NewCourseUsecase(categoryRepo, logger)
+	courseRepo := data.NewCourseRepo(dataData, logger)
+	courseUsecase := biz.NewCourseUsecase(categoryRepo, courseRepo, logger)
 	sliderRepo := data.NewSliderRepo(dataData, logger)
-	sliderUsecase := biz.NewSystemUsecase(sliderRepo, logger)
-	kubecitService := service.NewKubecitService(courseUsecase, sliderUsecase)
+	systemUsecase := biz.NewSystemUsecase(sliderRepo, logger)
+	kubecitService := service.NewKubecitService(courseUsecase, systemUsecase)
 	grpcServer := server.NewGRPCServer(confServer, kubecitService, logger)
 	httpServer := server.NewHTTPServer(confServer, kubecitService, logger)
 	app := newApp(logger, grpcServer, httpServer)

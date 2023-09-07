@@ -43,8 +43,8 @@ type CategoryMutation struct {
 	level           *string
 	status          *string
 	clearedFields   map[string]struct{}
-	courses         map[string]struct{}
-	removedcourses  map[string]struct{}
+	courses         map[int]struct{}
+	removedcourses  map[int]struct{}
 	clearedcourses  bool
 	parent          *int
 	clearedparent   bool
@@ -312,9 +312,9 @@ func (m *CategoryMutation) ResetParentID() {
 }
 
 // AddCourseIDs adds the "courses" edge to the Course entity by ids.
-func (m *CategoryMutation) AddCourseIDs(ids ...string) {
+func (m *CategoryMutation) AddCourseIDs(ids ...int) {
 	if m.courses == nil {
-		m.courses = make(map[string]struct{})
+		m.courses = make(map[int]struct{})
 	}
 	for i := range ids {
 		m.courses[ids[i]] = struct{}{}
@@ -332,9 +332,9 @@ func (m *CategoryMutation) CoursesCleared() bool {
 }
 
 // RemoveCourseIDs removes the "courses" edge to the Course entity by IDs.
-func (m *CategoryMutation) RemoveCourseIDs(ids ...string) {
+func (m *CategoryMutation) RemoveCourseIDs(ids ...int) {
 	if m.removedcourses == nil {
-		m.removedcourses = make(map[string]struct{})
+		m.removedcourses = make(map[int]struct{})
 	}
 	for i := range ids {
 		delete(m.courses, ids[i])
@@ -343,7 +343,7 @@ func (m *CategoryMutation) RemoveCourseIDs(ids ...string) {
 }
 
 // RemovedCourses returns the removed IDs of the "courses" edge to the Course entity.
-func (m *CategoryMutation) RemovedCoursesIDs() (ids []string) {
+func (m *CategoryMutation) RemovedCoursesIDs() (ids []int) {
 	for id := range m.removedcourses {
 		ids = append(ids, id)
 	}
@@ -351,7 +351,7 @@ func (m *CategoryMutation) RemovedCoursesIDs() (ids []string) {
 }
 
 // CoursesIDs returns the "courses" edge IDs in the mutation.
-func (m *CategoryMutation) CoursesIDs() (ids []string) {
+func (m *CategoryMutation) CoursesIDs() (ids []int) {
 	for id := range m.courses {
 		ids = append(ids, id)
 	}
@@ -772,7 +772,7 @@ type CourseMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *string
+	id            *int
 	level         *int32
 	addlevel      *int32
 	updated_at    *time.Time
@@ -782,7 +782,7 @@ type CourseMutation struct {
 	price         *float32
 	addprice      *float32
 	tags          *string
-	created_at    *string
+	created_at    *time.Time
 	status        *int32
 	addstatus     *int32
 	clearedFields map[string]struct{}
@@ -813,7 +813,7 @@ func newCourseMutation(c config, op Op, opts ...courseOption) *CourseMutation {
 }
 
 // withCourseID sets the ID field of the mutation.
-func withCourseID(id string) courseOption {
+func withCourseID(id int) courseOption {
 	return func(m *CourseMutation) {
 		var (
 			err   error
@@ -863,15 +863,9 @@ func (m CourseMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
-// SetID sets the value of the id field. Note that this
-// operation is only accepted on creation of Course entities.
-func (m *CourseMutation) SetID(id string) {
-	m.id = &id
-}
-
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *CourseMutation) ID() (id string, exists bool) {
+func (m *CourseMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -882,12 +876,12 @@ func (m *CourseMutation) ID() (id string, exists bool) {
 // That means, if the mutation is applied within a transaction with an isolation level such
 // as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
 // or updated by the mutation.
-func (m *CourseMutation) IDs(ctx context.Context) ([]string, error) {
+func (m *CourseMutation) IDs(ctx context.Context) ([]int, error) {
 	switch {
 	case m.op.Is(OpUpdateOne | OpDeleteOne):
 		id, exists := m.ID()
 		if exists {
-			return []string{id}, nil
+			return []int{id}, nil
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
@@ -1190,12 +1184,12 @@ func (m *CourseMutation) ResetTags() {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (m *CourseMutation) SetCreatedAt(s string) {
-	m.created_at = &s
+func (m *CourseMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
 }
 
 // CreatedAt returns the value of the "created_at" field in the mutation.
-func (m *CourseMutation) CreatedAt() (r string, exists bool) {
+func (m *CourseMutation) CreatedAt() (r time.Time, exists bool) {
 	v := m.created_at
 	if v == nil {
 		return
@@ -1206,7 +1200,7 @@ func (m *CourseMutation) CreatedAt() (r string, exists bool) {
 // OldCreatedAt returns the old "created_at" field's value of the Course entity.
 // If the Course object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CourseMutation) OldCreatedAt(ctx context.Context) (v string, err error) {
+func (m *CourseMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
@@ -1550,7 +1544,7 @@ func (m *CourseMutation) SetField(name string, value ent.Value) error {
 		m.SetTags(v)
 		return nil
 	case course.FieldCreatedAt:
-		v, ok := value.(string)
+		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

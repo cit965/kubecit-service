@@ -64,8 +64,16 @@ func (cc *CourseCreate) SetTags(s string) *CourseCreate {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (cc *CourseCreate) SetCreatedAt(s string) *CourseCreate {
-	cc.mutation.SetCreatedAt(s)
+func (cc *CourseCreate) SetCreatedAt(t time.Time) *CourseCreate {
+	cc.mutation.SetCreatedAt(t)
+	return cc
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (cc *CourseCreate) SetNillableCreatedAt(t *time.Time) *CourseCreate {
+	if t != nil {
+		cc.SetCreatedAt(*t)
+	}
 	return cc
 }
 
@@ -86,12 +94,6 @@ func (cc *CourseCreate) SetNillableCategoryID(i *int) *CourseCreate {
 	if i != nil {
 		cc.SetCategoryID(*i)
 	}
-	return cc
-}
-
-// SetID sets the "id" field.
-func (cc *CourseCreate) SetID(s string) *CourseCreate {
-	cc.mutation.SetID(s)
 	return cc
 }
 
@@ -121,6 +123,7 @@ func (cc *CourseCreate) Mutation() *CourseMutation {
 
 // Save creates the Course in the database.
 func (cc *CourseCreate) Save(ctx context.Context) (*Course, error) {
+	cc.defaults()
 	return withHooks(ctx, cc.sqlSave, cc.mutation, cc.hooks)
 }
 
@@ -143,6 +146,14 @@ func (cc *CourseCreate) Exec(ctx context.Context) error {
 func (cc *CourseCreate) ExecX(ctx context.Context) {
 	if err := cc.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (cc *CourseCreate) defaults() {
+	if _, ok := cc.mutation.CreatedAt(); !ok {
+		v := course.DefaultCreatedAt
+		cc.mutation.SetCreatedAt(v)
 	}
 }
 
@@ -189,13 +200,8 @@ func (cc *CourseCreate) sqlSave(ctx context.Context) (*Course, error) {
 		}
 		return nil, err
 	}
-	if _spec.ID.Value != nil {
-		if id, ok := _spec.ID.Value.(string); ok {
-			_node.ID = id
-		} else {
-			return nil, fmt.Errorf("unexpected Course.ID type: %T", _spec.ID.Value)
-		}
-	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
 	cc.mutation.id = &_node.ID
 	cc.mutation.done = true
 	return _node, nil
@@ -204,12 +210,8 @@ func (cc *CourseCreate) sqlSave(ctx context.Context) (*Course, error) {
 func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Course{config: cc.config}
-		_spec = sqlgraph.NewCreateSpec(course.Table, sqlgraph.NewFieldSpec(course.FieldID, field.TypeString))
+		_spec = sqlgraph.NewCreateSpec(course.Table, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
 	)
-	if id, ok := cc.mutation.ID(); ok {
-		_node.ID = id
-		_spec.ID.Value = id
-	}
 	if value, ok := cc.mutation.Level(); ok {
 		_spec.SetField(course.FieldLevel, field.TypeInt32, value)
 		_node.Level = value
@@ -239,7 +241,7 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 		_node.Tags = value
 	}
 	if value, ok := cc.mutation.CreatedAt(); ok {
-		_spec.SetField(course.FieldCreatedAt, field.TypeString, value)
+		_spec.SetField(course.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
 	if value, ok := cc.mutation.Status(); ok {
@@ -280,6 +282,7 @@ func (ccb *CourseCreateBulk) Save(ctx context.Context) ([]*Course, error) {
 	for i := range ccb.builders {
 		func(i int, root context.Context) {
 			builder := ccb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*CourseMutation)
 				if !ok {
@@ -306,6 +309,10 @@ func (ccb *CourseCreateBulk) Save(ctx context.Context) ([]*Course, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
+				if specs[i].ID.Value != nil {
+					id := specs[i].ID.Value.(int64)
+					nodes[i].ID = int(id)
+				}
 				mutation.done = true
 				return nodes[i], nil
 			})

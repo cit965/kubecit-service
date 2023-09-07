@@ -32,7 +32,7 @@ var (
 	}
 	// CoursesColumns holds the columns for the "courses" table.
 	CoursesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Unique: true},
+		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "level", Type: field.TypeInt32},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
@@ -40,7 +40,7 @@ var (
 		{Name: "cover", Type: field.TypeString},
 		{Name: "price", Type: field.TypeFloat32},
 		{Name: "tags", Type: field.TypeString},
-		{Name: "created_at", Type: field.TypeString},
+		{Name: "created_at", Type: field.TypeTime},
 		{Name: "status", Type: field.TypeInt32},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
 	}
