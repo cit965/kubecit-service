@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: kubecit-service
-  replicas: 2 # tells deployment to run 2 pods matching the template
+  replicas: 1 # tells deployment to run 2 pods matching the template
   template:
     metadata:
       labels:
@@ -17,6 +17,26 @@ spec:
           image: chaoyue/kubecit-service:latest
           ports:
             - containerPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubecit-web-service
+spec:
+  selector:
+    matchLabels:
+      app: kubecit-web-service
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: kubecit-web-service
+    spec:
+      containers:
+        - name: kubecit-web-service
+          image: z627062293/cit965-frontend:v1.0.0
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -29,6 +49,18 @@ spec:
     - protocol: TCP
       port: 8000
       targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubecit-web-service
+spec:
+  selector:
+    app: kubecit-web-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -58,5 +90,10 @@ spec:
           - backend:
               serviceName: kubecit-service
               servicePort: 8000
+            path: /api
+            pathType: ImplementationSpecific
+          - backend:
+              serviceName: kubecit-web-service
+              servicePort: 80
             path: /
             pathType: ImplementationSpecific
