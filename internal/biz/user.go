@@ -78,27 +78,22 @@ type AccountRepo interface {
 type UserRepo interface {
 	FindById(ctx context.Context, id uint64) (po *UserPO, err error)
 	Save(ctx context.Context, po *UserPO) error
-}
-
-type UserAggregateRepo interface {
-	SaveAccountAndUser(ctx context.Context, accountPO *AccountPO, userPO *UserPO) error
+	SaveAccountAndUserTx(ctx context.Context, accountPO *AccountPO, userPO *UserPO) error
 }
 
 // UserUsecase is a User usecase.
 type UserUsecase struct {
-	accountRepo       AccountRepo
-	userRepo          UserRepo
-	userAggregateRepo UserAggregateRepo
-	log               *log.Helper
+	accountRepo AccountRepo
+	userRepo    UserRepo
+	log         *log.Helper
 }
 
 // NewUserUsecase new a User usecase.
-func NewUserUsecase(accountRepo AccountRepo, userRepo UserRepo, userAggregateRepo UserAggregateRepo, logger log.Logger) *UserUsecase {
+func NewUserUsecase(accountRepo AccountRepo, userRepo UserRepo, logger log.Logger) *UserUsecase {
 	return &UserUsecase{
-		accountRepo:       accountRepo,
-		userRepo:          userRepo,
-		userAggregateRepo: userAggregateRepo,
-		log:               log.NewHelper(logger)}
+		accountRepo: accountRepo,
+		userRepo:    userRepo,
+		log:         log.NewHelper(logger)}
 }
 
 func (usecase *UserUsecase) LoginByJson(ctx context.Context, request *pb.LoginByJsonRequest) (*pb.LoginByJsonReply, error) {
@@ -171,7 +166,7 @@ func (usecase *UserUsecase) RegisterUsername(ctx context.Context, request *pb.Re
 		Password: usecase.md5(request.Password),
 		Method:   AccountMethodUsername,
 	}
-	err = usecase.userAggregateRepo.SaveAccountAndUser(ctx, accountPO, userPO)
+	err = usecase.userRepo.SaveAccountAndUserTx(ctx, accountPO, userPO)
 	if err != nil {
 		usecase.log.Errorf("register username err: %v", err.Error())
 		return &pb.RegisterUsernameReply{

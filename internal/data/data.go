@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"fmt"
 
 	"kubecit-service/ent"
 	"kubecit-service/internal/biz"
@@ -14,8 +15,7 @@ import (
 
 // ProviderSet is data providers.
 
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewCategoryRepo, NewSliderRepo, NewAccountRepo, NewUserRepo, NewUserAggregateRepo, NewCourseRepo)
-
+var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewCategoryRepo, NewSliderRepo, NewAccountRepo, NewUserRepo, NewCourseRepo)
 
 // Data .
 type Data struct {
@@ -40,6 +40,29 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 		conf: c,
 		db:   entClient,
 	}, cleanup, nil
+}
+
+func (data *Data) WithTx(ctx context.Context, fn func(tx *ent.Tx) error) error {
+	tx, err := data.db.Tx(ctx)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if v := recover(); v != nil {
+			tx.Rollback()
+			panic(v)
+		}
+	}()
+	if err := fn(tx); err != nil {
+		if rerr := tx.Rollback(); rerr != nil {
+			err = fmt.Errorf("%w: rolling back transaction: %v", err, rerr)
+		}
+		return err
+	}
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("committing transaction: %w", err)
+	}
+	return nil
 }
 
 // example code
