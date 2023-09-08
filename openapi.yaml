@@ -3,15 +3,15 @@
 
 openapi: 3.0.3
 info:
-    title: Greeter API
+    title: Kubecit API
     description: The greeting service definition.
     version: 0.0.1
 paths:
     /api/categories:
         get:
             tags:
-                - Greeter
-            operationId: Greeter_Category
+                - Kubecit
+            operationId: Kubecit_Category
             responses:
                 "200":
                     description: OK
@@ -22,8 +22,8 @@ paths:
     /api/course/category/getFirstCategories:
         get:
             tags:
-                - Greeter
-            operationId: Greeter_GetFirstCategories
+                - Kubecit
+            operationId: Kubecit_GetFirstCategories
             responses:
                 "200":
                     description: OK
@@ -34,8 +34,9 @@ paths:
     /api/course/mostNew:
         post:
             tags:
-                - Greeter
-            operationId: Greeter_MostNew
+                - Kubecit
+            description: ========================== 课程相关接口 ===================================
+            operationId: Kubecit_MostNew
             requestBody:
                 content:
                     application/json:
@@ -52,8 +53,8 @@ paths:
     /api/course/search:
         post:
             tags:
-                - Greeter
-            operationId: Greeter_SearchCourse
+                - Kubecit
+            operationId: Kubecit_SearchCourse
             requestBody:
                 content:
                     application/json:
@@ -70,8 +71,8 @@ paths:
     /api/course/tags/list:
         post:
             tags:
-                - Greeter
-            operationId: Greeter_TagsList
+                - Kubecit
+            operationId: Kubecit_TagsList
             requestBody:
                 content:
                     application/json:
@@ -88,8 +89,9 @@ paths:
     /api/member/getInfo:
         get:
             tags:
-                - Greeter
-            operationId: Greeter_GetInfo
+                - Kubecit
+            description: ========================== 用户相关接口 ===================================
+            operationId: Kubecit_GetInfo
             responses:
                 "200":
                     description: OK
@@ -100,8 +102,9 @@ paths:
     /api/slider:
         post:
             tags:
-                - Greeter
-            operationId: Greeter_CreateSlider
+                - Kubecit
+            description: ========================== 系统设置相关接口 ===================================
+            operationId: Kubecit_CreateSlider
             requestBody:
                 content:
                     application/json:
@@ -118,8 +121,8 @@ paths:
     /api/slider/{id}:
         get:
             tags:
-                - Greeter
-            operationId: Greeter_GetSlider
+                - Kubecit
+            operationId: Kubecit_GetSlider
             parameters:
                 - name: id
                   in: path
@@ -136,8 +139,8 @@ paths:
                                 $ref: '#/components/schemas/helloworld.v1.GetSliderReply'
         put:
             tags:
-                - Greeter
-            operationId: Greeter_UpdateSlider
+                - Kubecit
+            operationId: Kubecit_UpdateSlider
             parameters:
                 - name: id
                   in: path
@@ -160,8 +163,8 @@ paths:
                                 $ref: '#/components/schemas/helloworld.v1.UpdateSliderReply'
         delete:
             tags:
-                - Greeter
-            operationId: Greeter_DeleteSlider
+                - Kubecit
+            operationId: Kubecit_DeleteSlider
             parameters:
                 - name: id
                   in: path
@@ -179,8 +182,8 @@ paths:
     /api/sliders:
         post:
             tags:
-                - Greeter
-            operationId: Greeter_ListSlidersByPriority
+                - Kubecit
+            operationId: Kubecit_ListSlidersByPriority
             requestBody:
                 content:
                     application/json:
@@ -194,23 +197,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.ListSlidersByPriorityReply'
-    /api/token/createToken:
-        get:
-            tags:
-                - Greeter
-            operationId: Greeter_CreateToken
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/helloworld.v1.CreateTokenReply'
     /api/u/loginByJson:
         post:
             tags:
-                - Greeter
-            operationId: Greeter_LoginByJson
+                - Kubecit
+            operationId: Kubecit_LoginByJson
             requestBody:
                 content:
                     application/json:
@@ -227,8 +218,8 @@ paths:
     /api/u/registerUsername:
         post:
             tags:
-                - Greeter
-            operationId: Greeter_RegisterUsername
+                - Kubecit
+            operationId: Kubecit_RegisterUsername
             requestBody:
                 content:
                     application/json:
@@ -373,15 +364,6 @@ components:
                 priority:
                     type: integer
                     format: int32
-        helloworld.v1.CreateTokenReply:
-            type: object
-            properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
-                data:
-                    type: object
-                    additionalProperties:
-                        type: string
         helloworld.v1.DeleteSliderReply:
             type: object
             properties:
@@ -641,4 +623,4 @@ components:
                 channel:
                     type: string
 tags:
-    - name: Greeter
+    - name: Kubecit

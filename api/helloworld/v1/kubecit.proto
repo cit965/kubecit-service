@@ -4,6 +4,7 @@ package helloworld.v1;
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "kubecit-service/api/helloworld/v1;v1";
 option java_multiple_files = true;
@@ -11,17 +12,27 @@ option java_package = "dev.kratos.api.helloworld.v1";
 option java_outer_classname = "HelloworldProtoV1";
 
 // The greeting service definition.
-service Greeter {
+service Kubecit {
 
+  // ========================== 课程相关接口 ===================================
   rpc MostNew (PageRequest) returns (MostNewReply) {
     option (google.api.http) = {
       post: "/api/course/mostNew",
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "获取最新课程列表"
+      tags: "course"
+    };
   }
   rpc GetFirstCategories (GetFirstCategoriesRequest) returns (GetFirstCategoriesReply) {
     option (google.api.http) = {
       get: "/api/course/category/getFirstCategories"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "获取一级分类列表"
+      tags: "course"
     };
   }
   rpc TagsList (TagsListRequest) returns (TagsListReply) {
@@ -29,11 +40,21 @@ service Greeter {
       post: "/api/course/tags/list",
       body: "*"
     };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "获取课程标签列表"
+      tags: "course"
+    };
   }
   rpc SearchCourse (SearchCourseRequest) returns (SearchCourseReply) {
     option (google.api.http) = {
       post: "/api/course/search",
       body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "筛选课程列表"
+      tags: "course"
     };
   }
 
@@ -41,11 +62,20 @@ service Greeter {
     option (google.api.http) = {
       get: "/api/categories"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "分类列表"
+      tags: "course"
+    };
   }
 
+  // ========================== 用户相关接口 ===================================
   rpc GetInfo (GetInfoRequest) returns (UserInfoReply) {
     option (google.api.http) = {
       get: "/api/member/getInfo",
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "用户信息"
+      tags: "user"
     };
   }
 
@@ -54,6 +84,10 @@ service Greeter {
       post: "/api/u/loginByJson",
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "用户登录"
+      tags: "user"
+    };
   }
 
   rpc RegisterUsername (RegisterUsernameRequest) returns (RegisterUsernameReply) {
@@ -61,18 +95,24 @@ service Greeter {
       post: "/api/u/registerUsername",
       body: "*"
     };
-  }
 
-  rpc CreateToken (CreateTokenRequest) returns (CreateTokenReply) {
-    option (google.api.http) = {
-      get: "/api/token/createToken",
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "用户账号密码注册"
+      tags: "user"
     };
   }
 
+
+  // ========================== 系统设置相关接口 ===================================
   rpc CreateSlider (CreateSliderRequest) returns (CreateSliderReply) {
     option (google.api.http) = {
       post: "/api/slider",
       body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "首页轮播图创建"
+      tags: "system"
     };
   }
 
@@ -80,11 +120,20 @@ service Greeter {
     option (google.api.http) = {
       get: "/api/slider/{id}",
     };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "首页轮播图获取单个"
+      tags: "system"
+    };
   }
 
   rpc DeleteSlider (DeleteSliderRequest) returns (DeleteSliderReply) {
     option (google.api.http) = {
       delete: "/api/slider/{id}",
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "首页轮播图删除"
+      tags: "system"
     };
   }
 
@@ -93,12 +142,21 @@ service Greeter {
       put: "/api/slider/{id}",
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "首页轮播图更新"
+      tags: "system"
+    };
   }
 
   rpc ListSlidersByPriority (ListSlidersByPriorityRequest) returns (ListSlidersByPriorityReply) {
     option (google.api.http) = {
       post: "/api/sliders",
       body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "首页轮播图展示"
+      tags: "system"
     };
   }
 

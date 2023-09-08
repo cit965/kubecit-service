@@ -11,7 +11,7 @@ var ProviderSet = wire.NewSet(NewKubecitService)
 
 // KubecitService is a greeter service.
 type KubecitService struct {
-	v1.UnimplementedGreeterServer
+	v1.UnimplementedKubecitServer
 
 	cc          *biz.CourseUsecase
 	su          *biz.SystemUsecase
