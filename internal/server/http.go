@@ -39,7 +39,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.L
 
 	logService := gin.NewGinService()
 	srv.HandlePrefix("/web/", logService)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
+	v1.RegisterKubecitHTTPServer(srv, greeter)
 	srv.WalkRoute(func(info http.RouteInfo) error {
 		fmt.Printf("%-50s \t %s\n", info.Path, info.Method)
 		return nil

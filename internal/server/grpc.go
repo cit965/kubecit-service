@@ -27,6 +27,6 @@ func NewGRPCServer(c *conf.Server, greeter *service.KubecitService, logger log.L
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterGreeterServer(srv, greeter)
+	v1.RegisterKubecitServer(srv, greeter)
 	return srv
 }
