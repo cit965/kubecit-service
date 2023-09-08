@@ -5,6 +5,7 @@ package helloworld.v1;
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
 
 option go_package = "kubecit-service/api/helloworld/v1;v1";
 option java_multiple_files = true;
@@ -462,8 +463,8 @@ message LoginByJsonReply {
 }
 
 message RegisterUsernameRequest {
-  string username = 1;
-  string password = 2;
+  string username = 1 [(validate.rules).string.pattern = "^[a-zA-Z0-9]+$"];
+  string password = 2 [(validate.rules).string.min_len = 6];
 }
 
 
