@@ -3,21 +3,20 @@ package server
 import (
 	"fmt"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
-
-	v1 "kubecit-service/api/helloworld/v1"
-	"kubecit-service/gin"
-	"kubecit-service/internal/conf"
-	"kubecit-service/internal/service"
-
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/go-kratos/swagger-api/openapiv2"
+	v1 "kubecit-service/api/helloworld/v1"
+	"kubecit-service/gin"
+	"kubecit-service/internal/conf"
+	"kubecit-service/internal/service"
 )
 
 // NewHTTPServer new an HTTP server.
 func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
+		http.ErrorEncoder(errorEncoder),
 		http.Middleware(
 			recovery.Recovery(),
 			Auth(),

@@ -4,6 +4,7 @@
 // 	protoc        v3.19.4
 // source: api/helloworld/v1/kubecit.proto
 
+
 package v1
 
 import (
