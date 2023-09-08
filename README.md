@@ -51,9 +51,29 @@ docker run --rm -p 8000:8000 -p 9000:9000 -v </path/to/your/configs>:/data/conf 
 
 
 
-### ent
+## ent
 
 go run -mod=mod entgo.io/ent/cmd/ent new Category
 
 go generate ./ent
 
+
+## 部署
+
+### k8s yaml
+k8s yaml 在 deploy 文件夹下,包含 deployment，service，ingress
+
+### 打包镜像
+
+```shell
+docker buildx create --name mybuilder
+docekr buildx use mybuilder
+docker buildx build --platform linux/amd64 -t chaoyue/kubecit-service --push .
+```
+
+上传到 dockerhub 下 chaoyue/kubecit-service 
+
+
+## api 地址 
+
+服务启动后访问 http://localhost:8000/q/swagger-ui

@@ -17,3 +17,46 @@ spec:
           image: chaoyue/kubecit-service:latest
           ports:
             - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubecit-service
+spec:
+  selector:
+    app: kubecit-service
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: sandload-nginx
+    kubernetes.io/ingress.rule-mix: "false"
+    nginx.ingress.kubernetes.io/Access-Control-Allow-Origin: '*'
+    nginx.ingress.kubernetes.io/cors-allow-headers: version,token,tid,tId,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
+    nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, OPTIONS
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/enable-access-log: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  creationTimestamp: "2023-08-04T11:14:23Z"
+  generation: 1
+  labels:
+    qcloud-app: applet-open-frontend-gateway
+  name: wlb965-gateway
+spec:
+  rules:
+    - host: wlb965.sandload.com
+      http:
+        paths:
+          - backend:
+              serviceName: kubecit-service
+              servicePort: 8000
+            path: /
+            pathType: ImplementationSpecific
