@@ -105,8 +105,8 @@ func (cq *CourseQuery) FirstX(ctx context.Context) *Course {
 
 // FirstID returns the first Course ID from the query.
 // Returns a *NotFoundError when no Course ID was found.
-func (cq *CourseQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (cq *CourseQuery) FirstID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = cq.Limit(1).IDs(setContextOp(ctx, cq.ctx, "FirstID")); err != nil {
 		return
 	}
@@ -118,7 +118,7 @@ func (cq *CourseQuery) FirstID(ctx context.Context) (id string, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (cq *CourseQuery) FirstIDX(ctx context.Context) string {
+func (cq *CourseQuery) FirstIDX(ctx context.Context) int {
 	id, err := cq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -156,8 +156,8 @@ func (cq *CourseQuery) OnlyX(ctx context.Context) *Course {
 // OnlyID is like Only, but returns the only Course ID in the query.
 // Returns a *NotSingularError when more than one Course ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (cq *CourseQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (cq *CourseQuery) OnlyID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = cq.Limit(2).IDs(setContextOp(ctx, cq.ctx, "OnlyID")); err != nil {
 		return
 	}
@@ -173,7 +173,7 @@ func (cq *CourseQuery) OnlyID(ctx context.Context) (id string, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (cq *CourseQuery) OnlyIDX(ctx context.Context) string {
+func (cq *CourseQuery) OnlyIDX(ctx context.Context) int {
 	id, err := cq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -201,7 +201,7 @@ func (cq *CourseQuery) AllX(ctx context.Context) []*Course {
 }
 
 // IDs executes the query and returns a list of Course IDs.
-func (cq *CourseQuery) IDs(ctx context.Context) (ids []string, err error) {
+func (cq *CourseQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if cq.ctx.Unique == nil && cq.path != nil {
 		cq.Unique(true)
 	}
@@ -213,7 +213,7 @@ func (cq *CourseQuery) IDs(ctx context.Context) (ids []string, err error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (cq *CourseQuery) IDsX(ctx context.Context) []string {
+func (cq *CourseQuery) IDsX(ctx context.Context) []int {
 	ids, err := cq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -440,7 +440,7 @@ func (cq *CourseQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (cq *CourseQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeString))
+	_spec := sqlgraph.NewQuerySpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
 	_spec.From = cq.sql
 	if unique := cq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique

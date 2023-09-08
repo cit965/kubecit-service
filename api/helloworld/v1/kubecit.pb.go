@@ -2299,6 +2299,69 @@ func (*GetInfoRequest) Descriptor() ([]byte, []int) {
 	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{32}
 }
 
+type UserInfoReply struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	RoleId   uint32 `protobuf:"varint,2,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	Channel  string `protobuf:"bytes,3,opt,name=channel,proto3" json:"channel,omitempty"`
+}
+
+func (x *UserInfoReply) Reset() {
+	*x = UserInfoReply{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[33]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UserInfoReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserInfoReply) ProtoMessage() {}
+
+func (x *UserInfoReply) ProtoReflect() protoreflect.Message {
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[33]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserInfoReply.ProtoReflect.Descriptor instead.
+func (*UserInfoReply) Descriptor() ([]byte, []int) {
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *UserInfoReply) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *UserInfoReply) GetRoleId() uint32 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
+func (x *UserInfoReply) GetChannel() string {
+	if x != nil {
+		return x.Channel
+	}
+	return ""
+}
+
 type GetInfoReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3684,18 +3747,19 @@ var file_api_helloworld_v1_kubecit_proto_goTypes = []interface{}{
 	(*CreateTokenRequest)(nil),           // 30: helloworld.v1.CreateTokenRequest
 	(*CreateTokenReply)(nil),             // 31: helloworld.v1.CreateTokenReply
 	(*GetInfoRequest)(nil),               // 32: helloworld.v1.GetInfoRequest
-	(*GetInfoReply)(nil),                 // 33: helloworld.v1.GetInfoReply
-	(*GetInfoReplyData)(nil),             // 34: helloworld.v1.GetInfoReplyData
-	(*MemberVIPInfo)(nil),                // 35: helloworld.v1.MemberVIPInfo
-	(*LoginByJsonRequest)(nil),           // 36: helloworld.v1.LoginByJsonRequest
-	(*LoginByJsonReply)(nil),             // 37: helloworld.v1.LoginByJsonReply
-	(*RegisterUsernameRequest)(nil),      // 38: helloworld.v1.RegisterUsernameRequest
-	(*RegisterUsernameReply)(nil),        // 39: helloworld.v1.RegisterUsernameReply
-	(*LoginByJsonReplyData)(nil),         // 40: helloworld.v1.LoginByJsonReplyData
-	nil,                                  // 41: helloworld.v1.TagsListRequest.EntityEntry
-	nil,                                  // 42: helloworld.v1.SearchCourseRequest.EntityEntry
-	nil,                                  // 43: helloworld.v1.CreateTokenReply.DataEntry
-	(*timestamppb.Timestamp)(nil),        // 44: google.protobuf.Timestamp
+	(*UserInfoReply)(nil),                // 33: helloworld.v1.UserInfoReply
+	(*GetInfoReply)(nil),                 // 34: helloworld.v1.GetInfoReply
+	(*GetInfoReplyData)(nil),             // 35: helloworld.v1.GetInfoReplyData
+	(*MemberVIPInfo)(nil),                // 36: helloworld.v1.MemberVIPInfo
+	(*LoginByJsonRequest)(nil),           // 37: helloworld.v1.LoginByJsonRequest
+	(*LoginByJsonReply)(nil),             // 38: helloworld.v1.LoginByJsonReply
+	(*RegisterUsernameRequest)(nil),      // 39: helloworld.v1.RegisterUsernameRequest
+	(*RegisterUsernameReply)(nil),        // 40: helloworld.v1.RegisterUsernameReply
+	(*LoginByJsonReplyData)(nil),         // 41: helloworld.v1.LoginByJsonReplyData
+	nil,                                  // 42: helloworld.v1.TagsListRequest.EntityEntry
+	nil,                                  // 43: helloworld.v1.SearchCourseRequest.EntityEntry
+	nil,                                  // 44: helloworld.v1.CreateTokenReply.DataEntry
+	(*timestamppb.Timestamp)(nil),        // 45: google.protobuf.Timestamp
 }
 var file_api_helloworld_v1_kubecit_proto_depIdxs = []int32{
 	3,  // 0: helloworld.v1.CategoryResp.categories:type_name -> helloworld.v1.CategoryInfo
@@ -3703,46 +3767,46 @@ var file_api_helloworld_v1_kubecit_proto_depIdxs = []int32{
 	8,  // 2: helloworld.v1.MostNewReply.data:type_name -> helloworld.v1.MostNewReplyData
 	9,  // 3: helloworld.v1.MostNewReplyData.pageInfo:type_name -> helloworld.v1.PageInfo
 	10, // 4: helloworld.v1.PageInfo.list:type_name -> helloworld.v1.CourseInfo
-	44, // 5: helloworld.v1.CourseInfo.updateTime:type_name -> google.protobuf.Timestamp
-	44, // 6: helloworld.v1.CourseInfo.createTime:type_name -> google.protobuf.Timestamp
+	45, // 5: helloworld.v1.CourseInfo.updateTime:type_name -> google.protobuf.Timestamp
+	45, // 6: helloworld.v1.CourseInfo.createTime:type_name -> google.protobuf.Timestamp
 	3,  // 7: helloworld.v1.GetFirstCategoriesReply.categories:type_name -> helloworld.v1.CategoryInfo
 	14, // 8: helloworld.v1.getFirstCategoriesReplyData.list:type_name -> helloworld.v1.FirstCategory
-	44, // 9: helloworld.v1.FirstCategory.updateTime:type_name -> google.protobuf.Timestamp
-	44, // 10: helloworld.v1.FirstCategory.createTime:type_name -> google.protobuf.Timestamp
-	41, // 11: helloworld.v1.TagsListRequest.entity:type_name -> helloworld.v1.TagsListRequest.EntityEntry
+	45, // 9: helloworld.v1.FirstCategory.updateTime:type_name -> google.protobuf.Timestamp
+	45, // 10: helloworld.v1.FirstCategory.createTime:type_name -> google.protobuf.Timestamp
+	42, // 11: helloworld.v1.TagsListRequest.entity:type_name -> helloworld.v1.TagsListRequest.EntityEntry
 	6,  // 12: helloworld.v1.TagsListReply.meta:type_name -> helloworld.v1.Metadata
 	9,  // 13: helloworld.v1.TagsListReply.data:type_name -> helloworld.v1.PageInfo
-	42, // 14: helloworld.v1.SearchCourseRequest.entity:type_name -> helloworld.v1.SearchCourseRequest.EntityEntry
+	43, // 14: helloworld.v1.SearchCourseRequest.entity:type_name -> helloworld.v1.SearchCourseRequest.EntityEntry
 	6,  // 15: helloworld.v1.SearchCourseReply.meta:type_name -> helloworld.v1.Metadata
 	9,  // 16: helloworld.v1.SearchCourseReply.data:type_name -> helloworld.v1.PageInfo
-	44, // 17: helloworld.v1.SliderInfo.createAt:type_name -> google.protobuf.Timestamp
-	44, // 18: helloworld.v1.SliderInfo.updateAt:type_name -> google.protobuf.Timestamp
+	45, // 17: helloworld.v1.SliderInfo.createAt:type_name -> google.protobuf.Timestamp
+	45, // 18: helloworld.v1.SliderInfo.updateAt:type_name -> google.protobuf.Timestamp
 	19, // 19: helloworld.v1.CreateSliderReply.data:type_name -> helloworld.v1.SliderInfo
 	19, // 20: helloworld.v1.GetSliderReply.data:type_name -> helloworld.v1.SliderInfo
 	19, // 21: helloworld.v1.UpdateSliderReply.data:type_name -> helloworld.v1.SliderInfo
 	19, // 22: helloworld.v1.ListSlidersByPriorityReply.data:type_name -> helloworld.v1.SliderInfo
 	6,  // 23: helloworld.v1.CreateTokenReply.meta:type_name -> helloworld.v1.Metadata
-	43, // 24: helloworld.v1.CreateTokenReply.data:type_name -> helloworld.v1.CreateTokenReply.DataEntry
+	44, // 24: helloworld.v1.CreateTokenReply.data:type_name -> helloworld.v1.CreateTokenReply.DataEntry
 	6,  // 25: helloworld.v1.GetInfoReply.meta:type_name -> helloworld.v1.Metadata
-	34, // 26: helloworld.v1.GetInfoReply.data:type_name -> helloworld.v1.GetInfoReplyData
-	44, // 27: helloworld.v1.GetInfoReplyData.birthday:type_name -> google.protobuf.Timestamp
-	44, // 28: helloworld.v1.GetInfoReplyData.updateTime:type_name -> google.protobuf.Timestamp
-	35, // 29: helloworld.v1.GetInfoReplyData.vipInfo:type_name -> helloworld.v1.MemberVIPInfo
-	44, // 30: helloworld.v1.GetInfoReplyData.createTime:type_name -> google.protobuf.Timestamp
-	44, // 31: helloworld.v1.MemberVIPInfo.startTime:type_name -> google.protobuf.Timestamp
-	44, // 32: helloworld.v1.MemberVIPInfo.endTime:type_name -> google.protobuf.Timestamp
+	35, // 26: helloworld.v1.GetInfoReply.data:type_name -> helloworld.v1.GetInfoReplyData
+	45, // 27: helloworld.v1.GetInfoReplyData.birthday:type_name -> google.protobuf.Timestamp
+	45, // 28: helloworld.v1.GetInfoReplyData.updateTime:type_name -> google.protobuf.Timestamp
+	36, // 29: helloworld.v1.GetInfoReplyData.vipInfo:type_name -> helloworld.v1.MemberVIPInfo
+	45, // 30: helloworld.v1.GetInfoReplyData.createTime:type_name -> google.protobuf.Timestamp
+	45, // 31: helloworld.v1.MemberVIPInfo.startTime:type_name -> google.protobuf.Timestamp
+	45, // 32: helloworld.v1.MemberVIPInfo.endTime:type_name -> google.protobuf.Timestamp
 	6,  // 33: helloworld.v1.LoginByJsonReply.meta:type_name -> helloworld.v1.Metadata
-	40, // 34: helloworld.v1.LoginByJsonReply.data:type_name -> helloworld.v1.LoginByJsonReplyData
+	41, // 34: helloworld.v1.LoginByJsonReply.data:type_name -> helloworld.v1.LoginByJsonReplyData
 	6,  // 35: helloworld.v1.RegisterUsernameReply.meta:type_name -> helloworld.v1.Metadata
-	40, // 36: helloworld.v1.RegisterUsernameReply.data:type_name -> helloworld.v1.LoginByJsonReplyData
+	41, // 36: helloworld.v1.RegisterUsernameReply.data:type_name -> helloworld.v1.LoginByJsonReplyData
 	5,  // 37: helloworld.v1.Greeter.MostNew:input_type -> helloworld.v1.PageRequest
 	11, // 38: helloworld.v1.Greeter.GetFirstCategories:input_type -> helloworld.v1.GetFirstCategoriesRequest
 	15, // 39: helloworld.v1.Greeter.TagsList:input_type -> helloworld.v1.TagsListRequest
 	17, // 40: helloworld.v1.Greeter.SearchCourse:input_type -> helloworld.v1.SearchCourseRequest
 	1,  // 41: helloworld.v1.Greeter.Category:input_type -> helloworld.v1.Empty
 	32, // 42: helloworld.v1.Greeter.GetInfo:input_type -> helloworld.v1.GetInfoRequest
-	36, // 43: helloworld.v1.Greeter.LoginByJson:input_type -> helloworld.v1.LoginByJsonRequest
-	38, // 44: helloworld.v1.Greeter.RegisterUsername:input_type -> helloworld.v1.RegisterUsernameRequest
+	37, // 43: helloworld.v1.Greeter.LoginByJson:input_type -> helloworld.v1.LoginByJsonRequest
+	39, // 44: helloworld.v1.Greeter.RegisterUsername:input_type -> helloworld.v1.RegisterUsernameRequest
 	30, // 45: helloworld.v1.Greeter.CreateToken:input_type -> helloworld.v1.CreateTokenRequest
 	20, // 46: helloworld.v1.Greeter.CreateSlider:input_type -> helloworld.v1.CreateSliderRequest
 	22, // 47: helloworld.v1.Greeter.GetSlider:input_type -> helloworld.v1.GetSliderRequest
@@ -3754,9 +3818,9 @@ var file_api_helloworld_v1_kubecit_proto_depIdxs = []int32{
 	16, // 53: helloworld.v1.Greeter.TagsList:output_type -> helloworld.v1.TagsListReply
 	18, // 54: helloworld.v1.Greeter.SearchCourse:output_type -> helloworld.v1.SearchCourseReply
 	2,  // 55: helloworld.v1.Greeter.Category:output_type -> helloworld.v1.CategoryResp
-	33, // 56: helloworld.v1.Greeter.GetInfo:output_type -> helloworld.v1.GetInfoReply
-	37, // 57: helloworld.v1.Greeter.LoginByJson:output_type -> helloworld.v1.LoginByJsonReply
-	39, // 58: helloworld.v1.Greeter.RegisterUsername:output_type -> helloworld.v1.RegisterUsernameReply
+	33, // 56: helloworld.v1.Greeter.GetInfo:output_type -> helloworld.v1.UserInfoReply
+	38, // 57: helloworld.v1.Greeter.LoginByJson:output_type -> helloworld.v1.LoginByJsonReply
+	40, // 58: helloworld.v1.Greeter.RegisterUsername:output_type -> helloworld.v1.RegisterUsernameReply
 	31, // 59: helloworld.v1.Greeter.CreateToken:output_type -> helloworld.v1.CreateTokenReply
 	21, // 60: helloworld.v1.Greeter.CreateSlider:output_type -> helloworld.v1.CreateSliderReply
 	23, // 61: helloworld.v1.Greeter.GetSlider:output_type -> helloworld.v1.GetSliderReply
@@ -4275,7 +4339,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_helloworld_v1_kubecit_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   44,
+			NumMessages:   45,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

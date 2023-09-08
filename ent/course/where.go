@@ -11,58 +11,48 @@ import (
 )
 
 // ID filters vertices based on their ID field.
-func ID(id string) predicate.Course {
+func ID(id int) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldID, id))
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id string) predicate.Course {
+func IDEQ(id int) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldID, id))
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id string) predicate.Course {
+func IDNEQ(id int) predicate.Course {
 	return predicate.Course(sql.FieldNEQ(FieldID, id))
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...string) predicate.Course {
+func IDIn(ids ...int) predicate.Course {
 	return predicate.Course(sql.FieldIn(FieldID, ids...))
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...string) predicate.Course {
+func IDNotIn(ids ...int) predicate.Course {
 	return predicate.Course(sql.FieldNotIn(FieldID, ids...))
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id string) predicate.Course {
+func IDGT(id int) predicate.Course {
 	return predicate.Course(sql.FieldGT(FieldID, id))
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id string) predicate.Course {
+func IDGTE(id int) predicate.Course {
 	return predicate.Course(sql.FieldGTE(FieldID, id))
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id string) predicate.Course {
+func IDLT(id int) predicate.Course {
 	return predicate.Course(sql.FieldLT(FieldID, id))
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id string) predicate.Course {
+func IDLTE(id int) predicate.Course {
 	return predicate.Course(sql.FieldLTE(FieldID, id))
-}
-
-// IDEqualFold applies the EqualFold predicate on the ID field.
-func IDEqualFold(id string) predicate.Course {
-	return predicate.Course(sql.FieldEqualFold(FieldID, id))
-}
-
-// IDContainsFold applies the ContainsFold predicate on the ID field.
-func IDContainsFold(id string) predicate.Course {
-	return predicate.Course(sql.FieldContainsFold(FieldID, id))
 }
 
 // Level applies equality check predicate on the "level" field. It's identical to LevelEQ.
@@ -101,7 +91,7 @@ func Tags(v string) predicate.Course {
 }
 
 // CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
-func CreatedAt(v string) predicate.Course {
+func CreatedAt(v time.Time) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldCreatedAt, v))
 }
 
@@ -496,68 +486,43 @@ func TagsContainsFold(v string) predicate.Course {
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
-func CreatedAtEQ(v string) predicate.Course {
+func CreatedAtEQ(v time.Time) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldCreatedAt, v))
 }
 
 // CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
-func CreatedAtNEQ(v string) predicate.Course {
+func CreatedAtNEQ(v time.Time) predicate.Course {
 	return predicate.Course(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
 // CreatedAtIn applies the In predicate on the "created_at" field.
-func CreatedAtIn(vs ...string) predicate.Course {
+func CreatedAtIn(vs ...time.Time) predicate.Course {
 	return predicate.Course(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
 // CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
-func CreatedAtNotIn(vs ...string) predicate.Course {
+func CreatedAtNotIn(vs ...time.Time) predicate.Course {
 	return predicate.Course(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
 // CreatedAtGT applies the GT predicate on the "created_at" field.
-func CreatedAtGT(v string) predicate.Course {
+func CreatedAtGT(v time.Time) predicate.Course {
 	return predicate.Course(sql.FieldGT(FieldCreatedAt, v))
 }
 
 // CreatedAtGTE applies the GTE predicate on the "created_at" field.
-func CreatedAtGTE(v string) predicate.Course {
+func CreatedAtGTE(v time.Time) predicate.Course {
 	return predicate.Course(sql.FieldGTE(FieldCreatedAt, v))
 }
 
 // CreatedAtLT applies the LT predicate on the "created_at" field.
-func CreatedAtLT(v string) predicate.Course {
+func CreatedAtLT(v time.Time) predicate.Course {
 	return predicate.Course(sql.FieldLT(FieldCreatedAt, v))
 }
 
 // CreatedAtLTE applies the LTE predicate on the "created_at" field.
-func CreatedAtLTE(v string) predicate.Course {
+func CreatedAtLTE(v time.Time) predicate.Course {
 	return predicate.Course(sql.FieldLTE(FieldCreatedAt, v))
-}
-
-// CreatedAtContains applies the Contains predicate on the "created_at" field.
-func CreatedAtContains(v string) predicate.Course {
-	return predicate.Course(sql.FieldContains(FieldCreatedAt, v))
-}
-
-// CreatedAtHasPrefix applies the HasPrefix predicate on the "created_at" field.
-func CreatedAtHasPrefix(v string) predicate.Course {
-	return predicate.Course(sql.FieldHasPrefix(FieldCreatedAt, v))
-}
-
-// CreatedAtHasSuffix applies the HasSuffix predicate on the "created_at" field.
-func CreatedAtHasSuffix(v string) predicate.Course {
-	return predicate.Course(sql.FieldHasSuffix(FieldCreatedAt, v))
-}
-
-// CreatedAtEqualFold applies the EqualFold predicate on the "created_at" field.
-func CreatedAtEqualFold(v string) predicate.Course {
-	return predicate.Course(sql.FieldEqualFold(FieldCreatedAt, v))
-}
-
-// CreatedAtContainsFold applies the ContainsFold predicate on the "created_at" field.
-func CreatedAtContainsFold(v string) predicate.Course {
-	return predicate.Course(sql.FieldContainsFold(FieldCreatedAt, v))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.

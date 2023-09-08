@@ -43,7 +43,7 @@ service Greeter {
     };
   }
 
-  rpc GetInfo (GetInfoRequest) returns (GetInfoReply) {
+  rpc GetInfo (GetInfoRequest) returns (UserInfoReply) {
     option (google.api.http) = {
       get: "/api/member/getInfo",
     };
@@ -226,7 +226,7 @@ message getFirstCategoriesReplyData {
 message FirstCategory {
   string thumbnail = 1;
   int32 level = 2;
-  string description =3;
+  string description = 3;
   google.protobuf.Timestamp updateTime = 4;
   int32 sort = 5;
   string categoryName = 6;
@@ -243,7 +243,7 @@ message FirstCategory {
 message TagsListRequest {
   int32 pageNum = 1;
   int32 pageSize = 2;
-  map<string,string> entity = 3;
+  map<string, string> entity = 3;
 }
 
 message TagsListReply {
@@ -254,7 +254,7 @@ message TagsListReply {
 message SearchCourseRequest {
   int32 pageNum = 1;
   int32 pageSize = 2;
-  map<string,string> entity = 3;
+  map<string, string> entity = 3;
 }
 
 message SearchCourseReply {
@@ -326,10 +326,16 @@ message ListSlidersByPriorityReply {
 message CreateTokenRequest {}
 message CreateTokenReply {
   Metadata meta = 1;
-  map<string,string> data = 2;
+  map<string, string> data = 2;
 }
 
 message GetInfoRequest {}
+message UserInfoReply{
+  string username = 1;
+  uint32 role_id = 2;
+  string channel = 3;
+}
+
 message GetInfoReply {
   Metadata meta = 1;
   GetInfoReplyData data = 2;
