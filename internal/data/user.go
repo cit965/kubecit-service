@@ -66,14 +66,14 @@ func (repo *userRepo) Save(ctx context.Context, userPO *biz.UserPO) error {
 
 func (repo *userRepo) SaveAccountAndUserTx(ctx context.Context, accountPO *biz.AccountPO, userPO *biz.UserPO) error {
 	if err := repo.data.WithTx(ctx, func(tx *ent.Tx) error {
-		return repo.SaveAccountAndUser(ctx, accountPO, userPO)
+		return repo.saveAccountAndUser(ctx, accountPO, userPO)
 	}); err != nil {
-		log.Fatal(err)
+		return err
 	}
 	return nil
 }
 
-func (repo *userRepo) SaveAccountAndUser(ctx context.Context, accountPO *biz.AccountPO, userPO *biz.UserPO) error {
+func (repo *userRepo) saveAccountAndUser(ctx context.Context, accountPO *biz.AccountPO, userPO *biz.UserPO) error {
 	if userPO.Id == 0 {
 		nUser, err := repo.data.db.User.Create().
 			SetUsername(userPO.Username).
