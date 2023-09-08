@@ -2,6 +2,8 @@ package data
 
 import (
 	"context"
+	"kubecit-service/ent"
+	"kubecit-service/ent/account"
 
 	"kubecit-service/ent/user"
 	"kubecit-service/internal/biz"
@@ -60,4 +62,62 @@ func (repo *userRepo) Save(ctx context.Context, userPO *biz.UserPO) error {
 		return nil
 	}
 
+}
+
+func (repo *userRepo) SaveAccountAndUserTx(ctx context.Context, accountPO *biz.AccountPO, userPO *biz.UserPO) error {
+	if err := repo.data.WithTx(ctx, func(tx *ent.Tx) error {
+		return repo.SaveAccountAndUser(ctx, accountPO, userPO)
+	}); err != nil {
+		log.Fatal(err)
+	}
+	return nil
+}
+
+func (repo *userRepo) SaveAccountAndUser(ctx context.Context, accountPO *biz.AccountPO, userPO *biz.UserPO) error {
+	if userPO.Id == 0 {
+		nUser, err := repo.data.db.User.Create().
+			SetUsername(userPO.Username).
+			SetChannel(userPO.Channel).
+			SetRoleID(userPO.RoleId).
+			Save(ctx)
+		if err != nil {
+			return err
+		}
+		userPO.Id = uint64(nUser.ID)
+	} else {
+		_, err := repo.data.db.User.Update().
+			SetUsername(userPO.Username).
+			SetChannel(userPO.Channel).
+			SetRoleID(userPO.RoleId).
+			Where(user.IDEQ(int(userPO.Id))).
+			Save(ctx)
+		if err != nil {
+			return err
+		}
+
+	}
+	if accountPO.Id == 0 {
+		_, err := repo.data.db.Account.Create().
+			SetOpenid(accountPO.Openid).
+			SetPassword(accountPO.Password).
+			SetUserID(userPO.Id).
+			SetMethod(accountPO.Method).
+			Save(ctx)
+		if err != nil {
+			return err
+		}
+	} else {
+		_, err := repo.data.db.Account.Update().
+			SetOpenid(accountPO.Openid).
+			SetPassword(accountPO.Password).
+			SetUserID(accountPO.UserId).
+			SetMethod(accountPO.Method).
+			Where(account.IDEQ(int(accountPO.Id))).
+			Save(ctx)
+		if err != nil {
+			return err
+		}
+
+	}
+	return nil
 }
