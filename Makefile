@@ -65,6 +65,13 @@ build:
 run: build
 	./bin/kubecit-service -conf "./configs/config.yaml"
 
+
+.PHONY: runqa
+# build and run the service use local_config.yaml
+runqa: build
+	./bin/kubecit-service -conf "./configs/qa_config.yaml"
+
+
 .PHONY: generate
 # generate
 generate:

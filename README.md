@@ -77,3 +77,14 @@ docker buildx build --platform linux/amd64 -t chaoyue/kubecit-service --push .
 ## api 地址 
 
 服务启动后访问 http://localhost:8000/q/swagger-ui
+
+
+## 链接 qa 数据库
+
+需要有 qa 的kubeconfig ，然后执行
+
+```shell
+kubectl port-forward service/wlb965-mysql 3306:3306
+make runqa
+```
+
