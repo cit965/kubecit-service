@@ -15,7 +15,7 @@ option java_outer_classname = "HelloworldProtoV1";
 service Kubecit {
 
   // ========================== 课程相关接口 ===================================
-  rpc MostNew (PageRequest) returns (MostNewReply) {
+  rpc MostNew (Empty) returns (MostNewReply) {
     option (google.api.http) = {
       post: "/api/course/mostNew",
       body: "*"
@@ -148,10 +148,9 @@ service Kubecit {
     };
   }
 
-  rpc ListSlidersByPriority (ListSlidersByPriorityRequest) returns (ListSlidersByPriorityReply) {
+  rpc ListSlidersByPriority (Empty) returns (ListSlidersByPriorityReply) {
     option (google.api.http) = {
-      post: "/api/sliders",
-      body: "*"
+      get: "/api/sliders",
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -205,8 +204,7 @@ message Metadata {
 }
 
 message MostNewReply {
-  Metadata meta = 1;
-  MostNewReplyData data = 2;
+  repeated CourseInfo list = 9;
 }
 
 message MostNewReplyData {
@@ -301,18 +299,21 @@ message FirstCategory {
 message TagsListRequest {
   int32 pageNum = 1;
   int32 pageSize = 2;
-  map<string, string> entity = 3;
+  int32 course = 3;
 }
 
 message TagsListReply {
-  Metadata meta = 1;
-  PageInfo data = 2;
+  repeated Tag tags = 1;
+}
+
+message Tag {
+  string name = 1;
 }
 
 message SearchCourseRequest {
   int32 pageNum = 1;
   int32 pageSize = 2;
-  map<string, string> entity = 3;
+  int32 category = 3;
 }
 
 message SearchCourseReply {

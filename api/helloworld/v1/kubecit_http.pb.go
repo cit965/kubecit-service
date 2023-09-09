@@ -42,10 +42,10 @@ type KubecitHTTPServer interface {
 	// GetInfo ========================== 用户相关接口 ===================================
 	GetInfo(context.Context, *GetInfoRequest) (*UserInfoReply, error)
 	GetSlider(context.Context, *GetSliderRequest) (*GetSliderReply, error)
-	ListSlidersByPriority(context.Context, *ListSlidersByPriorityRequest) (*ListSlidersByPriorityReply, error)
+	ListSlidersByPriority(context.Context, *Empty) (*ListSlidersByPriorityReply, error)
 	LoginByJson(context.Context, *LoginByJsonRequest) (*LoginByJsonReply, error)
 	// MostNew ========================== 课程相关接口 ===================================
-	MostNew(context.Context, *PageRequest) (*MostNewReply, error)
+	MostNew(context.Context, *Empty) (*MostNewReply, error)
 	RegisterUsername(context.Context, *RegisterUsernameRequest) (*RegisterUsernameReply, error)
 	SearchCourse(context.Context, *SearchCourseRequest) (*SearchCourseReply, error)
 	TagsList(context.Context, *TagsListRequest) (*TagsListReply, error)
@@ -66,12 +66,12 @@ func RegisterKubecitHTTPServer(s *http.Server, srv KubecitHTTPServer) {
 	r.GET("/api/slider/{id}", _Kubecit_GetSlider0_HTTP_Handler(srv))
 	r.DELETE("/api/slider/{id}", _Kubecit_DeleteSlider0_HTTP_Handler(srv))
 	r.PUT("/api/slider/{id}", _Kubecit_UpdateSlider0_HTTP_Handler(srv))
-	r.POST("/api/sliders", _Kubecit_ListSlidersByPriority0_HTTP_Handler(srv))
+	r.GET("/api/sliders", _Kubecit_ListSlidersByPriority0_HTTP_Handler(srv))
 }
 
 func _Kubecit_MostNew0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in PageRequest
+		var in Empty
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
@@ -80,7 +80,7 @@ func _Kubecit_MostNew0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context
 		}
 		http.SetOperation(ctx, OperationKubecitMostNew)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.MostNew(ctx, req.(*PageRequest))
+			return srv.MostNew(ctx, req.(*Empty))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -329,16 +329,13 @@ func _Kubecit_UpdateSlider0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Co
 
 func _Kubecit_ListSlidersByPriority0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ListSlidersByPriorityRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
+		var in Empty
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, OperationKubecitListSlidersByPriority)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ListSlidersByPriority(ctx, req.(*ListSlidersByPriorityRequest))
+			return srv.ListSlidersByPriority(ctx, req.(*Empty))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -356,9 +353,9 @@ type KubecitHTTPClient interface {
 	GetFirstCategories(ctx context.Context, req *GetFirstCategoriesRequest, opts ...http.CallOption) (rsp *GetFirstCategoriesReply, err error)
 	GetInfo(ctx context.Context, req *GetInfoRequest, opts ...http.CallOption) (rsp *UserInfoReply, err error)
 	GetSlider(ctx context.Context, req *GetSliderRequest, opts ...http.CallOption) (rsp *GetSliderReply, err error)
-	ListSlidersByPriority(ctx context.Context, req *ListSlidersByPriorityRequest, opts ...http.CallOption) (rsp *ListSlidersByPriorityReply, err error)
+	ListSlidersByPriority(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *ListSlidersByPriorityReply, err error)
 	LoginByJson(ctx context.Context, req *LoginByJsonRequest, opts ...http.CallOption) (rsp *LoginByJsonReply, err error)
-	MostNew(ctx context.Context, req *PageRequest, opts ...http.CallOption) (rsp *MostNewReply, err error)
+	MostNew(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *MostNewReply, err error)
 	RegisterUsername(ctx context.Context, req *RegisterUsernameRequest, opts ...http.CallOption) (rsp *RegisterUsernameReply, err error)
 	SearchCourse(ctx context.Context, req *SearchCourseRequest, opts ...http.CallOption) (rsp *SearchCourseReply, err error)
 	TagsList(ctx context.Context, req *TagsListRequest, opts ...http.CallOption) (rsp *TagsListReply, err error)
@@ -451,13 +448,13 @@ func (c *KubecitHTTPClientImpl) GetSlider(ctx context.Context, in *GetSliderRequ
 	return &out, err
 }
 
-func (c *KubecitHTTPClientImpl) ListSlidersByPriority(ctx context.Context, in *ListSlidersByPriorityRequest, opts ...http.CallOption) (*ListSlidersByPriorityReply, error) {
+func (c *KubecitHTTPClientImpl) ListSlidersByPriority(ctx context.Context, in *Empty, opts ...http.CallOption) (*ListSlidersByPriorityReply, error) {
 	var out ListSlidersByPriorityReply
 	pattern := "/api/sliders"
-	path := binding.EncodeURL(pattern, in, false)
+	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationKubecitListSlidersByPriority))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -477,7 +474,7 @@ func (c *KubecitHTTPClientImpl) LoginByJson(ctx context.Context, in *LoginByJson
 	return &out, err
 }
 
-func (c *KubecitHTTPClientImpl) MostNew(ctx context.Context, in *PageRequest, opts ...http.CallOption) (*MostNewReply, error) {
+func (c *KubecitHTTPClientImpl) MostNew(ctx context.Context, in *Empty, opts ...http.CallOption) (*MostNewReply, error) {
 	var out MostNewReply
 	pattern := "/api/course/mostNew"
 	path := binding.EncodeURL(pattern, in, false)

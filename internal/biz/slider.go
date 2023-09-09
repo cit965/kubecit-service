@@ -23,7 +23,7 @@ type SliderRepo interface {
 	List(ctx context.Context) ([]*Slider, error)
 	Delete(ctx context.Context, id int) (int, error)
 	Update(ctx context.Context, id int, slider *Slider) (*Slider, error)
-	ListByPriority(ctx context.Context, priority int, count int) ([]*Slider, error)
+	ListByPriority(ctx context.Context, count int) ([]*Slider, error)
 }
 
 type SystemUsecase struct {
@@ -54,6 +54,6 @@ func (su *SystemUsecase) UpdateById(ctx context.Context, id int, slider *Slider)
 	return su.repo.Update(ctx, id, slider)
 }
 
-func (su *SystemUsecase) ListByPriority(ctx context.Context, priority, count int) ([]*Slider, error) {
-	return su.repo.ListByPriority(ctx, priority, count)
+func (su *SystemUsecase) ListByPriority(ctx context.Context, count int) ([]*Slider, error) {
+	return su.repo.ListByPriority(ctx, 4)
 }

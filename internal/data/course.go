@@ -20,10 +20,10 @@ func NewCourseRepo(data *Data, logger log.Logger) biz.CourseRepo {
 	}
 }
 
-func (c courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int, level *int32, reverse *bool) ([]*biz.Course, error) {
+func (c courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*biz.Course, error) {
 	cq := c.data.db.Course.Query()
 	if categoryId != nil {
-		cq.Where(course.CategoryIDEQ(*categoryId))
+		cq.Where(course.CategoryIDEQ(int(*categoryId)))
 	}
 	if level != nil {
 		cq.Where(course.LevelEQ(*level))
@@ -35,7 +35,8 @@ func (c courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, cat
 			cq.Order(ent.Desc(course.FieldCreatedAt))
 		}
 	}
-	result, err := cq.Offset(pageNum).Limit(pageSize).All(ctx)
+
+	result, err := cq.Offset(0).Limit(pageSize).All(ctx)
 	if err != nil {
 		c.log.Errorf("search course errorf: %v\n", err)
 		return nil, err

@@ -39,7 +39,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type KubecitClient interface {
 	// ========================== 课程相关接口 ===================================
-	MostNew(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*MostNewReply, error)
+	MostNew(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MostNewReply, error)
 	GetFirstCategories(ctx context.Context, in *GetFirstCategoriesRequest, opts ...grpc.CallOption) (*GetFirstCategoriesReply, error)
 	TagsList(ctx context.Context, in *TagsListRequest, opts ...grpc.CallOption) (*TagsListReply, error)
 	SearchCourse(ctx context.Context, in *SearchCourseRequest, opts ...grpc.CallOption) (*SearchCourseReply, error)
@@ -53,7 +53,7 @@ type KubecitClient interface {
 	GetSlider(ctx context.Context, in *GetSliderRequest, opts ...grpc.CallOption) (*GetSliderReply, error)
 	DeleteSlider(ctx context.Context, in *DeleteSliderRequest, opts ...grpc.CallOption) (*DeleteSliderReply, error)
 	UpdateSlider(ctx context.Context, in *UpdateSliderRequest, opts ...grpc.CallOption) (*UpdateSliderReply, error)
-	ListSlidersByPriority(ctx context.Context, in *ListSlidersByPriorityRequest, opts ...grpc.CallOption) (*ListSlidersByPriorityReply, error)
+	ListSlidersByPriority(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListSlidersByPriorityReply, error)
 }
 
 type kubecitClient struct {
@@ -64,7 +64,7 @@ func NewKubecitClient(cc grpc.ClientConnInterface) KubecitClient {
 	return &kubecitClient{cc}
 }
 
-func (c *kubecitClient) MostNew(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*MostNewReply, error) {
+func (c *kubecitClient) MostNew(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MostNewReply, error) {
 	out := new(MostNewReply)
 	err := c.cc.Invoke(ctx, Kubecit_MostNew_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -172,7 +172,7 @@ func (c *kubecitClient) UpdateSlider(ctx context.Context, in *UpdateSliderReques
 	return out, nil
 }
 
-func (c *kubecitClient) ListSlidersByPriority(ctx context.Context, in *ListSlidersByPriorityRequest, opts ...grpc.CallOption) (*ListSlidersByPriorityReply, error) {
+func (c *kubecitClient) ListSlidersByPriority(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListSlidersByPriorityReply, error) {
 	out := new(ListSlidersByPriorityReply)
 	err := c.cc.Invoke(ctx, Kubecit_ListSlidersByPriority_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -186,7 +186,7 @@ func (c *kubecitClient) ListSlidersByPriority(ctx context.Context, in *ListSlide
 // for forward compatibility
 type KubecitServer interface {
 	// ========================== 课程相关接口 ===================================
-	MostNew(context.Context, *PageRequest) (*MostNewReply, error)
+	MostNew(context.Context, *Empty) (*MostNewReply, error)
 	GetFirstCategories(context.Context, *GetFirstCategoriesRequest) (*GetFirstCategoriesReply, error)
 	TagsList(context.Context, *TagsListRequest) (*TagsListReply, error)
 	SearchCourse(context.Context, *SearchCourseRequest) (*SearchCourseReply, error)
@@ -200,7 +200,7 @@ type KubecitServer interface {
 	GetSlider(context.Context, *GetSliderRequest) (*GetSliderReply, error)
 	DeleteSlider(context.Context, *DeleteSliderRequest) (*DeleteSliderReply, error)
 	UpdateSlider(context.Context, *UpdateSliderRequest) (*UpdateSliderReply, error)
-	ListSlidersByPriority(context.Context, *ListSlidersByPriorityRequest) (*ListSlidersByPriorityReply, error)
+	ListSlidersByPriority(context.Context, *Empty) (*ListSlidersByPriorityReply, error)
 	mustEmbedUnimplementedKubecitServer()
 }
 
@@ -208,7 +208,7 @@ type KubecitServer interface {
 type UnimplementedKubecitServer struct {
 }
 
-func (UnimplementedKubecitServer) MostNew(context.Context, *PageRequest) (*MostNewReply, error) {
+func (UnimplementedKubecitServer) MostNew(context.Context, *Empty) (*MostNewReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MostNew not implemented")
 }
 func (UnimplementedKubecitServer) GetFirstCategories(context.Context, *GetFirstCategoriesRequest) (*GetFirstCategoriesReply, error) {
@@ -244,7 +244,7 @@ func (UnimplementedKubecitServer) DeleteSlider(context.Context, *DeleteSliderReq
 func (UnimplementedKubecitServer) UpdateSlider(context.Context, *UpdateSliderRequest) (*UpdateSliderReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSlider not implemented")
 }
-func (UnimplementedKubecitServer) ListSlidersByPriority(context.Context, *ListSlidersByPriorityRequest) (*ListSlidersByPriorityReply, error) {
+func (UnimplementedKubecitServer) ListSlidersByPriority(context.Context, *Empty) (*ListSlidersByPriorityReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSlidersByPriority not implemented")
 }
 func (UnimplementedKubecitServer) mustEmbedUnimplementedKubecitServer() {}
@@ -261,7 +261,7 @@ func RegisterKubecitServer(s grpc.ServiceRegistrar, srv KubecitServer) {
 }
 
 func _Kubecit_MostNew_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PageRequest)
+	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -273,7 +273,7 @@ func _Kubecit_MostNew_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: Kubecit_MostNew_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(KubecitServer).MostNew(ctx, req.(*PageRequest))
+		return srv.(KubecitServer).MostNew(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -477,7 +477,7 @@ func _Kubecit_UpdateSlider_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _Kubecit_ListSlidersByPriority_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListSlidersByPriorityRequest)
+	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -489,7 +489,7 @@ func _Kubecit_ListSlidersByPriority_Handler(srv interface{}, ctx context.Context
 		FullMethod: Kubecit_ListSlidersByPriority_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(KubecitServer).ListSlidersByPriority(ctx, req.(*ListSlidersByPriorityRequest))
+		return srv.(KubecitServer).ListSlidersByPriority(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

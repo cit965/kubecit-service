@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/go-kratos/kratos/v2/middleware/logging"
 
 	v1 "kubecit-service/api/helloworld/v1"
 	"kubecit-service/gin"
@@ -20,6 +21,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.L
 		http.Middleware(
 			recovery.Recovery(),
 			Auth(),
+			logging.Server(logger),
 		),
 	}
 
