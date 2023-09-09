@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-<<<<<<< HEAD
+
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 
 	v1 "kubecit-service/api/helloworld/v1"
@@ -10,17 +10,12 @@ import (
 	"kubecit-service/internal/conf"
 	"kubecit-service/internal/service"
 
-=======
 	"github.com/go-kratos/kratos/v2/middleware/validate"
->>>>>>> master
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/go-kratos/swagger-api/openapiv2"
-	v1 "kubecit-service/api/helloworld/v1"
-	"kubecit-service/gin"
-	"kubecit-service/internal/conf"
-	"kubecit-service/internal/service"
 )
 
 // NewHTTPServer new an HTTP server.
