@@ -211,7 +211,7 @@ message MostNewReply {
 }
 
 message MostNewCourse {
-  string id = 1;
+  int32 id = 1;
   int32 courseLevel = 2;
   string courseName = 3;
   string courseCover = 4;

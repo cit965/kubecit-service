@@ -37,7 +37,7 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.PageRequest) (*pb.
 	for _, v := range courses {
 		cs = append(cs, &pb.MostNewCourse{
 			CourseName:  v.Name,
-			Id:          string(v.Id),
+			Id:          int32(v.Id),
 			CourseLevel: v.Level,
 			CourseCover: v.Cover,
 			SalePrice:   v.Price,

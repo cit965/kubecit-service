@@ -434,7 +434,8 @@ components:
             type: object
             properties:
                 id:
-                    type: string
+                    type: integer
+                    format: int32
                 courseLevel:
                     type: integer
                     format: int32
