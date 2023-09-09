@@ -24,4 +24,4 @@ EXPOSE 8000
 #EXPOSE 9000
 #VOLUME /data/conf
 
-CMD ["./kubecit-service", "-conf", "/app/configs"]
+CMD ["./kubecit-service", "-conf", "/app/configs/qa_config.yaml"]
