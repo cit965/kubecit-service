@@ -90,8 +90,8 @@ func (s *KubecitService) UpdateSlider(ctx context.Context, req *pb.UpdateSliderR
 	}, nil
 }
 
-func (s *KubecitService) ListSlidersByPriority(ctx context.Context, req *pb.ListSlidersByPriorityRequest) (*pb.ListSlidersByPriorityReply, error) {
-	res, err := s.su.ListByPriority(ctx, int(req.GetPriority()), int(req.GetCount()))
+func (s *KubecitService) ListSlidersByPriority(ctx context.Context, req *pb.Empty) (*pb.ListSlidersByPriorityReply, error) {
+	res, err := s.su.ListByPriority(ctx, 4)
 	if err != nil {
 		return nil, err
 	}

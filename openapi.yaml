@@ -41,7 +41,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/helloworld.v1.PageRequest'
+                            $ref: '#/components/schemas/helloworld.v1.Empty'
                 required: true
             responses:
                 "200":
@@ -180,16 +180,10 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.DeleteSliderReply'
     /api/sliders:
-        post:
+        get:
             tags:
                 - Kubecit
             operationId: Kubecit_ListSlidersByPriority
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/helloworld.v1.ListSlidersByPriorityRequest'
-                required: true
             responses:
                 "200":
                     description: OK
@@ -370,6 +364,9 @@ components:
                 count:
                     type: integer
                     format: int32
+        helloworld.v1.Empty:
+            type: object
+            properties: {}
         helloworld.v1.GetFirstCategoriesReply:
             type: object
             properties:
@@ -389,15 +386,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.SliderInfo'
-        helloworld.v1.ListSlidersByPriorityRequest:
-            type: object
-            properties:
-                priority:
-                    type: integer
-                    format: int32
-                count:
-                    type: integer
-                    format: int32
         helloworld.v1.LoginByJsonReply:
             type: object
             properties:
@@ -433,15 +421,10 @@ components:
         helloworld.v1.MostNewReply:
             type: object
             properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
-                data:
-                    $ref: '#/components/schemas/helloworld.v1.MostNewReplyData'
-        helloworld.v1.MostNewReplyData:
-            type: object
-            properties:
-                pageInfo:
-                    $ref: '#/components/schemas/helloworld.v1.PageInfo'
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.CourseInfo'
         helloworld.v1.PageInfo:
             type: object
             properties:
@@ -504,15 +487,6 @@ components:
                     format: int32
                 isFirstPage:
                     type: boolean
-        helloworld.v1.PageRequest:
-            type: object
-            properties:
-                pageNum:
-                    type: integer
-                    format: int32
-                pageSize:
-                    type: integer
-                    format: int32
         helloworld.v1.RegisterUsernameReply:
             type: object
             properties:
@@ -543,10 +517,9 @@ components:
                 pageSize:
                     type: integer
                     format: int32
-                entity:
-                    type: object
-                    additionalProperties:
-                        type: string
+                category:
+                    type: integer
+                    format: int32
         helloworld.v1.SliderInfo:
             type: object
             properties:
@@ -570,13 +543,18 @@ components:
                 priority:
                     type: integer
                     format: int32
+        helloworld.v1.Tag:
+            type: object
+            properties:
+                name:
+                    type: string
         helloworld.v1.TagsListReply:
             type: object
             properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
-                data:
-                    $ref: '#/components/schemas/helloworld.v1.PageInfo'
+                tags:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.Tag'
         helloworld.v1.TagsListRequest:
             type: object
             properties:
@@ -586,10 +564,9 @@ components:
                 pageSize:
                     type: integer
                     format: int32
-                entity:
-                    type: object
-                    additionalProperties:
-                        type: string
+                course:
+                    type: integer
+                    format: int32
         helloworld.v1.UpdateSliderReply:
             type: object
             properties:

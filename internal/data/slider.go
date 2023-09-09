@@ -112,8 +112,8 @@ func (c *sliderRepo) Update(ctx context.Context, id int, ins *biz.Slider) (*biz.
 	}, nil
 }
 
-func (c *sliderRepo) ListByPriority(ctx context.Context, priority int, count int) ([]*biz.Slider, error) {
-	res, err := c.data.db.Slider.Query().Where(slider.PriorityLTE(priority)).Order(ent.Asc(slider.FieldPriority)).
+func (c *sliderRepo) ListByPriority(ctx context.Context, count int) ([]*biz.Slider, error) {
+	res, err := c.data.db.Slider.Query().Order(ent.Asc(slider.FieldPriority)).
 		Limit(count).All(ctx)
 	if err != nil {
 		c.log.Errorf("slider repo list by priority error: %v\n", err)

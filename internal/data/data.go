@@ -11,6 +11,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	_ "github.com/mattn/go-sqlite3"
+	_ "gorm.io/driver/mysql"
 )
 
 // ProviderSet is data providers.
