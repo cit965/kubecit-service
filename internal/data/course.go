@@ -59,6 +59,7 @@ func (c courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, cat
 }
 
 func (c courseRepo) MostNewCourse(ctx context.Context) ([]*biz.Course, error) {
+	//倒序取20条
 	courses, err := c.data.db.Course.Query().Limit(20).Order(ent.Desc(course.FieldCreatedAt)).All(ctx)
 	if err != nil {
 		return nil, err
