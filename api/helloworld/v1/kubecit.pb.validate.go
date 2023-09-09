@@ -840,33 +840,38 @@ func (m *MostNewReply) validate(all bool) error {
 		}
 	}
 
-	if all {
-		switch v := interface{}(m.GetData()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, MostNewReplyValidationError{
-					field:  "Data",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetList() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, MostNewReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, MostNewReplyValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, MostNewReplyValidationError{
-					field:  "Data",
+				return MostNewReplyValidationError{
+					field:  fmt.Sprintf("List[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return MostNewReplyValidationError{
-				field:  "Data",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
@@ -946,71 +951,56 @@ var _ interface {
 	ErrorName() string
 } = MostNewReplyValidationError{}
 
-// Validate checks the field values on MostNewReplyData with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *MostNewReplyData) Validate() error {
+// Validate checks the field values on MostNewCourse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *MostNewCourse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on MostNewReplyData with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// MostNewReplyDataMultiError, or nil if none found.
-func (m *MostNewReplyData) ValidateAll() error {
+// ValidateAll checks the field values on MostNewCourse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in MostNewCourseMultiError, or
+// nil if none found.
+func (m *MostNewCourse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *MostNewReplyData) validate(all bool) error {
+func (m *MostNewCourse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetPageInfo()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, MostNewReplyDataValidationError{
-					field:  "PageInfo",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, MostNewReplyDataValidationError{
-					field:  "PageInfo",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetPageInfo()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return MostNewReplyDataValidationError{
-				field:  "PageInfo",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
+	// no validation rules for Id
+
+	// no validation rules for CourseLevel
+
+	// no validation rules for CourseName
+
+	// no validation rules for CourseCover
+
+	// no validation rules for SalePrice
+
+	// no validation rules for Tags
+
+	// no validation rules for Status
 
 	if len(errors) > 0 {
-		return MostNewReplyDataMultiError(errors)
+		return MostNewCourseMultiError(errors)
 	}
 
 	return nil
 }
 
-// MostNewReplyDataMultiError is an error wrapping multiple validation errors
-// returned by MostNewReplyData.ValidateAll() if the designated constraints
+// MostNewCourseMultiError is an error wrapping multiple validation errors
+// returned by MostNewCourse.ValidateAll() if the designated constraints
 // aren't met.
-type MostNewReplyDataMultiError []error
+type MostNewCourseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m MostNewReplyDataMultiError) Error() string {
+func (m MostNewCourseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1019,11 +1009,11 @@ func (m MostNewReplyDataMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m MostNewReplyDataMultiError) AllErrors() []error { return m }
+func (m MostNewCourseMultiError) AllErrors() []error { return m }
 
-// MostNewReplyDataValidationError is the validation error returned by
-// MostNewReplyData.Validate if the designated constraints aren't met.
-type MostNewReplyDataValidationError struct {
+// MostNewCourseValidationError is the validation error returned by
+// MostNewCourse.Validate if the designated constraints aren't met.
+type MostNewCourseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1031,22 +1021,22 @@ type MostNewReplyDataValidationError struct {
 }
 
 // Field function returns field value.
-func (e MostNewReplyDataValidationError) Field() string { return e.field }
+func (e MostNewCourseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e MostNewReplyDataValidationError) Reason() string { return e.reason }
+func (e MostNewCourseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e MostNewReplyDataValidationError) Cause() error { return e.cause }
+func (e MostNewCourseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e MostNewReplyDataValidationError) Key() bool { return e.key }
+func (e MostNewCourseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e MostNewReplyDataValidationError) ErrorName() string { return "MostNewReplyDataValidationError" }
+func (e MostNewCourseValidationError) ErrorName() string { return "MostNewCourseValidationError" }
 
 // Error satisfies the builtin error interface
-func (e MostNewReplyDataValidationError) Error() string {
+func (e MostNewCourseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1058,14 +1048,14 @@ func (e MostNewReplyDataValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sMostNewReplyData.%s: %s%s",
+		"invalid %sMostNewCourse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = MostNewReplyDataValidationError{}
+var _ error = MostNewCourseValidationError{}
 
 var _ interface {
 	Field() string
@@ -1073,7 +1063,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = MostNewReplyDataValidationError{}
+} = MostNewCourseValidationError{}
 
 // Validate checks the field values on PageInfo with the rules defined in the
 // proto definition for this message. If any rules are violated, the first

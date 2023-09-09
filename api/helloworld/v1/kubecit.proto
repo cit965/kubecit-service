@@ -207,11 +207,17 @@ message Metadata {
 
 message MostNewReply {
   Metadata meta = 1;
-  MostNewReplyData data = 2;
+  repeated MostNewCourse list = 2;
 }
 
-message MostNewReplyData {
-  PageInfo pageInfo = 1;
+message MostNewCourse {
+  string id = 1;
+  int32 courseLevel = 2;
+  string courseName = 3;
+  string courseCover = 4;
+  float salePrice = 5;
+  string tags = 6;
+  int32 status = 7;
 }
 
 message PageInfo {

@@ -28,7 +28,24 @@ func (s *KubecitService) Category(ctx context.Context, req *pb.Empty) (*pb.Categ
 }
 
 func (s *KubecitService) MostNew(ctx context.Context, req *pb.PageRequest) (*pb.MostNewReply, error) {
-	return &pb.MostNewReply{}, nil
+	courses, err := s.cc.MostNewCourse(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var cs []*pb.MostNewCourse
+	for _, v := range courses {
+		cs = append(cs, &pb.MostNewCourse{
+			CourseName:  v.Name,
+			Id:          string(v.Id),
+			CourseLevel: v.Level,
+			CourseCover: v.Cover,
+			SalePrice:   v.Price,
+			Tags:        v.Tags,
+			Status:      v.Status,
+		})
+	}
+	return &pb.MostNewReply{List: cs}, nil
 }
 
 func (s *KubecitService) GetFirstCategories(ctx context.Context, req *pb.GetFirstCategoriesRequest) (*pb.GetFirstCategoriesReply, error) {

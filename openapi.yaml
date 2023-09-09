@@ -430,18 +430,35 @@ components:
                     type: string
                 timestamp:
                     type: string
+        helloworld.v1.MostNewCourse:
+            type: object
+            properties:
+                id:
+                    type: string
+                courseLevel:
+                    type: integer
+                    format: int32
+                courseName:
+                    type: string
+                courseCover:
+                    type: string
+                salePrice:
+                    type: number
+                    format: float
+                tags:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
         helloworld.v1.MostNewReply:
             type: object
             properties:
                 meta:
                     $ref: '#/components/schemas/helloworld.v1.Metadata'
-                data:
-                    $ref: '#/components/schemas/helloworld.v1.MostNewReplyData'
-        helloworld.v1.MostNewReplyData:
-            type: object
-            properties:
-                pageInfo:
-                    $ref: '#/components/schemas/helloworld.v1.PageInfo'
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.MostNewCourse'
         helloworld.v1.PageInfo:
             type: object
             properties:

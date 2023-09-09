@@ -57,3 +57,27 @@ func (c courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, cat
 	}
 	return courses, nil
 }
+
+func (c courseRepo) MostNewCourse(ctx context.Context) ([]*biz.Course, error) {
+	courses, err := c.data.db.Course.Query().Limit(20).Order(ent.Asc(course.FieldCreatedAt)).All(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var courseResult []*biz.Course
+
+	for _, v := range courses {
+		courseResult = append(courseResult, &biz.Course{
+			Name:       v.Name,
+			Id:         v.ID,
+			Level:      v.Level,
+			Status:     v.Status,
+			Detail:     v.Detail,
+			Cover:      v.Cover,
+			Price:      v.Price,
+			Tags:       v.Tags,
+			CategoryId: v.CategoryID,
+		})
+	}
+	return courseResult, nil
+}

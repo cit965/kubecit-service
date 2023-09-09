@@ -39,6 +39,7 @@ type CategoryRepo interface {
 // CourseRepo is a Course repo.
 type CourseRepo interface {
 	SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int, level *int32, reverse *bool) ([]*Course, error)
+	MostNewCourse(ctx context.Context) ([]*Course, error)
 }
 
 // CourseUsecase is a Category usecase.
@@ -67,4 +68,8 @@ func (uc *CourseUsecase) ListFirstCategory(ctx context.Context) ([]*Category, er
 
 func (uc *CourseUsecase) SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int, level *int32, reverse *bool) ([]*Course, error) {
 	return uc.courseRepo.SearchCourse(ctx, pageNum, pageSize, categoryId, level, reverse)
+}
+
+func (uc *CourseUsecase) MostNewCourse(ctx context.Context) ([]*Course, error) {
+	return uc.courseRepo.MostNewCourse(ctx)
 }
