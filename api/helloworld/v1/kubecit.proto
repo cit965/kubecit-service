@@ -65,7 +65,18 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "筛选课程列表"
+      description: "更新课程信息"
+      tags: "course"
+    };
+  }
+  rpc ReviewCourse (ReviewCourseRequest) returns (ReviewCourseReply) {
+    option (google.api.http) = {
+      patch: "/api/course/{id}",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "审核课程"
       tags: "course"
     };
   }
@@ -328,11 +339,19 @@ message UpdateCourseRequest {
   string cover = 5;
   float price = 6;
   repeated string tags = 7;
-  CourseStatus status = 8;
   int32 categoryId = 9;
 }
 
 message UpdateCourseReply {
+  CourseInfo data = 1;
+}
+
+message ReviewCourseRequest {
+  int32 id = 1;
+  CourseStatus status = 2;
+}
+
+message ReviewCourseReply {
   CourseInfo data = 1;
 }
 

@@ -122,7 +122,7 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 	user, err := s.userUseCase.CurrentUserInfo(ctx)
 	if err != nil {
 		return nil, err
-	} else if uint8(user.RoleId) < biz.UserRoleSuperAdmin {
+	} else if uint8(user.RoleId) < biz.UserRoleLecturer {
 		return nil, errors.New("not enough privileges")
 	}
 	course := &biz.Course{
@@ -133,7 +133,6 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 		Cover:      req.GetCover(),
 		Price:      req.GetPrice(),
 		Tags:       strings.Join(req.Tags, ","),
-		Status:     int32(req.Status),
 		CategoryId: int(req.GetCategoryId()),
 	}
 	res, err := s.cc.UpdateCourse(ctx, int(req.Id), course)
@@ -141,6 +140,34 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 		return nil, err
 	}
 	return &pb.UpdateCourseReply{
+		Data: &pb.CourseInfo{
+			Id:         int32(res.Id),
+			Level:      res.Level,
+			Name:       res.Name,
+			Detail:     res.Detail,
+			Cover:      res.Cover,
+			Price:      res.Price,
+			Tags:       strings.Split(res.Tags, ","),
+			Status:     pb.CourseStatus(res.Status),
+			CategoryId: int32(res.CategoryId),
+			CreatedAt:  timestamppb.New(res.CreatedAt),
+			UpdatedAt:  timestamppb.New(res.UpdatedAt),
+		}}, nil
+}
+
+func (s *KubecitService) ReviewCourse(ctx context.Context, req *pb.ReviewCourseRequest) (*pb.ReviewCourseReply, error) {
+	user, err := s.userUseCase.CurrentUserInfo(ctx)
+	if err != nil {
+		return nil, err
+	} else if uint8(user.RoleId) < biz.UserRoleSuperAdmin {
+		return nil, errors.New("not enough privileges")
+	}
+
+	res, err := s.cc.ReviewCourse(ctx, int(req.Id), int32(req.Status))
+	if err != nil {
+		return nil, err
+	}
+	return &pb.ReviewCourseReply{
 		Data: &pb.CourseInfo{
 			Id:         int32(res.Id),
 			Level:      res.Level,

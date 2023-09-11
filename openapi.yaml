@@ -111,6 +111,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.UpdateCourseReply'
+        patch:
+            tags:
+                - Kubecit
+            operationId: Kubecit_ReviewCourse
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.ReviewCourseRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.ReviewCourseReply'
     /api/member/getInfo:
         get:
             tags:
@@ -472,6 +496,20 @@ components:
                     type: string
                 password:
                     type: string
+        helloworld.v1.ReviewCourseReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.CourseInfo'
+        helloworld.v1.ReviewCourseRequest:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                status:
+                    type: integer
+                    format: enum
         helloworld.v1.SearchCourseReply:
             type: object
             properties:
@@ -565,9 +603,6 @@ components:
                     type: array
                     items:
                         type: string
-                status:
-                    type: integer
-                    format: enum
                 categoryId:
                     type: integer
                     format: int32

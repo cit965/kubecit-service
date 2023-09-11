@@ -2588,8 +2588,6 @@ func (m *UpdateCourseRequest) validate(all bool) error {
 
 	// no validation rules for Price
 
-	// no validation rules for Status
-
 	// no validation rules for CategoryId
 
 	if len(errors) > 0 {
@@ -2802,6 +2800,243 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UpdateCourseReplyValidationError{}
+
+// Validate checks the field values on ReviewCourseRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReviewCourseRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReviewCourseRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReviewCourseRequestMultiError, or nil if none found.
+func (m *ReviewCourseRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReviewCourseRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Status
+
+	if len(errors) > 0 {
+		return ReviewCourseRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReviewCourseRequestMultiError is an error wrapping multiple validation
+// errors returned by ReviewCourseRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ReviewCourseRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReviewCourseRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReviewCourseRequestMultiError) AllErrors() []error { return m }
+
+// ReviewCourseRequestValidationError is the validation error returned by
+// ReviewCourseRequest.Validate if the designated constraints aren't met.
+type ReviewCourseRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReviewCourseRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReviewCourseRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReviewCourseRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReviewCourseRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReviewCourseRequestValidationError) ErrorName() string {
+	return "ReviewCourseRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReviewCourseRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReviewCourseRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReviewCourseRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReviewCourseRequestValidationError{}
+
+// Validate checks the field values on ReviewCourseReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ReviewCourseReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReviewCourseReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReviewCourseReplyMultiError, or nil if none found.
+func (m *ReviewCourseReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReviewCourseReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ReviewCourseReplyValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ReviewCourseReplyValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ReviewCourseReplyValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ReviewCourseReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReviewCourseReplyMultiError is an error wrapping multiple validation errors
+// returned by ReviewCourseReply.ValidateAll() if the designated constraints
+// aren't met.
+type ReviewCourseReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReviewCourseReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReviewCourseReplyMultiError) AllErrors() []error { return m }
+
+// ReviewCourseReplyValidationError is the validation error returned by
+// ReviewCourseReply.Validate if the designated constraints aren't met.
+type ReviewCourseReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReviewCourseReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReviewCourseReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReviewCourseReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReviewCourseReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReviewCourseReplyValidationError) ErrorName() string {
+	return "ReviewCourseReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReviewCourseReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReviewCourseReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReviewCourseReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReviewCourseReplyValidationError{}
 
 // Validate checks the field values on SliderInfo with the rules defined in the
 // proto definition for this message. If any rules are violated, the first

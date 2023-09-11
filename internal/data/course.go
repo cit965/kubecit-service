@@ -83,9 +83,31 @@ func (c *courseRepo) GetCourse(ctx context.Context, id int) (*biz.Course, error)
 
 func (c *courseRepo) UpdateCourse(ctx context.Context, id int, ins *biz.Course) (*biz.Course, error) {
 	res, err := c.data.db.Course.UpdateOneID(id).SetLevel(ins.Level).SetName(ins.Name).SetDetail(ins.Detail).SetCover(ins.Cover).
-		SetPrice(ins.Price).SetTags(ins.Tags).SetStatus(ins.Status).SetCategoryID(ins.CategoryId).Save(ctx)
+		SetPrice(ins.Price).SetTags(ins.Tags).SetCategoryID(ins.CategoryId).Save(ctx)
 	if err != nil {
 		c.log.Errorf("course repo update error: %v\n", err)
+		return nil, err
+	}
+	return &biz.Course{
+		Id:         res.ID,
+		Level:      res.Level,
+		Name:       res.Name,
+		Detail:     res.Detail,
+		Cover:      res.Cover,
+		Price:      res.Price,
+		Tags:       res.Tags,
+		CreatedAt:  res.CreatedAt,
+		UpdatedAt:  res.UpdatedAt,
+		Status:     res.Status,
+		CategoryId: res.CategoryID,
+	}, nil
+}
+
+func (c *courseRepo) ReviewCourse(ctx context.Context, id int, status int32) (*biz.Course, error) {
+	res, err := c.data.db.Course.UpdateOneID(id).SetStatus(status).Save(ctx)
+	if err != nil {
+		c.log.Errorf("course repo review error: %v\n", err)
+		return nil, err
 	}
 	return &biz.Course{
 		Id:         res.ID,

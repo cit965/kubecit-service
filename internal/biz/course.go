@@ -41,6 +41,7 @@ type CategoryRepo interface {
 type CourseRepo interface {
 	SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*Course, error)
 	UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error)
+	ReviewCourse(ctx context.Context, id int, status int32) (*Course, error)
 }
 
 // CourseUsecase is a Category usecase.
@@ -73,4 +74,8 @@ func (uc *CourseUsecase) SearchCourse(ctx context.Context, pageNum, pageSize int
 
 func (uc *CourseUsecase) UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error) {
 	return uc.courseRepo.UpdateCourse(ctx, id, course)
+}
+
+func (uc *CourseUsecase) ReviewCourse(ctx context.Context, id int, status int32) (*Course, error) {
+	return uc.courseRepo.ReviewCourse(ctx, id, status)
 }
