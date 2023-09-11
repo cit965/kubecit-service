@@ -245,6 +245,13 @@ message PageInfo {
   bool isFirstPage = 20;
 }
 
+enum CourseStatus {
+  NOT_REVIEWED = 0; // 未审核
+  REVIEWED = 1; // 已审核
+  SHELVED = 2; // 已上架
+  OFF_SHELVED = 3; // 已下架
+}
+
 message CourseInfo {
   int32 id = 1;
   int32 level = 2;
@@ -253,7 +260,7 @@ message CourseInfo {
   string cover = 5;
   float price = 6;
   repeated string tags = 7;
-  int32 status = 8;
+  CourseStatus status = 8;
   int32 categoryId = 9;
   google.protobuf.Timestamp createdAt = 10;
   google.protobuf.Timestamp updatedAt = 11;
@@ -321,7 +328,7 @@ message UpdateCourseRequest {
   string cover = 5;
   float price = 6;
   repeated string tags = 7;
-  int32 status = 8;
+  CourseStatus status = 8;
   int32 categoryId = 9;
 }
 

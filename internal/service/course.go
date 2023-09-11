@@ -46,7 +46,7 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNe
 			Tags:       strings.Split(v.Tags, ","),
 			CreatedAt:  timestamppb.New(v.CreatedAt),
 			UpdatedAt:  timestamppb.New(v.UpdatedAt),
-			Status:     v.Status,
+			Status:     pb.CourseStatus(v.Status),
 			CategoryId: int32(v.CategoryId),
 		}
 		result = append(result, tmp)
@@ -106,7 +106,7 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 			Tags:       strings.Split(course.Tags, ","),
 			CreatedAt:  timestamppb.New(course.CreatedAt),
 			UpdatedAt:  timestamppb.New(course.UpdatedAt),
-			Status:     course.Status,
+			Status:     pb.CourseStatus(course.Status),
 			CategoryId: int32(course.CategoryId),
 		})
 	}
@@ -126,7 +126,7 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 		Cover:      req.GetCover(),
 		Price:      req.GetPrice(),
 		Tags:       strings.Join(req.Tags, ","),
-		Status:     req.GetStatus(),
+		Status:     int32(req.Status),
 		CategoryId: int(req.GetCategoryId()),
 	}
 	res, err := s.cc.UpdateCourse(ctx, int(req.Id), course)
@@ -142,7 +142,7 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 			Cover:      res.Cover,
 			Price:      res.Price,
 			Tags:       strings.Split(res.Tags, ","),
-			Status:     res.Status,
+			Status:     pb.CourseStatus(res.Status),
 			CategoryId: int32(res.CategoryId),
 			CreatedAt:  timestamppb.New(res.CreatedAt),
 			UpdatedAt:  timestamppb.New(res.UpdatedAt),
