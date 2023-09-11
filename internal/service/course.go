@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "kubecit-service/api/helloworld/v1"
 	"kubecit-service/internal/biz"
@@ -118,6 +119,12 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 }
 
 func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseRequest) (*pb.UpdateCourseReply, error) {
+	user, err := s.userUseCase.CurrentUserInfo(ctx)
+	if err != nil {
+		return nil, err
+	} else if uint8(user.RoleId) < biz.UserRoleSuperAdmin {
+		return nil, errors.New("not enough privileges")
+	}
 	course := &biz.Course{
 		Id:         int(req.GetId()),
 		Level:      req.GetLevel(),
