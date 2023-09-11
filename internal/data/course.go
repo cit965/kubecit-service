@@ -20,7 +20,7 @@ func NewCourseRepo(data *Data, logger log.Logger) biz.CourseRepo {
 	}
 }
 
-func (c courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*biz.Course, error) {
+func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*biz.Course, error) {
 	cq := c.data.db.Course.Query()
 	if categoryId != nil {
 		cq.Where(course.CategoryIDEQ(int(*categoryId)))
@@ -57,4 +57,47 @@ func (c courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, cat
 		})
 	}
 	return courses, nil
+}
+
+func (c *courseRepo) GetCourse(ctx context.Context, id int) (*biz.Course, error) {
+	res, err := c.data.db.Course.Query().Where(course.IDEQ(id)).Only(ctx)
+	if err != nil {
+		c.log.Errorf("course repo get error: %v\n", err)
+		return nil, err
+	}
+
+	return &biz.Course{
+		Id:         res.ID,
+		Level:      res.Level,
+		Name:       res.Name,
+		Detail:     res.Detail,
+		Cover:      res.Cover,
+		Price:      res.Price,
+		Tags:       res.Tags,
+		CreatedAt:  res.CreatedAt,
+		UpdatedAt:  res.UpdatedAt,
+		Status:     res.Status,
+		CategoryId: res.CategoryID,
+	}, nil
+}
+
+func (c *courseRepo) UpdateCourse(ctx context.Context, id int, ins *biz.Course) (*biz.Course, error) {
+	res, err := c.data.db.Course.UpdateOneID(id).SetLevel(ins.Level).SetName(ins.Name).SetDetail(ins.Detail).SetCover(ins.Cover).
+		SetPrice(ins.Price).SetTags(ins.Tags).SetStatus(ins.Status).SetCategoryID(ins.CategoryId).Save(ctx)
+	if err != nil {
+		c.log.Errorf("course repo update error: %v\n", err)
+	}
+	return &biz.Course{
+		Id:         res.ID,
+		Level:      res.Level,
+		Name:       res.Name,
+		Detail:     res.Detail,
+		Cover:      res.Cover,
+		Price:      res.Price,
+		Tags:       res.Tags,
+		CreatedAt:  res.CreatedAt,
+		UpdatedAt:  res.UpdatedAt,
+		Status:     res.Status,
+		CategoryId: res.CategoryID,
+	}, nil
 }

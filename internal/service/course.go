@@ -4,6 +4,8 @@ import (
 	"context"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "kubecit-service/api/helloworld/v1"
+	"kubecit-service/internal/biz"
+	"strings"
 )
 
 func (s *KubecitService) Category(ctx context.Context, req *pb.Empty) (*pb.CategoryResp, error) {
@@ -35,36 +37,17 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNe
 	result := []*pb.CourseInfo{}
 	for _, v := range courses {
 		tmp := &pb.CourseInfo{
-			IsRecommend:          0,
-			IsIntegral:           0,
-			SecondCategory:       "",
-			SaleType:             0,
-			DiscountPrice:        0,
-			FirstCategory:        "",
-			IsMember:             1,
-			FirstCategoryName:    "",
-			TeachingType:         0,
-			CourseLevel:          v.Level,
-			UpdateBy:             "",
-			LecturerName:         nil,
-			PurchaseCnt:          0,
-			TotalHour:            0,
-			Id:                   "",
-			BizCourseDetail:      nil,
-			CourseCover:          v.Cover,
-			BizCourseChapters:    nil,
-			SalePrice:            0,
-			BizCourseTeacher:     nil,
-			BizCourseAttachments: nil,
-			UpdateTime:           nil,
-			Tags:                 "",
-			CourseName:           v.Name,
-			CreateBy:             "",
-			PurchaseCounter:      0,
-			CreateTime:           nil,
-			Clicks:               0,
-			SecondCategoryName:   "",
-			Status:               0,
+			Id:         int32(v.Id),
+			Level:      v.Level,
+			Name:       v.Name,
+			Detail:     v.Detail,
+			Cover:      v.Cover,
+			Price:      v.Price,
+			Tags:       strings.Split(v.Tags, ","),
+			CreatedAt:  timestamppb.New(v.CreatedAt),
+			UpdatedAt:  timestamppb.New(v.UpdatedAt),
+			Status:     v.Status,
+			CategoryId: int32(v.CategoryId),
 		}
 		result = append(result, tmp)
 	}
@@ -114,15 +97,17 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 	list := make([]*pb.CourseInfo, 0, 0)
 	for _, course := range courses {
 		list = append(list, &pb.CourseInfo{
-			CourseLevel:     course.Level,
-			Id:              string(course.Id),
-			BizCourseDetail: []string{course.Detail},
-			CourseCover:     course.Cover,
-			SalePrice:       course.Price,
-			UpdateTime:      timestamppb.New(course.CreatedAt),
-			Tags:            course.Tags,
-			CourseName:      course.Name,
-			Status:          course.Status,
+			Id:         int32(course.Id),
+			Level:      course.Level,
+			Name:       course.Name,
+			Detail:     course.Detail,
+			Cover:      course.Cover,
+			Price:      course.Price,
+			Tags:       strings.Split(course.Tags, ","),
+			CreatedAt:  timestamppb.New(course.CreatedAt),
+			UpdatedAt:  timestamppb.New(course.UpdatedAt),
+			Status:     course.Status,
+			CategoryId: int32(course.CategoryId),
 		})
 	}
 	return &pb.SearchCourseReply{
@@ -130,4 +115,36 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 			List: list,
 		},
 	}, nil
+}
+
+func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseRequest) (*pb.UpdateCourseReply, error) {
+	course := &biz.Course{
+		Id:         int(req.GetId()),
+		Level:      req.GetLevel(),
+		Name:       req.GetName(),
+		Detail:     req.GetDetail(),
+		Cover:      req.GetCover(),
+		Price:      req.GetPrice(),
+		Tags:       strings.Join(req.Tags, ","),
+		Status:     req.GetStatus(),
+		CategoryId: int(req.GetCategoryId()),
+	}
+	res, err := s.cc.UpdateCourse(ctx, int(req.Id), course)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.UpdateCourseReply{
+		Data: &pb.CourseInfo{
+			Id:         int32(res.Id),
+			Level:      res.Level,
+			Name:       res.Name,
+			Detail:     res.Detail,
+			Cover:      res.Cover,
+			Price:      res.Price,
+			Tags:       strings.Split(res.Tags, ","),
+			Status:     res.Status,
+			CategoryId: int32(res.CategoryId),
+			CreatedAt:  timestamppb.New(res.CreatedAt),
+			UpdatedAt:  timestamppb.New(res.UpdatedAt),
+		}}, nil
 }

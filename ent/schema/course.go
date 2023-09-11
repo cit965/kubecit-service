@@ -16,7 +16,7 @@ type Course struct {
 func (Course) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int32("level"),
-		field.Time("updated_at"),
+		field.Time("updated_at").Default(time.Now()).UpdateDefault(time.Now).Comment("修改时间"),
 		field.String("name"),
 		field.String("detail"),
 		field.String("cover"),

@@ -33,6 +33,14 @@ func (cc *CourseCreate) SetUpdatedAt(t time.Time) *CourseCreate {
 	return cc
 }
 
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (cc *CourseCreate) SetNillableUpdatedAt(t *time.Time) *CourseCreate {
+	if t != nil {
+		cc.SetUpdatedAt(*t)
+	}
+	return cc
+}
+
 // SetName sets the "name" field.
 func (cc *CourseCreate) SetName(s string) *CourseCreate {
 	cc.mutation.SetName(s)
@@ -151,6 +159,10 @@ func (cc *CourseCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (cc *CourseCreate) defaults() {
+	if _, ok := cc.mutation.UpdatedAt(); !ok {
+		v := course.DefaultUpdatedAt
+		cc.mutation.SetUpdatedAt(v)
+	}
 	if _, ok := cc.mutation.CreatedAt(); !ok {
 		v := course.DefaultCreatedAt
 		cc.mutation.SetCreatedAt(v)

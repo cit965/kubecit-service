@@ -37,6 +37,12 @@ func init() {
 	category.DefaultName = categoryDescName.Default.(string)
 	courseFields := schema.Course{}.Fields()
 	_ = courseFields
+	// courseDescUpdatedAt is the schema descriptor for updated_at field.
+	courseDescUpdatedAt := courseFields[1].Descriptor()
+	// course.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	course.DefaultUpdatedAt = courseDescUpdatedAt.Default.(time.Time)
+	// course.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	course.UpdateDefaultUpdatedAt = courseDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// courseDescCreatedAt is the schema descriptor for created_at field.
 	courseDescCreatedAt := courseFields[7].Descriptor()
 	// course.DefaultCreatedAt holds the default value on creation for the created_at field.

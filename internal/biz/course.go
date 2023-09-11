@@ -25,6 +25,7 @@ type Course struct {
 	Price      float32
 	Tags       string
 	CreatedAt  time.Time
+	UpdatedAt  time.Time
 	Status     int32
 	CategoryId int
 }
@@ -39,6 +40,7 @@ type CategoryRepo interface {
 // CourseRepo is a Course repo.
 type CourseRepo interface {
 	SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*Course, error)
+	UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error)
 }
 
 // CourseUsecase is a Category usecase.
@@ -67,4 +69,8 @@ func (uc *CourseUsecase) ListFirstCategory(ctx context.Context) ([]*Category, er
 
 func (uc *CourseUsecase) SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*Course, error) {
 	return uc.courseRepo.SearchCourse(ctx, pageNum, pageSize, categoryId, level, reverse)
+}
+
+func (uc *CourseUsecase) UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error) {
+	return uc.courseRepo.UpdateCourse(ctx, id, course)
 }

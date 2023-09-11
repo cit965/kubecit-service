@@ -1242,109 +1242,79 @@ func (m *CourseInfo) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for IsRecommend
-
-	// no validation rules for IsIntegral
-
-	// no validation rules for SecondCategory
-
-	// no validation rules for SaleType
-
-	// no validation rules for DiscountPrice
-
-	// no validation rules for FirstCategory
-
-	// no validation rules for IsMember
-
-	// no validation rules for FirstCategoryName
-
-	// no validation rules for TeachingType
-
-	// no validation rules for CourseLevel
-
-	// no validation rules for UpdateBy
-
-	// no validation rules for PurchaseCnt
-
-	// no validation rules for TotalHour
-
 	// no validation rules for Id
 
-	// no validation rules for CourseCover
+	// no validation rules for Level
 
-	// no validation rules for SalePrice
+	// no validation rules for Name
 
-	if all {
-		switch v := interface{}(m.GetUpdateTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, CourseInfoValidationError{
-					field:  "UpdateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, CourseInfoValidationError{
-					field:  "UpdateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetUpdateTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CourseInfoValidationError{
-				field:  "UpdateTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
+	// no validation rules for Detail
 
-	// no validation rules for Tags
+	// no validation rules for Cover
 
-	// no validation rules for CourseName
-
-	// no validation rules for CreateBy
-
-	// no validation rules for PurchaseCounter
-
-	if all {
-		switch v := interface{}(m.GetCreateTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, CourseInfoValidationError{
-					field:  "CreateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, CourseInfoValidationError{
-					field:  "CreateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CourseInfoValidationError{
-				field:  "CreateTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	// no validation rules for Clicks
-
-	// no validation rules for SecondCategoryName
+	// no validation rules for Price
 
 	// no validation rules for Status
+
+	// no validation rules for CategoryId
+
+	if all {
+		switch v := interface{}(m.GetCreatedAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CourseInfoValidationError{
+					field:  "CreatedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CourseInfoValidationError{
+					field:  "CreatedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreatedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CourseInfoValidationError{
+				field:  "CreatedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetUpdatedAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CourseInfoValidationError{
+					field:  "UpdatedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CourseInfoValidationError{
+					field:  "UpdatedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUpdatedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CourseInfoValidationError{
+				field:  "UpdatedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return CourseInfoMultiError(errors)
@@ -2583,6 +2553,255 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = SearchCourseReplyValidationError{}
+
+// Validate checks the field values on UpdateCourseRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *UpdateCourseRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UpdateCourseRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// UpdateCourseRequestMultiError, or nil if none found.
+func (m *UpdateCourseRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UpdateCourseRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Level
+
+	// no validation rules for Name
+
+	// no validation rules for Detail
+
+	// no validation rules for Cover
+
+	// no validation rules for Price
+
+	// no validation rules for Status
+
+	// no validation rules for CategoryId
+
+	if len(errors) > 0 {
+		return UpdateCourseRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// UpdateCourseRequestMultiError is an error wrapping multiple validation
+// errors returned by UpdateCourseRequest.ValidateAll() if the designated
+// constraints aren't met.
+type UpdateCourseRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UpdateCourseRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UpdateCourseRequestMultiError) AllErrors() []error { return m }
+
+// UpdateCourseRequestValidationError is the validation error returned by
+// UpdateCourseRequest.Validate if the designated constraints aren't met.
+type UpdateCourseRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UpdateCourseRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UpdateCourseRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UpdateCourseRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UpdateCourseRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UpdateCourseRequestValidationError) ErrorName() string {
+	return "UpdateCourseRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e UpdateCourseRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUpdateCourseRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UpdateCourseRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UpdateCourseRequestValidationError{}
+
+// Validate checks the field values on UpdateCourseReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *UpdateCourseReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UpdateCourseReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// UpdateCourseReplyMultiError, or nil if none found.
+func (m *UpdateCourseReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UpdateCourseReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateCourseReplyValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateCourseReplyValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateCourseReplyValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return UpdateCourseReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// UpdateCourseReplyMultiError is an error wrapping multiple validation errors
+// returned by UpdateCourseReply.ValidateAll() if the designated constraints
+// aren't met.
+type UpdateCourseReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UpdateCourseReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UpdateCourseReplyMultiError) AllErrors() []error { return m }
+
+// UpdateCourseReplyValidationError is the validation error returned by
+// UpdateCourseReply.Validate if the designated constraints aren't met.
+type UpdateCourseReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UpdateCourseReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UpdateCourseReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UpdateCourseReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UpdateCourseReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UpdateCourseReplyValidationError) ErrorName() string {
+	return "UpdateCourseReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e UpdateCourseReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUpdateCourseReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UpdateCourseReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UpdateCourseReplyValidationError{}
 
 // Validate checks the field values on SliderInfo with the rules defined in the
 // proto definition for this message. If any rules are violated, the first

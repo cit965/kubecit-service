@@ -58,7 +58,17 @@ service Kubecit {
       tags: "course"
     };
   }
+  rpc UpdateCourse (UpdateCourseRequest) returns (UpdateCourseReply) {
+    option (google.api.http) = {
+      put: "/api/course/{id}",
+      body: "*"
+    };
 
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "筛选课程列表"
+      tags: "course"
+    };
+  }
   rpc Category (Empty) returns (CategoryResp) {
     option (google.api.http) = {
       get: "/api/categories"
@@ -236,36 +246,17 @@ message PageInfo {
 }
 
 message CourseInfo {
-  int32 isRecommend = 1;
-  int32 isIntegral = 2;
-  string secondCategory = 3;
-  int32 saleType = 4;
-  float discountPrice = 5;
-  string firstCategory = 6;
-  int32 isMember = 7;
-  string firstCategoryName = 8;
-  int32 teachingType = 9;
-  int32 courseLevel = 10;
-  string updateBy = 11;
-  repeated string lecturerName = 12;
-  int32 purchaseCnt = 13;
-  float totalHour = 14;
-  string id = 15;
-  repeated string bizCourseDetail = 16;
-  string courseCover = 17;
-  repeated string bizCourseChapters = 20;
-  float salePrice = 22;
-  repeated string bizCourseTeacher = 23;
-  repeated string bizCourseAttachments = 24;
-  google.protobuf.Timestamp updateTime = 25;
-  string tags = 26;
-  string courseName = 27;
-  string createBy = 28;
-  int32 purchaseCounter = 29;
-  google.protobuf.Timestamp createTime = 30;
-  int32 clicks = 31;
-  string secondCategoryName = 32;
-  int32 status = 33;
+  int32 id = 1;
+  int32 level = 2;
+  string name = 3;
+  string detail = 4;
+  string cover = 5;
+  float price = 6;
+  repeated string tags = 7;
+  int32 status = 8;
+  int32 categoryId = 9;
+  google.protobuf.Timestamp createdAt = 10;
+  google.protobuf.Timestamp updatedAt = 11;
 }
 
 message GetFirstCategoriesRequest {
@@ -320,6 +311,22 @@ message SearchCourseRequest {
 message SearchCourseReply {
   Metadata meta = 1;
   PageInfo data = 2;
+}
+
+message UpdateCourseRequest {
+  int32 id = 1;
+  int32 level = 2;
+  string name = 3;
+  string detail = 4;
+  string cover = 5;
+  float price = 6;
+  repeated string tags = 7;
+  int32 status = 8;
+  int32 categoryId = 9;
+}
+
+message UpdateCourseReply {
+  CourseInfo data = 1;
 }
 
 message SliderInfo {
