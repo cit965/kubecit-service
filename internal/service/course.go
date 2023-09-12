@@ -28,7 +28,7 @@ func (s *KubecitService) ListCategory(ctx context.Context, req *pb.ListCategoryR
 	return &pb.ListCategoryResp{Categories: cs}, nil
 }
 
-// CreateCategory
+// CreateCategory 创建分类
 func (s *KubecitService) CreateCategory(ctx context.Context, req *pb.CategoryInfo) (*pb.Empty, error) {
 	err := s.cc.CreateCategory(ctx, &biz.Category{
 		CategoryName: req.CategoryName,
@@ -38,14 +38,17 @@ func (s *KubecitService) CreateCategory(ctx context.Context, req *pb.CategoryInf
 	return &pb.Empty{}, err
 }
 
+// DeleteCategory 删除分类
 func (s *KubecitService) DeleteCategory(ctx context.Context, req *pb.DeleteCategoryReq) (*pb.Empty, error) {
 	return &pb.Empty{}, s.cc.DeleteCategory(ctx, req.Id)
 }
 
+// UpdateCategory 更新分类信息
 func (s *KubecitService) UpdateCategory(ctx context.Context, req *pb.UpdateCategoryReq) (*pb.Empty, error) {
 	return &pb.Empty{}, s.cc.UpdateCategory(ctx, int(req.Id), req.CategoryName)
 }
 
+// MostNew 最新好课
 func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNewReply, error) {
 
 	courses, err := s.cc.SearchCourse(ctx, 0, 20, nil, nil, nil)
@@ -73,6 +76,7 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNe
 	return &pb.MostNewReply{List: result}, nil
 }
 
+// TagsList 课程标签
 func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) (*pb.TagsListReply, error) {
 	return &pb.TagsListReply{
 		Tags: []*pb.Tag{
@@ -81,6 +85,8 @@ func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) 
 		},
 	}, nil
 }
+
+// SearchCourse 搜索课程
 func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseRequest) (*pb.SearchCourseReply, error) {
 	pageNum := req.GetPageNum()
 	pageSize := req.GetPageSize()
@@ -117,6 +123,7 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 	}, nil
 }
 
+// UpdateCourse 更新课程
 func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseRequest) (*pb.UpdateCourseReply, error) {
 	user, err := s.userUseCase.CurrentUserInfo(ctx)
 	if err != nil {
@@ -154,6 +161,7 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 		}}, nil
 }
 
+// ReviewCourse  课程审核
 func (s *KubecitService) ReviewCourse(ctx context.Context, req *pb.ReviewCourseRequest) (*pb.ReviewCourseReply, error) {
 	user, err := s.userUseCase.CurrentUserInfo(ctx)
 	if err != nil {
