@@ -146,32 +146,6 @@ func (c *courseRepo) CreateCourse(ctx context.Context, course *biz.Course) (*biz
 	}, nil
 }
 
-// ListCourses TODO: add pagination
-func (c *courseRepo) ListCourses(ctx context.Context) ([]*biz.Course, error) {
-	courses, err := c.data.db.Course.Query().All(ctx)
-	if err != nil {
-		c.log.Errorf("course repo list error: %v\n", err)
-		return nil, err
-	}
-	res := make([]*biz.Course, 0)
-	for _, course := range courses {
-		res = append(res, &biz.Course{
-			Id:         course.ID,
-			Level:      course.Level,
-			Name:       course.Name,
-			Detail:     course.Detail,
-			Cover:      course.Cover,
-			Price:      course.Price,
-			Tags:       course.Tags,
-			CreatedAt:  course.CreatedAt,
-			UpdatedAt:  course.UpdatedAt,
-			Status:     course.Status,
-			CategoryId: course.CategoryID,
-		})
-	}
-	return res, nil
-}
-
 func (c *courseRepo) DeleteCourse(ctx context.Context, id int) (int, error) {
 	res, err := c.data.db.Course.Delete().Where(course.IDEQ(id)).Exec(ctx)
 	if err != nil {

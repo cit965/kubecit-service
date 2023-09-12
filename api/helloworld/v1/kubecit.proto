@@ -126,16 +126,6 @@ service Kubecit {
       tags: "course"
     };
   }
-  rpc ListCourses (ListCoursesRequest) returns (ListCoursesReply) {
-    option (google.api.http) = {
-      get: "/api/courses",
-    };
-
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "课程列表"
-      tags: "course"
-    };
-  }
   rpc GetCourse (GetCourseRequest) returns (GetCourseReply) {
     option (google.api.http) = {
       get: "/api/course/{id}",

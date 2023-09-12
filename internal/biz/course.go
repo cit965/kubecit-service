@@ -44,7 +44,6 @@ type CourseRepo interface {
 	UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error)
 	ReviewCourse(ctx context.Context, id int, status int32) (*Course, error)
 	CreateCourse(ctx context.Context, course *Course) (*Course, error)
-	ListCourses(ctx context.Context) ([]*Course, error)
 	GetCourse(ctx context.Context, id int) (*Course, error)
 	DeleteCourse(ctx context.Context, id int) (int, error)
 }
@@ -91,10 +90,6 @@ func (uc *CourseUsecase) UpdateCourse(ctx context.Context, id int, course *Cours
 
 func (uc *CourseUsecase) ReviewCourse(ctx context.Context, id int, status int32) (*Course, error) {
 	return uc.courseRepo.ReviewCourse(ctx, id, status)
-}
-
-func (uc *CourseUsecase) ListCourses(ctx context.Context) ([]*Course, error) {
-	return uc.courseRepo.ListCourses(ctx)
 }
 
 func (uc *CourseUsecase) CreateCourse(ctx context.Context, course *Course) (*Course, error) {

@@ -29,7 +29,6 @@ const OperationKubecitGetCourse = "/helloworld.v1.Kubecit/GetCourse"
 const OperationKubecitGetInfo = "/helloworld.v1.Kubecit/GetInfo"
 const OperationKubecitGetSlider = "/helloworld.v1.Kubecit/GetSlider"
 const OperationKubecitListCategory = "/helloworld.v1.Kubecit/ListCategory"
-const OperationKubecitListCourses = "/helloworld.v1.Kubecit/ListCourses"
 const OperationKubecitListSlidersByPriority = "/helloworld.v1.Kubecit/ListSlidersByPriority"
 const OperationKubecitLoginByJson = "/helloworld.v1.Kubecit/LoginByJson"
 const OperationKubecitMostNew = "/helloworld.v1.Kubecit/MostNew"
@@ -54,7 +53,6 @@ type KubecitHTTPServer interface {
 	GetInfo(context.Context, *GetInfoRequest) (*UserInfoReply, error)
 	GetSlider(context.Context, *GetSliderRequest) (*GetSliderReply, error)
 	ListCategory(context.Context, *ListCategoryReq) (*ListCategoryResp, error)
-	ListCourses(context.Context, *ListCoursesRequest) (*ListCoursesReply, error)
 	ListSlidersByPriority(context.Context, *Empty) (*ListSlidersByPriorityReply, error)
 	LoginByJson(context.Context, *LoginByJsonRequest) (*LoginByJsonReply, error)
 	// MostNew ========================== 课程相关接口 ===================================
@@ -80,7 +78,6 @@ func RegisterKubecitHTTPServer(s *http.Server, srv KubecitHTTPServer) {
 	r.PUT("/api/course/{id}", _Kubecit_UpdateCourse0_HTTP_Handler(srv))
 	r.PATCH("/api/course/{id}", _Kubecit_ReviewCourse0_HTTP_Handler(srv))
 	r.POST("/api/course", _Kubecit_CreateCourse0_HTTP_Handler(srv))
-	r.GET("/api/courses", _Kubecit_ListCourses0_HTTP_Handler(srv))
 	r.GET("/api/course/{id}", _Kubecit_GetCourse0_HTTP_Handler(srv))
 	r.DELETE("/api/course/{id}", _Kubecit_DeleteCourse0_HTTP_Handler(srv))
 	r.GET("/api/member/getInfo", _Kubecit_GetInfo0_HTTP_Handler(srv))
@@ -313,25 +310,6 @@ func _Kubecit_CreateCourse0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Co
 	}
 }
 
-func _Kubecit_ListCourses0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in ListCoursesRequest
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationKubecitListCourses)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ListCourses(ctx, req.(*ListCoursesRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*ListCoursesReply)
-		return ctx.Result(200, reply)
-	}
-}
-
 func _Kubecit_GetCourse0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GetCourseRequest
@@ -560,7 +538,6 @@ type KubecitHTTPClient interface {
 	GetInfo(ctx context.Context, req *GetInfoRequest, opts ...http.CallOption) (rsp *UserInfoReply, err error)
 	GetSlider(ctx context.Context, req *GetSliderRequest, opts ...http.CallOption) (rsp *GetSliderReply, err error)
 	ListCategory(ctx context.Context, req *ListCategoryReq, opts ...http.CallOption) (rsp *ListCategoryResp, err error)
-	ListCourses(ctx context.Context, req *ListCoursesRequest, opts ...http.CallOption) (rsp *ListCoursesReply, err error)
 	ListSlidersByPriority(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *ListSlidersByPriorityReply, err error)
 	LoginByJson(ctx context.Context, req *LoginByJsonRequest, opts ...http.CallOption) (rsp *LoginByJsonReply, err error)
 	MostNew(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *MostNewReply, err error)
@@ -703,19 +680,6 @@ func (c *KubecitHTTPClientImpl) ListCategory(ctx context.Context, in *ListCatego
 	pattern := "/api/categories"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationKubecitListCategory))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *KubecitHTTPClientImpl) ListCourses(ctx context.Context, in *ListCoursesRequest, opts ...http.CallOption) (*ListCoursesReply, error) {
-	var out ListCoursesReply
-	pattern := "/api/courses"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationKubecitListCourses))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

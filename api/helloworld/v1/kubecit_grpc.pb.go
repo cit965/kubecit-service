@@ -29,7 +29,6 @@ const (
 	Kubecit_UpdateCourse_FullMethodName          = "/helloworld.v1.Kubecit/UpdateCourse"
 	Kubecit_ReviewCourse_FullMethodName          = "/helloworld.v1.Kubecit/ReviewCourse"
 	Kubecit_CreateCourse_FullMethodName          = "/helloworld.v1.Kubecit/CreateCourse"
-	Kubecit_ListCourses_FullMethodName           = "/helloworld.v1.Kubecit/ListCourses"
 	Kubecit_GetCourse_FullMethodName             = "/helloworld.v1.Kubecit/GetCourse"
 	Kubecit_DeleteCourse_FullMethodName          = "/helloworld.v1.Kubecit/DeleteCourse"
 	Kubecit_GetInfo_FullMethodName               = "/helloworld.v1.Kubecit/GetInfo"
@@ -57,7 +56,6 @@ type KubecitClient interface {
 	UpdateCourse(ctx context.Context, in *UpdateCourseRequest, opts ...grpc.CallOption) (*UpdateCourseReply, error)
 	ReviewCourse(ctx context.Context, in *ReviewCourseRequest, opts ...grpc.CallOption) (*ReviewCourseReply, error)
 	CreateCourse(ctx context.Context, in *CreateCourseRequest, opts ...grpc.CallOption) (*CreateCourseReply, error)
-	ListCourses(ctx context.Context, in *ListCoursesRequest, opts ...grpc.CallOption) (*ListCoursesReply, error)
 	GetCourse(ctx context.Context, in *GetCourseRequest, opts ...grpc.CallOption) (*GetCourseReply, error)
 	DeleteCourse(ctx context.Context, in *DeleteCourseRequest, opts ...grpc.CallOption) (*DeleteCourseReply, error)
 	// ========================== 用户相关接口 ===================================
@@ -170,15 +168,6 @@ func (c *kubecitClient) CreateCourse(ctx context.Context, in *CreateCourseReques
 	return out, nil
 }
 
-func (c *kubecitClient) ListCourses(ctx context.Context, in *ListCoursesRequest, opts ...grpc.CallOption) (*ListCoursesReply, error) {
-	out := new(ListCoursesReply)
-	err := c.cc.Invoke(ctx, Kubecit_ListCourses_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *kubecitClient) GetCourse(ctx context.Context, in *GetCourseRequest, opts ...grpc.CallOption) (*GetCourseReply, error) {
 	out := new(GetCourseReply)
 	err := c.cc.Invoke(ctx, Kubecit_GetCourse_FullMethodName, in, out, opts...)
@@ -284,7 +273,6 @@ type KubecitServer interface {
 	UpdateCourse(context.Context, *UpdateCourseRequest) (*UpdateCourseReply, error)
 	ReviewCourse(context.Context, *ReviewCourseRequest) (*ReviewCourseReply, error)
 	CreateCourse(context.Context, *CreateCourseRequest) (*CreateCourseReply, error)
-	ListCourses(context.Context, *ListCoursesRequest) (*ListCoursesReply, error)
 	GetCourse(context.Context, *GetCourseRequest) (*GetCourseReply, error)
 	DeleteCourse(context.Context, *DeleteCourseRequest) (*DeleteCourseReply, error)
 	// ========================== 用户相关接口 ===================================
@@ -333,9 +321,6 @@ func (UnimplementedKubecitServer) ReviewCourse(context.Context, *ReviewCourseReq
 }
 func (UnimplementedKubecitServer) CreateCourse(context.Context, *CreateCourseRequest) (*CreateCourseReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCourse not implemented")
-}
-func (UnimplementedKubecitServer) ListCourses(context.Context, *ListCoursesRequest) (*ListCoursesReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListCourses not implemented")
 }
 func (UnimplementedKubecitServer) GetCourse(context.Context, *GetCourseRequest) (*GetCourseReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCourse not implemented")
@@ -556,24 +541,6 @@ func _Kubecit_CreateCourse_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(KubecitServer).CreateCourse(ctx, req.(*CreateCourseRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Kubecit_ListCourses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListCoursesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(KubecitServer).ListCourses(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Kubecit_ListCourses_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(KubecitServer).ListCourses(ctx, req.(*ListCoursesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -804,10 +771,6 @@ var Kubecit_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateCourse",
 			Handler:    _Kubecit_CreateCourse_Handler,
-		},
-		{
-			MethodName: "ListCourses",
-			Handler:    _Kubecit_ListCourses_Handler,
 		},
 		{
 			MethodName: "GetCourse",

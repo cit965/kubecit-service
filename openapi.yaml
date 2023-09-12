@@ -234,18 +234,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.ReviewCourseReply'
-    /api/courses:
-        get:
-            tags:
-                - Kubecit
-            operationId: Kubecit_ListCourses
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/helloworld.v1.ListCoursesReply'
     /api/member/getInfo:
         get:
             tags:
@@ -515,13 +503,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
-        helloworld.v1.ListCoursesReply:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/helloworld.v1.CourseInfo'
         helloworld.v1.ListSlidersByPriorityReply:
             type: object
             properties:

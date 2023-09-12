@@ -180,31 +180,6 @@ func (s *KubecitService) CreateCourse(ctx context.Context, req *pb.CreateCourseR
 	}}, nil
 }
 
-func (s *KubecitService) ListCourses(ctx context.Context, req *pb.ListCoursesRequest) (*pb.ListCoursesReply, error) {
-	courses, err := s.cc.ListCourses(ctx)
-	if err != nil {
-		return nil, err
-	}
-	resData := make([]*pb.CourseInfo, 0)
-	for _, res := range courses {
-		resData = append(resData, &pb.CourseInfo{
-			Id:         int32(res.Id),
-			Level:      res.Level,
-			Name:       res.Name,
-			Detail:     res.Detail,
-			Cover:      res.Cover,
-			Price:      res.Price,
-			Tags:       strings.Split(res.Tags, ","),
-			Status:     pb.CourseStatus(res.Status),
-			CategoryId: int32(res.CategoryId),
-			CreatedAt:  timestamppb.New(res.CreatedAt),
-			UpdatedAt:  timestamppb.New(res.UpdatedAt),
-		})
-	}
-	return &pb.ListCoursesReply{
-		Data: resData}, nil
-}
-
 func (s *KubecitService) GetCourse(ctx context.Context, req *pb.GetCourseRequest) (*pb.GetCourseReply, error) {
 	res, err := s.cc.GetCourse(ctx, int(req.Id))
 	if err != nil {
