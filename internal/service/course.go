@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// ListCategory 分类列表
 func (s *KubecitService) ListCategory(ctx context.Context, req *pb.ListCategoryReq) (*pb.ListCategoryResp, error) {
 	categories, err := s.cc.ListCategory(ctx, req.Level)
 	if err != nil {
@@ -25,6 +26,24 @@ func (s *KubecitService) ListCategory(ctx context.Context, req *pb.ListCategoryR
 		})
 	}
 	return &pb.ListCategoryResp{Categories: cs}, nil
+}
+
+// CreateCategory
+func (s *KubecitService) CreateCategory(ctx context.Context, req *pb.CategoryInfo) (*pb.Empty, error) {
+	err := s.cc.CreateCategory(ctx, &biz.Category{
+		CategoryName: req.CategoryName,
+		ParentId:     req.ParentId,
+		Level:        int(req.Level),
+	})
+	return &pb.Empty{}, err
+}
+
+func (s *KubecitService) DeleteCategory(ctx context.Context, req *pb.DeleteCategoryReq) (*pb.Empty, error) {
+	return &pb.Empty{}, s.cc.DeleteCategory(ctx, req.Id)
+}
+
+func (s *KubecitService) UpdateCategory(ctx context.Context, req *pb.UpdateCategoryReq) (*pb.Empty, error) {
+	return &pb.Empty{}, s.cc.UpdateCategory(ctx, int(req.Id), req.CategoryName)
 }
 
 func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNewReply, error) {

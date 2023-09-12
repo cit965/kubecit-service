@@ -26,6 +26,40 @@ service Kubecit {
     };
   }
 
+  rpc CreateCategory (CategoryInfo) returns (Empty) {
+    option (google.api.http) = {
+      post: "/api/categories"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建分类"
+      tags: "catetory"
+    };
+  }
+
+  rpc DeleteCategory (DeleteCategoryReq) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/api/categories"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "删除分类"
+      tags: "catetory"
+    };
+  }
+
+  rpc UpdateCategory (UpdateCategoryReq) returns (Empty) {
+    option (google.api.http) = {
+      put: "/api/categories"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "更新分类"
+      tags: "catetory"
+    };
+  }
+
+
   // ========================== 课程相关接口 ===================================
   rpc MostNew (Empty) returns (MostNewReply) {
     option (google.api.http) = {
@@ -194,6 +228,7 @@ message ListCategoryReq {
 message ListCategoryResp{
   repeated CategoryInfo categories = 1;
 }
+
 
 message CategoryInfo {
   string categoryName = 1;
@@ -480,4 +515,13 @@ message RegisterUsernameReply {
 
 message LoginByJsonReplyData {
   string accessToken = 1;
+}
+
+message DeleteCategoryReq {
+  int32 id = 1;
+}
+
+message UpdateCategoryReq {
+  string categoryName = 1;
+  int32 id = 2;
 }

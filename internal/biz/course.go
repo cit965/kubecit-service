@@ -13,7 +13,6 @@ type Category struct {
 	Id           int32
 	ParentId     int32
 	Level        int
-	Status       string
 }
 
 type Course struct {
@@ -34,7 +33,9 @@ type Course struct {
 type CategoryRepo interface {
 	ListAll(ctx context.Context) ([]*Category, error)
 	ListByLevel(ctx context.Context, level int32) ([]*Category, error)
-	ListFirstCategories(ctx context.Context) ([]*Category, error)
+	Create(context.Context, *Category) error
+	Delete(ctx context.Context, id int32) error
+	Update(ctx context.Context, id int, name string) error
 }
 
 // CourseRepo is a Course repo.
@@ -64,8 +65,16 @@ func (uc *CourseUsecase) ListCategory(ctx context.Context, level int32) ([]*Cate
 	return uc.repo.ListByLevel(ctx, level)
 }
 
-func (uc *CourseUsecase) ListFirstCategory(ctx context.Context) ([]*Category, error) {
-	return uc.repo.ListFirstCategories(ctx)
+func (uc *CourseUsecase) CreateCategory(ctx context.Context, category *Category) error {
+	return uc.repo.Create(ctx, category)
+}
+
+func (uc *CourseUsecase) DeleteCategory(ctx context.Context, id int32) error {
+	return uc.repo.Delete(ctx, id)
+}
+
+func (uc *CourseUsecase) UpdateCategory(ctx context.Context, id int, name string) error {
+	return uc.repo.Update(ctx, id, name)
 }
 
 func (uc *CourseUsecase) SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*Course, error) {

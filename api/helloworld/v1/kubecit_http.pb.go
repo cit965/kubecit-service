@@ -19,7 +19,9 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationKubecitCreateCategory = "/helloworld.v1.Kubecit/CreateCategory"
 const OperationKubecitCreateSlider = "/helloworld.v1.Kubecit/CreateSlider"
+const OperationKubecitDeleteCategory = "/helloworld.v1.Kubecit/DeleteCategory"
 const OperationKubecitDeleteSlider = "/helloworld.v1.Kubecit/DeleteSlider"
 const OperationKubecitGetInfo = "/helloworld.v1.Kubecit/GetInfo"
 const OperationKubecitGetSlider = "/helloworld.v1.Kubecit/GetSlider"
@@ -31,12 +33,15 @@ const OperationKubecitRegisterUsername = "/helloworld.v1.Kubecit/RegisterUsernam
 const OperationKubecitReviewCourse = "/helloworld.v1.Kubecit/ReviewCourse"
 const OperationKubecitSearchCourse = "/helloworld.v1.Kubecit/SearchCourse"
 const OperationKubecitTagsList = "/helloworld.v1.Kubecit/TagsList"
+const OperationKubecitUpdateCategory = "/helloworld.v1.Kubecit/UpdateCategory"
 const OperationKubecitUpdateCourse = "/helloworld.v1.Kubecit/UpdateCourse"
 const OperationKubecitUpdateSlider = "/helloworld.v1.Kubecit/UpdateSlider"
 
 type KubecitHTTPServer interface {
+	CreateCategory(context.Context, *CategoryInfo) (*Empty, error)
 	// CreateSlider ========================== 系统设置相关接口 ===================================
 	CreateSlider(context.Context, *CreateSliderRequest) (*CreateSliderReply, error)
+	DeleteCategory(context.Context, *DeleteCategoryReq) (*Empty, error)
 	DeleteSlider(context.Context, *DeleteSliderRequest) (*DeleteSliderReply, error)
 	// GetInfo ========================== 用户相关接口 ===================================
 	GetInfo(context.Context, *GetInfoRequest) (*UserInfoReply, error)
@@ -50,6 +55,7 @@ type KubecitHTTPServer interface {
 	ReviewCourse(context.Context, *ReviewCourseRequest) (*ReviewCourseReply, error)
 	SearchCourse(context.Context, *SearchCourseRequest) (*SearchCourseReply, error)
 	TagsList(context.Context, *TagsListRequest) (*TagsListReply, error)
+	UpdateCategory(context.Context, *UpdateCategoryReq) (*Empty, error)
 	UpdateCourse(context.Context, *UpdateCourseRequest) (*UpdateCourseReply, error)
 	UpdateSlider(context.Context, *UpdateSliderRequest) (*UpdateSliderReply, error)
 }
@@ -57,6 +63,9 @@ type KubecitHTTPServer interface {
 func RegisterKubecitHTTPServer(s *http.Server, srv KubecitHTTPServer) {
 	r := s.Route("/")
 	r.GET("/api/categories", _Kubecit_ListCategory0_HTTP_Handler(srv))
+	r.POST("/api/categories", _Kubecit_CreateCategory0_HTTP_Handler(srv))
+	r.DELETE("/api/categories", _Kubecit_DeleteCategory0_HTTP_Handler(srv))
+	r.PUT("/api/categories", _Kubecit_UpdateCategory0_HTTP_Handler(srv))
 	r.POST("/api/course/mostNew", _Kubecit_MostNew0_HTTP_Handler(srv))
 	r.POST("/api/course/tags/list", _Kubecit_TagsList0_HTTP_Handler(srv))
 	r.POST("/api/course/search", _Kubecit_SearchCourse0_HTTP_Handler(srv))
@@ -87,6 +96,72 @@ func _Kubecit_ListCategory0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Co
 			return err
 		}
 		reply := out.(*ListCategoryResp)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Kubecit_CreateCategory0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CategoryInfo
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationKubecitCreateCategory)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateCategory(ctx, req.(*CategoryInfo))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Kubecit_DeleteCategory0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DeleteCategoryReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationKubecitDeleteCategory)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteCategory(ctx, req.(*DeleteCategoryReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Kubecit_UpdateCategory0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateCategoryReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationKubecitUpdateCategory)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateCategory(ctx, req.(*UpdateCategoryReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Empty)
 		return ctx.Result(200, reply)
 	}
 }
@@ -381,7 +456,9 @@ func _Kubecit_ListSlidersByPriority0_HTTP_Handler(srv KubecitHTTPServer) func(ct
 }
 
 type KubecitHTTPClient interface {
+	CreateCategory(ctx context.Context, req *CategoryInfo, opts ...http.CallOption) (rsp *Empty, err error)
 	CreateSlider(ctx context.Context, req *CreateSliderRequest, opts ...http.CallOption) (rsp *CreateSliderReply, err error)
+	DeleteCategory(ctx context.Context, req *DeleteCategoryReq, opts ...http.CallOption) (rsp *Empty, err error)
 	DeleteSlider(ctx context.Context, req *DeleteSliderRequest, opts ...http.CallOption) (rsp *DeleteSliderReply, err error)
 	GetInfo(ctx context.Context, req *GetInfoRequest, opts ...http.CallOption) (rsp *UserInfoReply, err error)
 	GetSlider(ctx context.Context, req *GetSliderRequest, opts ...http.CallOption) (rsp *GetSliderReply, err error)
@@ -393,6 +470,7 @@ type KubecitHTTPClient interface {
 	ReviewCourse(ctx context.Context, req *ReviewCourseRequest, opts ...http.CallOption) (rsp *ReviewCourseReply, err error)
 	SearchCourse(ctx context.Context, req *SearchCourseRequest, opts ...http.CallOption) (rsp *SearchCourseReply, err error)
 	TagsList(ctx context.Context, req *TagsListRequest, opts ...http.CallOption) (rsp *TagsListReply, err error)
+	UpdateCategory(ctx context.Context, req *UpdateCategoryReq, opts ...http.CallOption) (rsp *Empty, err error)
 	UpdateCourse(ctx context.Context, req *UpdateCourseRequest, opts ...http.CallOption) (rsp *UpdateCourseReply, err error)
 	UpdateSlider(ctx context.Context, req *UpdateSliderRequest, opts ...http.CallOption) (rsp *UpdateSliderReply, err error)
 }
@@ -405,6 +483,19 @@ func NewKubecitHTTPClient(client *http.Client) KubecitHTTPClient {
 	return &KubecitHTTPClientImpl{client}
 }
 
+func (c *KubecitHTTPClientImpl) CreateCategory(ctx context.Context, in *CategoryInfo, opts ...http.CallOption) (*Empty, error) {
+	var out Empty
+	pattern := "/api/categories"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationKubecitCreateCategory))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *KubecitHTTPClientImpl) CreateSlider(ctx context.Context, in *CreateSliderRequest, opts ...http.CallOption) (*CreateSliderReply, error) {
 	var out CreateSliderReply
 	pattern := "/api/slider"
@@ -412,6 +503,19 @@ func (c *KubecitHTTPClientImpl) CreateSlider(ctx context.Context, in *CreateSlid
 	opts = append(opts, http.Operation(OperationKubecitCreateSlider))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *KubecitHTTPClientImpl) DeleteCategory(ctx context.Context, in *DeleteCategoryReq, opts ...http.CallOption) (*Empty, error) {
+	var out Empty
+	pattern := "/api/categories"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationKubecitDeleteCategory))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "DELETE", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -555,6 +659,19 @@ func (c *KubecitHTTPClientImpl) TagsList(ctx context.Context, in *TagsListReques
 	opts = append(opts, http.Operation(OperationKubecitTagsList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *KubecitHTTPClientImpl) UpdateCategory(ctx context.Context, in *UpdateCategoryReq, opts ...http.CallOption) (*Empty, error) {
+	var out Empty
+	pattern := "/api/categories"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationKubecitUpdateCategory))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

@@ -20,6 +20,9 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Kubecit_ListCategory_FullMethodName          = "/helloworld.v1.Kubecit/ListCategory"
+	Kubecit_CreateCategory_FullMethodName        = "/helloworld.v1.Kubecit/CreateCategory"
+	Kubecit_DeleteCategory_FullMethodName        = "/helloworld.v1.Kubecit/DeleteCategory"
+	Kubecit_UpdateCategory_FullMethodName        = "/helloworld.v1.Kubecit/UpdateCategory"
 	Kubecit_MostNew_FullMethodName               = "/helloworld.v1.Kubecit/MostNew"
 	Kubecit_TagsList_FullMethodName              = "/helloworld.v1.Kubecit/TagsList"
 	Kubecit_SearchCourse_FullMethodName          = "/helloworld.v1.Kubecit/SearchCourse"
@@ -40,6 +43,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type KubecitClient interface {
 	ListCategory(ctx context.Context, in *ListCategoryReq, opts ...grpc.CallOption) (*ListCategoryResp, error)
+	CreateCategory(ctx context.Context, in *CategoryInfo, opts ...grpc.CallOption) (*Empty, error)
+	DeleteCategory(ctx context.Context, in *DeleteCategoryReq, opts ...grpc.CallOption) (*Empty, error)
+	UpdateCategory(ctx context.Context, in *UpdateCategoryReq, opts ...grpc.CallOption) (*Empty, error)
 	// ========================== 课程相关接口 ===================================
 	MostNew(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MostNewReply, error)
 	TagsList(ctx context.Context, in *TagsListRequest, opts ...grpc.CallOption) (*TagsListReply, error)
@@ -69,6 +75,33 @@ func NewKubecitClient(cc grpc.ClientConnInterface) KubecitClient {
 func (c *kubecitClient) ListCategory(ctx context.Context, in *ListCategoryReq, opts ...grpc.CallOption) (*ListCategoryResp, error) {
 	out := new(ListCategoryResp)
 	err := c.cc.Invoke(ctx, Kubecit_ListCategory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubecitClient) CreateCategory(ctx context.Context, in *CategoryInfo, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Kubecit_CreateCategory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubecitClient) DeleteCategory(ctx context.Context, in *DeleteCategoryReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Kubecit_DeleteCategory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubecitClient) UpdateCategory(ctx context.Context, in *UpdateCategoryReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Kubecit_UpdateCategory_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -197,6 +230,9 @@ func (c *kubecitClient) ListSlidersByPriority(ctx context.Context, in *Empty, op
 // for forward compatibility
 type KubecitServer interface {
 	ListCategory(context.Context, *ListCategoryReq) (*ListCategoryResp, error)
+	CreateCategory(context.Context, *CategoryInfo) (*Empty, error)
+	DeleteCategory(context.Context, *DeleteCategoryReq) (*Empty, error)
+	UpdateCategory(context.Context, *UpdateCategoryReq) (*Empty, error)
 	// ========================== 课程相关接口 ===================================
 	MostNew(context.Context, *Empty) (*MostNewReply, error)
 	TagsList(context.Context, *TagsListRequest) (*TagsListReply, error)
@@ -222,6 +258,15 @@ type UnimplementedKubecitServer struct {
 
 func (UnimplementedKubecitServer) ListCategory(context.Context, *ListCategoryReq) (*ListCategoryResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCategory not implemented")
+}
+func (UnimplementedKubecitServer) CreateCategory(context.Context, *CategoryInfo) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCategory not implemented")
+}
+func (UnimplementedKubecitServer) DeleteCategory(context.Context, *DeleteCategoryReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCategory not implemented")
+}
+func (UnimplementedKubecitServer) UpdateCategory(context.Context, *UpdateCategoryReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCategory not implemented")
 }
 func (UnimplementedKubecitServer) MostNew(context.Context, *Empty) (*MostNewReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MostNew not implemented")
@@ -289,6 +334,60 @@ func _Kubecit_ListCategory_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(KubecitServer).ListCategory(ctx, req.(*ListCategoryReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Kubecit_CreateCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).CreateCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_CreateCategory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).CreateCategory(ctx, req.(*CategoryInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Kubecit_DeleteCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCategoryReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).DeleteCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_DeleteCategory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).DeleteCategory(ctx, req.(*DeleteCategoryReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Kubecit_UpdateCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateCategoryReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).UpdateCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_UpdateCategory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).UpdateCategory(ctx, req.(*UpdateCategoryReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -537,6 +636,18 @@ var Kubecit_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListCategory",
 			Handler:    _Kubecit_ListCategory_Handler,
+		},
+		{
+			MethodName: "CreateCategory",
+			Handler:    _Kubecit_CreateCategory_Handler,
+		},
+		{
+			MethodName: "DeleteCategory",
+			Handler:    _Kubecit_DeleteCategory_Handler,
+		},
+		{
+			MethodName: "UpdateCategory",
+			Handler:    _Kubecit_UpdateCategory_Handler,
 		},
 		{
 			MethodName: "MostNew",
