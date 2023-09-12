@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-func (s *KubecitService) Category(ctx context.Context, req *pb.Empty) (*pb.CategoryResp, error) {
-	categories, err := s.cc.ListCategory(ctx)
+func (s *KubecitService) ListCategory(ctx context.Context, req *pb.ListCategoryReq) (*pb.ListCategoryResp, error) {
+	categories, err := s.cc.ListCategory(ctx, req.Level)
 	if err != nil {
 		return nil, err
 	}
@@ -21,11 +21,10 @@ func (s *KubecitService) Category(ctx context.Context, req *pb.Empty) (*pb.Categ
 			CategoryName: v.CategoryName,
 			Id:           v.Id,
 			ParentId:     v.ParentId,
-			Level:        v.Level,
-			Status:       v.Status,
+			Level:        int32(v.Level),
 		})
 	}
-	return &pb.CategoryResp{Categories: cs}, nil
+	return &pb.ListCategoryResp{Categories: cs}, nil
 }
 
 func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNewReply, error) {
@@ -53,25 +52,6 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNe
 		result = append(result, tmp)
 	}
 	return &pb.MostNewReply{List: result}, nil
-}
-
-func (s *KubecitService) GetFirstCategories(ctx context.Context, req *pb.GetFirstCategoriesRequest) (*pb.GetFirstCategoriesReply, error) {
-	categories, err := s.cc.ListFirstCategory(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	var cs []*pb.CategoryInfo
-	for _, v := range categories {
-		cs = append(cs, &pb.CategoryInfo{
-			CategoryName: v.CategoryName,
-			Id:           v.Id,
-			ParentId:     v.ParentId,
-			Level:        v.Level,
-			Status:       v.Status,
-		})
-	}
-	return &pb.GetFirstCategoriesReply{Categories: cs}, nil
 }
 
 func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) (*pb.TagsListReply, error) {

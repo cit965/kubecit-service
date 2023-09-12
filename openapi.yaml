@@ -11,26 +11,20 @@ paths:
         get:
             tags:
                 - Kubecit
-            operationId: Kubecit_Category
+            operationId: Kubecit_ListCategory
+            parameters:
+                - name: level
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/helloworld.v1.CategoryResp'
-    /api/course/category/getFirstCategories:
-        get:
-            tags:
-                - Kubecit
-            operationId: Kubecit_GetFirstCategories
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/helloworld.v1.GetFirstCategoriesReply'
+                                $ref: '#/components/schemas/helloworld.v1.ListCategoryResp'
     /api/course/mostNew:
         post:
             tags:
@@ -287,19 +281,11 @@ components:
                     type: integer
                     format: int32
                 level:
-                    type: string
-                status:
-                    type: string
+                    type: integer
+                    format: int32
                 id:
                     type: integer
                     format: int32
-        helloworld.v1.CategoryResp:
-            type: object
-            properties:
-                categories:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
         helloworld.v1.CourseInfo:
             type: object
             properties:
@@ -362,18 +348,18 @@ components:
         helloworld.v1.Empty:
             type: object
             properties: {}
-        helloworld.v1.GetFirstCategoriesReply:
+        helloworld.v1.GetSliderReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.SliderInfo'
+        helloworld.v1.ListCategoryResp:
             type: object
             properties:
                 categories:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
-        helloworld.v1.GetSliderReply:
-            type: object
-            properties:
-                data:
-                    $ref: '#/components/schemas/helloworld.v1.SliderInfo'
         helloworld.v1.ListSlidersByPriorityReply:
             type: object
             properties:

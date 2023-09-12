@@ -34,23 +34,16 @@ func (cu *CategoryUpdate) SetName(s string) *CategoryUpdate {
 	return cu
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (cu *CategoryUpdate) SetNillableName(s *string) *CategoryUpdate {
-	if s != nil {
-		cu.SetName(*s)
-	}
-	return cu
-}
-
 // SetLevel sets the "level" field.
-func (cu *CategoryUpdate) SetLevel(s string) *CategoryUpdate {
-	cu.mutation.SetLevel(s)
+func (cu *CategoryUpdate) SetLevel(i int) *CategoryUpdate {
+	cu.mutation.ResetLevel()
+	cu.mutation.SetLevel(i)
 	return cu
 }
 
-// SetStatus sets the "status" field.
-func (cu *CategoryUpdate) SetStatus(s string) *CategoryUpdate {
-	cu.mutation.SetStatus(s)
+// AddLevel adds i to the "level" field.
+func (cu *CategoryUpdate) AddLevel(i int) *CategoryUpdate {
+	cu.mutation.AddLevel(i)
 	return cu
 }
 
@@ -189,7 +182,20 @@ func (cu *CategoryUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (cu *CategoryUpdate) check() error {
+	if v, ok := cu.mutation.Name(); ok {
+		if err := category.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Category.name": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
+	if err := cu.check(); err != nil {
+		return n, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt))
 	if ps := cu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -202,10 +208,10 @@ func (cu *CategoryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(category.FieldName, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.Level(); ok {
-		_spec.SetField(category.FieldLevel, field.TypeString, value)
+		_spec.SetField(category.FieldLevel, field.TypeInt, value)
 	}
-	if value, ok := cu.mutation.Status(); ok {
-		_spec.SetField(category.FieldStatus, field.TypeString, value)
+	if value, ok := cu.mutation.AddedLevel(); ok {
+		_spec.AddField(category.FieldLevel, field.TypeInt, value)
 	}
 	if cu.mutation.CoursesCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -352,23 +358,16 @@ func (cuo *CategoryUpdateOne) SetName(s string) *CategoryUpdateOne {
 	return cuo
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (cuo *CategoryUpdateOne) SetNillableName(s *string) *CategoryUpdateOne {
-	if s != nil {
-		cuo.SetName(*s)
-	}
-	return cuo
-}
-
 // SetLevel sets the "level" field.
-func (cuo *CategoryUpdateOne) SetLevel(s string) *CategoryUpdateOne {
-	cuo.mutation.SetLevel(s)
+func (cuo *CategoryUpdateOne) SetLevel(i int) *CategoryUpdateOne {
+	cuo.mutation.ResetLevel()
+	cuo.mutation.SetLevel(i)
 	return cuo
 }
 
-// SetStatus sets the "status" field.
-func (cuo *CategoryUpdateOne) SetStatus(s string) *CategoryUpdateOne {
-	cuo.mutation.SetStatus(s)
+// AddLevel adds i to the "level" field.
+func (cuo *CategoryUpdateOne) AddLevel(i int) *CategoryUpdateOne {
+	cuo.mutation.AddLevel(i)
 	return cuo
 }
 
@@ -520,7 +519,20 @@ func (cuo *CategoryUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (cuo *CategoryUpdateOne) check() error {
+	if v, ok := cuo.mutation.Name(); ok {
+		if err := category.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Category.name": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err error) {
+	if err := cuo.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(category.Table, category.Columns, sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt))
 	id, ok := cuo.mutation.ID()
 	if !ok {
@@ -550,10 +562,10 @@ func (cuo *CategoryUpdateOne) sqlSave(ctx context.Context) (_node *Category, err
 		_spec.SetField(category.FieldName, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.Level(); ok {
-		_spec.SetField(category.FieldLevel, field.TypeString, value)
+		_spec.SetField(category.FieldLevel, field.TypeInt, value)
 	}
-	if value, ok := cuo.mutation.Status(); ok {
-		_spec.SetField(category.FieldStatus, field.TypeString, value)
+	if value, ok := cuo.mutation.AddedLevel(); ok {
+		_spec.AddField(category.FieldLevel, field.TypeInt, value)
 	}
 	if cuo.mutation.CoursesCleared() {
 		edge := &sqlgraph.EdgeSpec{

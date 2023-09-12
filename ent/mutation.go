@@ -566,8 +566,8 @@ type CategoryMutation struct {
 	typ             string
 	id              *int
 	name            *string
-	level           *string
-	status          *string
+	level           *int
+	addlevel        *int
 	clearedFields   map[string]struct{}
 	courses         map[int]struct{}
 	removedcourses  map[int]struct{}
@@ -717,12 +717,13 @@ func (m *CategoryMutation) ResetName() {
 }
 
 // SetLevel sets the "level" field.
-func (m *CategoryMutation) SetLevel(s string) {
-	m.level = &s
+func (m *CategoryMutation) SetLevel(i int) {
+	m.level = &i
+	m.addlevel = nil
 }
 
 // Level returns the value of the "level" field in the mutation.
-func (m *CategoryMutation) Level() (r string, exists bool) {
+func (m *CategoryMutation) Level() (r int, exists bool) {
 	v := m.level
 	if v == nil {
 		return
@@ -733,7 +734,7 @@ func (m *CategoryMutation) Level() (r string, exists bool) {
 // OldLevel returns the old "level" field's value of the Category entity.
 // If the Category object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CategoryMutation) OldLevel(ctx context.Context) (v string, err error) {
+func (m *CategoryMutation) OldLevel(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldLevel is only allowed on UpdateOne operations")
 	}
@@ -747,45 +748,28 @@ func (m *CategoryMutation) OldLevel(ctx context.Context) (v string, err error) {
 	return oldValue.Level, nil
 }
 
-// ResetLevel resets all changes to the "level" field.
-func (m *CategoryMutation) ResetLevel() {
-	m.level = nil
+// AddLevel adds i to the "level" field.
+func (m *CategoryMutation) AddLevel(i int) {
+	if m.addlevel != nil {
+		*m.addlevel += i
+	} else {
+		m.addlevel = &i
+	}
 }
 
-// SetStatus sets the "status" field.
-func (m *CategoryMutation) SetStatus(s string) {
-	m.status = &s
-}
-
-// Status returns the value of the "status" field in the mutation.
-func (m *CategoryMutation) Status() (r string, exists bool) {
-	v := m.status
+// AddedLevel returns the value that was added to the "level" field in this mutation.
+func (m *CategoryMutation) AddedLevel() (r int, exists bool) {
+	v := m.addlevel
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStatus returns the old "status" field's value of the Category entity.
-// If the Category object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CategoryMutation) OldStatus(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStatus requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
-	}
-	return oldValue.Status, nil
-}
-
-// ResetStatus resets all changes to the "status" field.
-func (m *CategoryMutation) ResetStatus() {
-	m.status = nil
+// ResetLevel resets all changes to the "level" field.
+func (m *CategoryMutation) ResetLevel() {
+	m.level = nil
+	m.addlevel = nil
 }
 
 // SetParentID sets the "parent_id" field.
@@ -1005,15 +989,12 @@ func (m *CategoryMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CategoryMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 3)
 	if m.name != nil {
 		fields = append(fields, category.FieldName)
 	}
 	if m.level != nil {
 		fields = append(fields, category.FieldLevel)
-	}
-	if m.status != nil {
-		fields = append(fields, category.FieldStatus)
 	}
 	if m.parent != nil {
 		fields = append(fields, category.FieldParentID)
@@ -1030,8 +1011,6 @@ func (m *CategoryMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case category.FieldLevel:
 		return m.Level()
-	case category.FieldStatus:
-		return m.Status()
 	case category.FieldParentID:
 		return m.ParentID()
 	}
@@ -1047,8 +1026,6 @@ func (m *CategoryMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldName(ctx)
 	case category.FieldLevel:
 		return m.OldLevel(ctx)
-	case category.FieldStatus:
-		return m.OldStatus(ctx)
 	case category.FieldParentID:
 		return m.OldParentID(ctx)
 	}
@@ -1068,18 +1045,11 @@ func (m *CategoryMutation) SetField(name string, value ent.Value) error {
 		m.SetName(v)
 		return nil
 	case category.FieldLevel:
-		v, ok := value.(string)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetLevel(v)
-		return nil
-	case category.FieldStatus:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStatus(v)
 		return nil
 	case category.FieldParentID:
 		v, ok := value.(int)
@@ -1096,6 +1066,9 @@ func (m *CategoryMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *CategoryMutation) AddedFields() []string {
 	var fields []string
+	if m.addlevel != nil {
+		fields = append(fields, category.FieldLevel)
+	}
 	return fields
 }
 
@@ -1104,6 +1077,8 @@ func (m *CategoryMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *CategoryMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+	case category.FieldLevel:
+		return m.AddedLevel()
 	}
 	return nil, false
 }
@@ -1113,6 +1088,13 @@ func (m *CategoryMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *CategoryMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case category.FieldLevel:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddLevel(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Category numeric field %s", name)
 }
@@ -1154,9 +1136,6 @@ func (m *CategoryMutation) ResetField(name string) error {
 		return nil
 	case category.FieldLevel:
 		m.ResetLevel()
-		return nil
-	case category.FieldStatus:
-		m.ResetStatus()
 		return nil
 	case category.FieldParentID:
 		m.ResetParentID()

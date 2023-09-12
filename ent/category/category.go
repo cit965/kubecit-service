@@ -16,8 +16,6 @@ const (
 	FieldName = "name"
 	// FieldLevel holds the string denoting the level field in the database.
 	FieldLevel = "level"
-	// FieldStatus holds the string denoting the status field in the database.
-	FieldStatus = "status"
 	// FieldParentID holds the string denoting the parent_id field in the database.
 	FieldParentID = "parent_id"
 	// EdgeCourses holds the string denoting the courses edge name in mutations.
@@ -50,7 +48,6 @@ var Columns = []string{
 	FieldID,
 	FieldName,
 	FieldLevel,
-	FieldStatus,
 	FieldParentID,
 }
 
@@ -65,8 +62,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultName holds the default value on creation for the "name" field.
-	DefaultName string
+	// NameValidator is a validator for the "name" field. It is called by the builders before save.
+	NameValidator func(string) error
 )
 
 // OrderOption defines the ordering options for the Category queries.
@@ -85,11 +82,6 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 // ByLevel orders the results by the level field.
 func ByLevel(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLevel, opts...).ToFunc()
-}
-
-// ByStatus orders the results by the status field.
-func ByStatus(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
 // ByParentID orders the results by the parent_id field.

@@ -32,9 +32,8 @@ var (
 	// CategoriesColumns holds the columns for the "categories" table.
 	CategoriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "name", Type: field.TypeString, Default: "unknown"},
-		{Name: "level", Type: field.TypeString},
-		{Name: "status", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString},
+		{Name: "level", Type: field.TypeInt},
 		{Name: "parent_id", Type: field.TypeInt, Nullable: true},
 	}
 	// CategoriesTable holds the schema information for the "categories" table.
@@ -45,7 +44,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "categories_categories_children",
-				Columns:    []*schema.Column{CategoriesColumns[4]},
+				Columns:    []*schema.Column{CategoriesColumns[3]},
 				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
