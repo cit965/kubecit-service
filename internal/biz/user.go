@@ -16,6 +16,7 @@ import (
 
 const (
 	AccountMethodUsername = "username"
+	AccountMethodWeChat   = "wechat"
 )
 const (
 	UserRoleInvalid uint8 = iota
