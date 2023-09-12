@@ -20,7 +20,7 @@ type Course struct {
 	ID int `json:"id,omitempty"`
 	// Level holds the value of the "level" field.
 	Level int32 `json:"level,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
+	// 修改时间
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`

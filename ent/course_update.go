@@ -164,6 +164,7 @@ func (cu *CourseUpdate) ClearOwner() *CourseUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (cu *CourseUpdate) Save(ctx context.Context) (int, error) {
+	cu.defaults()
 	return withHooks(ctx, cu.sqlSave, cu.mutation, cu.hooks)
 }
 
@@ -186,6 +187,14 @@ func (cu *CourseUpdate) Exec(ctx context.Context) error {
 func (cu *CourseUpdate) ExecX(ctx context.Context) {
 	if err := cu.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (cu *CourseUpdate) defaults() {
+	if _, ok := cu.mutation.UpdatedAt(); !ok {
+		v := course.UpdateDefaultUpdatedAt()
+		cu.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -431,6 +440,7 @@ func (cuo *CourseUpdateOne) Select(field string, fields ...string) *CourseUpdate
 
 // Save executes the query and returns the updated Course entity.
 func (cuo *CourseUpdateOne) Save(ctx context.Context) (*Course, error) {
+	cuo.defaults()
 	return withHooks(ctx, cuo.sqlSave, cuo.mutation, cuo.hooks)
 }
 
@@ -453,6 +463,14 @@ func (cuo *CourseUpdateOne) Exec(ctx context.Context) error {
 func (cuo *CourseUpdateOne) ExecX(ctx context.Context) {
 	if err := cuo.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (cuo *CourseUpdateOne) defaults() {
+	if _, ok := cuo.mutation.UpdatedAt(); !ok {
+		v := course.UpdateDefaultUpdatedAt()
+		cuo.mutation.SetUpdatedAt(v)
 	}
 }
 

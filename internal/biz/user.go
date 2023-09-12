@@ -21,6 +21,7 @@ const (
 	UserRoleInvalid uint8 = iota
 	UserRoleGuest
 	UserRoleRegisterUser
+	UserRoleLecturer
 	UserRoleSuperAdmin
 )
 const (
