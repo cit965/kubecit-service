@@ -1,10 +1,12 @@
 package gin
 
 import (
+	"crypto/sha1"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/fs"
 	"net/http"
+	"sort"
 )
 
 import "embed"
@@ -16,6 +18,8 @@ type GinService struct {
 	*gin.Engine
 }
 
+const TOKEN = "111"
+
 func NewGinService() *GinService {
 	r := gin.Default()
 	r.Use(Cors())
@@ -23,8 +27,39 @@ func NewGinService() *GinService {
 
 	staticFS, _ := fs.Sub(StaticFiles, "dist")
 	r.StaticFS("web/", http.FS(staticFS))
-
+	r.GET("wechat/check", CheckSignature)
 	return &GinService{r}
+}
+
+func CheckSignature(c *gin.Context) {
+	// 获取查询参数中的签名、时间戳和随机数
+	signature := c.Query("signature")
+	timestamp := c.Query("timestamp")
+	nonce := c.Query("nonce")
+	echostr := c.Query("echostr")
+
+	fmt.Println(signature)
+	// 创建包含令牌、时间戳和随机数的字符串切片
+	tmpArr := []string{TOKEN, timestamp, nonce}
+	// 对切片进行字典排序
+	sort.Strings(tmpArr)
+	// 将排序后的元素拼接成单个字符串
+	tmpStr := ""
+	for _, v := range tmpArr {
+		tmpStr += v
+	}
+	// 对字符串进行SHA-1哈希计算
+	tmpHash := sha1.New()
+	tmpHash.Write([]byte(tmpStr))
+	tmpStr = fmt.Sprintf("%x", tmpHash.Sum(nil))
+	fmt.Println(tmpStr)
+	fmt.Println(signature)
+	// 将计算得到的签名与请求中提供的签名进行比较，并根据结果发送相应的响应
+	if tmpStr == signature {
+		c.String(200, echostr)
+	} else {
+		c.String(403, "签名验证失败 "+timestamp)
+	}
 }
 
 func Cors() gin.HandlerFunc {
