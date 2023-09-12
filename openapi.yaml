@@ -25,6 +25,57 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.ListCategoryResp'
+        put:
+            tags:
+                - Kubecit
+            operationId: Kubecit_UpdateCategory
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.UpdateCategoryReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.Empty'
+        post:
+            tags:
+                - Kubecit
+            operationId: Kubecit_CreateCategory
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.Empty'
+        delete:
+            tags:
+                - Kubecit
+            operationId: Kubecit_DeleteCategory
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.DeleteCategoryReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.Empty'
     /api/course/mostNew:
         post:
             tags:
@@ -339,6 +390,12 @@ components:
                 priority:
                     type: integer
                     format: int32
+        helloworld.v1.DeleteCategoryReq:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
         helloworld.v1.DeleteSliderReply:
             type: object
             properties:
@@ -560,6 +617,14 @@ components:
                     type: integer
                     format: int32
                 course:
+                    type: integer
+                    format: int32
+        helloworld.v1.UpdateCategoryReq:
+            type: object
+            properties:
+                categoryName:
+                    type: string
+                id:
                     type: integer
                     format: int32
         helloworld.v1.UpdateCourseReply:

@@ -9,24 +9,7 @@ import (
 	"strings"
 )
 
-func (s *KubecitService) ListCategory(ctx context.Context, req *pb.ListCategoryReq) (*pb.ListCategoryResp, error) {
-	categories, err := s.cc.ListCategory(ctx, req.Level)
-	if err != nil {
-		return nil, err
-	}
-
-	var cs []*pb.CategoryInfo
-	for _, v := range categories {
-		cs = append(cs, &pb.CategoryInfo{
-			CategoryName: v.CategoryName,
-			Id:           v.Id,
-			ParentId:     v.ParentId,
-			Level:        int32(v.Level),
-		})
-	}
-	return &pb.ListCategoryResp{Categories: cs}, nil
-}
-
+// MostNew 最新好课
 func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNewReply, error) {
 
 	courses, err := s.cc.SearchCourse(ctx, 0, 20, nil, nil, nil)
@@ -54,6 +37,7 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNe
 	return &pb.MostNewReply{List: result}, nil
 }
 
+// TagsList 课程标签
 func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) (*pb.TagsListReply, error) {
 	return &pb.TagsListReply{
 		Tags: []*pb.Tag{
@@ -62,6 +46,8 @@ func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) 
 		},
 	}, nil
 }
+
+// SearchCourse 搜索课程
 func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseRequest) (*pb.SearchCourseReply, error) {
 	pageNum := req.GetPageNum()
 	pageSize := req.GetPageSize()
@@ -98,6 +84,7 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 	}, nil
 }
 
+// UpdateCourse 更新课程
 func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseRequest) (*pb.UpdateCourseReply, error) {
 	user, err := s.userUseCase.CurrentUserInfo(ctx)
 	if err != nil {
@@ -135,6 +122,7 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 		}}, nil
 }
 
+// ReviewCourse  课程审核
 func (s *KubecitService) ReviewCourse(ctx context.Context, req *pb.ReviewCourseRequest) (*pb.ReviewCourseReply, error) {
 	user, err := s.userUseCase.CurrentUserInfo(ctx)
 	if err != nil {
