@@ -14,6 +14,17 @@ option java_outer_classname = "HelloworldProtoV1";
 
 // The greeting service definition.
 service Kubecit {
+  // ========================== 分类相关接口 ===================================
+
+  rpc ListCategory (ListCategoryReq) returns (ListCategoryResp) {
+    option (google.api.http) = {
+      get: "/api/categories"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "分类列表"
+      tags: "catetory"
+    };
+  }
 
   // ========================== 课程相关接口 ===================================
   rpc MostNew (Empty) returns (MostNewReply) {
@@ -26,16 +37,7 @@ service Kubecit {
       tags: "course"
     };
   }
-  rpc GetFirstCategories (GetFirstCategoriesRequest) returns (GetFirstCategoriesReply) {
-    option (google.api.http) = {
-      get: "/api/course/category/getFirstCategories"
-    };
 
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "获取一级分类列表"
-      tags: "course"
-    };
-  }
   rpc TagsList (TagsListRequest) returns (TagsListReply) {
     option (google.api.http) = {
       post: "/api/course/tags/list",
@@ -80,15 +82,7 @@ service Kubecit {
       tags: "course"
     };
   }
-  rpc Category (Empty) returns (CategoryResp) {
-    option (google.api.http) = {
-      get: "/api/categories"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "分类列表"
-      tags: "course"
-    };
-  }
+
 
   // ========================== 用户相关接口 ===================================
   rpc GetInfo (GetInfoRequest) returns (UserInfoReply) {
@@ -193,16 +187,19 @@ message Empty {
 }
 
 
-message CategoryResp {
+message ListCategoryReq {
+  int32 level = 1;
+}
+
+message ListCategoryResp{
   repeated CategoryInfo categories = 1;
 }
 
 message CategoryInfo {
   string categoryName = 1;
   int32 parentId = 3;
-  string level = 4;
-  string status = 5;
-  int32 id = 6;
+  int32 level = 4;
+  int32 id = 5;
 }
 
 // The response message containing the greetings
@@ -277,34 +274,7 @@ message CourseInfo {
   google.protobuf.Timestamp updatedAt = 11;
 }
 
-message GetFirstCategoriesRequest {
 
-}
-
-message GetFirstCategoriesReply {
-  repeated CategoryInfo categories = 1;
-}
-
-message getFirstCategoriesReplyData {
-  repeated FirstCategory list = 1;
-}
-
-message FirstCategory {
-  string thumbnail = 1;
-  int32 level = 2;
-  string description = 3;
-  google.protobuf.Timestamp updateTime = 4;
-  int32 sort = 5;
-  string categoryName = 6;
-  string parentId = 7;
-  string createBy = 8;
-  google.protobuf.Timestamp createTime = 9;
-  string updateBy = 10;
-  repeated string children = 11;
-  repeated string parentCategory = 12;
-  string id = 13;
-  int32 status = 16;
-}
 
 message TagsListRequest {
   int32 pageNum = 1;

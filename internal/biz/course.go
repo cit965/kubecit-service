@@ -12,7 +12,7 @@ type Category struct {
 	CategoryName string
 	Id           int32
 	ParentId     int32
-	Level        string
+	Level        int
 	Status       string
 }
 
@@ -33,7 +33,7 @@ type Course struct {
 // CategoryRepo is a Category repo.
 type CategoryRepo interface {
 	ListAll(ctx context.Context) ([]*Category, error)
-
+	ListByLevel(ctx context.Context, level int32) ([]*Category, error)
 	ListFirstCategories(ctx context.Context) ([]*Category, error)
 }
 
@@ -60,8 +60,8 @@ func NewCourseUsecase(repo CategoryRepo, courseRepo CourseRepo, logger log.Logge
 	}
 }
 
-func (uc *CourseUsecase) ListCategory(ctx context.Context) ([]*Category, error) {
-	return uc.repo.ListAll(ctx)
+func (uc *CourseUsecase) ListCategory(ctx context.Context, level int32) ([]*Category, error) {
+	return uc.repo.ListByLevel(ctx, level)
 }
 
 func (uc *CourseUsecase) ListFirstCategory(ctx context.Context) ([]*Category, error) {

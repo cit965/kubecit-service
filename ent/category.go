@@ -18,10 +18,8 @@ type Category struct {
 	ID int `json:"id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// Level holds the value of the "level" field.
-	Level string `json:"level,omitempty"`
-	// Status holds the value of the "status" field.
-	Status string `json:"status,omitempty"`
+	// 1 第一级类别  2 第二级类别
+	Level int `json:"level,omitempty"`
 	// ParentID holds the value of the "parent_id" field.
 	ParentID int `json:"parent_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -79,9 +77,9 @@ func (*Category) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case category.FieldID, category.FieldParentID:
+		case category.FieldID, category.FieldLevel, category.FieldParentID:
 			values[i] = new(sql.NullInt64)
-		case category.FieldName, category.FieldLevel, category.FieldStatus:
+		case category.FieldName:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -111,16 +109,10 @@ func (c *Category) assignValues(columns []string, values []any) error {
 				c.Name = value.String
 			}
 		case category.FieldLevel:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field level", values[i])
 			} else if value.Valid {
-				c.Level = value.String
-			}
-		case category.FieldStatus:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field status", values[i])
-			} else if value.Valid {
-				c.Status = value.String
+				c.Level = int(value.Int64)
 			}
 		case category.FieldParentID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -183,10 +175,7 @@ func (c *Category) String() string {
 	builder.WriteString(c.Name)
 	builder.WriteString(", ")
 	builder.WriteString("level=")
-	builder.WriteString(c.Level)
-	builder.WriteString(", ")
-	builder.WriteString("status=")
-	builder.WriteString(c.Status)
+	builder.WriteString(fmt.Sprintf("%v", c.Level))
 	builder.WriteString(", ")
 	builder.WriteString("parent_id=")
 	builder.WriteString(fmt.Sprintf("%v", c.ParentID))

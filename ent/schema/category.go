@@ -14,10 +14,8 @@ type Category struct {
 // Fields of the Category.
 func (Category) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name").
-			Default("unknown"),
-		field.String("level"),
-		field.String("status"),
+		field.String("name").NotEmpty(),
+		field.Int("level").Comment("1 第一级类别  2 第二级类别"),
 		field.Int("parent_id").Optional(),
 	}
 }

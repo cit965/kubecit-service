@@ -33,8 +33,8 @@ func init() {
 	_ = categoryFields
 	// categoryDescName is the schema descriptor for name field.
 	categoryDescName := categoryFields[0].Descriptor()
-	// category.DefaultName holds the default value on creation for the name field.
-	category.DefaultName = categoryDescName.Default.(string)
+	// category.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	category.NameValidator = categoryDescName.Validators[0].(func(string) error)
 	courseFields := schema.Course{}.Fields()
 	_ = courseFields
 	// courseDescUpdatedAt is the schema descriptor for updated_at field.

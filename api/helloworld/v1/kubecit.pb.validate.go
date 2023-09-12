@@ -234,22 +234,124 @@ var _ interface {
 	ErrorName() string
 } = EmptyValidationError{}
 
-// Validate checks the field values on CategoryResp with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *CategoryResp) Validate() error {
+// Validate checks the field values on ListCategoryReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ListCategoryReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on CategoryResp with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in CategoryRespMultiError, or
-// nil if none found.
-func (m *CategoryResp) ValidateAll() error {
+// ValidateAll checks the field values on ListCategoryReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListCategoryReqMultiError, or nil if none found.
+func (m *ListCategoryReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *CategoryResp) validate(all bool) error {
+func (m *ListCategoryReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Level
+
+	if len(errors) > 0 {
+		return ListCategoryReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCategoryReqMultiError is an error wrapping multiple validation errors
+// returned by ListCategoryReq.ValidateAll() if the designated constraints
+// aren't met.
+type ListCategoryReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCategoryReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCategoryReqMultiError) AllErrors() []error { return m }
+
+// ListCategoryReqValidationError is the validation error returned by
+// ListCategoryReq.Validate if the designated constraints aren't met.
+type ListCategoryReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCategoryReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCategoryReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCategoryReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCategoryReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCategoryReqValidationError) ErrorName() string { return "ListCategoryReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ListCategoryReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCategoryReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCategoryReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCategoryReqValidationError{}
+
+// Validate checks the field values on ListCategoryResp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ListCategoryResp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListCategoryResp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListCategoryRespMultiError, or nil if none found.
+func (m *ListCategoryResp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCategoryResp) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -263,7 +365,7 @@ func (m *CategoryResp) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, CategoryRespValidationError{
+					errors = append(errors, ListCategoryRespValidationError{
 						field:  fmt.Sprintf("Categories[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -271,7 +373,7 @@ func (m *CategoryResp) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, CategoryRespValidationError{
+					errors = append(errors, ListCategoryRespValidationError{
 						field:  fmt.Sprintf("Categories[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -280,7 +382,7 @@ func (m *CategoryResp) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return CategoryRespValidationError{
+				return ListCategoryRespValidationError{
 					field:  fmt.Sprintf("Categories[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -291,18 +393,19 @@ func (m *CategoryResp) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return CategoryRespMultiError(errors)
+		return ListCategoryRespMultiError(errors)
 	}
 
 	return nil
 }
 
-// CategoryRespMultiError is an error wrapping multiple validation errors
-// returned by CategoryResp.ValidateAll() if the designated constraints aren't met.
-type CategoryRespMultiError []error
+// ListCategoryRespMultiError is an error wrapping multiple validation errors
+// returned by ListCategoryResp.ValidateAll() if the designated constraints
+// aren't met.
+type ListCategoryRespMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m CategoryRespMultiError) Error() string {
+func (m ListCategoryRespMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -311,11 +414,11 @@ func (m CategoryRespMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m CategoryRespMultiError) AllErrors() []error { return m }
+func (m ListCategoryRespMultiError) AllErrors() []error { return m }
 
-// CategoryRespValidationError is the validation error returned by
-// CategoryResp.Validate if the designated constraints aren't met.
-type CategoryRespValidationError struct {
+// ListCategoryRespValidationError is the validation error returned by
+// ListCategoryResp.Validate if the designated constraints aren't met.
+type ListCategoryRespValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -323,22 +426,22 @@ type CategoryRespValidationError struct {
 }
 
 // Field function returns field value.
-func (e CategoryRespValidationError) Field() string { return e.field }
+func (e ListCategoryRespValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CategoryRespValidationError) Reason() string { return e.reason }
+func (e ListCategoryRespValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CategoryRespValidationError) Cause() error { return e.cause }
+func (e ListCategoryRespValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CategoryRespValidationError) Key() bool { return e.key }
+func (e ListCategoryRespValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CategoryRespValidationError) ErrorName() string { return "CategoryRespValidationError" }
+func (e ListCategoryRespValidationError) ErrorName() string { return "ListCategoryRespValidationError" }
 
 // Error satisfies the builtin error interface
-func (e CategoryRespValidationError) Error() string {
+func (e ListCategoryRespValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -350,14 +453,14 @@ func (e CategoryRespValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCategoryResp.%s: %s%s",
+		"invalid %sListCategoryResp.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CategoryRespValidationError{}
+var _ error = ListCategoryRespValidationError{}
 
 var _ interface {
 	Field() string
@@ -365,7 +468,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CategoryRespValidationError{}
+} = ListCategoryRespValidationError{}
 
 // Validate checks the field values on CategoryInfo with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -394,8 +497,6 @@ func (m *CategoryInfo) validate(all bool) error {
 	// no validation rules for ParentId
 
 	// no validation rules for Level
-
-	// no validation rules for Status
 
 	// no validation rules for Id
 
@@ -1392,559 +1493,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CourseInfoValidationError{}
-
-// Validate checks the field values on GetFirstCategoriesRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetFirstCategoriesRequest) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on GetFirstCategoriesRequest with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// GetFirstCategoriesRequestMultiError, or nil if none found.
-func (m *GetFirstCategoriesRequest) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *GetFirstCategoriesRequest) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if len(errors) > 0 {
-		return GetFirstCategoriesRequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// GetFirstCategoriesRequestMultiError is an error wrapping multiple validation
-// errors returned by GetFirstCategoriesRequest.ValidateAll() if the
-// designated constraints aren't met.
-type GetFirstCategoriesRequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m GetFirstCategoriesRequestMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m GetFirstCategoriesRequestMultiError) AllErrors() []error { return m }
-
-// GetFirstCategoriesRequestValidationError is the validation error returned by
-// GetFirstCategoriesRequest.Validate if the designated constraints aren't met.
-type GetFirstCategoriesRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e GetFirstCategoriesRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e GetFirstCategoriesRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e GetFirstCategoriesRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e GetFirstCategoriesRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e GetFirstCategoriesRequestValidationError) ErrorName() string {
-	return "GetFirstCategoriesRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e GetFirstCategoriesRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sGetFirstCategoriesRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = GetFirstCategoriesRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = GetFirstCategoriesRequestValidationError{}
-
-// Validate checks the field values on GetFirstCategoriesReply with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetFirstCategoriesReply) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on GetFirstCategoriesReply with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// GetFirstCategoriesReplyMultiError, or nil if none found.
-func (m *GetFirstCategoriesReply) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *GetFirstCategoriesReply) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	for idx, item := range m.GetCategories() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, GetFirstCategoriesReplyValidationError{
-						field:  fmt.Sprintf("Categories[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, GetFirstCategoriesReplyValidationError{
-						field:  fmt.Sprintf("Categories[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return GetFirstCategoriesReplyValidationError{
-					field:  fmt.Sprintf("Categories[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return GetFirstCategoriesReplyMultiError(errors)
-	}
-
-	return nil
-}
-
-// GetFirstCategoriesReplyMultiError is an error wrapping multiple validation
-// errors returned by GetFirstCategoriesReply.ValidateAll() if the designated
-// constraints aren't met.
-type GetFirstCategoriesReplyMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m GetFirstCategoriesReplyMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m GetFirstCategoriesReplyMultiError) AllErrors() []error { return m }
-
-// GetFirstCategoriesReplyValidationError is the validation error returned by
-// GetFirstCategoriesReply.Validate if the designated constraints aren't met.
-type GetFirstCategoriesReplyValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e GetFirstCategoriesReplyValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e GetFirstCategoriesReplyValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e GetFirstCategoriesReplyValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e GetFirstCategoriesReplyValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e GetFirstCategoriesReplyValidationError) ErrorName() string {
-	return "GetFirstCategoriesReplyValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e GetFirstCategoriesReplyValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sGetFirstCategoriesReply.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = GetFirstCategoriesReplyValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = GetFirstCategoriesReplyValidationError{}
-
-// Validate checks the field values on GetFirstCategoriesReplyData with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetFirstCategoriesReplyData) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on GetFirstCategoriesReplyData with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// GetFirstCategoriesReplyDataMultiError, or nil if none found.
-func (m *GetFirstCategoriesReplyData) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *GetFirstCategoriesReplyData) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	for idx, item := range m.GetList() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, GetFirstCategoriesReplyDataValidationError{
-						field:  fmt.Sprintf("List[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, GetFirstCategoriesReplyDataValidationError{
-						field:  fmt.Sprintf("List[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return GetFirstCategoriesReplyDataValidationError{
-					field:  fmt.Sprintf("List[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return GetFirstCategoriesReplyDataMultiError(errors)
-	}
-
-	return nil
-}
-
-// GetFirstCategoriesReplyDataMultiError is an error wrapping multiple
-// validation errors returned by GetFirstCategoriesReplyData.ValidateAll() if
-// the designated constraints aren't met.
-type GetFirstCategoriesReplyDataMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m GetFirstCategoriesReplyDataMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m GetFirstCategoriesReplyDataMultiError) AllErrors() []error { return m }
-
-// GetFirstCategoriesReplyDataValidationError is the validation error returned
-// by GetFirstCategoriesReplyData.Validate if the designated constraints
-// aren't met.
-type GetFirstCategoriesReplyDataValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e GetFirstCategoriesReplyDataValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e GetFirstCategoriesReplyDataValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e GetFirstCategoriesReplyDataValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e GetFirstCategoriesReplyDataValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e GetFirstCategoriesReplyDataValidationError) ErrorName() string {
-	return "GetFirstCategoriesReplyDataValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e GetFirstCategoriesReplyDataValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sGetFirstCategoriesReplyData.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = GetFirstCategoriesReplyDataValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = GetFirstCategoriesReplyDataValidationError{}
-
-// Validate checks the field values on FirstCategory with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *FirstCategory) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on FirstCategory with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in FirstCategoryMultiError, or
-// nil if none found.
-func (m *FirstCategory) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *FirstCategory) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Thumbnail
-
-	// no validation rules for Level
-
-	// no validation rules for Description
-
-	if all {
-		switch v := interface{}(m.GetUpdateTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, FirstCategoryValidationError{
-					field:  "UpdateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, FirstCategoryValidationError{
-					field:  "UpdateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetUpdateTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return FirstCategoryValidationError{
-				field:  "UpdateTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	// no validation rules for Sort
-
-	// no validation rules for CategoryName
-
-	// no validation rules for ParentId
-
-	// no validation rules for CreateBy
-
-	if all {
-		switch v := interface{}(m.GetCreateTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, FirstCategoryValidationError{
-					field:  "CreateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, FirstCategoryValidationError{
-					field:  "CreateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return FirstCategoryValidationError{
-				field:  "CreateTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	// no validation rules for UpdateBy
-
-	// no validation rules for Id
-
-	// no validation rules for Status
-
-	if len(errors) > 0 {
-		return FirstCategoryMultiError(errors)
-	}
-
-	return nil
-}
-
-// FirstCategoryMultiError is an error wrapping multiple validation errors
-// returned by FirstCategory.ValidateAll() if the designated constraints
-// aren't met.
-type FirstCategoryMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m FirstCategoryMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m FirstCategoryMultiError) AllErrors() []error { return m }
-
-// FirstCategoryValidationError is the validation error returned by
-// FirstCategory.Validate if the designated constraints aren't met.
-type FirstCategoryValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e FirstCategoryValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e FirstCategoryValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e FirstCategoryValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e FirstCategoryValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e FirstCategoryValidationError) ErrorName() string { return "FirstCategoryValidationError" }
-
-// Error satisfies the builtin error interface
-func (e FirstCategoryValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sFirstCategory.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = FirstCategoryValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = FirstCategoryValidationError{}
 
 // Validate checks the field values on TagsListRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the

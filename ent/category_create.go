@@ -26,23 +26,9 @@ func (cc *CategoryCreate) SetName(s string) *CategoryCreate {
 	return cc
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (cc *CategoryCreate) SetNillableName(s *string) *CategoryCreate {
-	if s != nil {
-		cc.SetName(*s)
-	}
-	return cc
-}
-
 // SetLevel sets the "level" field.
-func (cc *CategoryCreate) SetLevel(s string) *CategoryCreate {
-	cc.mutation.SetLevel(s)
-	return cc
-}
-
-// SetStatus sets the "status" field.
-func (cc *CategoryCreate) SetStatus(s string) *CategoryCreate {
-	cc.mutation.SetStatus(s)
+func (cc *CategoryCreate) SetLevel(i int) *CategoryCreate {
+	cc.mutation.SetLevel(i)
 	return cc
 }
 
@@ -102,7 +88,6 @@ func (cc *CategoryCreate) Mutation() *CategoryMutation {
 
 // Save creates the Category in the database.
 func (cc *CategoryCreate) Save(ctx context.Context) (*Category, error) {
-	cc.defaults()
 	return withHooks(ctx, cc.sqlSave, cc.mutation, cc.hooks)
 }
 
@@ -128,24 +113,18 @@ func (cc *CategoryCreate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (cc *CategoryCreate) defaults() {
-	if _, ok := cc.mutation.Name(); !ok {
-		v := category.DefaultName
-		cc.mutation.SetName(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (cc *CategoryCreate) check() error {
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Category.name"`)}
 	}
+	if v, ok := cc.mutation.Name(); ok {
+		if err := category.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Category.name": %w`, err)}
+		}
+	}
 	if _, ok := cc.mutation.Level(); !ok {
 		return &ValidationError{Name: "level", err: errors.New(`ent: missing required field "Category.level"`)}
-	}
-	if _, ok := cc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Category.status"`)}
 	}
 	return nil
 }
@@ -178,12 +157,8 @@ func (cc *CategoryCreate) createSpec() (*Category, *sqlgraph.CreateSpec) {
 		_node.Name = value
 	}
 	if value, ok := cc.mutation.Level(); ok {
-		_spec.SetField(category.FieldLevel, field.TypeString, value)
+		_spec.SetField(category.FieldLevel, field.TypeInt, value)
 		_node.Level = value
-	}
-	if value, ok := cc.mutation.Status(); ok {
-		_spec.SetField(category.FieldStatus, field.TypeString, value)
-		_node.Status = value
 	}
 	if nodes := cc.mutation.CoursesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -251,7 +226,6 @@ func (ccb *CategoryCreateBulk) Save(ctx context.Context) ([]*Category, error) {
 	for i := range ccb.builders {
 		func(i int, root context.Context) {
 			builder := ccb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*CategoryMutation)
 				if !ok {
