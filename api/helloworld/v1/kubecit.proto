@@ -474,11 +474,6 @@ message ListSlidersByPriorityReply {
   repeated SliderInfo data = 1;
 }
 
-message CreateTokenRequest {}
-message CreateTokenReply {
-  Metadata meta = 1;
-  map<string, string> data = 2;
-}
 
 message GetInfoRequest {}
 message UserInfoReply{
@@ -487,62 +482,8 @@ message UserInfoReply{
   string channel = 3;
 }
 
-message GetInfoReply {
-  Metadata meta = 1;
-  GetInfoReplyData data = 2;
-}
 
-message GetInfoReplyData {
-  google.protobuf.Timestamp birthday = 1;
-  string sysCode = 2;
-  int32 gender = 3;
-  string city = 4;
-  repeated string loginType = 5;
-  string county = 6;
-  string highestEducation = 7;
-  int32 isEnable = 8;
-  string password = 9;
-  string province = 10;
-  string updateBy = 11;
-  float totalHour = 12;
-  string id = 13;
-  string platformAuthuser = 14;
-  string email = 15;
-  string qq = 16;
-  string address = 17;
-  string nickName = 21;
-  string emergencyContact = 22;
-  string emergencyContactNumber = 23;
-  string mobile = 24;
-  string wechat = 25;
-  int32 regSource = 26;
-  string telephone = 27;
-  google.protobuf.Timestamp updateTime = 28;
-  string avatar = 29;
-  string realName = 30;
-  string createBy = 31;
-  MemberVIPInfo vipInfo = 32;
-  string personalSignature = 33;
-  string certificateNumber = 34;
-  google.protobuf.Timestamp createTime = 35;
-  int32 age = 36;
-  string residenceAddress = 37;
-  string username = 38;
-  string certificateType = 39;
-}
 
-message MemberVIPInfo {
-  string orderNumber = 1;
-  string vipName = 2;
-  string vipId = 3;
-  string vipDesc = 4;
-  google.protobuf.Timestamp startTime = 5;
-  string id = 6;
-  google.protobuf.Timestamp endTime = 7;
-  int32 isExpired = 8;
-  string memberId = 9;
-  string vipIcon = 10;
-}
 
 message LoginByJsonRequest {
   string username = 1;
