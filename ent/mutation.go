@@ -10,6 +10,7 @@ import (
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
+	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/user"
 	"sync"
@@ -31,6 +32,7 @@ const (
 	TypeAccount  = "Account"
 	TypeCategory = "Category"
 	TypeCourse   = "Course"
+	TypeSetting  = "Setting"
 	TypeSlider   = "Slider"
 	TypeUser     = "User"
 )
@@ -2272,6 +2274,440 @@ func (m *CourseMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Course edge %s", name)
+}
+
+// SettingMutation represents an operation that mutates the Setting nodes in the graph.
+type SettingMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	name          *string
+	detail        *string
+	cover         *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*Setting, error)
+	predicates    []predicate.Setting
+}
+
+var _ ent.Mutation = (*SettingMutation)(nil)
+
+// settingOption allows management of the mutation configuration using functional options.
+type settingOption func(*SettingMutation)
+
+// newSettingMutation creates new mutation for the Setting entity.
+func newSettingMutation(c config, op Op, opts ...settingOption) *SettingMutation {
+	m := &SettingMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSetting,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSettingID sets the ID field of the mutation.
+func withSettingID(id int) settingOption {
+	return func(m *SettingMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Setting
+		)
+		m.oldValue = func(ctx context.Context) (*Setting, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Setting.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSetting sets the old Setting of the mutation.
+func withSetting(node *Setting) settingOption {
+	return func(m *SettingMutation) {
+		m.oldValue = func(context.Context) (*Setting, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SettingMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SettingMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SettingMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SettingMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Setting.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetName sets the "name" field.
+func (m *SettingMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *SettingMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Setting entity.
+// If the Setting object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SettingMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *SettingMutation) ResetName() {
+	m.name = nil
+}
+
+// SetDetail sets the "detail" field.
+func (m *SettingMutation) SetDetail(s string) {
+	m.detail = &s
+}
+
+// Detail returns the value of the "detail" field in the mutation.
+func (m *SettingMutation) Detail() (r string, exists bool) {
+	v := m.detail
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDetail returns the old "detail" field's value of the Setting entity.
+// If the Setting object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SettingMutation) OldDetail(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDetail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDetail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDetail: %w", err)
+	}
+	return oldValue.Detail, nil
+}
+
+// ResetDetail resets all changes to the "detail" field.
+func (m *SettingMutation) ResetDetail() {
+	m.detail = nil
+}
+
+// SetCover sets the "cover" field.
+func (m *SettingMutation) SetCover(s string) {
+	m.cover = &s
+}
+
+// Cover returns the value of the "cover" field in the mutation.
+func (m *SettingMutation) Cover() (r string, exists bool) {
+	v := m.cover
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCover returns the old "cover" field's value of the Setting entity.
+// If the Setting object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SettingMutation) OldCover(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCover is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCover requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCover: %w", err)
+	}
+	return oldValue.Cover, nil
+}
+
+// ResetCover resets all changes to the "cover" field.
+func (m *SettingMutation) ResetCover() {
+	m.cover = nil
+}
+
+// Where appends a list predicates to the SettingMutation builder.
+func (m *SettingMutation) Where(ps ...predicate.Setting) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SettingMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SettingMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.Setting, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SettingMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SettingMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (Setting).
+func (m *SettingMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SettingMutation) Fields() []string {
+	fields := make([]string, 0, 3)
+	if m.name != nil {
+		fields = append(fields, setting.FieldName)
+	}
+	if m.detail != nil {
+		fields = append(fields, setting.FieldDetail)
+	}
+	if m.cover != nil {
+		fields = append(fields, setting.FieldCover)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SettingMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case setting.FieldName:
+		return m.Name()
+	case setting.FieldDetail:
+		return m.Detail()
+	case setting.FieldCover:
+		return m.Cover()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SettingMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case setting.FieldName:
+		return m.OldName(ctx)
+	case setting.FieldDetail:
+		return m.OldDetail(ctx)
+	case setting.FieldCover:
+		return m.OldCover(ctx)
+	}
+	return nil, fmt.Errorf("unknown Setting field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SettingMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case setting.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case setting.FieldDetail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDetail(v)
+		return nil
+	case setting.FieldCover:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCover(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Setting field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SettingMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SettingMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SettingMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Setting numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SettingMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SettingMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SettingMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Setting nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SettingMutation) ResetField(name string) error {
+	switch name {
+	case setting.FieldName:
+		m.ResetName()
+		return nil
+	case setting.FieldDetail:
+		m.ResetDetail()
+		return nil
+	case setting.FieldCover:
+		m.ResetCover()
+		return nil
+	}
+	return fmt.Errorf("unknown Setting field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SettingMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SettingMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SettingMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SettingMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SettingMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SettingMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SettingMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Setting unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SettingMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Setting edge %s", name)
 }
 
 // SliderMutation represents an operation that mutates the Slider nodes in the graph.

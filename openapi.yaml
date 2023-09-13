@@ -339,6 +339,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.ListSlidersByPriorityReply'
+    /api/systemsettings:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_SystemSettings
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.SystemSettingsReply'
     /api/u/loginByJson:
         post:
             tags:
@@ -681,6 +693,15 @@ components:
                 priority:
                     type: integer
                     format: int32
+        helloworld.v1.SystemSettingsReply:
+            type: object
+            properties:
+                logourl:
+                    type: string
+                wechaturl:
+                    type: string
+                computerurl:
+                    type: string
         helloworld.v1.Tag:
             type: object
             properties:

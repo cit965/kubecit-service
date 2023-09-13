@@ -9,6 +9,7 @@ import (
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/user"
 	"reflect"
@@ -80,6 +81,7 @@ func checkColumn(table, column string) error {
 			account.Table:  account.ValidColumn,
 			category.Table: category.ValidColumn,
 			course.Table:   course.ValidColumn,
+			setting.Table:  setting.ValidColumn,
 			slider.Table:   slider.ValidColumn,
 			user.Table:     user.ValidColumn,
 		})

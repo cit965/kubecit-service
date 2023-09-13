@@ -78,6 +78,19 @@ var (
 			},
 		},
 	}
+	// SettingsColumns holds the columns for the "settings" table.
+	SettingsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "detail", Type: field.TypeString},
+		{Name: "cover", Type: field.TypeString},
+	}
+	// SettingsTable holds the schema information for the "settings" table.
+	SettingsTable = &schema.Table{
+		Name:       "settings",
+		Columns:    SettingsColumns,
+		PrimaryKey: []*schema.Column{SettingsColumns[0]},
+	}
 	// SlidersColumns holds the columns for the "sliders" table.
 	SlidersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -113,6 +126,7 @@ var (
 		AccountsTable,
 		CategoriesTable,
 		CoursesTable,
+		SettingsTable,
 		SlidersTable,
 		UsersTable,
 	}

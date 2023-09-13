@@ -13,6 +13,7 @@ import (
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/user"
 
@@ -33,6 +34,8 @@ type Client struct {
 	Category *CategoryClient
 	// Course is the client for interacting with the Course builders.
 	Course *CourseClient
+	// Setting is the client for interacting with the Setting builders.
+	Setting *SettingClient
 	// Slider is the client for interacting with the Slider builders.
 	Slider *SliderClient
 	// User is the client for interacting with the User builders.
@@ -53,6 +56,7 @@ func (c *Client) init() {
 	c.Account = NewAccountClient(c.config)
 	c.Category = NewCategoryClient(c.config)
 	c.Course = NewCourseClient(c.config)
+	c.Setting = NewSettingClient(c.config)
 	c.Slider = NewSliderClient(c.config)
 	c.User = NewUserClient(c.config)
 }
@@ -140,6 +144,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Account:  NewAccountClient(cfg),
 		Category: NewCategoryClient(cfg),
 		Course:   NewCourseClient(cfg),
+		Setting:  NewSettingClient(cfg),
 		Slider:   NewSliderClient(cfg),
 		User:     NewUserClient(cfg),
 	}, nil
@@ -164,6 +169,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Account:  NewAccountClient(cfg),
 		Category: NewCategoryClient(cfg),
 		Course:   NewCourseClient(cfg),
+		Setting:  NewSettingClient(cfg),
 		Slider:   NewSliderClient(cfg),
 		User:     NewUserClient(cfg),
 	}, nil
@@ -194,21 +200,21 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Account.Use(hooks...)
-	c.Category.Use(hooks...)
-	c.Course.Use(hooks...)
-	c.Slider.Use(hooks...)
-	c.User.Use(hooks...)
+	for _, n := range []interface{ Use(...Hook) }{
+		c.Account, c.Category, c.Course, c.Setting, c.Slider, c.User,
+	} {
+		n.Use(hooks...)
+	}
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.Account.Intercept(interceptors...)
-	c.Category.Intercept(interceptors...)
-	c.Course.Intercept(interceptors...)
-	c.Slider.Intercept(interceptors...)
-	c.User.Intercept(interceptors...)
+	for _, n := range []interface{ Intercept(...Interceptor) }{
+		c.Account, c.Category, c.Course, c.Setting, c.Slider, c.User,
+	} {
+		n.Intercept(interceptors...)
+	}
 }
 
 // Mutate implements the ent.Mutator interface.
@@ -220,6 +226,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Category.mutate(ctx, m)
 	case *CourseMutation:
 		return c.Course.mutate(ctx, m)
+	case *SettingMutation:
+		return c.Setting.mutate(ctx, m)
 	case *SliderMutation:
 		return c.Slider.mutate(ctx, m)
 	case *UserMutation:
@@ -647,6 +655,124 @@ func (c *CourseClient) mutate(ctx context.Context, m *CourseMutation) (Value, er
 	}
 }
 
+// SettingClient is a client for the Setting schema.
+type SettingClient struct {
+	config
+}
+
+// NewSettingClient returns a client for the Setting from the given config.
+func NewSettingClient(c config) *SettingClient {
+	return &SettingClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `setting.Hooks(f(g(h())))`.
+func (c *SettingClient) Use(hooks ...Hook) {
+	c.hooks.Setting = append(c.hooks.Setting, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `setting.Intercept(f(g(h())))`.
+func (c *SettingClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Setting = append(c.inters.Setting, interceptors...)
+}
+
+// Create returns a builder for creating a Setting entity.
+func (c *SettingClient) Create() *SettingCreate {
+	mutation := newSettingMutation(c.config, OpCreate)
+	return &SettingCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Setting entities.
+func (c *SettingClient) CreateBulk(builders ...*SettingCreate) *SettingCreateBulk {
+	return &SettingCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Setting.
+func (c *SettingClient) Update() *SettingUpdate {
+	mutation := newSettingMutation(c.config, OpUpdate)
+	return &SettingUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SettingClient) UpdateOne(s *Setting) *SettingUpdateOne {
+	mutation := newSettingMutation(c.config, OpUpdateOne, withSetting(s))
+	return &SettingUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SettingClient) UpdateOneID(id int) *SettingUpdateOne {
+	mutation := newSettingMutation(c.config, OpUpdateOne, withSettingID(id))
+	return &SettingUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Setting.
+func (c *SettingClient) Delete() *SettingDelete {
+	mutation := newSettingMutation(c.config, OpDelete)
+	return &SettingDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SettingClient) DeleteOne(s *Setting) *SettingDeleteOne {
+	return c.DeleteOneID(s.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SettingClient) DeleteOneID(id int) *SettingDeleteOne {
+	builder := c.Delete().Where(setting.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SettingDeleteOne{builder}
+}
+
+// Query returns a query builder for Setting.
+func (c *SettingClient) Query() *SettingQuery {
+	return &SettingQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSetting},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Setting entity by its id.
+func (c *SettingClient) Get(ctx context.Context, id int) (*Setting, error) {
+	return c.Query().Where(setting.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SettingClient) GetX(ctx context.Context, id int) *Setting {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SettingClient) Hooks() []Hook {
+	return c.hooks.Setting
+}
+
+// Interceptors returns the client interceptors.
+func (c *SettingClient) Interceptors() []Interceptor {
+	return c.inters.Setting
+}
+
+func (c *SettingClient) mutate(ctx context.Context, m *SettingMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SettingCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SettingUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SettingUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SettingDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Setting mutation op: %q", m.Op())
+	}
+}
+
 // SliderClient is a client for the Slider schema.
 type SliderClient struct {
 	config
@@ -886,9 +1012,9 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Account, Category, Course, Slider, User []ent.Hook
+		Account, Category, Course, Setting, Slider, User []ent.Hook
 	}
 	inters struct {
-		Account, Category, Course, Slider, User []ent.Interceptor
+		Account, Category, Course, Setting, Slider, User []ent.Interceptor
 	}
 )
