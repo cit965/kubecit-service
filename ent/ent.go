@@ -9,6 +9,8 @@ import (
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/orderinfos"
+	"kubecit-service/ent/orders"
 	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/user"
@@ -78,12 +80,14 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			account.Table:  account.ValidColumn,
-			category.Table: category.ValidColumn,
-			course.Table:   course.ValidColumn,
-			setting.Table:  setting.ValidColumn,
-			slider.Table:   slider.ValidColumn,
-			user.Table:     user.ValidColumn,
+			account.Table:    account.ValidColumn,
+			category.Table:   category.ValidColumn,
+			course.Table:     course.ValidColumn,
+			orderinfos.Table: orderinfos.ValidColumn,
+			orders.Table:     orders.ValidColumn,
+			setting.Table:    setting.ValidColumn,
+			slider.Table:     slider.ValidColumn,
+			user.Table:       user.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

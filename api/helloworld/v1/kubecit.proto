@@ -250,6 +250,18 @@ service Kubecit {
     };
   }
 
+  // ========================== 订单相关接口 ===================================
+  rpc CreateOrder (CreateOrderRequest) returns (CreateOrderReply) {
+    option (google.api.http) = {
+      post: "/api/order",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建订单"
+      tags: "order"
+    };
+  }
 }
 
 // The request message containing the user's name.
@@ -524,4 +536,30 @@ message SystemSettingsReply {
   string logourl = 1;
   string wechaturl = 2;
   string computerurl = 3;
+}
+
+
+message CreateOrderRequest {
+  repeated string courseIds = 1;
+}
+
+message OrderDetail{
+  int32 orderId = 1;
+  int32 courseId = 2;
+  string courseName = 3;
+  string coursePrice = 4;
+  string courseDescription = 5;
+}
+
+message CreateOrderReply {
+  int32 userId = 1;
+  string orderSn = 2;
+  int32 payType=3;
+  int32 payStatus=4;
+  string tradePrice=5;
+  string tradeNo=6;
+  google.protobuf.Timestamp payTime = 7;
+  google.protobuf.Timestamp createTime = 8;
+  google.protobuf.Timestamp updateTime = 9;
+  repeated OrderDetail details = 10;
 }

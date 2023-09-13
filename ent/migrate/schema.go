@@ -78,6 +78,41 @@ var (
 			},
 		},
 	}
+	// OrderInfosColumns holds the columns for the "order_infos" table.
+	OrderInfosColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "order_id", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "course_id", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "course_name", Type: field.TypeString, SchemaType: map[string]string{"mysql": "VARCHAR(64)"}},
+		{Name: "course_price", Type: field.TypeFloat64, SchemaType: map[string]string{"mysql": "decimal"}},
+		{Name: "course_describe", Type: field.TypeString, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+	}
+	// OrderInfosTable holds the schema information for the "order_infos" table.
+	OrderInfosTable = &schema.Table{
+		Name:       "order_infos",
+		Columns:    OrderInfosColumns,
+		PrimaryKey: []*schema.Column{OrderInfosColumns[0]},
+	}
+	// OrdersColumns holds the columns for the "orders" table.
+	OrdersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "order_sn", Type: field.TypeString, SchemaType: map[string]string{"mysql": "varchar(64)"}},
+		{Name: "pay_type", Type: field.TypeInt32, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "pay_status", Type: field.TypeInt32, Nullable: true, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "trade_price", Type: field.TypeFloat64, SchemaType: map[string]string{"mysql": "decimal"}},
+		{Name: "trade_no", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(64)"}},
+		{Name: "pay_time", Type: field.TypeTime, Nullable: true, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+	}
+	// OrdersTable holds the schema information for the "orders" table.
+	OrdersTable = &schema.Table{
+		Name:       "orders",
+		Columns:    OrdersColumns,
+		PrimaryKey: []*schema.Column{OrdersColumns[0]},
+	}
 	// SettingsColumns holds the columns for the "settings" table.
 	SettingsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -126,6 +161,8 @@ var (
 		AccountsTable,
 		CategoriesTable,
 		CoursesTable,
+		OrderInfosTable,
+		OrdersTable,
 		SettingsTable,
 		SlidersTable,
 		UsersTable,

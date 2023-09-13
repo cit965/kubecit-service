@@ -18,6 +18,10 @@ type Tx struct {
 	Category *CategoryClient
 	// Course is the client for interacting with the Course builders.
 	Course *CourseClient
+	// OrderInfos is the client for interacting with the OrderInfos builders.
+	OrderInfos *OrderInfosClient
+	// Orders is the client for interacting with the Orders builders.
+	Orders *OrdersClient
 	// Setting is the client for interacting with the Setting builders.
 	Setting *SettingClient
 	// Slider is the client for interacting with the Slider builders.
@@ -158,6 +162,8 @@ func (tx *Tx) init() {
 	tx.Account = NewAccountClient(tx.config)
 	tx.Category = NewCategoryClient(tx.config)
 	tx.Course = NewCourseClient(tx.config)
+	tx.OrderInfos = NewOrderInfosClient(tx.config)
+	tx.Orders = NewOrdersClient(tx.config)
 	tx.Setting = NewSettingClient(tx.config)
 	tx.Slider = NewSliderClient(tx.config)
 	tx.User = NewUserClient(tx.config)

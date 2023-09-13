@@ -15,6 +15,12 @@ type Category func(*sql.Selector)
 // Course is the predicate function for course builders.
 type Course func(*sql.Selector)
 
+// OrderInfos is the predicate function for orderinfos builders.
+type OrderInfos func(*sql.Selector)
+
+// Orders is the predicate function for orders builders.
+type Orders func(*sql.Selector)
+
 // Setting is the predicate function for setting builders.
 type Setting func(*sql.Selector)
 

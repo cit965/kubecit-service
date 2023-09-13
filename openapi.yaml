@@ -247,6 +247,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.UserInfoReply'
+    /api/order:
+        post:
+            tags:
+                - Kubecit
+            description: ========================== 订单相关接口 ===================================
+            operationId: Kubecit_CreateOrder
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.CreateOrderRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.CreateOrderReply'
     /api/slider:
         post:
             tags:
@@ -471,6 +490,44 @@ components:
                 categoryId:
                     type: integer
                     format: int32
+        helloworld.v1.CreateOrderReply:
+            type: object
+            properties:
+                userId:
+                    type: integer
+                    format: int32
+                orderSn:
+                    type: string
+                payType:
+                    type: integer
+                    format: int32
+                payStatus:
+                    type: integer
+                    format: int32
+                tradePrice:
+                    type: string
+                tradeNo:
+                    type: string
+                payTime:
+                    type: string
+                    format: date-time
+                createTime:
+                    type: string
+                    format: date-time
+                updateTime:
+                    type: string
+                    format: date-time
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.OrderDetail'
+        helloworld.v1.CreateOrderRequest:
+            type: object
+            properties:
+                courseIds:
+                    type: array
+                    items:
+                        type: string
         helloworld.v1.CreateSliderReply:
             type: object
             properties:
@@ -568,6 +625,21 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CourseInfo'
+        helloworld.v1.OrderDetail:
+            type: object
+            properties:
+                orderId:
+                    type: integer
+                    format: int32
+                courseId:
+                    type: integer
+                    format: int32
+                courseName:
+                    type: string
+                coursePrice:
+                    type: string
+                courseDescription:
+                    type: string
         helloworld.v1.RegisterUsernameReply:
             type: object
             properties:

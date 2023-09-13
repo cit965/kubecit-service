@@ -6,6 +6,8 @@ import (
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/orderinfos"
+	"kubecit-service/ent/orders"
 	"kubecit-service/ent/schema"
 	"kubecit-service/ent/slider"
 	"time"
@@ -47,6 +49,38 @@ func init() {
 	courseDescCreatedAt := courseFields[7].Descriptor()
 	// course.DefaultCreatedAt holds the default value on creation for the created_at field.
 	course.DefaultCreatedAt = courseDescCreatedAt.Default.(time.Time)
+	orderinfosFields := schema.OrderInfos{}.Fields()
+	_ = orderinfosFields
+	// orderinfosDescCreateTime is the schema descriptor for create_time field.
+	orderinfosDescCreateTime := orderinfosFields[5].Descriptor()
+	// orderinfos.DefaultCreateTime holds the default value on creation for the create_time field.
+	orderinfos.DefaultCreateTime = orderinfosDescCreateTime.Default.(time.Time)
+	// orderinfosDescUpdateTime is the schema descriptor for update_time field.
+	orderinfosDescUpdateTime := orderinfosFields[6].Descriptor()
+	// orderinfos.DefaultUpdateTime holds the default value on creation for the update_time field.
+	orderinfos.DefaultUpdateTime = orderinfosDescUpdateTime.Default.(time.Time)
+	// orderinfos.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	orderinfos.UpdateDefaultUpdateTime = orderinfosDescUpdateTime.UpdateDefault.(func() time.Time)
+	ordersFields := schema.Orders{}.Fields()
+	_ = ordersFields
+	// ordersDescPayType is the schema descriptor for pay_type field.
+	ordersDescPayType := ordersFields[1].Descriptor()
+	// orders.DefaultPayType holds the default value on creation for the pay_type field.
+	orders.DefaultPayType = ordersDescPayType.Default.(int32)
+	// ordersDescPayStatus is the schema descriptor for pay_status field.
+	ordersDescPayStatus := ordersFields[2].Descriptor()
+	// orders.DefaultPayStatus holds the default value on creation for the pay_status field.
+	orders.DefaultPayStatus = ordersDescPayStatus.Default.(int32)
+	// ordersDescCreateTime is the schema descriptor for create_time field.
+	ordersDescCreateTime := ordersFields[6].Descriptor()
+	// orders.DefaultCreateTime holds the default value on creation for the create_time field.
+	orders.DefaultCreateTime = ordersDescCreateTime.Default.(time.Time)
+	// ordersDescUpdateTime is the schema descriptor for update_time field.
+	ordersDescUpdateTime := ordersFields[7].Descriptor()
+	// orders.DefaultUpdateTime holds the default value on creation for the update_time field.
+	orders.DefaultUpdateTime = ordersDescUpdateTime.Default.(time.Time)
+	// orders.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	orders.UpdateDefaultUpdateTime = ordersDescUpdateTime.UpdateDefault.(func() time.Time)
 	sliderFields := schema.Slider{}.Fields()
 	_ = sliderFields
 	// sliderDescTitle is the schema descriptor for title field.
