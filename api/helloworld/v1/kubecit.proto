@@ -82,7 +82,7 @@ service Kubecit {
       tags: "course"
     };
   }
-  rpc SearchCourse (SearchCourseRequest) returns (SearchCourseReply) {
+  rpc SearchCourse (SearchCourseRequest) returns (CourseSearchReply) {
     option (google.api.http) = {
       post: "/api/course/search",
       body: "*"
@@ -284,12 +284,6 @@ message HelloReply {
 }
 
 
-
-message PageRequest {
-  int32 pageNum = 1;
-  int32 pageSize = 2;
-}
-
 message Metadata {
   string msg = 1;
   string code = 2;
@@ -303,30 +297,11 @@ message MostNewReply {
 }
 
 message MostNewReplyData {
-  PageInfo pageInfo = 1;
+  repeated CourseInfo list = 1;
 }
 
-message PageInfo {
-  int32 startRow = 1;
-  repeated int32 navigatepageNums = 2;
-  int32 lastPage = 3;
-  int32 prePage = 4;
-  bool hasNextPage = 5;
-  int32 nextPage = 6;
-  int32 pageSize = 7;
-  int32 endRow = 8;
-  repeated CourseInfo list = 9;
-  int32 pageNum = 10;
-  int32 navigatePages = 11;
-  int32 total = 12;
-  int32 navigateFirstPage = 13;
-  int32 pages = 14;
-  int32 size = 15;
-  int32 firstPage = 16;
-  bool isLastPage = 17;
-  bool hasPreviousPage = 18;
-  int32 navigateLastPage = 19;
-  bool isFirstPage = 20;
+message CourseSearchReply {
+  repeated CourseInfo list = 1;
 }
 
 enum CourseStatus {
@@ -369,13 +344,11 @@ message Tag {
 message SearchCourseRequest {
   int32 pageNum = 1;
   int32 pageSize = 2;
-  int32 category = 3;
+  int32 firstCategory = 3;
+  int32 secondCategory = 4;
+  int32 level = 5;
 }
 
-message SearchCourseReply {
-  Metadata meta = 1;
-  PageInfo data = 2;
-}
 
 message UpdateCourseRequest {
   int32 id = 1;

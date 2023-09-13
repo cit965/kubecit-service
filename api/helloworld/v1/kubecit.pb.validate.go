@@ -678,109 +678,6 @@ var _ interface {
 	ErrorName() string
 } = HelloReplyValidationError{}
 
-// Validate checks the field values on PageRequest with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *PageRequest) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on PageRequest with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in PageRequestMultiError, or
-// nil if none found.
-func (m *PageRequest) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *PageRequest) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for PageNum
-
-	// no validation rules for PageSize
-
-	if len(errors) > 0 {
-		return PageRequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// PageRequestMultiError is an error wrapping multiple validation errors
-// returned by PageRequest.ValidateAll() if the designated constraints aren't met.
-type PageRequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m PageRequestMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m PageRequestMultiError) AllErrors() []error { return m }
-
-// PageRequestValidationError is the validation error returned by
-// PageRequest.Validate if the designated constraints aren't met.
-type PageRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e PageRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e PageRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e PageRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e PageRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e PageRequestValidationError) ErrorName() string { return "PageRequestValidationError" }
-
-// Error satisfies the builtin error interface
-func (e PageRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sPageRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = PageRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = PageRequestValidationError{}
-
 // Validate checks the field values on Metadata with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -1045,33 +942,38 @@ func (m *MostNewReplyData) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetPageInfo()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, MostNewReplyDataValidationError{
-					field:  "PageInfo",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetList() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, MostNewReplyDataValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, MostNewReplyDataValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, MostNewReplyDataValidationError{
-					field:  "PageInfo",
+				return MostNewReplyDataValidationError{
+					field:  fmt.Sprintf("List[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetPageInfo()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return MostNewReplyDataValidationError{
-				field:  "PageInfo",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
@@ -1152,41 +1054,27 @@ var _ interface {
 	ErrorName() string
 } = MostNewReplyDataValidationError{}
 
-// Validate checks the field values on PageInfo with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *PageInfo) Validate() error {
+// Validate checks the field values on CourseSearchReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *CourseSearchReply) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on PageInfo with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in PageInfoMultiError, or nil
-// if none found.
-func (m *PageInfo) ValidateAll() error {
+// ValidateAll checks the field values on CourseSearchReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CourseSearchReplyMultiError, or nil if none found.
+func (m *CourseSearchReply) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *PageInfo) validate(all bool) error {
+func (m *CourseSearchReply) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
-
-	// no validation rules for StartRow
-
-	// no validation rules for LastPage
-
-	// no validation rules for PrePage
-
-	// no validation rules for HasNextPage
-
-	// no validation rules for NextPage
-
-	// no validation rules for PageSize
-
-	// no validation rules for EndRow
 
 	for idx, item := range m.GetList() {
 		_, _ = idx, item
@@ -1195,7 +1083,7 @@ func (m *PageInfo) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, PageInfoValidationError{
+					errors = append(errors, CourseSearchReplyValidationError{
 						field:  fmt.Sprintf("List[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1203,7 +1091,7 @@ func (m *PageInfo) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, PageInfoValidationError{
+					errors = append(errors, CourseSearchReplyValidationError{
 						field:  fmt.Sprintf("List[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1212,7 +1100,7 @@ func (m *PageInfo) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return PageInfoValidationError{
+				return CourseSearchReplyValidationError{
 					field:  fmt.Sprintf("List[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1222,41 +1110,20 @@ func (m *PageInfo) validate(all bool) error {
 
 	}
 
-	// no validation rules for PageNum
-
-	// no validation rules for NavigatePages
-
-	// no validation rules for Total
-
-	// no validation rules for NavigateFirstPage
-
-	// no validation rules for Pages
-
-	// no validation rules for Size
-
-	// no validation rules for FirstPage
-
-	// no validation rules for IsLastPage
-
-	// no validation rules for HasPreviousPage
-
-	// no validation rules for NavigateLastPage
-
-	// no validation rules for IsFirstPage
-
 	if len(errors) > 0 {
-		return PageInfoMultiError(errors)
+		return CourseSearchReplyMultiError(errors)
 	}
 
 	return nil
 }
 
-// PageInfoMultiError is an error wrapping multiple validation errors returned
-// by PageInfo.ValidateAll() if the designated constraints aren't met.
-type PageInfoMultiError []error
+// CourseSearchReplyMultiError is an error wrapping multiple validation errors
+// returned by CourseSearchReply.ValidateAll() if the designated constraints
+// aren't met.
+type CourseSearchReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m PageInfoMultiError) Error() string {
+func (m CourseSearchReplyMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1265,11 +1132,11 @@ func (m PageInfoMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m PageInfoMultiError) AllErrors() []error { return m }
+func (m CourseSearchReplyMultiError) AllErrors() []error { return m }
 
-// PageInfoValidationError is the validation error returned by
-// PageInfo.Validate if the designated constraints aren't met.
-type PageInfoValidationError struct {
+// CourseSearchReplyValidationError is the validation error returned by
+// CourseSearchReply.Validate if the designated constraints aren't met.
+type CourseSearchReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1277,22 +1144,24 @@ type PageInfoValidationError struct {
 }
 
 // Field function returns field value.
-func (e PageInfoValidationError) Field() string { return e.field }
+func (e CourseSearchReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e PageInfoValidationError) Reason() string { return e.reason }
+func (e CourseSearchReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e PageInfoValidationError) Cause() error { return e.cause }
+func (e CourseSearchReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e PageInfoValidationError) Key() bool { return e.key }
+func (e CourseSearchReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e PageInfoValidationError) ErrorName() string { return "PageInfoValidationError" }
+func (e CourseSearchReplyValidationError) ErrorName() string {
+	return "CourseSearchReplyValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e PageInfoValidationError) Error() string {
+func (e CourseSearchReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1304,14 +1173,14 @@ func (e PageInfoValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sPageInfo.%s: %s%s",
+		"invalid %sCourseSearchReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = PageInfoValidationError{}
+var _ error = CourseSearchReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -1319,7 +1188,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = PageInfoValidationError{}
+} = CourseSearchReplyValidationError{}
 
 // Validate checks the field values on CourseInfo with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -1860,7 +1729,11 @@ func (m *SearchCourseRequest) validate(all bool) error {
 
 	// no validation rules for PageSize
 
-	// no validation rules for Category
+	// no validation rules for FirstCategory
+
+	// no validation rules for SecondCategory
+
+	// no validation rules for Level
 
 	if len(errors) > 0 {
 		return SearchCourseRequestMultiError(errors)
@@ -1941,166 +1814,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = SearchCourseRequestValidationError{}
-
-// Validate checks the field values on SearchCourseReply with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *SearchCourseReply) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on SearchCourseReply with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// SearchCourseReplyMultiError, or nil if none found.
-func (m *SearchCourseReply) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *SearchCourseReply) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if all {
-		switch v := interface{}(m.GetMeta()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, SearchCourseReplyValidationError{
-					field:  "Meta",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, SearchCourseReplyValidationError{
-					field:  "Meta",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetMeta()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return SearchCourseReplyValidationError{
-				field:  "Meta",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetData()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, SearchCourseReplyValidationError{
-					field:  "Data",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, SearchCourseReplyValidationError{
-					field:  "Data",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return SearchCourseReplyValidationError{
-				field:  "Data",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if len(errors) > 0 {
-		return SearchCourseReplyMultiError(errors)
-	}
-
-	return nil
-}
-
-// SearchCourseReplyMultiError is an error wrapping multiple validation errors
-// returned by SearchCourseReply.ValidateAll() if the designated constraints
-// aren't met.
-type SearchCourseReplyMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m SearchCourseReplyMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m SearchCourseReplyMultiError) AllErrors() []error { return m }
-
-// SearchCourseReplyValidationError is the validation error returned by
-// SearchCourseReply.Validate if the designated constraints aren't met.
-type SearchCourseReplyValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e SearchCourseReplyValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e SearchCourseReplyValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e SearchCourseReplyValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e SearchCourseReplyValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e SearchCourseReplyValidationError) ErrorName() string {
-	return "SearchCourseReplyValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e SearchCourseReplyValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sSearchCourseReply.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = SearchCourseReplyValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = SearchCourseReplyValidationError{}
 
 // Validate checks the field values on UpdateCourseRequest with the rules
 // defined in the proto definition for this message. If any rules are
