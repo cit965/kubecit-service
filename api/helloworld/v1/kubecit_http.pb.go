@@ -60,7 +60,7 @@ type KubecitHTTPServer interface {
 	MostNew(context.Context, *Empty) (*MostNewReply, error)
 	RegisterUsername(context.Context, *RegisterUsernameRequest) (*RegisterUsernameReply, error)
 	ReviewCourse(context.Context, *ReviewCourseRequest) (*ReviewCourseReply, error)
-	SearchCourse(context.Context, *SearchCourseRequest) (*SearchCourseReply, error)
+	SearchCourse(context.Context, *SearchCourseRequest) (*CourseSearchReply, error)
 	SystemSettings(context.Context, *Empty) (*SystemSettingsReply, error)
 	TagsList(context.Context, *TagsListRequest) (*TagsListReply, error)
 	UpdateCategory(context.Context, *UpdateCategoryReq) (*Empty, error)
@@ -236,7 +236,7 @@ func _Kubecit_SearchCourse0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Co
 		if err != nil {
 			return err
 		}
-		reply := out.(*SearchCourseReply)
+		reply := out.(*CourseSearchReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -565,7 +565,7 @@ type KubecitHTTPClient interface {
 	MostNew(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *MostNewReply, err error)
 	RegisterUsername(ctx context.Context, req *RegisterUsernameRequest, opts ...http.CallOption) (rsp *RegisterUsernameReply, err error)
 	ReviewCourse(ctx context.Context, req *ReviewCourseRequest, opts ...http.CallOption) (rsp *ReviewCourseReply, err error)
-	SearchCourse(ctx context.Context, req *SearchCourseRequest, opts ...http.CallOption) (rsp *SearchCourseReply, err error)
+	SearchCourse(ctx context.Context, req *SearchCourseRequest, opts ...http.CallOption) (rsp *CourseSearchReply, err error)
 	SystemSettings(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *SystemSettingsReply, err error)
 	TagsList(ctx context.Context, req *TagsListRequest, opts ...http.CallOption) (rsp *TagsListReply, err error)
 	UpdateCategory(ctx context.Context, req *UpdateCategoryReq, opts ...http.CallOption) (rsp *Empty, err error)
@@ -776,8 +776,8 @@ func (c *KubecitHTTPClientImpl) ReviewCourse(ctx context.Context, in *ReviewCour
 	return &out, err
 }
 
-func (c *KubecitHTTPClientImpl) SearchCourse(ctx context.Context, in *SearchCourseRequest, opts ...http.CallOption) (*SearchCourseReply, error) {
-	var out SearchCourseReply
+func (c *KubecitHTTPClientImpl) SearchCourse(ctx context.Context, in *SearchCourseRequest, opts ...http.CallOption) (*CourseSearchReply, error) {
+	var out CourseSearchReply
 	pattern := "/api/course/search"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationKubecitSearchCourse))

@@ -12,7 +12,7 @@ import (
 // MostNew 最新好课
 func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNewReply, error) {
 
-	courses, err := s.cc.SearchCourse(ctx, 0, 20, nil, nil, nil)
+	courses, err := s.cc.SearchCourse(ctx, 0, 20, &biz.SearchFilterParam{})
 	if err != nil {
 		return nil, err
 	}
@@ -48,16 +48,16 @@ func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) 
 }
 
 // SearchCourse 搜索课程
-func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseRequest) (*pb.SearchCourseReply, error) {
+func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseRequest) (*pb.CourseSearchReply, error) {
 	pageNum := req.GetPageNum()
 	pageSize := req.GetPageSize()
 
-	category := req.GetCategory()
-	categoryID := &category
-	var level *int32
-	var reverse *bool
-
-	courses, err := s.cc.SearchCourse(ctx, int(pageNum), int(pageSize), categoryID, level, reverse)
+	courses, err := s.cc.SearchCourse(ctx, int(pageNum), int(pageSize), &biz.SearchFilterParam{
+		SecondCategoryId: req.GetSecondCategory(),
+		FirstCategoryId:  req.GetFirstCategory(),
+		Level:            req.Level,
+		Reverse:          false,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -77,10 +77,8 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 			CategoryId: int32(course.CategoryId),
 		})
 	}
-	return &pb.SearchCourseReply{
-		Data: &pb.PageInfo{
-			List: list,
-		},
+	return &pb.CourseSearchReply{
+		List: list,
 	}, nil
 }
 

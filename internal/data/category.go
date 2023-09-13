@@ -75,3 +75,26 @@ func (c *categoryRepo) ListByLevel(ctx context.Context, level int32) ([]*biz.Cat
 	return categoryResult, nil
 
 }
+
+func (c *categoryRepo) ListSubCategories(ctx context.Context, parentID int32) ([]*biz.Category, error) {
+
+	ca, err := c.data.db.Category.Query().Where(category.ID(int(parentID))).First(ctx)
+	if err != nil {
+		return nil, err
+	}
+	categories, err := c.data.db.Category.QueryChildren(ca).All(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	var categoryResult []*biz.Category
+
+	for _, v := range categories {
+		categoryResult = append(categoryResult, &biz.Category{
+			CategoryName: v.Name,
+			Id:           int32(v.ID),
+			ParentId:     int32(v.ParentID),
+			Level:        v.Level,
+		})
+	}
+	return categoryResult, nil
+}

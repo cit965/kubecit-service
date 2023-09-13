@@ -130,7 +130,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/helloworld.v1.SearchCourseReply'
+                                $ref: '#/components/schemas/helloworld.v1.CourseSearchReply'
     /api/course/tags/list:
         post:
             tags:
@@ -437,6 +437,13 @@ components:
                 updatedAt:
                     type: string
                     format: date-time
+        helloworld.v1.CourseSearchReply:
+            type: object
+            properties:
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.CourseInfo'
         helloworld.v1.CreateCourseReply:
             type: object
             properties:
@@ -561,68 +568,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CourseInfo'
-        helloworld.v1.PageInfo:
-            type: object
-            properties:
-                startRow:
-                    type: integer
-                    format: int32
-                navigatepageNums:
-                    type: array
-                    items:
-                        type: integer
-                        format: int32
-                lastPage:
-                    type: integer
-                    format: int32
-                prePage:
-                    type: integer
-                    format: int32
-                hasNextPage:
-                    type: boolean
-                nextPage:
-                    type: integer
-                    format: int32
-                pageSize:
-                    type: integer
-                    format: int32
-                endRow:
-                    type: integer
-                    format: int32
-                list:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/helloworld.v1.CourseInfo'
-                pageNum:
-                    type: integer
-                    format: int32
-                navigatePages:
-                    type: integer
-                    format: int32
-                total:
-                    type: integer
-                    format: int32
-                navigateFirstPage:
-                    type: integer
-                    format: int32
-                pages:
-                    type: integer
-                    format: int32
-                size:
-                    type: integer
-                    format: int32
-                firstPage:
-                    type: integer
-                    format: int32
-                isLastPage:
-                    type: boolean
-                hasPreviousPage:
-                    type: boolean
-                navigateLastPage:
-                    type: integer
-                    format: int32
-                isFirstPage:
-                    type: boolean
         helloworld.v1.RegisterUsernameReply:
             type: object
             properties:
@@ -651,13 +596,6 @@ components:
                 status:
                     type: integer
                     format: enum
-        helloworld.v1.SearchCourseReply:
-            type: object
-            properties:
-                meta:
-                    $ref: '#/components/schemas/helloworld.v1.Metadata'
-                data:
-                    $ref: '#/components/schemas/helloworld.v1.PageInfo'
         helloworld.v1.SearchCourseRequest:
             type: object
             properties:
@@ -667,7 +605,13 @@ components:
                 pageSize:
                     type: integer
                     format: int32
-                category:
+                firstCategory:
+                    type: integer
+                    format: int32
+                secondCategory:
+                    type: integer
+                    format: int32
+                level:
                     type: integer
                     format: int32
         helloworld.v1.SliderInfo:

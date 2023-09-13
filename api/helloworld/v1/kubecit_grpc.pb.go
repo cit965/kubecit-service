@@ -53,7 +53,7 @@ type KubecitClient interface {
 	// ========================== 课程相关接口 ===================================
 	MostNew(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MostNewReply, error)
 	TagsList(ctx context.Context, in *TagsListRequest, opts ...grpc.CallOption) (*TagsListReply, error)
-	SearchCourse(ctx context.Context, in *SearchCourseRequest, opts ...grpc.CallOption) (*SearchCourseReply, error)
+	SearchCourse(ctx context.Context, in *SearchCourseRequest, opts ...grpc.CallOption) (*CourseSearchReply, error)
 	UpdateCourse(ctx context.Context, in *UpdateCourseRequest, opts ...grpc.CallOption) (*UpdateCourseReply, error)
 	ReviewCourse(ctx context.Context, in *ReviewCourseRequest, opts ...grpc.CallOption) (*ReviewCourseReply, error)
 	CreateCourse(ctx context.Context, in *CreateCourseRequest, opts ...grpc.CallOption) (*CreateCourseReply, error)
@@ -134,8 +134,8 @@ func (c *kubecitClient) TagsList(ctx context.Context, in *TagsListRequest, opts 
 	return out, nil
 }
 
-func (c *kubecitClient) SearchCourse(ctx context.Context, in *SearchCourseRequest, opts ...grpc.CallOption) (*SearchCourseReply, error) {
-	out := new(SearchCourseReply)
+func (c *kubecitClient) SearchCourse(ctx context.Context, in *SearchCourseRequest, opts ...grpc.CallOption) (*CourseSearchReply, error) {
+	out := new(CourseSearchReply)
 	err := c.cc.Invoke(ctx, Kubecit_SearchCourse_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -280,7 +280,7 @@ type KubecitServer interface {
 	// ========================== 课程相关接口 ===================================
 	MostNew(context.Context, *Empty) (*MostNewReply, error)
 	TagsList(context.Context, *TagsListRequest) (*TagsListReply, error)
-	SearchCourse(context.Context, *SearchCourseRequest) (*SearchCourseReply, error)
+	SearchCourse(context.Context, *SearchCourseRequest) (*CourseSearchReply, error)
 	UpdateCourse(context.Context, *UpdateCourseRequest) (*UpdateCourseReply, error)
 	ReviewCourse(context.Context, *ReviewCourseRequest) (*ReviewCourseReply, error)
 	CreateCourse(context.Context, *CreateCourseRequest) (*CreateCourseReply, error)
@@ -322,7 +322,7 @@ func (UnimplementedKubecitServer) MostNew(context.Context, *Empty) (*MostNewRepl
 func (UnimplementedKubecitServer) TagsList(context.Context, *TagsListRequest) (*TagsListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TagsList not implemented")
 }
-func (UnimplementedKubecitServer) SearchCourse(context.Context, *SearchCourseRequest) (*SearchCourseReply, error) {
+func (UnimplementedKubecitServer) SearchCourse(context.Context, *SearchCourseRequest) (*CourseSearchReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchCourse not implemented")
 }
 func (UnimplementedKubecitServer) UpdateCourse(context.Context, *UpdateCourseRequest) (*UpdateCourseReply, error) {

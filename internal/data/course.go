@@ -20,13 +20,14 @@ func NewCourseRepo(data *Data, logger log.Logger) biz.CourseRepo {
 	}
 }
 
-func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*biz.Course, error) {
+func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize int, categories []int, level int32, reverse *bool) ([]*biz.Course, error) {
 	cq := c.data.db.Course.Query()
-	if categoryId != nil {
-		cq.Where(course.CategoryIDEQ(int(*categoryId)))
+	if len(categories) != 0 {
+		cq.Where(course.CategoryIDIn(categories...))
 	}
-	if level != nil {
-		cq.Where(course.LevelEQ(*level))
+
+	if level != 0 {
+		cq.Where(course.LevelEQ(level))
 	}
 	if reverse != nil {
 		if !*reverse {

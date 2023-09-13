@@ -34,13 +34,14 @@ type CategoryRepo interface {
 	ListAll(ctx context.Context) ([]*Category, error)
 	ListByLevel(ctx context.Context, level int32) ([]*Category, error)
 	Create(context.Context, *Category) error
+	ListSubCategories(ctx context.Context, parentID int32) ([]*Category, error)
 	Delete(ctx context.Context, id int32) error
 	Update(ctx context.Context, id int, name string) error
 }
 
 // CourseRepo is a Course repo.
 type CourseRepo interface {
-	SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*Course, error)
+	SearchCourse(ctx context.Context, pageNum, pageSize int, categoryIds []int, level int32, reverse *bool) ([]*Course, error)
 	UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error)
 	ReviewCourse(ctx context.Context, id int, status int32) (*Course, error)
 	CreateCourse(ctx context.Context, course *Course) (*Course, error)
@@ -52,7 +53,8 @@ type CourseRepo interface {
 type CourseUsecase struct {
 	repo       CategoryRepo
 	courseRepo CourseRepo
-	log        *log.Helper
+
+	log *log.Helper
 }
 
 // NewCourseUsecase new a Category usecase.
@@ -80,8 +82,32 @@ func (uc *CourseUsecase) UpdateCategory(ctx context.Context, id int, name string
 	return uc.repo.Update(ctx, id, name)
 }
 
-func (uc *CourseUsecase) SearchCourse(ctx context.Context, pageNum, pageSize int, categoryId *int32, level *int32, reverse *bool) ([]*Course, error) {
-	return uc.courseRepo.SearchCourse(ctx, pageNum, pageSize, categoryId, level, reverse)
+type SearchFilterParam struct {
+	SecondCategoryId int32
+	FirstCategoryId  int32
+	Level            int32
+	Reverse          bool
+}
+
+func (uc *CourseUsecase) SearchCourse(ctx context.Context, pageNum, pageSize int, filter *SearchFilterParam) ([]*Course, error) {
+
+	var categoryIds []int
+	if filter.SecondCategoryId == 0 {
+		if filter.FirstCategoryId != 0 {
+			subCategories, err := uc.repo.ListSubCategories(ctx, filter.FirstCategoryId)
+			if err != nil {
+				return nil, err
+			}
+			for _, v := range subCategories {
+				categoryIds = append(categoryIds, int(v.Id))
+			}
+		}
+
+	} else {
+		categoryIds = append(categoryIds, int(filter.SecondCategoryId))
+	}
+
+	return uc.courseRepo.SearchCourse(ctx, pageNum, pageSize, categoryIds, filter.Level, &filter.Reverse)
 }
 
 func (uc *CourseUsecase) UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error) {
