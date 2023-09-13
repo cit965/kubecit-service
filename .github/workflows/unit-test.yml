@@ -25,4 +25,4 @@ jobs:
       - if: always()
         uses: ouzi-dev/commit-status-updater@v2
         with:
-          status: "${{ job.status }}
+          status: "${{ job.status }}"
