@@ -209,6 +209,17 @@ service Kubecit {
     };
   }
 
+  rpc SystemSettings (Empty) returns (SystemSettingsReply) {
+    option (google.api.http) = {
+      get: "/api/systemsettings",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "系统设置"
+      tags: "system"
+    };
+  }
+
 }
 
 // The request message containing the user's name.
@@ -524,4 +535,10 @@ message DeleteCategoryReq {
 message UpdateCategoryReq {
   string categoryName = 1;
   int32 id = 2;
+}
+
+message SystemSettingsReply {
+  string logourl = 1;
+  string wechaturl = 2;
+  string computerurl = 3;
 }

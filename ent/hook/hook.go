@@ -44,6 +44,18 @@ func (f CourseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CourseMutation", m)
 }
 
+// The SettingFunc type is an adapter to allow the use of ordinary
+// function as Setting mutator.
+type SettingFunc func(context.Context, *ent.SettingMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SettingFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.SettingMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SettingMutation", m)
+}
+
 // The SliderFunc type is an adapter to allow the use of ordinary
 // function as Slider mutator.
 type SliderFunc func(context.Context, *ent.SliderMutation) (ent.Value, error)

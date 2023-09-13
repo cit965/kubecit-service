@@ -32,6 +32,7 @@ const OperationKubecitMostNew = "/helloworld.v1.Kubecit/MostNew"
 const OperationKubecitRegisterUsername = "/helloworld.v1.Kubecit/RegisterUsername"
 const OperationKubecitReviewCourse = "/helloworld.v1.Kubecit/ReviewCourse"
 const OperationKubecitSearchCourse = "/helloworld.v1.Kubecit/SearchCourse"
+const OperationKubecitSystemSettings = "/helloworld.v1.Kubecit/SystemSettings"
 const OperationKubecitTagsList = "/helloworld.v1.Kubecit/TagsList"
 const OperationKubecitUpdateCategory = "/helloworld.v1.Kubecit/UpdateCategory"
 const OperationKubecitUpdateCourse = "/helloworld.v1.Kubecit/UpdateCourse"
@@ -54,6 +55,7 @@ type KubecitHTTPServer interface {
 	RegisterUsername(context.Context, *RegisterUsernameRequest) (*RegisterUsernameReply, error)
 	ReviewCourse(context.Context, *ReviewCourseRequest) (*ReviewCourseReply, error)
 	SearchCourse(context.Context, *SearchCourseRequest) (*SearchCourseReply, error)
+	SystemSettings(context.Context, *Empty) (*SystemSettingsReply, error)
 	TagsList(context.Context, *TagsListRequest) (*TagsListReply, error)
 	UpdateCategory(context.Context, *UpdateCategoryReq) (*Empty, error)
 	UpdateCourse(context.Context, *UpdateCourseRequest) (*UpdateCourseReply, error)
@@ -79,6 +81,7 @@ func RegisterKubecitHTTPServer(s *http.Server, srv KubecitHTTPServer) {
 	r.DELETE("/api/slider/{id}", _Kubecit_DeleteSlider0_HTTP_Handler(srv))
 	r.PUT("/api/slider/{id}", _Kubecit_UpdateSlider0_HTTP_Handler(srv))
 	r.GET("/api/sliders", _Kubecit_ListSlidersByPriority0_HTTP_Handler(srv))
+	r.GET("/api/systemsettings", _Kubecit_SystemSettings0_HTTP_Handler(srv))
 }
 
 func _Kubecit_ListCategory0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
@@ -455,6 +458,25 @@ func _Kubecit_ListSlidersByPriority0_HTTP_Handler(srv KubecitHTTPServer) func(ct
 	}
 }
 
+func _Kubecit_SystemSettings0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in Empty
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationKubecitSystemSettings)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SystemSettings(ctx, req.(*Empty))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SystemSettingsReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type KubecitHTTPClient interface {
 	CreateCategory(ctx context.Context, req *CategoryInfo, opts ...http.CallOption) (rsp *Empty, err error)
 	CreateSlider(ctx context.Context, req *CreateSliderRequest, opts ...http.CallOption) (rsp *CreateSliderReply, err error)
@@ -469,6 +491,7 @@ type KubecitHTTPClient interface {
 	RegisterUsername(ctx context.Context, req *RegisterUsernameRequest, opts ...http.CallOption) (rsp *RegisterUsernameReply, err error)
 	ReviewCourse(ctx context.Context, req *ReviewCourseRequest, opts ...http.CallOption) (rsp *ReviewCourseReply, err error)
 	SearchCourse(ctx context.Context, req *SearchCourseRequest, opts ...http.CallOption) (rsp *SearchCourseReply, err error)
+	SystemSettings(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *SystemSettingsReply, err error)
 	TagsList(ctx context.Context, req *TagsListRequest, opts ...http.CallOption) (rsp *TagsListReply, err error)
 	UpdateCategory(ctx context.Context, req *UpdateCategoryReq, opts ...http.CallOption) (rsp *Empty, err error)
 	UpdateCourse(ctx context.Context, req *UpdateCourseRequest, opts ...http.CallOption) (rsp *UpdateCourseReply, err error)
@@ -646,6 +669,19 @@ func (c *KubecitHTTPClientImpl) SearchCourse(ctx context.Context, in *SearchCour
 	opts = append(opts, http.Operation(OperationKubecitSearchCourse))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *KubecitHTTPClientImpl) SystemSettings(ctx context.Context, in *Empty, opts ...http.CallOption) (*SystemSettingsReply, error) {
+	var out SystemSettingsReply
+	pattern := "/api/systemsettings"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationKubecitSystemSettings))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

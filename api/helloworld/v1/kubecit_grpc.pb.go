@@ -36,6 +36,7 @@ const (
 	Kubecit_DeleteSlider_FullMethodName          = "/helloworld.v1.Kubecit/DeleteSlider"
 	Kubecit_UpdateSlider_FullMethodName          = "/helloworld.v1.Kubecit/UpdateSlider"
 	Kubecit_ListSlidersByPriority_FullMethodName = "/helloworld.v1.Kubecit/ListSlidersByPriority"
+	Kubecit_SystemSettings_FullMethodName        = "/helloworld.v1.Kubecit/SystemSettings"
 )
 
 // KubecitClient is the client API for Kubecit service.
@@ -62,6 +63,7 @@ type KubecitClient interface {
 	DeleteSlider(ctx context.Context, in *DeleteSliderRequest, opts ...grpc.CallOption) (*DeleteSliderReply, error)
 	UpdateSlider(ctx context.Context, in *UpdateSliderRequest, opts ...grpc.CallOption) (*UpdateSliderReply, error)
 	ListSlidersByPriority(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListSlidersByPriorityReply, error)
+	SystemSettings(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SystemSettingsReply, error)
 }
 
 type kubecitClient struct {
@@ -225,6 +227,15 @@ func (c *kubecitClient) ListSlidersByPriority(ctx context.Context, in *Empty, op
 	return out, nil
 }
 
+func (c *kubecitClient) SystemSettings(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SystemSettingsReply, error) {
+	out := new(SystemSettingsReply)
+	err := c.cc.Invoke(ctx, Kubecit_SystemSettings_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // KubecitServer is the server API for Kubecit service.
 // All implementations must embed UnimplementedKubecitServer
 // for forward compatibility
@@ -249,6 +260,7 @@ type KubecitServer interface {
 	DeleteSlider(context.Context, *DeleteSliderRequest) (*DeleteSliderReply, error)
 	UpdateSlider(context.Context, *UpdateSliderRequest) (*UpdateSliderReply, error)
 	ListSlidersByPriority(context.Context, *Empty) (*ListSlidersByPriorityReply, error)
+	SystemSettings(context.Context, *Empty) (*SystemSettingsReply, error)
 	mustEmbedUnimplementedKubecitServer()
 }
 
@@ -306,6 +318,9 @@ func (UnimplementedKubecitServer) UpdateSlider(context.Context, *UpdateSliderReq
 }
 func (UnimplementedKubecitServer) ListSlidersByPriority(context.Context, *Empty) (*ListSlidersByPriorityReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSlidersByPriority not implemented")
+}
+func (UnimplementedKubecitServer) SystemSettings(context.Context, *Empty) (*SystemSettingsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SystemSettings not implemented")
 }
 func (UnimplementedKubecitServer) mustEmbedUnimplementedKubecitServer() {}
 
@@ -626,6 +641,24 @@ func _Kubecit_ListSlidersByPriority_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Kubecit_SystemSettings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).SystemSettings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_SystemSettings_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).SystemSettings(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Kubecit_ServiceDesc is the grpc.ServiceDesc for Kubecit service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -700,6 +733,10 @@ var Kubecit_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSlidersByPriority",
 			Handler:    _Kubecit_ListSlidersByPriority_Handler,
+		},
+		{
+			MethodName: "SystemSettings",
+			Handler:    _Kubecit_SystemSettings_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
