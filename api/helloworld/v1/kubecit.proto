@@ -342,11 +342,12 @@ message Tag {
 }
 
 message SearchCourseRequest {
-  int32 pageNum = 1;
-  int32 pageSize = 2;
-  int32 firstCategory = 3;
-  int32 secondCategory = 4;
-  int32 level = 5;
+  optional int32 pageNum = 1;
+  optional int32 pageSize = 2;
+  optional int32 firstCategory = 3;
+  optional int32 secondCategory = 4;
+  optional  int32 level = 5;
+  optional int32 order = 6;
 }
 
 

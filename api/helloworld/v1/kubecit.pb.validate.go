@@ -1725,15 +1725,29 @@ func (m *SearchCourseRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for PageNum
+	if m.PageNum != nil {
+		// no validation rules for PageNum
+	}
 
-	// no validation rules for PageSize
+	if m.PageSize != nil {
+		// no validation rules for PageSize
+	}
 
-	// no validation rules for FirstCategory
+	if m.FirstCategory != nil {
+		// no validation rules for FirstCategory
+	}
 
-	// no validation rules for SecondCategory
+	if m.SecondCategory != nil {
+		// no validation rules for SecondCategory
+	}
 
-	// no validation rules for Level
+	if m.Level != nil {
+		// no validation rules for Level
+	}
+
+	if m.Order != nil {
+		// no validation rules for Order
+	}
 
 	if len(errors) > 0 {
 		return SearchCourseRequestMultiError(errors)
