@@ -41,7 +41,7 @@ type CategoryRepo interface {
 
 // CourseRepo is a Course repo.
 type CourseRepo interface {
-	SearchCourse(ctx context.Context, pageNum, pageSize int, categoryIds []int, level int32, reverse *bool) ([]*Course, error)
+	SearchCourse(ctx context.Context, pageNum, pageSize *int32, categoryIds []int, level *int32, order *int32) ([]*Course, error)
 	UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error)
 	ReviewCourse(ctx context.Context, id int, status int32) (*Course, error)
 	CreateCourse(ctx context.Context, course *Course) (*Course, error)
@@ -83,18 +83,20 @@ func (uc *CourseUsecase) UpdateCategory(ctx context.Context, id int, name string
 }
 
 type SearchFilterParam struct {
-	SecondCategoryId int32
-	FirstCategoryId  int32
-	Level            int32
-	Reverse          bool
+	PageNum          *int32
+	PageSize         *int32
+	SecondCategoryId *int32
+	FirstCategoryId  *int32
+	Level            *int32
+	Order            *int32
 }
 
-func (uc *CourseUsecase) SearchCourse(ctx context.Context, pageNum, pageSize int, filter *SearchFilterParam) ([]*Course, error) {
+func (uc *CourseUsecase) SearchCourse(ctx context.Context, filter *SearchFilterParam) ([]*Course, error) {
 
 	var categoryIds []int
-	if filter.SecondCategoryId == 0 {
-		if filter.FirstCategoryId != 0 {
-			subCategories, err := uc.repo.ListSubCategories(ctx, filter.FirstCategoryId)
+	if filter.SecondCategoryId == nil {
+		if filter.FirstCategoryId != nil {
+			subCategories, err := uc.repo.ListSubCategories(ctx, *filter.FirstCategoryId)
 			if err != nil {
 				return nil, err
 			}
@@ -104,10 +106,10 @@ func (uc *CourseUsecase) SearchCourse(ctx context.Context, pageNum, pageSize int
 		}
 
 	} else {
-		categoryIds = append(categoryIds, int(filter.SecondCategoryId))
+		categoryIds = append(categoryIds, int(*filter.SecondCategoryId))
 	}
 
-	return uc.courseRepo.SearchCourse(ctx, pageNum, pageSize, categoryIds, filter.Level, &filter.Reverse)
+	return uc.courseRepo.SearchCourse(ctx, filter.PageNum, filter.PageSize, categoryIds, filter.Level, filter.Order)
 }
 
 func (uc *CourseUsecase) UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error) {

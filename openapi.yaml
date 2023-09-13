@@ -614,6 +614,9 @@ components:
                 level:
                     type: integer
                     format: int32
+                order:
+                    type: integer
+                    format: int32
         helloworld.v1.SliderInfo:
             type: object
             properties:
