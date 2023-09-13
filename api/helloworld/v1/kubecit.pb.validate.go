@@ -256,7 +256,13 @@ func (m *ListCategoryReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Level
+	if m.Level != nil {
+		// no validation rules for Level
+	}
+
+	if m.ParentID != nil {
+		// no validation rules for ParentID
+	}
 
 	if len(errors) > 0 {
 		return ListCategoryReqMultiError(errors)

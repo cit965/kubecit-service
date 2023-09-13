@@ -263,7 +263,8 @@ message Empty {
 
 
 message ListCategoryReq {
-  int32 level = 1;
+  optional int32 level = 1;
+  optional int32 parentID = 2;
 }
 
 message ListCategoryResp{
