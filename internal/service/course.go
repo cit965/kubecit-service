@@ -54,7 +54,7 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 		SecondCategoryId: req.SecondCategory,
 		FirstCategoryId:  req.FirstCategory,
 		Level:            req.Level,
-		Order:            req.Level,
+		Order:            req.Order,
 		PageNum:          req.PageNum,
 		PageSize:         req.PageSize,
 	})
