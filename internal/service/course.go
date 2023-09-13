@@ -150,3 +150,62 @@ func (s *KubecitService) ReviewCourse(ctx context.Context, req *pb.ReviewCourseR
 			UpdatedAt:  timestamppb.New(res.UpdatedAt),
 		}}, nil
 }
+
+func (s *KubecitService) CreateCourse(ctx context.Context, req *pb.CreateCourseRequest) (*pb.CreateCourseReply, error) {
+	ins := &biz.Course{
+		Level:      req.GetLevel(),
+		Name:       req.GetName(),
+		Detail:     req.GetDetail(),
+		Cover:      req.GetCover(),
+		Price:      req.GetPrice(),
+		Tags:       strings.Join(req.GetTags(), ","),
+		CategoryId: int(req.GetCategoryId()),
+	}
+	res, err := s.cc.CreateCourse(ctx, ins)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateCourseReply{Data: &pb.CourseInfo{
+		Id:         int32(res.Id),
+		Level:      res.Level,
+		Name:       res.Name,
+		Detail:     res.Detail,
+		Cover:      res.Cover,
+		Price:      res.Price,
+		Tags:       strings.Split(res.Tags, ","),
+		Status:     pb.CourseStatus(res.Status),
+		CategoryId: int32(res.CategoryId),
+		CreatedAt:  timestamppb.New(res.CreatedAt),
+		UpdatedAt:  timestamppb.New(res.UpdatedAt),
+	}}, nil
+}
+
+func (s *KubecitService) GetCourse(ctx context.Context, req *pb.GetCourseRequest) (*pb.GetCourseReply, error) {
+	res, err := s.cc.GetCourse(ctx, int(req.Id))
+	if err != nil {
+		return nil, err
+	}
+	return &pb.GetCourseReply{
+		Data: &pb.CourseInfo{
+			Id:         int32(res.Id),
+			Level:      res.Level,
+			Name:       res.Name,
+			Detail:     res.Detail,
+			Cover:      res.Cover,
+			Price:      res.Price,
+			Tags:       strings.Split(res.Tags, ","),
+			Status:     pb.CourseStatus(res.Status),
+			CategoryId: int32(res.CategoryId),
+			CreatedAt:  timestamppb.New(res.CreatedAt),
+			UpdatedAt:  timestamppb.New(res.UpdatedAt),
+		}}, nil
+}
+
+func (s *KubecitService) DeleteCourse(ctx context.Context, req *pb.DeleteCourseRequest) (*pb.DeleteCourseReply, error) {
+	count, err := s.cc.DeleteCourse(ctx, int(req.Id))
+	if err != nil {
+		return nil, err
+	}
+	return &pb.DeleteCourseReply{
+		Count: int32(count)}, nil
+}

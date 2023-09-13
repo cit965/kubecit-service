@@ -63,12 +63,12 @@ paths:
             tags:
                 - Kubecit
             operationId: Kubecit_DeleteCategory
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/helloworld.v1.DeleteCategoryReq'
-                required: true
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: OK
@@ -76,6 +76,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.Empty'
+    /api/course:
+        post:
+            tags:
+                - Kubecit
+            operationId: Kubecit_CreateCourse
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.CreateCourseRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.CreateCourseReply'
     /api/course/mostNew:
         post:
             tags:
@@ -132,6 +150,24 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.TagsListReply'
     /api/course/{id}:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_GetCourse
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.GetCourseReply'
         put:
             tags:
                 - Kubecit
@@ -156,6 +192,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.UpdateCourseReply'
+        delete:
+            tags:
+                - Kubecit
+            operationId: Kubecit_DeleteCourse
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.DeleteCourseReply'
         patch:
             tags:
                 - Kubecit
@@ -383,6 +437,33 @@ components:
                 updatedAt:
                     type: string
                     format: date-time
+        helloworld.v1.CreateCourseReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.CourseInfo'
+        helloworld.v1.CreateCourseRequest:
+            type: object
+            properties:
+                level:
+                    type: integer
+                    format: int32
+                name:
+                    type: string
+                detail:
+                    type: string
+                cover:
+                    type: string
+                price:
+                    type: number
+                    format: float
+                tags:
+                    type: array
+                    items:
+                        type: string
+                categoryId:
+                    type: integer
+                    format: int32
         helloworld.v1.CreateSliderReply:
             type: object
             properties:
@@ -402,10 +483,10 @@ components:
                 priority:
                     type: integer
                     format: int32
-        helloworld.v1.DeleteCategoryReq:
+        helloworld.v1.DeleteCourseReply:
             type: object
             properties:
-                id:
+                count:
                     type: integer
                     format: int32
         helloworld.v1.DeleteSliderReply:
@@ -417,6 +498,11 @@ components:
         helloworld.v1.Empty:
             type: object
             properties: {}
+        helloworld.v1.GetCourseReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.CourseInfo'
         helloworld.v1.GetSliderReply:
             type: object
             properties:

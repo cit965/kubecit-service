@@ -40,7 +40,6 @@ service Kubecit {
   rpc DeleteCategory (DeleteCategoryReq) returns (Empty) {
     option (google.api.http) = {
       delete: "/api/categories"
-      body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "删除分类"
@@ -113,6 +112,37 @@ service Kubecit {
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "审核课程"
+      tags: "course"
+    };
+  }
+  rpc CreateCourse (CreateCourseRequest) returns (CreateCourseReply) {
+    option (google.api.http) = {
+      post: "/api/course",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建课程"
+      tags: "course"
+    };
+  }
+  rpc GetCourse (GetCourseRequest) returns (GetCourseReply) {
+    option (google.api.http) = {
+      get: "/api/course/{id}",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "获取课程信息"
+      tags: "course"
+    };
+  }
+  rpc DeleteCourse (DeleteCourseRequest) returns (DeleteCourseReply) {
+    option (google.api.http) = {
+      delete: "/api/course/{id}",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "删除课程"
       tags: "course"
     };
   }
@@ -369,6 +399,44 @@ message ReviewCourseRequest {
 
 message ReviewCourseReply {
   CourseInfo data = 1;
+}
+
+message CreateCourseRequest {
+  int32 level = 2;
+  string name = 3;
+  string detail = 4;
+  string cover = 5;
+  float price = 6;
+  repeated string tags = 7;
+  int32 categoryId = 9;
+}
+
+message CreateCourseReply {
+  CourseInfo data = 1;
+}
+
+message ListCoursesRequest {
+
+}
+
+message ListCoursesReply {
+  repeated CourseInfo data = 1;
+}
+
+message GetCourseRequest {
+  int32 id = 1;
+}
+
+message GetCourseReply {
+  CourseInfo data = 1;
+}
+
+message DeleteCourseRequest {
+  int32 id = 1;
+}
+
+message DeleteCourseReply {
+  int32 count = 1;
 }
 
 message SliderInfo {

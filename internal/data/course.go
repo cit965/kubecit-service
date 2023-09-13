@@ -123,3 +123,34 @@ func (c *courseRepo) ReviewCourse(ctx context.Context, id int, status int32) (*b
 		CategoryId: res.CategoryID,
 	}, nil
 }
+
+func (c *courseRepo) CreateCourse(ctx context.Context, course *biz.Course) (*biz.Course, error) {
+	res, err := c.data.db.Course.Create().SetLevel(course.Level).SetName(course.Name).SetDetail(course.Detail).SetCover(course.Cover).
+		SetPrice(course.Price).SetTags(course.Tags).SetStatus(course.Status).SetCategoryID(course.CategoryId).Save(ctx)
+	if err != nil {
+		c.log.Errorf("course repo create error: %v\n", err)
+		return nil, err
+	}
+	return &biz.Course{
+		Id:         res.ID,
+		Level:      res.Level,
+		Name:       res.Name,
+		Detail:     res.Detail,
+		Cover:      res.Cover,
+		Price:      res.Price,
+		Tags:       res.Tags,
+		CreatedAt:  res.CreatedAt,
+		UpdatedAt:  res.UpdatedAt,
+		Status:     res.Status,
+		CategoryId: res.CategoryID,
+	}, nil
+}
+
+func (c *courseRepo) DeleteCourse(ctx context.Context, id int) (int, error) {
+	res, err := c.data.db.Course.Delete().Where(course.IDEQ(id)).Exec(ctx)
+	if err != nil {
+		c.log.Errorf("course repo delete error: %v\n", err)
+		return 0, err
+	}
+	return res, nil
+}
