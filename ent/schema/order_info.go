@@ -29,9 +29,9 @@ func (OrderInfos) Fields() []ent.Field {
 			dialect.MySQL: "VARCHAR(64)", // Override MySQL.
 		}).Comment("课程名称"),
 
-		field.Float("course_price").SchemaType(map[string]string{
-			dialect.MySQL: "decimal", // Override MySQL.
-		}).Comment("课程价格"),
+		field.Int32("course_price").SchemaType(map[string]string{
+			dialect.MySQL: "int", // Override MySQL.
+		}).Comment("课程价格(单位分)"),
 
 		field.Text("course_describe").SchemaType(map[string]string{
 			dialect.MySQL: "text", // Override MySQL.

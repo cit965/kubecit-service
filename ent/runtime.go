@@ -64,19 +64,19 @@ func init() {
 	ordersFields := schema.Orders{}.Fields()
 	_ = ordersFields
 	// ordersDescPayType is the schema descriptor for pay_type field.
-	ordersDescPayType := ordersFields[1].Descriptor()
+	ordersDescPayType := ordersFields[2].Descriptor()
 	// orders.DefaultPayType holds the default value on creation for the pay_type field.
 	orders.DefaultPayType = ordersDescPayType.Default.(int32)
 	// ordersDescPayStatus is the schema descriptor for pay_status field.
-	ordersDescPayStatus := ordersFields[2].Descriptor()
+	ordersDescPayStatus := ordersFields[3].Descriptor()
 	// orders.DefaultPayStatus holds the default value on creation for the pay_status field.
 	orders.DefaultPayStatus = ordersDescPayStatus.Default.(int32)
 	// ordersDescCreateTime is the schema descriptor for create_time field.
-	ordersDescCreateTime := ordersFields[6].Descriptor()
+	ordersDescCreateTime := ordersFields[7].Descriptor()
 	// orders.DefaultCreateTime holds the default value on creation for the create_time field.
 	orders.DefaultCreateTime = ordersDescCreateTime.Default.(time.Time)
 	// ordersDescUpdateTime is the schema descriptor for update_time field.
-	ordersDescUpdateTime := ordersFields[7].Descriptor()
+	ordersDescUpdateTime := ordersFields[8].Descriptor()
 	// orders.DefaultUpdateTime holds the default value on creation for the update_time field.
 	orders.DefaultUpdateTime = ordersDescUpdateTime.Default.(time.Time)
 	// orders.UpdateDefaultUpdateTime holds the default value on update for the update_time field.

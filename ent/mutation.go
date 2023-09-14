@@ -2291,8 +2291,8 @@ type OrderInfosMutation struct {
 	course_id       *int32
 	addcourse_id    *int32
 	course_name     *string
-	course_price    *float64
-	addcourse_price *float64
+	course_price    *int32
+	addcourse_price *int32
 	course_describe *string
 	create_time     *time.Time
 	update_time     *time.Time
@@ -2549,13 +2549,13 @@ func (m *OrderInfosMutation) ResetCourseName() {
 }
 
 // SetCoursePrice sets the "course_price" field.
-func (m *OrderInfosMutation) SetCoursePrice(f float64) {
-	m.course_price = &f
+func (m *OrderInfosMutation) SetCoursePrice(i int32) {
+	m.course_price = &i
 	m.addcourse_price = nil
 }
 
 // CoursePrice returns the value of the "course_price" field in the mutation.
-func (m *OrderInfosMutation) CoursePrice() (r float64, exists bool) {
+func (m *OrderInfosMutation) CoursePrice() (r int32, exists bool) {
 	v := m.course_price
 	if v == nil {
 		return
@@ -2566,7 +2566,7 @@ func (m *OrderInfosMutation) CoursePrice() (r float64, exists bool) {
 // OldCoursePrice returns the old "course_price" field's value of the OrderInfos entity.
 // If the OrderInfos object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderInfosMutation) OldCoursePrice(ctx context.Context) (v float64, err error) {
+func (m *OrderInfosMutation) OldCoursePrice(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCoursePrice is only allowed on UpdateOne operations")
 	}
@@ -2580,17 +2580,17 @@ func (m *OrderInfosMutation) OldCoursePrice(ctx context.Context) (v float64, err
 	return oldValue.CoursePrice, nil
 }
 
-// AddCoursePrice adds f to the "course_price" field.
-func (m *OrderInfosMutation) AddCoursePrice(f float64) {
+// AddCoursePrice adds i to the "course_price" field.
+func (m *OrderInfosMutation) AddCoursePrice(i int32) {
 	if m.addcourse_price != nil {
-		*m.addcourse_price += f
+		*m.addcourse_price += i
 	} else {
-		m.addcourse_price = &f
+		m.addcourse_price = &i
 	}
 }
 
 // AddedCoursePrice returns the value that was added to the "course_price" field in this mutation.
-func (m *OrderInfosMutation) AddedCoursePrice() (r float64, exists bool) {
+func (m *OrderInfosMutation) AddedCoursePrice() (r int32, exists bool) {
 	v := m.addcourse_price
 	if v == nil {
 		return
@@ -2844,7 +2844,7 @@ func (m *OrderInfosMutation) SetField(name string, value ent.Value) error {
 		m.SetCourseName(v)
 		return nil
 	case orderinfos.FieldCoursePrice:
-		v, ok := value.(float64)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2926,7 +2926,7 @@ func (m *OrderInfosMutation) AddField(name string, value ent.Value) error {
 		m.AddCourseID(v)
 		return nil
 	case orderinfos.FieldCoursePrice:
-		v, ok := value.(float64)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3038,13 +3038,15 @@ type OrdersMutation struct {
 	op             Op
 	typ            string
 	id             *int
+	user_id        *int32
+	adduser_id     *int32
 	order_sn       *string
 	pay_type       *int32
 	addpay_type    *int32
 	pay_status     *int32
 	addpay_status  *int32
-	trade_price    *float64
-	addtrade_price *float64
+	trade_price    *int32
+	addtrade_price *int32
 	trade_no       *string
 	pay_time       *time.Time
 	create_time    *time.Time
@@ -3151,6 +3153,62 @@ func (m *OrdersMutation) IDs(ctx context.Context) ([]int, error) {
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
+}
+
+// SetUserID sets the "user_id" field.
+func (m *OrdersMutation) SetUserID(i int32) {
+	m.user_id = &i
+	m.adduser_id = nil
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *OrdersMutation) UserID() (r int32, exists bool) {
+	v := m.user_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the Orders entity.
+// If the Orders object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrdersMutation) OldUserID(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// AddUserID adds i to the "user_id" field.
+func (m *OrdersMutation) AddUserID(i int32) {
+	if m.adduser_id != nil {
+		*m.adduser_id += i
+	} else {
+		m.adduser_id = &i
+	}
+}
+
+// AddedUserID returns the value that was added to the "user_id" field in this mutation.
+func (m *OrdersMutation) AddedUserID() (r int32, exists bool) {
+	v := m.adduser_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *OrdersMutation) ResetUserID() {
+	m.user_id = nil
+	m.adduser_id = nil
 }
 
 // SetOrderSn sets the "order_sn" field.
@@ -3316,13 +3374,13 @@ func (m *OrdersMutation) ResetPayStatus() {
 }
 
 // SetTradePrice sets the "trade_price" field.
-func (m *OrdersMutation) SetTradePrice(f float64) {
-	m.trade_price = &f
+func (m *OrdersMutation) SetTradePrice(i int32) {
+	m.trade_price = &i
 	m.addtrade_price = nil
 }
 
 // TradePrice returns the value of the "trade_price" field in the mutation.
-func (m *OrdersMutation) TradePrice() (r float64, exists bool) {
+func (m *OrdersMutation) TradePrice() (r int32, exists bool) {
 	v := m.trade_price
 	if v == nil {
 		return
@@ -3333,7 +3391,7 @@ func (m *OrdersMutation) TradePrice() (r float64, exists bool) {
 // OldTradePrice returns the old "trade_price" field's value of the Orders entity.
 // If the Orders object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrdersMutation) OldTradePrice(ctx context.Context) (v float64, err error) {
+func (m *OrdersMutation) OldTradePrice(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldTradePrice is only allowed on UpdateOne operations")
 	}
@@ -3347,17 +3405,17 @@ func (m *OrdersMutation) OldTradePrice(ctx context.Context) (v float64, err erro
 	return oldValue.TradePrice, nil
 }
 
-// AddTradePrice adds f to the "trade_price" field.
-func (m *OrdersMutation) AddTradePrice(f float64) {
+// AddTradePrice adds i to the "trade_price" field.
+func (m *OrdersMutation) AddTradePrice(i int32) {
 	if m.addtrade_price != nil {
-		*m.addtrade_price += f
+		*m.addtrade_price += i
 	} else {
-		m.addtrade_price = &f
+		m.addtrade_price = &i
 	}
 }
 
 // AddedTradePrice returns the value that was added to the "trade_price" field in this mutation.
-func (m *OrdersMutation) AddedTradePrice() (r float64, exists bool) {
+func (m *OrdersMutation) AddedTradePrice() (r int32, exists bool) {
 	v := m.addtrade_price
 	if v == nil {
 		return
@@ -3575,7 +3633,10 @@ func (m *OrdersMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *OrdersMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
+	if m.user_id != nil {
+		fields = append(fields, orders.FieldUserID)
+	}
 	if m.order_sn != nil {
 		fields = append(fields, orders.FieldOrderSn)
 	}
@@ -3608,6 +3669,8 @@ func (m *OrdersMutation) Fields() []string {
 // schema.
 func (m *OrdersMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case orders.FieldUserID:
+		return m.UserID()
 	case orders.FieldOrderSn:
 		return m.OrderSn()
 	case orders.FieldPayType:
@@ -3633,6 +3696,8 @@ func (m *OrdersMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *OrdersMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case orders.FieldUserID:
+		return m.OldUserID(ctx)
 	case orders.FieldOrderSn:
 		return m.OldOrderSn(ctx)
 	case orders.FieldPayType:
@@ -3658,6 +3723,13 @@ func (m *OrdersMutation) OldField(ctx context.Context, name string) (ent.Value, 
 // type.
 func (m *OrdersMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case orders.FieldUserID:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
 	case orders.FieldOrderSn:
 		v, ok := value.(string)
 		if !ok {
@@ -3680,7 +3752,7 @@ func (m *OrdersMutation) SetField(name string, value ent.Value) error {
 		m.SetPayStatus(v)
 		return nil
 	case orders.FieldTradePrice:
-		v, ok := value.(float64)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3722,6 +3794,9 @@ func (m *OrdersMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *OrdersMutation) AddedFields() []string {
 	var fields []string
+	if m.adduser_id != nil {
+		fields = append(fields, orders.FieldUserID)
+	}
 	if m.addpay_type != nil {
 		fields = append(fields, orders.FieldPayType)
 	}
@@ -3739,6 +3814,8 @@ func (m *OrdersMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *OrdersMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+	case orders.FieldUserID:
+		return m.AddedUserID()
 	case orders.FieldPayType:
 		return m.AddedPayType()
 	case orders.FieldPayStatus:
@@ -3754,6 +3831,13 @@ func (m *OrdersMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *OrdersMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case orders.FieldUserID:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUserID(v)
+		return nil
 	case orders.FieldPayType:
 		v, ok := value.(int32)
 		if !ok {
@@ -3769,7 +3853,7 @@ func (m *OrdersMutation) AddField(name string, value ent.Value) error {
 		m.AddPayStatus(v)
 		return nil
 	case orders.FieldTradePrice:
-		v, ok := value.(float64)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3823,6 +3907,9 @@ func (m *OrdersMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *OrdersMutation) ResetField(name string) error {
 	switch name {
+	case orders.FieldUserID:
+		m.ResetUserID()
+		return nil
 	case orders.FieldOrderSn:
 		m.ResetOrderSn()
 		return nil

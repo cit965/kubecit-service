@@ -500,12 +500,13 @@ components:
                     type: string
                 payType:
                     type: integer
-                    format: int32
+                    format: enum
                 payStatus:
                     type: integer
-                    format: int32
+                    format: enum
                 tradePrice:
-                    type: string
+                    type: integer
+                    format: int32
                 tradeNo:
                     type: string
                 payTime:
@@ -527,7 +528,8 @@ components:
                 courseIds:
                     type: array
                     items:
-                        type: string
+                        type: integer
+                        format: int32
         helloworld.v1.CreateSliderReply:
             type: object
             properties:
@@ -637,7 +639,8 @@ components:
                 courseName:
                     type: string
                 coursePrice:
-                    type: string
+                    type: integer
+                    format: int32
                 courseDescription:
                     type: string
         helloworld.v1.RegisterUsernameReply:

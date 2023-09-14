@@ -16,6 +16,10 @@ type Orders struct {
 func (Orders) Fields() []ent.Field {
 
 	return []ent.Field{
+		field.Int32("user_id").SchemaType(map[string]string{
+			dialect.MySQL: "int", // Override MySQL.
+		}).Comment("用户id"),
+
 		field.String("order_sn").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(64)", // Override MySQL.
 		}).Comment("平台自己生成的订单号"),
@@ -26,11 +30,11 @@ func (Orders) Fields() []ent.Field {
 
 		field.Int32("pay_status").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Optional().Default(0).Comment("支付状态 0(待支付), 1(成功)， 2(失败)，3（关闭）4(订单取消) 5(退款中)6（退款取消）"),
+		}).Optional().Default(0).Comment("支付状态 0(待支付), 1(成功)， 2(失败)，3（关闭）4(订单取消) 5(退款中)6（退款成功）7（退款失败）"),
 
-		field.Float("trade_price").SchemaType(map[string]string{
-			dialect.MySQL: "decimal", // Override MySQL.
-		}).Comment("订单价格"),
+		field.Int32("trade_price").SchemaType(map[string]string{
+			dialect.MySQL: "int", // Override MySQL.
+		}).Comment("订单价格(单位分)"),
 
 		field.String("trade_no").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(64)", // Override MySQL.

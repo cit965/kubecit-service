@@ -540,24 +540,44 @@ message SystemSettingsReply {
 
 
 message CreateOrderRequest {
-  repeated string courseIds = 1;
+  repeated int32 courseIds = 1;
 }
 
 message OrderDetail{
   int32 orderId = 1;
   int32 courseId = 2;
   string courseName = 3;
-  string coursePrice = 4;
+  int32 coursePrice = 4;
   string courseDescription = 5;
 }
+
+// 支付类型
+enum PayType {
+  TRANSFER = 0 ; // 转账
+  ALIPAY = 1; // 支付宝
+  WECHAT = 2; // 微信支付
+}
+
+//支付状态
+enum PayStatus {
+  UNPAID = 0; // 未支付
+  PAID = 1; // 已支付
+  FAILED = 2; //支付失败
+  CLOSED = 3; //关闭
+  CANCELED = 4; //取消
+  REFUNDING = 5; //退款中
+  REFUNDED = 6; //退款成功
+  REFUND_FAILED = 7;//退款失败
+}
+
 
 message CreateOrderReply {
   int32 userId = 1;
   string orderSn = 2;
-  int32 payType=3;
-  int32 payStatus=4;
-  string tradePrice=5;
-  string tradeNo=6;
+  PayType payType = 3;
+  PayStatus payStatus = 4;
+  int32 tradePrice = 5;
+  string tradeNo = 6;
   google.protobuf.Timestamp payTime = 7;
   google.protobuf.Timestamp createTime = 8;
   google.protobuf.Timestamp updateTime = 9;
