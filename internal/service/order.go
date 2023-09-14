@@ -8,7 +8,7 @@ import (
 
 // CreateOrder 创建订单
 func (s *KubecitService) CreateOrder(ctx context.Context, req *pb.CreateOrderRequest) (*pb.CreateOrderReply, error) {
-	//fmt.Println(req.GetCourseIds())
+
 	order, err := s.orderCase.Create(ctx, req.GetCourseIds())
 	if err != nil {
 		return nil, err

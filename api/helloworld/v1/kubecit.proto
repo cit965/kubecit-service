@@ -258,7 +258,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "创建订单"
+      description: "创建订单,传参课程[id]"
       tags: "order"
     };
   }
