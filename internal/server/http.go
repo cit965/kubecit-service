@@ -45,7 +45,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.L
 	srv.HandlePrefix("/q/", openAPIHandler)
 
 	logService := gin.NewGinService()
-	srv.HandlePrefix("/web/", logService)
+	srv.HandlePrefix("/gin/", logService)
 	v1.RegisterKubecitHTTPServer(srv, greeter)
 	srv.WalkRoute(func(info http.RouteInfo) error {
 		fmt.Printf("%-50s \t %s\n", info.Path, info.Method)

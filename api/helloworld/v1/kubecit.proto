@@ -275,7 +275,14 @@ message Empty {
 
 
 message ListCategoryReq {
-  int32 level = 1;
+  optional int32 level = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "分类级别",
+    description: "1级分类：1；2级分类：2"
+  }];
+  optional int32 parentID = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "上级分类",
+    description: "列出1级分类写2级分类"
+  }];
 }
 
 message ListCategoryResp{
