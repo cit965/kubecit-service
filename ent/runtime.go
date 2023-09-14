@@ -5,7 +5,9 @@ package ent
 import (
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/lesson"
 	"kubecit-service/ent/schema"
 	"kubecit-service/ent/slider"
 	"time"
@@ -35,6 +37,18 @@ func init() {
 	categoryDescName := categoryFields[0].Descriptor()
 	// category.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	category.NameValidator = categoryDescName.Validators[0].(func(string) error)
+	chapterFields := schema.Chapter{}.Fields()
+	_ = chapterFields
+	// chapterDescReleasedTime is the schema descriptor for released_time field.
+	chapterDescReleasedTime := chapterFields[1].Descriptor()
+	// chapter.DefaultReleasedTime holds the default value on creation for the released_time field.
+	chapter.DefaultReleasedTime = chapterDescReleasedTime.Default.(func() time.Time)
+	// chapter.UpdateDefaultReleasedTime holds the default value on update for the released_time field.
+	chapter.UpdateDefaultReleasedTime = chapterDescReleasedTime.UpdateDefault.(func() time.Time)
+	// chapterDescHasFreePreview is the schema descriptor for has_free_preview field.
+	chapterDescHasFreePreview := chapterFields[4].Descriptor()
+	// chapter.DefaultHasFreePreview holds the default value on creation for the has_free_preview field.
+	chapter.DefaultHasFreePreview = chapterDescHasFreePreview.Default.(int)
 	courseFields := schema.Course{}.Fields()
 	_ = courseFields
 	// courseDescUpdatedAt is the schema descriptor for updated_at field.
@@ -47,6 +61,18 @@ func init() {
 	courseDescCreatedAt := courseFields[7].Descriptor()
 	// course.DefaultCreatedAt holds the default value on creation for the created_at field.
 	course.DefaultCreatedAt = courseDescCreatedAt.Default.(time.Time)
+	lessonFields := schema.Lesson{}.Fields()
+	_ = lessonFields
+	// lessonDescReleasedTime is the schema descriptor for released_time field.
+	lessonDescReleasedTime := lessonFields[1].Descriptor()
+	// lesson.DefaultReleasedTime holds the default value on creation for the released_time field.
+	lesson.DefaultReleasedTime = lessonDescReleasedTime.Default.(func() time.Time)
+	// lesson.UpdateDefaultReleasedTime holds the default value on update for the released_time field.
+	lesson.UpdateDefaultReleasedTime = lessonDescReleasedTime.UpdateDefault.(func() time.Time)
+	// lessonDescIsFreePreview is the schema descriptor for is_free_preview field.
+	lessonDescIsFreePreview := lessonFields[7].Descriptor()
+	// lesson.DefaultIsFreePreview holds the default value on creation for the is_free_preview field.
+	lesson.DefaultIsFreePreview = lessonDescIsFreePreview.Default.(int)
 	sliderFields := schema.Slider{}.Fields()
 	_ = sliderFields
 	// sliderDescTitle is the schema descriptor for title field.

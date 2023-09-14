@@ -50,6 +50,30 @@ var (
 			},
 		},
 	}
+	// ChaptersColumns holds the columns for the "chapters" table.
+	ChaptersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "released_time", Type: field.TypeTime},
+		{Name: "description", Type: field.TypeString},
+		{Name: "sort", Type: field.TypeInt},
+		{Name: "has_free_preview", Type: field.TypeInt, Default: 2},
+		{Name: "course_id", Type: field.TypeInt, Nullable: true},
+	}
+	// ChaptersTable holds the schema information for the "chapters" table.
+	ChaptersTable = &schema.Table{
+		Name:       "chapters",
+		Columns:    ChaptersColumns,
+		PrimaryKey: []*schema.Column{ChaptersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "chapters_courses_chapters",
+				Columns:    []*schema.Column{ChaptersColumns[6]},
+				RefColumns: []*schema.Column{CoursesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
 	// CoursesColumns holds the columns for the "courses" table.
 	CoursesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -74,6 +98,33 @@ var (
 				Symbol:     "courses_categories_courses",
 				Columns:    []*schema.Column{CoursesColumns[10]},
 				RefColumns: []*schema.Column{CategoriesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// LessonsColumns holds the columns for the "lessons" table.
+	LessonsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "released_time", Type: field.TypeTime},
+		{Name: "sort", Type: field.TypeInt},
+		{Name: "type", Type: field.TypeInt},
+		{Name: "storage_path", Type: field.TypeString},
+		{Name: "source", Type: field.TypeString},
+		{Name: "courseware", Type: field.TypeString},
+		{Name: "is_free_preview", Type: field.TypeInt, Default: 2},
+		{Name: "chapter_id", Type: field.TypeInt, Nullable: true},
+	}
+	// LessonsTable holds the schema information for the "lessons" table.
+	LessonsTable = &schema.Table{
+		Name:       "lessons",
+		Columns:    LessonsColumns,
+		PrimaryKey: []*schema.Column{LessonsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "lessons_chapters_lessons",
+				Columns:    []*schema.Column{LessonsColumns[9]},
+				RefColumns: []*schema.Column{ChaptersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -125,7 +176,9 @@ var (
 	Tables = []*schema.Table{
 		AccountsTable,
 		CategoriesTable,
+		ChaptersTable,
 		CoursesTable,
+		LessonsTable,
 		SettingsTable,
 		SlidersTable,
 		UsersTable,
@@ -134,5 +187,7 @@ var (
 
 func init() {
 	CategoriesTable.ForeignKeys[0].RefTable = CategoriesTable
+	ChaptersTable.ForeignKeys[0].RefTable = CoursesTable
 	CoursesTable.ForeignKeys[0].RefTable = CategoriesTable
+	LessonsTable.ForeignKeys[0].RefTable = ChaptersTable
 }

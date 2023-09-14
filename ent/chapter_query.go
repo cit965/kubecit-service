@@ -6,9 +6,9 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
-	"kubecit-service/ent/category"
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/lesson"
 	"kubecit-service/ent/predicate"
 	"math"
 
@@ -17,54 +17,54 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// CourseQuery is the builder for querying Course entities.
-type CourseQuery struct {
+// ChapterQuery is the builder for querying Chapter entities.
+type ChapterQuery struct {
 	config
-	ctx          *QueryContext
-	order        []course.OrderOption
-	inters       []Interceptor
-	predicates   []predicate.Course
-	withOwner    *CategoryQuery
-	withChapters *ChapterQuery
+	ctx         *QueryContext
+	order       []chapter.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.Chapter
+	withLessons *LessonQuery
+	withCourse  *CourseQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
 }
 
-// Where adds a new predicate for the CourseQuery builder.
-func (cq *CourseQuery) Where(ps ...predicate.Course) *CourseQuery {
+// Where adds a new predicate for the ChapterQuery builder.
+func (cq *ChapterQuery) Where(ps ...predicate.Chapter) *ChapterQuery {
 	cq.predicates = append(cq.predicates, ps...)
 	return cq
 }
 
 // Limit the number of records to be returned by this query.
-func (cq *CourseQuery) Limit(limit int) *CourseQuery {
+func (cq *ChapterQuery) Limit(limit int) *ChapterQuery {
 	cq.ctx.Limit = &limit
 	return cq
 }
 
 // Offset to start from.
-func (cq *CourseQuery) Offset(offset int) *CourseQuery {
+func (cq *ChapterQuery) Offset(offset int) *ChapterQuery {
 	cq.ctx.Offset = &offset
 	return cq
 }
 
 // Unique configures the query builder to filter duplicate records on query.
 // By default, unique is set to true, and can be disabled using this method.
-func (cq *CourseQuery) Unique(unique bool) *CourseQuery {
+func (cq *ChapterQuery) Unique(unique bool) *ChapterQuery {
 	cq.ctx.Unique = &unique
 	return cq
 }
 
 // Order specifies how the records should be ordered.
-func (cq *CourseQuery) Order(o ...course.OrderOption) *CourseQuery {
+func (cq *ChapterQuery) Order(o ...chapter.OrderOption) *ChapterQuery {
 	cq.order = append(cq.order, o...)
 	return cq
 }
 
-// QueryOwner chains the current query on the "owner" edge.
-func (cq *CourseQuery) QueryOwner() *CategoryQuery {
-	query := (&CategoryClient{config: cq.config}).Query()
+// QueryLessons chains the current query on the "lessons" edge.
+func (cq *ChapterQuery) QueryLessons() *LessonQuery {
+	query := (&LessonClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := cq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -74,9 +74,9 @@ func (cq *CourseQuery) QueryOwner() *CategoryQuery {
 			return nil, err
 		}
 		step := sqlgraph.NewStep(
-			sqlgraph.From(course.Table, course.FieldID, selector),
-			sqlgraph.To(category.Table, category.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, course.OwnerTable, course.OwnerColumn),
+			sqlgraph.From(chapter.Table, chapter.FieldID, selector),
+			sqlgraph.To(lesson.Table, lesson.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, chapter.LessonsTable, chapter.LessonsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -84,9 +84,9 @@ func (cq *CourseQuery) QueryOwner() *CategoryQuery {
 	return query
 }
 
-// QueryChapters chains the current query on the "chapters" edge.
-func (cq *CourseQuery) QueryChapters() *ChapterQuery {
-	query := (&ChapterClient{config: cq.config}).Query()
+// QueryCourse chains the current query on the "course" edge.
+func (cq *ChapterQuery) QueryCourse() *CourseQuery {
+	query := (&CourseClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := cq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -96,9 +96,9 @@ func (cq *CourseQuery) QueryChapters() *ChapterQuery {
 			return nil, err
 		}
 		step := sqlgraph.NewStep(
-			sqlgraph.From(course.Table, course.FieldID, selector),
-			sqlgraph.To(chapter.Table, chapter.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, course.ChaptersTable, course.ChaptersColumn),
+			sqlgraph.From(chapter.Table, chapter.FieldID, selector),
+			sqlgraph.To(course.Table, course.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, chapter.CourseTable, chapter.CourseColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -106,21 +106,21 @@ func (cq *CourseQuery) QueryChapters() *ChapterQuery {
 	return query
 }
 
-// First returns the first Course entity from the query.
-// Returns a *NotFoundError when no Course was found.
-func (cq *CourseQuery) First(ctx context.Context) (*Course, error) {
+// First returns the first Chapter entity from the query.
+// Returns a *NotFoundError when no Chapter was found.
+func (cq *ChapterQuery) First(ctx context.Context) (*Chapter, error) {
 	nodes, err := cq.Limit(1).All(setContextOp(ctx, cq.ctx, "First"))
 	if err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
-		return nil, &NotFoundError{course.Label}
+		return nil, &NotFoundError{chapter.Label}
 	}
 	return nodes[0], nil
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (cq *CourseQuery) FirstX(ctx context.Context) *Course {
+func (cq *ChapterQuery) FirstX(ctx context.Context) *Chapter {
 	node, err := cq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -128,22 +128,22 @@ func (cq *CourseQuery) FirstX(ctx context.Context) *Course {
 	return node
 }
 
-// FirstID returns the first Course ID from the query.
-// Returns a *NotFoundError when no Course ID was found.
-func (cq *CourseQuery) FirstID(ctx context.Context) (id int, err error) {
+// FirstID returns the first Chapter ID from the query.
+// Returns a *NotFoundError when no Chapter ID was found.
+func (cq *ChapterQuery) FirstID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = cq.Limit(1).IDs(setContextOp(ctx, cq.ctx, "FirstID")); err != nil {
 		return
 	}
 	if len(ids) == 0 {
-		err = &NotFoundError{course.Label}
+		err = &NotFoundError{chapter.Label}
 		return
 	}
 	return ids[0], nil
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (cq *CourseQuery) FirstIDX(ctx context.Context) int {
+func (cq *ChapterQuery) FirstIDX(ctx context.Context) int {
 	id, err := cq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -151,10 +151,10 @@ func (cq *CourseQuery) FirstIDX(ctx context.Context) int {
 	return id
 }
 
-// Only returns a single Course entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when more than one Course entity is found.
-// Returns a *NotFoundError when no Course entities are found.
-func (cq *CourseQuery) Only(ctx context.Context) (*Course, error) {
+// Only returns a single Chapter entity found by the query, ensuring it only returns one.
+// Returns a *NotSingularError when more than one Chapter entity is found.
+// Returns a *NotFoundError when no Chapter entities are found.
+func (cq *ChapterQuery) Only(ctx context.Context) (*Chapter, error) {
 	nodes, err := cq.Limit(2).All(setContextOp(ctx, cq.ctx, "Only"))
 	if err != nil {
 		return nil, err
@@ -163,14 +163,14 @@ func (cq *CourseQuery) Only(ctx context.Context) (*Course, error) {
 	case 1:
 		return nodes[0], nil
 	case 0:
-		return nil, &NotFoundError{course.Label}
+		return nil, &NotFoundError{chapter.Label}
 	default:
-		return nil, &NotSingularError{course.Label}
+		return nil, &NotSingularError{chapter.Label}
 	}
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (cq *CourseQuery) OnlyX(ctx context.Context) *Course {
+func (cq *ChapterQuery) OnlyX(ctx context.Context) *Chapter {
 	node, err := cq.Only(ctx)
 	if err != nil {
 		panic(err)
@@ -178,10 +178,10 @@ func (cq *CourseQuery) OnlyX(ctx context.Context) *Course {
 	return node
 }
 
-// OnlyID is like Only, but returns the only Course ID in the query.
-// Returns a *NotSingularError when more than one Course ID is found.
+// OnlyID is like Only, but returns the only Chapter ID in the query.
+// Returns a *NotSingularError when more than one Chapter ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (cq *CourseQuery) OnlyID(ctx context.Context) (id int, err error) {
+func (cq *ChapterQuery) OnlyID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = cq.Limit(2).IDs(setContextOp(ctx, cq.ctx, "OnlyID")); err != nil {
 		return
@@ -190,15 +190,15 @@ func (cq *CourseQuery) OnlyID(ctx context.Context) (id int, err error) {
 	case 1:
 		id = ids[0]
 	case 0:
-		err = &NotFoundError{course.Label}
+		err = &NotFoundError{chapter.Label}
 	default:
-		err = &NotSingularError{course.Label}
+		err = &NotSingularError{chapter.Label}
 	}
 	return
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (cq *CourseQuery) OnlyIDX(ctx context.Context) int {
+func (cq *ChapterQuery) OnlyIDX(ctx context.Context) int {
 	id, err := cq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -206,18 +206,18 @@ func (cq *CourseQuery) OnlyIDX(ctx context.Context) int {
 	return id
 }
 
-// All executes the query and returns a list of Courses.
-func (cq *CourseQuery) All(ctx context.Context) ([]*Course, error) {
+// All executes the query and returns a list of Chapters.
+func (cq *ChapterQuery) All(ctx context.Context) ([]*Chapter, error) {
 	ctx = setContextOp(ctx, cq.ctx, "All")
 	if err := cq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
-	qr := querierAll[[]*Course, *CourseQuery]()
-	return withInterceptors[[]*Course](ctx, cq, qr, cq.inters)
+	qr := querierAll[[]*Chapter, *ChapterQuery]()
+	return withInterceptors[[]*Chapter](ctx, cq, qr, cq.inters)
 }
 
 // AllX is like All, but panics if an error occurs.
-func (cq *CourseQuery) AllX(ctx context.Context) []*Course {
+func (cq *ChapterQuery) AllX(ctx context.Context) []*Chapter {
 	nodes, err := cq.All(ctx)
 	if err != nil {
 		panic(err)
@@ -225,20 +225,20 @@ func (cq *CourseQuery) AllX(ctx context.Context) []*Course {
 	return nodes
 }
 
-// IDs executes the query and returns a list of Course IDs.
-func (cq *CourseQuery) IDs(ctx context.Context) (ids []int, err error) {
+// IDs executes the query and returns a list of Chapter IDs.
+func (cq *ChapterQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if cq.ctx.Unique == nil && cq.path != nil {
 		cq.Unique(true)
 	}
 	ctx = setContextOp(ctx, cq.ctx, "IDs")
-	if err = cq.Select(course.FieldID).Scan(ctx, &ids); err != nil {
+	if err = cq.Select(chapter.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (cq *CourseQuery) IDsX(ctx context.Context) []int {
+func (cq *ChapterQuery) IDsX(ctx context.Context) []int {
 	ids, err := cq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -247,16 +247,16 @@ func (cq *CourseQuery) IDsX(ctx context.Context) []int {
 }
 
 // Count returns the count of the given query.
-func (cq *CourseQuery) Count(ctx context.Context) (int, error) {
+func (cq *ChapterQuery) Count(ctx context.Context) (int, error) {
 	ctx = setContextOp(ctx, cq.ctx, "Count")
 	if err := cq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
-	return withInterceptors[int](ctx, cq, querierCount[*CourseQuery](), cq.inters)
+	return withInterceptors[int](ctx, cq, querierCount[*ChapterQuery](), cq.inters)
 }
 
 // CountX is like Count, but panics if an error occurs.
-func (cq *CourseQuery) CountX(ctx context.Context) int {
+func (cq *ChapterQuery) CountX(ctx context.Context) int {
 	count, err := cq.Count(ctx)
 	if err != nil {
 		panic(err)
@@ -265,7 +265,7 @@ func (cq *CourseQuery) CountX(ctx context.Context) int {
 }
 
 // Exist returns true if the query has elements in the graph.
-func (cq *CourseQuery) Exist(ctx context.Context) (bool, error) {
+func (cq *ChapterQuery) Exist(ctx context.Context) (bool, error) {
 	ctx = setContextOp(ctx, cq.ctx, "Exist")
 	switch _, err := cq.FirstID(ctx); {
 	case IsNotFound(err):
@@ -278,7 +278,7 @@ func (cq *CourseQuery) Exist(ctx context.Context) (bool, error) {
 }
 
 // ExistX is like Exist, but panics if an error occurs.
-func (cq *CourseQuery) ExistX(ctx context.Context) bool {
+func (cq *ChapterQuery) ExistX(ctx context.Context) bool {
 	exist, err := cq.Exist(ctx)
 	if err != nil {
 		panic(err)
@@ -286,45 +286,45 @@ func (cq *CourseQuery) ExistX(ctx context.Context) bool {
 	return exist
 }
 
-// Clone returns a duplicate of the CourseQuery builder, including all associated steps. It can be
+// Clone returns a duplicate of the ChapterQuery builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
-func (cq *CourseQuery) Clone() *CourseQuery {
+func (cq *ChapterQuery) Clone() *ChapterQuery {
 	if cq == nil {
 		return nil
 	}
-	return &CourseQuery{
-		config:       cq.config,
-		ctx:          cq.ctx.Clone(),
-		order:        append([]course.OrderOption{}, cq.order...),
-		inters:       append([]Interceptor{}, cq.inters...),
-		predicates:   append([]predicate.Course{}, cq.predicates...),
-		withOwner:    cq.withOwner.Clone(),
-		withChapters: cq.withChapters.Clone(),
+	return &ChapterQuery{
+		config:      cq.config,
+		ctx:         cq.ctx.Clone(),
+		order:       append([]chapter.OrderOption{}, cq.order...),
+		inters:      append([]Interceptor{}, cq.inters...),
+		predicates:  append([]predicate.Chapter{}, cq.predicates...),
+		withLessons: cq.withLessons.Clone(),
+		withCourse:  cq.withCourse.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
 	}
 }
 
-// WithOwner tells the query-builder to eager-load the nodes that are connected to
-// the "owner" edge. The optional arguments are used to configure the query builder of the edge.
-func (cq *CourseQuery) WithOwner(opts ...func(*CategoryQuery)) *CourseQuery {
-	query := (&CategoryClient{config: cq.config}).Query()
+// WithLessons tells the query-builder to eager-load the nodes that are connected to
+// the "lessons" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *ChapterQuery) WithLessons(opts ...func(*LessonQuery)) *ChapterQuery {
+	query := (&LessonClient{config: cq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	cq.withOwner = query
+	cq.withLessons = query
 	return cq
 }
 
-// WithChapters tells the query-builder to eager-load the nodes that are connected to
-// the "chapters" edge. The optional arguments are used to configure the query builder of the edge.
-func (cq *CourseQuery) WithChapters(opts ...func(*ChapterQuery)) *CourseQuery {
-	query := (&ChapterClient{config: cq.config}).Query()
+// WithCourse tells the query-builder to eager-load the nodes that are connected to
+// the "course" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *ChapterQuery) WithCourse(opts ...func(*CourseQuery)) *ChapterQuery {
+	query := (&CourseClient{config: cq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	cq.withChapters = query
+	cq.withCourse = query
 	return cq
 }
 
@@ -334,19 +334,19 @@ func (cq *CourseQuery) WithChapters(opts ...func(*ChapterQuery)) *CourseQuery {
 // Example:
 //
 //	var v []struct {
-//		Level int32 `json:"level,omitempty"`
+//		Name string `json:"name,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
-//	client.Course.Query().
-//		GroupBy(course.FieldLevel).
+//	client.Chapter.Query().
+//		GroupBy(chapter.FieldName).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
-func (cq *CourseQuery) GroupBy(field string, fields ...string) *CourseGroupBy {
+func (cq *ChapterQuery) GroupBy(field string, fields ...string) *ChapterGroupBy {
 	cq.ctx.Fields = append([]string{field}, fields...)
-	grbuild := &CourseGroupBy{build: cq}
+	grbuild := &ChapterGroupBy{build: cq}
 	grbuild.flds = &cq.ctx.Fields
-	grbuild.label = course.Label
+	grbuild.label = chapter.Label
 	grbuild.scan = grbuild.Scan
 	return grbuild
 }
@@ -357,26 +357,26 @@ func (cq *CourseQuery) GroupBy(field string, fields ...string) *CourseGroupBy {
 // Example:
 //
 //	var v []struct {
-//		Level int32 `json:"level,omitempty"`
+//		Name string `json:"name,omitempty"`
 //	}
 //
-//	client.Course.Query().
-//		Select(course.FieldLevel).
+//	client.Chapter.Query().
+//		Select(chapter.FieldName).
 //		Scan(ctx, &v)
-func (cq *CourseQuery) Select(fields ...string) *CourseSelect {
+func (cq *ChapterQuery) Select(fields ...string) *ChapterSelect {
 	cq.ctx.Fields = append(cq.ctx.Fields, fields...)
-	sbuild := &CourseSelect{CourseQuery: cq}
-	sbuild.label = course.Label
+	sbuild := &ChapterSelect{ChapterQuery: cq}
+	sbuild.label = chapter.Label
 	sbuild.flds, sbuild.scan = &cq.ctx.Fields, sbuild.Scan
 	return sbuild
 }
 
-// Aggregate returns a CourseSelect configured with the given aggregations.
-func (cq *CourseQuery) Aggregate(fns ...AggregateFunc) *CourseSelect {
+// Aggregate returns a ChapterSelect configured with the given aggregations.
+func (cq *ChapterQuery) Aggregate(fns ...AggregateFunc) *ChapterSelect {
 	return cq.Select().Aggregate(fns...)
 }
 
-func (cq *CourseQuery) prepareQuery(ctx context.Context) error {
+func (cq *ChapterQuery) prepareQuery(ctx context.Context) error {
 	for _, inter := range cq.inters {
 		if inter == nil {
 			return fmt.Errorf("ent: uninitialized interceptor (forgotten import ent/runtime?)")
@@ -388,7 +388,7 @@ func (cq *CourseQuery) prepareQuery(ctx context.Context) error {
 		}
 	}
 	for _, f := range cq.ctx.Fields {
-		if !course.ValidColumn(f) {
+		if !chapter.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
@@ -402,20 +402,20 @@ func (cq *CourseQuery) prepareQuery(ctx context.Context) error {
 	return nil
 }
 
-func (cq *CourseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Course, error) {
+func (cq *ChapterQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Chapter, error) {
 	var (
-		nodes       = []*Course{}
+		nodes       = []*Chapter{}
 		_spec       = cq.querySpec()
 		loadedTypes = [2]bool{
-			cq.withOwner != nil,
-			cq.withChapters != nil,
+			cq.withLessons != nil,
+			cq.withCourse != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
-		return (*Course).scanValues(nil, columns)
+		return (*Chapter).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
-		node := &Course{config: cq.config}
+		node := &Chapter{config: cq.config}
 		nodes = append(nodes, node)
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
@@ -429,54 +429,25 @@ func (cq *CourseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cours
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := cq.withOwner; query != nil {
-		if err := cq.loadOwner(ctx, query, nodes, nil,
-			func(n *Course, e *Category) { n.Edges.Owner = e }); err != nil {
+	if query := cq.withLessons; query != nil {
+		if err := cq.loadLessons(ctx, query, nodes,
+			func(n *Chapter) { n.Edges.Lessons = []*Lesson{} },
+			func(n *Chapter, e *Lesson) { n.Edges.Lessons = append(n.Edges.Lessons, e) }); err != nil {
 			return nil, err
 		}
 	}
-	if query := cq.withChapters; query != nil {
-		if err := cq.loadChapters(ctx, query, nodes,
-			func(n *Course) { n.Edges.Chapters = []*Chapter{} },
-			func(n *Course, e *Chapter) { n.Edges.Chapters = append(n.Edges.Chapters, e) }); err != nil {
+	if query := cq.withCourse; query != nil {
+		if err := cq.loadCourse(ctx, query, nodes, nil,
+			func(n *Chapter, e *Course) { n.Edges.Course = e }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (cq *CourseQuery) loadOwner(ctx context.Context, query *CategoryQuery, nodes []*Course, init func(*Course), assign func(*Course, *Category)) error {
-	ids := make([]int, 0, len(nodes))
-	nodeids := make(map[int][]*Course)
-	for i := range nodes {
-		fk := nodes[i].CategoryID
-		if _, ok := nodeids[fk]; !ok {
-			ids = append(ids, fk)
-		}
-		nodeids[fk] = append(nodeids[fk], nodes[i])
-	}
-	if len(ids) == 0 {
-		return nil
-	}
-	query.Where(category.IDIn(ids...))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		nodes, ok := nodeids[n.ID]
-		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "category_id" returned %v`, n.ID)
-		}
-		for i := range nodes {
-			assign(nodes[i], n)
-		}
-	}
-	return nil
-}
-func (cq *CourseQuery) loadChapters(ctx context.Context, query *ChapterQuery, nodes []*Course, init func(*Course), assign func(*Course, *Chapter)) error {
+func (cq *ChapterQuery) loadLessons(ctx context.Context, query *LessonQuery, nodes []*Chapter, init func(*Chapter), assign func(*Chapter, *Lesson)) error {
 	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Course)
+	nodeids := make(map[int]*Chapter)
 	for i := range nodes {
 		fks = append(fks, nodes[i].ID)
 		nodeids[nodes[i].ID] = nodes[i]
@@ -485,27 +456,56 @@ func (cq *CourseQuery) loadChapters(ctx context.Context, query *ChapterQuery, no
 		}
 	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(chapter.FieldCourseID)
+		query.ctx.AppendFieldOnce(lesson.FieldChapterID)
 	}
-	query.Where(predicate.Chapter(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(course.ChaptersColumn), fks...))
+	query.Where(predicate.Lesson(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(chapter.LessonsColumn), fks...))
 	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.CourseID
+		fk := n.ChapterID
 		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "course_id" returned %v for node %v`, fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "chapter_id" returned %v for node %v`, fk, n.ID)
 		}
 		assign(node, n)
 	}
 	return nil
 }
+func (cq *ChapterQuery) loadCourse(ctx context.Context, query *CourseQuery, nodes []*Chapter, init func(*Chapter), assign func(*Chapter, *Course)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Chapter)
+	for i := range nodes {
+		fk := nodes[i].CourseID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(course.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "course_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 
-func (cq *CourseQuery) sqlCount(ctx context.Context) (int, error) {
+func (cq *ChapterQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := cq.querySpec()
 	_spec.Node.Columns = cq.ctx.Fields
 	if len(cq.ctx.Fields) > 0 {
@@ -514,8 +514,8 @@ func (cq *CourseQuery) sqlCount(ctx context.Context) (int, error) {
 	return sqlgraph.CountNodes(ctx, cq.driver, _spec)
 }
 
-func (cq *CourseQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(course.Table, course.Columns, sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt))
+func (cq *ChapterQuery) querySpec() *sqlgraph.QuerySpec {
+	_spec := sqlgraph.NewQuerySpec(chapter.Table, chapter.Columns, sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt))
 	_spec.From = cq.sql
 	if unique := cq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique
@@ -524,14 +524,14 @@ func (cq *CourseQuery) querySpec() *sqlgraph.QuerySpec {
 	}
 	if fields := cq.ctx.Fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, course.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, chapter.FieldID)
 		for i := range fields {
-			if fields[i] != course.FieldID {
+			if fields[i] != chapter.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
-		if cq.withOwner != nil {
-			_spec.Node.AddColumnOnce(course.FieldCategoryID)
+		if cq.withCourse != nil {
+			_spec.Node.AddColumnOnce(chapter.FieldCourseID)
 		}
 	}
 	if ps := cq.predicates; len(ps) > 0 {
@@ -557,12 +557,12 @@ func (cq *CourseQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (cq *CourseQuery) sqlQuery(ctx context.Context) *sql.Selector {
+func (cq *ChapterQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(cq.driver.Dialect())
-	t1 := builder.Table(course.Table)
+	t1 := builder.Table(chapter.Table)
 	columns := cq.ctx.Fields
 	if len(columns) == 0 {
-		columns = course.Columns
+		columns = chapter.Columns
 	}
 	selector := builder.Select(t1.Columns(columns...)...).From(t1)
 	if cq.sql != nil {
@@ -589,28 +589,28 @@ func (cq *CourseQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	return selector
 }
 
-// CourseGroupBy is the group-by builder for Course entities.
-type CourseGroupBy struct {
+// ChapterGroupBy is the group-by builder for Chapter entities.
+type ChapterGroupBy struct {
 	selector
-	build *CourseQuery
+	build *ChapterQuery
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
-func (cgb *CourseGroupBy) Aggregate(fns ...AggregateFunc) *CourseGroupBy {
+func (cgb *ChapterGroupBy) Aggregate(fns ...AggregateFunc) *ChapterGroupBy {
 	cgb.fns = append(cgb.fns, fns...)
 	return cgb
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (cgb *CourseGroupBy) Scan(ctx context.Context, v any) error {
+func (cgb *ChapterGroupBy) Scan(ctx context.Context, v any) error {
 	ctx = setContextOp(ctx, cgb.build.ctx, "GroupBy")
 	if err := cgb.build.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*CourseQuery, *CourseGroupBy](ctx, cgb.build, cgb, cgb.build.inters, v)
+	return scanWithInterceptors[*ChapterQuery, *ChapterGroupBy](ctx, cgb.build, cgb, cgb.build.inters, v)
 }
 
-func (cgb *CourseGroupBy) sqlScan(ctx context.Context, root *CourseQuery, v any) error {
+func (cgb *ChapterGroupBy) sqlScan(ctx context.Context, root *ChapterQuery, v any) error {
 	selector := root.sqlQuery(ctx).Select()
 	aggregation := make([]string, 0, len(cgb.fns))
 	for _, fn := range cgb.fns {
@@ -637,28 +637,28 @@ func (cgb *CourseGroupBy) sqlScan(ctx context.Context, root *CourseQuery, v any)
 	return sql.ScanSlice(rows, v)
 }
 
-// CourseSelect is the builder for selecting fields of Course entities.
-type CourseSelect struct {
-	*CourseQuery
+// ChapterSelect is the builder for selecting fields of Chapter entities.
+type ChapterSelect struct {
+	*ChapterQuery
 	selector
 }
 
 // Aggregate adds the given aggregation functions to the selector query.
-func (cs *CourseSelect) Aggregate(fns ...AggregateFunc) *CourseSelect {
+func (cs *ChapterSelect) Aggregate(fns ...AggregateFunc) *ChapterSelect {
 	cs.fns = append(cs.fns, fns...)
 	return cs
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (cs *CourseSelect) Scan(ctx context.Context, v any) error {
+func (cs *ChapterSelect) Scan(ctx context.Context, v any) error {
 	ctx = setContextOp(ctx, cs.ctx, "Select")
 	if err := cs.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*CourseQuery, *CourseSelect](ctx, cs.CourseQuery, cs, cs.inters, v)
+	return scanWithInterceptors[*ChapterQuery, *ChapterSelect](ctx, cs.ChapterQuery, cs, cs.inters, v)
 }
 
-func (cs *CourseSelect) sqlScan(ctx context.Context, root *CourseQuery, v any) error {
+func (cs *ChapterSelect) sqlScan(ctx context.Context, root *ChapterQuery, v any) error {
 	selector := root.sqlQuery(ctx)
 	aggregation := make([]string, 0, len(cs.fns))
 	for _, fn := range cs.fns {

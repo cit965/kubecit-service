@@ -8,7 +8,9 @@ import (
 	"fmt"
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/lesson"
 	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/user"
@@ -80,7 +82,9 @@ func checkColumn(table, column string) error {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			account.Table:  account.ValidColumn,
 			category.Table: category.ValidColumn,
+			chapter.Table:  chapter.ValidColumn,
 			course.Table:   course.ValidColumn,
+			lesson.Table:   lesson.ValidColumn,
 			setting.Table:  setting.ValidColumn,
 			slider.Table:   slider.ValidColumn,
 			user.Table:     user.ValidColumn,

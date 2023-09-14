@@ -111,6 +111,86 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.CreateCourseReply'
+    /api/course/chapter:
+        post:
+            tags:
+                - Kubecit
+            operationId: Kubecit_CreateChapter
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.CreateChapterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.CreateChapterReply'
+    /api/course/chapter/{courseId}:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_ListChapters
+            parameters:
+                - name: courseId
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.ListChaptersReply'
+    /api/course/chapter/{id}:
+        put:
+            tags:
+                - Kubecit
+            operationId: Kubecit_UpdateChapter
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.UpdateChapterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.UpdateChapterReply'
+        delete:
+            tags:
+                - Kubecit
+            operationId: Kubecit_DeleteChapter
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.DeleteChapterReply'
     /api/course/mostNew:
         post:
             tags:
@@ -424,6 +504,28 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
+        helloworld.v1.ChapterInfo:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                name:
+                    type: string
+                releasedTime:
+                    type: string
+                    format: date-time
+                description:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                hasFreePreview:
+                    type: integer
+                    format: int32
+                courseId:
+                    type: integer
+                    format: int32
         helloworld.v1.CourseInfo:
             type: object
             properties:
@@ -469,6 +571,27 @@ components:
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CourseInfo'
                 total:
+                    type: integer
+                    format: int32
+        helloworld.v1.CreateChapterReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.ChapterInfo'
+        helloworld.v1.CreateChapterRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                hasFreePreview:
+                    type: integer
+                    format: int32
+                courseId:
                     type: integer
                     format: int32
         helloworld.v1.CreateCourseReply:
@@ -517,6 +640,12 @@ components:
                 priority:
                     type: integer
                     format: int32
+        helloworld.v1.DeleteChapterReply:
+            type: object
+            properties:
+                count:
+                    type: integer
+                    format: int32
         helloworld.v1.DeleteCourseReply:
             type: object
             properties:
@@ -549,6 +678,13 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
+        helloworld.v1.ListChaptersReply:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.ChapterInfo'
         helloworld.v1.ListSlidersByPriorityReply:
             type: object
             properties:
@@ -709,6 +845,30 @@ components:
                 categoryName:
                     type: string
                 id:
+                    type: integer
+                    format: int32
+        helloworld.v1.UpdateChapterReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.ChapterInfo'
+        helloworld.v1.UpdateChapterRequest:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                name:
+                    type: string
+                description:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                hasFreePreview:
+                    type: integer
+                    format: int32
+                courseId:
                     type: integer
                     format: int32
         helloworld.v1.UpdateCourseReply:

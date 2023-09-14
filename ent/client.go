@@ -12,7 +12,9 @@ import (
 
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/lesson"
 	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/user"
@@ -32,8 +34,12 @@ type Client struct {
 	Account *AccountClient
 	// Category is the client for interacting with the Category builders.
 	Category *CategoryClient
+	// Chapter is the client for interacting with the Chapter builders.
+	Chapter *ChapterClient
 	// Course is the client for interacting with the Course builders.
 	Course *CourseClient
+	// Lesson is the client for interacting with the Lesson builders.
+	Lesson *LessonClient
 	// Setting is the client for interacting with the Setting builders.
 	Setting *SettingClient
 	// Slider is the client for interacting with the Slider builders.
@@ -55,7 +61,9 @@ func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Account = NewAccountClient(c.config)
 	c.Category = NewCategoryClient(c.config)
+	c.Chapter = NewChapterClient(c.config)
 	c.Course = NewCourseClient(c.config)
+	c.Lesson = NewLessonClient(c.config)
 	c.Setting = NewSettingClient(c.config)
 	c.Slider = NewSliderClient(c.config)
 	c.User = NewUserClient(c.config)
@@ -143,7 +151,9 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		config:   cfg,
 		Account:  NewAccountClient(cfg),
 		Category: NewCategoryClient(cfg),
+		Chapter:  NewChapterClient(cfg),
 		Course:   NewCourseClient(cfg),
+		Lesson:   NewLessonClient(cfg),
 		Setting:  NewSettingClient(cfg),
 		Slider:   NewSliderClient(cfg),
 		User:     NewUserClient(cfg),
@@ -168,7 +178,9 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		config:   cfg,
 		Account:  NewAccountClient(cfg),
 		Category: NewCategoryClient(cfg),
+		Chapter:  NewChapterClient(cfg),
 		Course:   NewCourseClient(cfg),
+		Lesson:   NewLessonClient(cfg),
 		Setting:  NewSettingClient(cfg),
 		Slider:   NewSliderClient(cfg),
 		User:     NewUserClient(cfg),
@@ -201,7 +213,8 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.Account, c.Category, c.Course, c.Setting, c.Slider, c.User,
+		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.Setting, c.Slider,
+		c.User,
 	} {
 		n.Use(hooks...)
 	}
@@ -211,7 +224,8 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.Account, c.Category, c.Course, c.Setting, c.Slider, c.User,
+		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.Setting, c.Slider,
+		c.User,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -224,8 +238,12 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Account.mutate(ctx, m)
 	case *CategoryMutation:
 		return c.Category.mutate(ctx, m)
+	case *ChapterMutation:
+		return c.Chapter.mutate(ctx, m)
 	case *CourseMutation:
 		return c.Course.mutate(ctx, m)
+	case *LessonMutation:
+		return c.Lesson.mutate(ctx, m)
 	case *SettingMutation:
 		return c.Setting.mutate(ctx, m)
 	case *SliderMutation:
@@ -521,6 +539,156 @@ func (c *CategoryClient) mutate(ctx context.Context, m *CategoryMutation) (Value
 	}
 }
 
+// ChapterClient is a client for the Chapter schema.
+type ChapterClient struct {
+	config
+}
+
+// NewChapterClient returns a client for the Chapter from the given config.
+func NewChapterClient(c config) *ChapterClient {
+	return &ChapterClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `chapter.Hooks(f(g(h())))`.
+func (c *ChapterClient) Use(hooks ...Hook) {
+	c.hooks.Chapter = append(c.hooks.Chapter, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `chapter.Intercept(f(g(h())))`.
+func (c *ChapterClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Chapter = append(c.inters.Chapter, interceptors...)
+}
+
+// Create returns a builder for creating a Chapter entity.
+func (c *ChapterClient) Create() *ChapterCreate {
+	mutation := newChapterMutation(c.config, OpCreate)
+	return &ChapterCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Chapter entities.
+func (c *ChapterClient) CreateBulk(builders ...*ChapterCreate) *ChapterCreateBulk {
+	return &ChapterCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Chapter.
+func (c *ChapterClient) Update() *ChapterUpdate {
+	mutation := newChapterMutation(c.config, OpUpdate)
+	return &ChapterUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ChapterClient) UpdateOne(ch *Chapter) *ChapterUpdateOne {
+	mutation := newChapterMutation(c.config, OpUpdateOne, withChapter(ch))
+	return &ChapterUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ChapterClient) UpdateOneID(id int) *ChapterUpdateOne {
+	mutation := newChapterMutation(c.config, OpUpdateOne, withChapterID(id))
+	return &ChapterUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Chapter.
+func (c *ChapterClient) Delete() *ChapterDelete {
+	mutation := newChapterMutation(c.config, OpDelete)
+	return &ChapterDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ChapterClient) DeleteOne(ch *Chapter) *ChapterDeleteOne {
+	return c.DeleteOneID(ch.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ChapterClient) DeleteOneID(id int) *ChapterDeleteOne {
+	builder := c.Delete().Where(chapter.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ChapterDeleteOne{builder}
+}
+
+// Query returns a query builder for Chapter.
+func (c *ChapterClient) Query() *ChapterQuery {
+	return &ChapterQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeChapter},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Chapter entity by its id.
+func (c *ChapterClient) Get(ctx context.Context, id int) (*Chapter, error) {
+	return c.Query().Where(chapter.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ChapterClient) GetX(ctx context.Context, id int) *Chapter {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryLessons queries the lessons edge of a Chapter.
+func (c *ChapterClient) QueryLessons(ch *Chapter) *LessonQuery {
+	query := (&LessonClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ch.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(chapter.Table, chapter.FieldID, id),
+			sqlgraph.To(lesson.Table, lesson.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, chapter.LessonsTable, chapter.LessonsColumn),
+		)
+		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCourse queries the course edge of a Chapter.
+func (c *ChapterClient) QueryCourse(ch *Chapter) *CourseQuery {
+	query := (&CourseClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ch.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(chapter.Table, chapter.FieldID, id),
+			sqlgraph.To(course.Table, course.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, chapter.CourseTable, chapter.CourseColumn),
+		)
+		fromV = sqlgraph.Neighbors(ch.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ChapterClient) Hooks() []Hook {
+	return c.hooks.Chapter
+}
+
+// Interceptors returns the client interceptors.
+func (c *ChapterClient) Interceptors() []Interceptor {
+	return c.inters.Chapter
+}
+
+func (c *ChapterClient) mutate(ctx context.Context, m *ChapterMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ChapterCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ChapterUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ChapterUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ChapterDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Chapter mutation op: %q", m.Op())
+	}
+}
+
 // CourseClient is a client for the Course schema.
 type CourseClient struct {
 	config
@@ -630,6 +798,22 @@ func (c *CourseClient) QueryOwner(co *Course) *CategoryQuery {
 	return query
 }
 
+// QueryChapters queries the chapters edge of a Course.
+func (c *CourseClient) QueryChapters(co *Course) *ChapterQuery {
+	query := (&ChapterClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(course.Table, course.FieldID, id),
+			sqlgraph.To(chapter.Table, chapter.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, course.ChaptersTable, course.ChaptersColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *CourseClient) Hooks() []Hook {
 	return c.hooks.Course
@@ -652,6 +836,140 @@ func (c *CourseClient) mutate(ctx context.Context, m *CourseMutation) (Value, er
 		return (&CourseDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown Course mutation op: %q", m.Op())
+	}
+}
+
+// LessonClient is a client for the Lesson schema.
+type LessonClient struct {
+	config
+}
+
+// NewLessonClient returns a client for the Lesson from the given config.
+func NewLessonClient(c config) *LessonClient {
+	return &LessonClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `lesson.Hooks(f(g(h())))`.
+func (c *LessonClient) Use(hooks ...Hook) {
+	c.hooks.Lesson = append(c.hooks.Lesson, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `lesson.Intercept(f(g(h())))`.
+func (c *LessonClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Lesson = append(c.inters.Lesson, interceptors...)
+}
+
+// Create returns a builder for creating a Lesson entity.
+func (c *LessonClient) Create() *LessonCreate {
+	mutation := newLessonMutation(c.config, OpCreate)
+	return &LessonCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Lesson entities.
+func (c *LessonClient) CreateBulk(builders ...*LessonCreate) *LessonCreateBulk {
+	return &LessonCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Lesson.
+func (c *LessonClient) Update() *LessonUpdate {
+	mutation := newLessonMutation(c.config, OpUpdate)
+	return &LessonUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *LessonClient) UpdateOne(l *Lesson) *LessonUpdateOne {
+	mutation := newLessonMutation(c.config, OpUpdateOne, withLesson(l))
+	return &LessonUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *LessonClient) UpdateOneID(id int) *LessonUpdateOne {
+	mutation := newLessonMutation(c.config, OpUpdateOne, withLessonID(id))
+	return &LessonUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Lesson.
+func (c *LessonClient) Delete() *LessonDelete {
+	mutation := newLessonMutation(c.config, OpDelete)
+	return &LessonDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *LessonClient) DeleteOne(l *Lesson) *LessonDeleteOne {
+	return c.DeleteOneID(l.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *LessonClient) DeleteOneID(id int) *LessonDeleteOne {
+	builder := c.Delete().Where(lesson.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &LessonDeleteOne{builder}
+}
+
+// Query returns a query builder for Lesson.
+func (c *LessonClient) Query() *LessonQuery {
+	return &LessonQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeLesson},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Lesson entity by its id.
+func (c *LessonClient) Get(ctx context.Context, id int) (*Lesson, error) {
+	return c.Query().Where(lesson.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *LessonClient) GetX(ctx context.Context, id int) *Lesson {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryChapter queries the chapter edge of a Lesson.
+func (c *LessonClient) QueryChapter(l *Lesson) *ChapterQuery {
+	query := (&ChapterClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := l.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(lesson.Table, lesson.FieldID, id),
+			sqlgraph.To(chapter.Table, chapter.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, lesson.ChapterTable, lesson.ChapterColumn),
+		)
+		fromV = sqlgraph.Neighbors(l.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *LessonClient) Hooks() []Hook {
+	return c.hooks.Lesson
+}
+
+// Interceptors returns the client interceptors.
+func (c *LessonClient) Interceptors() []Interceptor {
+	return c.inters.Lesson
+}
+
+func (c *LessonClient) mutate(ctx context.Context, m *LessonMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&LessonCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&LessonUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&LessonUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&LessonDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Lesson mutation op: %q", m.Op())
 	}
 }
 
@@ -1012,9 +1330,10 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Account, Category, Course, Setting, Slider, User []ent.Hook
+		Account, Category, Chapter, Course, Lesson, Setting, Slider, User []ent.Hook
 	}
 	inters struct {
-		Account, Category, Course, Setting, Slider, User []ent.Interceptor
+		Account, Category, Chapter, Course, Lesson, Setting, Slider,
+		User []ent.Interceptor
 	}
 )
