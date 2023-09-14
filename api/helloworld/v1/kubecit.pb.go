@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        v3.19.4
-// source: api/helloworld/v1/kubecit.proto
+// source: helloworld/v1/kubecit.proto
 
 package v1
 
@@ -60,11 +60,11 @@ func (x CourseStatus) String() string {
 }
 
 func (CourseStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_api_helloworld_v1_kubecit_proto_enumTypes[0].Descriptor()
+	return file_helloworld_v1_kubecit_proto_enumTypes[0].Descriptor()
 }
 
 func (CourseStatus) Type() protoreflect.EnumType {
-	return &file_api_helloworld_v1_kubecit_proto_enumTypes[0]
+	return &file_helloworld_v1_kubecit_proto_enumTypes[0]
 }
 
 func (x CourseStatus) Number() protoreflect.EnumNumber {
@@ -73,7 +73,7 @@ func (x CourseStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CourseStatus.Descriptor instead.
 func (CourseStatus) EnumDescriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{0}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{0}
 }
 
 // 支付类型
@@ -110,11 +110,11 @@ func (x PayType) String() string {
 }
 
 func (PayType) Descriptor() protoreflect.EnumDescriptor {
-	return file_api_helloworld_v1_kubecit_proto_enumTypes[1].Descriptor()
+	return file_helloworld_v1_kubecit_proto_enumTypes[1].Descriptor()
 }
 
 func (PayType) Type() protoreflect.EnumType {
-	return &file_api_helloworld_v1_kubecit_proto_enumTypes[1]
+	return &file_helloworld_v1_kubecit_proto_enumTypes[1]
 }
 
 func (x PayType) Number() protoreflect.EnumNumber {
@@ -123,7 +123,7 @@ func (x PayType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PayType.Descriptor instead.
 func (PayType) EnumDescriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{1}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{1}
 }
 
 // 支付状态
@@ -175,11 +175,11 @@ func (x PayStatus) String() string {
 }
 
 func (PayStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_api_helloworld_v1_kubecit_proto_enumTypes[2].Descriptor()
+	return file_helloworld_v1_kubecit_proto_enumTypes[2].Descriptor()
 }
 
 func (PayStatus) Type() protoreflect.EnumType {
-	return &file_api_helloworld_v1_kubecit_proto_enumTypes[2]
+	return &file_helloworld_v1_kubecit_proto_enumTypes[2]
 }
 
 func (x PayStatus) Number() protoreflect.EnumNumber {
@@ -188,7 +188,7 @@ func (x PayStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PayStatus.Descriptor instead.
 func (PayStatus) EnumDescriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{2}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{2}
 }
 
 // The request message containing the user's name.
@@ -203,7 +203,7 @@ type HelloRequest struct {
 func (x *HelloRequest) Reset() {
 	*x = HelloRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[0]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -216,7 +216,7 @@ func (x *HelloRequest) String() string {
 func (*HelloRequest) ProtoMessage() {}
 
 func (x *HelloRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[0]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -229,7 +229,7 @@ func (x *HelloRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
 func (*HelloRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{0}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *HelloRequest) GetName() string {
@@ -248,7 +248,7 @@ type Empty struct {
 func (x *Empty) Reset() {
 	*x = Empty{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[1]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -261,7 +261,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[1]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -274,7 +274,7 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{1}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{1}
 }
 
 type ListCategoryReq struct {
@@ -282,13 +282,14 @@ type ListCategoryReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Level int32 `protobuf:"varint,1,opt,name=level,proto3" json:"level,omitempty"`
+	Level    *int32 `protobuf:"varint,1,opt,name=level,proto3,oneof" json:"level,omitempty"`
+	ParentID *int32 `protobuf:"varint,2,opt,name=parentID,proto3,oneof" json:"parentID,omitempty"`
 }
 
 func (x *ListCategoryReq) Reset() {
 	*x = ListCategoryReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[2]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -301,7 +302,7 @@ func (x *ListCategoryReq) String() string {
 func (*ListCategoryReq) ProtoMessage() {}
 
 func (x *ListCategoryReq) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[2]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -314,12 +315,19 @@ func (x *ListCategoryReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCategoryReq.ProtoReflect.Descriptor instead.
 func (*ListCategoryReq) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{2}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListCategoryReq) GetLevel() int32 {
-	if x != nil {
-		return x.Level
+	if x != nil && x.Level != nil {
+		return *x.Level
+	}
+	return 0
+}
+
+func (x *ListCategoryReq) GetParentID() int32 {
+	if x != nil && x.ParentID != nil {
+		return *x.ParentID
 	}
 	return 0
 }
@@ -335,7 +343,7 @@ type ListCategoryResp struct {
 func (x *ListCategoryResp) Reset() {
 	*x = ListCategoryResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[3]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -348,7 +356,7 @@ func (x *ListCategoryResp) String() string {
 func (*ListCategoryResp) ProtoMessage() {}
 
 func (x *ListCategoryResp) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[3]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -361,7 +369,7 @@ func (x *ListCategoryResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCategoryResp.ProtoReflect.Descriptor instead.
 func (*ListCategoryResp) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{3}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListCategoryResp) GetCategories() []*CategoryInfo {
@@ -385,7 +393,7 @@ type CategoryInfo struct {
 func (x *CategoryInfo) Reset() {
 	*x = CategoryInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[4]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -398,7 +406,7 @@ func (x *CategoryInfo) String() string {
 func (*CategoryInfo) ProtoMessage() {}
 
 func (x *CategoryInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[4]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -411,7 +419,7 @@ func (x *CategoryInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CategoryInfo.ProtoReflect.Descriptor instead.
 func (*CategoryInfo) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{4}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CategoryInfo) GetCategoryName() string {
@@ -454,7 +462,7 @@ type HelloReply struct {
 func (x *HelloReply) Reset() {
 	*x = HelloReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[5]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -467,7 +475,7 @@ func (x *HelloReply) String() string {
 func (*HelloReply) ProtoMessage() {}
 
 func (x *HelloReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[5]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -480,7 +488,7 @@ func (x *HelloReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HelloReply.ProtoReflect.Descriptor instead.
 func (*HelloReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{5}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *HelloReply) GetMessage() string {
@@ -505,7 +513,7 @@ type Metadata struct {
 func (x *Metadata) Reset() {
 	*x = Metadata{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[6]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -518,7 +526,7 @@ func (x *Metadata) String() string {
 func (*Metadata) ProtoMessage() {}
 
 func (x *Metadata) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[6]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -531,7 +539,7 @@ func (x *Metadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metadata.ProtoReflect.Descriptor instead.
 func (*Metadata) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{6}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Metadata) GetMsg() string {
@@ -580,7 +588,7 @@ type MostNewReply struct {
 func (x *MostNewReply) Reset() {
 	*x = MostNewReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[7]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -593,7 +601,7 @@ func (x *MostNewReply) String() string {
 func (*MostNewReply) ProtoMessage() {}
 
 func (x *MostNewReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[7]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -606,7 +614,7 @@ func (x *MostNewReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MostNewReply.ProtoReflect.Descriptor instead.
 func (*MostNewReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{7}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *MostNewReply) GetList() []*CourseInfo {
@@ -627,7 +635,7 @@ type MostNewReplyData struct {
 func (x *MostNewReplyData) Reset() {
 	*x = MostNewReplyData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[8]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -640,7 +648,7 @@ func (x *MostNewReplyData) String() string {
 func (*MostNewReplyData) ProtoMessage() {}
 
 func (x *MostNewReplyData) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[8]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -653,7 +661,7 @@ func (x *MostNewReplyData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MostNewReplyData.ProtoReflect.Descriptor instead.
 func (*MostNewReplyData) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{8}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *MostNewReplyData) GetList() []*CourseInfo {
@@ -674,7 +682,7 @@ type CourseSearchReply struct {
 func (x *CourseSearchReply) Reset() {
 	*x = CourseSearchReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[9]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -687,7 +695,7 @@ func (x *CourseSearchReply) String() string {
 func (*CourseSearchReply) ProtoMessage() {}
 
 func (x *CourseSearchReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[9]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -700,7 +708,7 @@ func (x *CourseSearchReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CourseSearchReply.ProtoReflect.Descriptor instead.
 func (*CourseSearchReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{9}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CourseSearchReply) GetList() []*CourseInfo {
@@ -731,7 +739,7 @@ type CourseInfo struct {
 func (x *CourseInfo) Reset() {
 	*x = CourseInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[10]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -744,7 +752,7 @@ func (x *CourseInfo) String() string {
 func (*CourseInfo) ProtoMessage() {}
 
 func (x *CourseInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[10]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -757,7 +765,7 @@ func (x *CourseInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CourseInfo.ProtoReflect.Descriptor instead.
 func (*CourseInfo) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{10}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CourseInfo) GetId() int32 {
@@ -850,7 +858,7 @@ type TagsListRequest struct {
 func (x *TagsListRequest) Reset() {
 	*x = TagsListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[11]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -863,7 +871,7 @@ func (x *TagsListRequest) String() string {
 func (*TagsListRequest) ProtoMessage() {}
 
 func (x *TagsListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[11]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -876,7 +884,7 @@ func (x *TagsListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagsListRequest.ProtoReflect.Descriptor instead.
 func (*TagsListRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{11}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *TagsListRequest) GetPageNum() int32 {
@@ -911,7 +919,7 @@ type TagsListReply struct {
 func (x *TagsListReply) Reset() {
 	*x = TagsListReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[12]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -924,7 +932,7 @@ func (x *TagsListReply) String() string {
 func (*TagsListReply) ProtoMessage() {}
 
 func (x *TagsListReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[12]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -937,7 +945,7 @@ func (x *TagsListReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagsListReply.ProtoReflect.Descriptor instead.
 func (*TagsListReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{12}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *TagsListReply) GetTags() []*Tag {
@@ -958,7 +966,7 @@ type Tag struct {
 func (x *Tag) Reset() {
 	*x = Tag{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[13]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -971,7 +979,7 @@ func (x *Tag) String() string {
 func (*Tag) ProtoMessage() {}
 
 func (x *Tag) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[13]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -984,7 +992,7 @@ func (x *Tag) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Tag.ProtoReflect.Descriptor instead.
 func (*Tag) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{13}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *Tag) GetName() string {
@@ -1010,7 +1018,7 @@ type SearchCourseRequest struct {
 func (x *SearchCourseRequest) Reset() {
 	*x = SearchCourseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[14]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1023,7 +1031,7 @@ func (x *SearchCourseRequest) String() string {
 func (*SearchCourseRequest) ProtoMessage() {}
 
 func (x *SearchCourseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[14]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1036,7 +1044,7 @@ func (x *SearchCourseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchCourseRequest.ProtoReflect.Descriptor instead.
 func (*SearchCourseRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{14}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *SearchCourseRequest) GetPageNum() int32 {
@@ -1099,7 +1107,7 @@ type UpdateCourseRequest struct {
 func (x *UpdateCourseRequest) Reset() {
 	*x = UpdateCourseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[15]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1112,7 +1120,7 @@ func (x *UpdateCourseRequest) String() string {
 func (*UpdateCourseRequest) ProtoMessage() {}
 
 func (x *UpdateCourseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[15]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1125,7 +1133,7 @@ func (x *UpdateCourseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCourseRequest.ProtoReflect.Descriptor instead.
 func (*UpdateCourseRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{15}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *UpdateCourseRequest) GetId() int32 {
@@ -1195,7 +1203,7 @@ type UpdateCourseReply struct {
 func (x *UpdateCourseReply) Reset() {
 	*x = UpdateCourseReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[16]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1208,7 +1216,7 @@ func (x *UpdateCourseReply) String() string {
 func (*UpdateCourseReply) ProtoMessage() {}
 
 func (x *UpdateCourseReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[16]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1221,7 +1229,7 @@ func (x *UpdateCourseReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCourseReply.ProtoReflect.Descriptor instead.
 func (*UpdateCourseReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{16}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UpdateCourseReply) GetData() *CourseInfo {
@@ -1243,7 +1251,7 @@ type ReviewCourseRequest struct {
 func (x *ReviewCourseRequest) Reset() {
 	*x = ReviewCourseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[17]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1256,7 +1264,7 @@ func (x *ReviewCourseRequest) String() string {
 func (*ReviewCourseRequest) ProtoMessage() {}
 
 func (x *ReviewCourseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[17]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1269,7 +1277,7 @@ func (x *ReviewCourseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReviewCourseRequest.ProtoReflect.Descriptor instead.
 func (*ReviewCourseRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{17}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ReviewCourseRequest) GetId() int32 {
@@ -1297,7 +1305,7 @@ type ReviewCourseReply struct {
 func (x *ReviewCourseReply) Reset() {
 	*x = ReviewCourseReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[18]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1310,7 +1318,7 @@ func (x *ReviewCourseReply) String() string {
 func (*ReviewCourseReply) ProtoMessage() {}
 
 func (x *ReviewCourseReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[18]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1323,7 +1331,7 @@ func (x *ReviewCourseReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReviewCourseReply.ProtoReflect.Descriptor instead.
 func (*ReviewCourseReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{18}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ReviewCourseReply) GetData() *CourseInfo {
@@ -1350,7 +1358,7 @@ type CreateCourseRequest struct {
 func (x *CreateCourseRequest) Reset() {
 	*x = CreateCourseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[19]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1363,7 +1371,7 @@ func (x *CreateCourseRequest) String() string {
 func (*CreateCourseRequest) ProtoMessage() {}
 
 func (x *CreateCourseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[19]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1376,7 +1384,7 @@ func (x *CreateCourseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCourseRequest.ProtoReflect.Descriptor instead.
 func (*CreateCourseRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{19}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *CreateCourseRequest) GetLevel() int32 {
@@ -1439,7 +1447,7 @@ type CreateCourseReply struct {
 func (x *CreateCourseReply) Reset() {
 	*x = CreateCourseReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[20]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1452,7 +1460,7 @@ func (x *CreateCourseReply) String() string {
 func (*CreateCourseReply) ProtoMessage() {}
 
 func (x *CreateCourseReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[20]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1465,7 +1473,7 @@ func (x *CreateCourseReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCourseReply.ProtoReflect.Descriptor instead.
 func (*CreateCourseReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{20}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *CreateCourseReply) GetData() *CourseInfo {
@@ -1484,7 +1492,7 @@ type ListCoursesRequest struct {
 func (x *ListCoursesRequest) Reset() {
 	*x = ListCoursesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[21]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1497,7 +1505,7 @@ func (x *ListCoursesRequest) String() string {
 func (*ListCoursesRequest) ProtoMessage() {}
 
 func (x *ListCoursesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[21]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1510,7 +1518,7 @@ func (x *ListCoursesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCoursesRequest.ProtoReflect.Descriptor instead.
 func (*ListCoursesRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{21}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{21}
 }
 
 type ListCoursesReply struct {
@@ -1524,7 +1532,7 @@ type ListCoursesReply struct {
 func (x *ListCoursesReply) Reset() {
 	*x = ListCoursesReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[22]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1537,7 +1545,7 @@ func (x *ListCoursesReply) String() string {
 func (*ListCoursesReply) ProtoMessage() {}
 
 func (x *ListCoursesReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[22]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1550,7 +1558,7 @@ func (x *ListCoursesReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCoursesReply.ProtoReflect.Descriptor instead.
 func (*ListCoursesReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{22}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListCoursesReply) GetData() []*CourseInfo {
@@ -1571,7 +1579,7 @@ type GetCourseRequest struct {
 func (x *GetCourseRequest) Reset() {
 	*x = GetCourseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[23]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1584,7 +1592,7 @@ func (x *GetCourseRequest) String() string {
 func (*GetCourseRequest) ProtoMessage() {}
 
 func (x *GetCourseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[23]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1597,7 +1605,7 @@ func (x *GetCourseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCourseRequest.ProtoReflect.Descriptor instead.
 func (*GetCourseRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{23}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *GetCourseRequest) GetId() int32 {
@@ -1618,7 +1626,7 @@ type GetCourseReply struct {
 func (x *GetCourseReply) Reset() {
 	*x = GetCourseReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[24]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1631,7 +1639,7 @@ func (x *GetCourseReply) String() string {
 func (*GetCourseReply) ProtoMessage() {}
 
 func (x *GetCourseReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[24]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1644,7 +1652,7 @@ func (x *GetCourseReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCourseReply.ProtoReflect.Descriptor instead.
 func (*GetCourseReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{24}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *GetCourseReply) GetData() *CourseInfo {
@@ -1665,7 +1673,7 @@ type DeleteCourseRequest struct {
 func (x *DeleteCourseRequest) Reset() {
 	*x = DeleteCourseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[25]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1678,7 +1686,7 @@ func (x *DeleteCourseRequest) String() string {
 func (*DeleteCourseRequest) ProtoMessage() {}
 
 func (x *DeleteCourseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[25]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1691,7 +1699,7 @@ func (x *DeleteCourseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCourseRequest.ProtoReflect.Descriptor instead.
 func (*DeleteCourseRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{25}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *DeleteCourseRequest) GetId() int32 {
@@ -1712,7 +1720,7 @@ type DeleteCourseReply struct {
 func (x *DeleteCourseReply) Reset() {
 	*x = DeleteCourseReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[26]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1725,7 +1733,7 @@ func (x *DeleteCourseReply) String() string {
 func (*DeleteCourseReply) ProtoMessage() {}
 
 func (x *DeleteCourseReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[26]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1738,7 +1746,7 @@ func (x *DeleteCourseReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCourseReply.ProtoReflect.Descriptor instead.
 func (*DeleteCourseReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{26}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *DeleteCourseReply) GetCount() int32 {
@@ -1766,7 +1774,7 @@ type SliderInfo struct {
 func (x *SliderInfo) Reset() {
 	*x = SliderInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[27]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1779,7 +1787,7 @@ func (x *SliderInfo) String() string {
 func (*SliderInfo) ProtoMessage() {}
 
 func (x *SliderInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[27]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1792,7 +1800,7 @@ func (x *SliderInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SliderInfo.ProtoReflect.Descriptor instead.
 func (*SliderInfo) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{27}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *SliderInfo) GetId() int32 {
@@ -1866,7 +1874,7 @@ type CreateSliderRequest struct {
 func (x *CreateSliderRequest) Reset() {
 	*x = CreateSliderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[28]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1879,7 +1887,7 @@ func (x *CreateSliderRequest) String() string {
 func (*CreateSliderRequest) ProtoMessage() {}
 
 func (x *CreateSliderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[28]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1892,7 +1900,7 @@ func (x *CreateSliderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSliderRequest.ProtoReflect.Descriptor instead.
 func (*CreateSliderRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{28}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *CreateSliderRequest) GetTitle() string {
@@ -1941,7 +1949,7 @@ type CreateSliderReply struct {
 func (x *CreateSliderReply) Reset() {
 	*x = CreateSliderReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[29]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1954,7 +1962,7 @@ func (x *CreateSliderReply) String() string {
 func (*CreateSliderReply) ProtoMessage() {}
 
 func (x *CreateSliderReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[29]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1967,7 +1975,7 @@ func (x *CreateSliderReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSliderReply.ProtoReflect.Descriptor instead.
 func (*CreateSliderReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{29}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *CreateSliderReply) GetData() *SliderInfo {
@@ -1988,7 +1996,7 @@ type GetSliderRequest struct {
 func (x *GetSliderRequest) Reset() {
 	*x = GetSliderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[30]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2001,7 +2009,7 @@ func (x *GetSliderRequest) String() string {
 func (*GetSliderRequest) ProtoMessage() {}
 
 func (x *GetSliderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[30]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2014,7 +2022,7 @@ func (x *GetSliderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSliderRequest.ProtoReflect.Descriptor instead.
 func (*GetSliderRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{30}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *GetSliderRequest) GetId() int32 {
@@ -2035,7 +2043,7 @@ type GetSliderReply struct {
 func (x *GetSliderReply) Reset() {
 	*x = GetSliderReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[31]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2048,7 +2056,7 @@ func (x *GetSliderReply) String() string {
 func (*GetSliderReply) ProtoMessage() {}
 
 func (x *GetSliderReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[31]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2061,7 +2069,7 @@ func (x *GetSliderReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSliderReply.ProtoReflect.Descriptor instead.
 func (*GetSliderReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{31}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *GetSliderReply) GetData() *SliderInfo {
@@ -2082,7 +2090,7 @@ type DeleteSliderRequest struct {
 func (x *DeleteSliderRequest) Reset() {
 	*x = DeleteSliderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[32]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[32]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2095,7 +2103,7 @@ func (x *DeleteSliderRequest) String() string {
 func (*DeleteSliderRequest) ProtoMessage() {}
 
 func (x *DeleteSliderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[32]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2108,7 +2116,7 @@ func (x *DeleteSliderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSliderRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSliderRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{32}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *DeleteSliderRequest) GetId() int32 {
@@ -2129,7 +2137,7 @@ type DeleteSliderReply struct {
 func (x *DeleteSliderReply) Reset() {
 	*x = DeleteSliderReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[33]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[33]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2142,7 +2150,7 @@ func (x *DeleteSliderReply) String() string {
 func (*DeleteSliderReply) ProtoMessage() {}
 
 func (x *DeleteSliderReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[33]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[33]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2155,7 +2163,7 @@ func (x *DeleteSliderReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSliderReply.ProtoReflect.Descriptor instead.
 func (*DeleteSliderReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{33}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *DeleteSliderReply) GetCount() int32 {
@@ -2181,7 +2189,7 @@ type UpdateSliderRequest struct {
 func (x *UpdateSliderRequest) Reset() {
 	*x = UpdateSliderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[34]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[34]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2194,7 +2202,7 @@ func (x *UpdateSliderRequest) String() string {
 func (*UpdateSliderRequest) ProtoMessage() {}
 
 func (x *UpdateSliderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[34]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[34]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2207,7 +2215,7 @@ func (x *UpdateSliderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSliderRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSliderRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{34}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *UpdateSliderRequest) GetId() int32 {
@@ -2263,7 +2271,7 @@ type UpdateSliderReply struct {
 func (x *UpdateSliderReply) Reset() {
 	*x = UpdateSliderReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[35]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[35]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2276,7 +2284,7 @@ func (x *UpdateSliderReply) String() string {
 func (*UpdateSliderReply) ProtoMessage() {}
 
 func (x *UpdateSliderReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[35]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2289,7 +2297,7 @@ func (x *UpdateSliderReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSliderReply.ProtoReflect.Descriptor instead.
 func (*UpdateSliderReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{35}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *UpdateSliderReply) GetData() *SliderInfo {
@@ -2311,7 +2319,7 @@ type ListSlidersByPriorityRequest struct {
 func (x *ListSlidersByPriorityRequest) Reset() {
 	*x = ListSlidersByPriorityRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[36]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[36]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2324,7 +2332,7 @@ func (x *ListSlidersByPriorityRequest) String() string {
 func (*ListSlidersByPriorityRequest) ProtoMessage() {}
 
 func (x *ListSlidersByPriorityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[36]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[36]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2337,7 +2345,7 @@ func (x *ListSlidersByPriorityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSlidersByPriorityRequest.ProtoReflect.Descriptor instead.
 func (*ListSlidersByPriorityRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{36}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ListSlidersByPriorityRequest) GetPriority() int32 {
@@ -2365,7 +2373,7 @@ type ListSlidersByPriorityReply struct {
 func (x *ListSlidersByPriorityReply) Reset() {
 	*x = ListSlidersByPriorityReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[37]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[37]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2378,7 +2386,7 @@ func (x *ListSlidersByPriorityReply) String() string {
 func (*ListSlidersByPriorityReply) ProtoMessage() {}
 
 func (x *ListSlidersByPriorityReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[37]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[37]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2391,7 +2399,7 @@ func (x *ListSlidersByPriorityReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSlidersByPriorityReply.ProtoReflect.Descriptor instead.
 func (*ListSlidersByPriorityReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{37}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ListSlidersByPriorityReply) GetData() []*SliderInfo {
@@ -2410,7 +2418,7 @@ type GetInfoRequest struct {
 func (x *GetInfoRequest) Reset() {
 	*x = GetInfoRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[38]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[38]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2423,7 +2431,7 @@ func (x *GetInfoRequest) String() string {
 func (*GetInfoRequest) ProtoMessage() {}
 
 func (x *GetInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[38]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[38]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2436,7 +2444,7 @@ func (x *GetInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInfoRequest.ProtoReflect.Descriptor instead.
 func (*GetInfoRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{38}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{38}
 }
 
 type UserInfoReply struct {
@@ -2452,7 +2460,7 @@ type UserInfoReply struct {
 func (x *UserInfoReply) Reset() {
 	*x = UserInfoReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[39]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[39]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2465,7 +2473,7 @@ func (x *UserInfoReply) String() string {
 func (*UserInfoReply) ProtoMessage() {}
 
 func (x *UserInfoReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[39]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[39]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2478,7 +2486,7 @@ func (x *UserInfoReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfoReply.ProtoReflect.Descriptor instead.
 func (*UserInfoReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{39}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *UserInfoReply) GetUsername() string {
@@ -2514,7 +2522,7 @@ type LoginByJsonRequest struct {
 func (x *LoginByJsonRequest) Reset() {
 	*x = LoginByJsonRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[40]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[40]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2527,7 +2535,7 @@ func (x *LoginByJsonRequest) String() string {
 func (*LoginByJsonRequest) ProtoMessage() {}
 
 func (x *LoginByJsonRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[40]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[40]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2540,7 +2548,7 @@ func (x *LoginByJsonRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByJsonRequest.ProtoReflect.Descriptor instead.
 func (*LoginByJsonRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{40}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *LoginByJsonRequest) GetUsername() string {
@@ -2569,7 +2577,7 @@ type LoginByJsonReply struct {
 func (x *LoginByJsonReply) Reset() {
 	*x = LoginByJsonReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[41]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[41]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2582,7 +2590,7 @@ func (x *LoginByJsonReply) String() string {
 func (*LoginByJsonReply) ProtoMessage() {}
 
 func (x *LoginByJsonReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[41]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[41]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2595,7 +2603,7 @@ func (x *LoginByJsonReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByJsonReply.ProtoReflect.Descriptor instead.
 func (*LoginByJsonReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{41}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *LoginByJsonReply) GetMeta() *Metadata {
@@ -2624,7 +2632,7 @@ type RegisterUsernameRequest struct {
 func (x *RegisterUsernameRequest) Reset() {
 	*x = RegisterUsernameRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[42]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[42]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2637,7 +2645,7 @@ func (x *RegisterUsernameRequest) String() string {
 func (*RegisterUsernameRequest) ProtoMessage() {}
 
 func (x *RegisterUsernameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[42]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[42]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2650,7 +2658,7 @@ func (x *RegisterUsernameRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterUsernameRequest.ProtoReflect.Descriptor instead.
 func (*RegisterUsernameRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{42}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *RegisterUsernameRequest) GetUsername() string {
@@ -2679,7 +2687,7 @@ type RegisterUsernameReply struct {
 func (x *RegisterUsernameReply) Reset() {
 	*x = RegisterUsernameReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[43]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[43]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2692,7 +2700,7 @@ func (x *RegisterUsernameReply) String() string {
 func (*RegisterUsernameReply) ProtoMessage() {}
 
 func (x *RegisterUsernameReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[43]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[43]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2705,7 +2713,7 @@ func (x *RegisterUsernameReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterUsernameReply.ProtoReflect.Descriptor instead.
 func (*RegisterUsernameReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{43}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *RegisterUsernameReply) GetMeta() *Metadata {
@@ -2733,7 +2741,7 @@ type LoginByJsonReplyData struct {
 func (x *LoginByJsonReplyData) Reset() {
 	*x = LoginByJsonReplyData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[44]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[44]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2746,7 +2754,7 @@ func (x *LoginByJsonReplyData) String() string {
 func (*LoginByJsonReplyData) ProtoMessage() {}
 
 func (x *LoginByJsonReplyData) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[44]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[44]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2759,7 +2767,7 @@ func (x *LoginByJsonReplyData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginByJsonReplyData.ProtoReflect.Descriptor instead.
 func (*LoginByJsonReplyData) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{44}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *LoginByJsonReplyData) GetAccessToken() string {
@@ -2780,7 +2788,7 @@ type DeleteCategoryReq struct {
 func (x *DeleteCategoryReq) Reset() {
 	*x = DeleteCategoryReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[45]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[45]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2793,7 +2801,7 @@ func (x *DeleteCategoryReq) String() string {
 func (*DeleteCategoryReq) ProtoMessage() {}
 
 func (x *DeleteCategoryReq) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[45]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[45]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2806,7 +2814,7 @@ func (x *DeleteCategoryReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCategoryReq.ProtoReflect.Descriptor instead.
 func (*DeleteCategoryReq) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{45}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *DeleteCategoryReq) GetId() int32 {
@@ -2828,7 +2836,7 @@ type UpdateCategoryReq struct {
 func (x *UpdateCategoryReq) Reset() {
 	*x = UpdateCategoryReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[46]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[46]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2841,7 +2849,7 @@ func (x *UpdateCategoryReq) String() string {
 func (*UpdateCategoryReq) ProtoMessage() {}
 
 func (x *UpdateCategoryReq) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[46]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[46]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2854,7 +2862,7 @@ func (x *UpdateCategoryReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCategoryReq.ProtoReflect.Descriptor instead.
 func (*UpdateCategoryReq) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{46}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *UpdateCategoryReq) GetCategoryName() string {
@@ -2884,7 +2892,7 @@ type SystemSettingsReply struct {
 func (x *SystemSettingsReply) Reset() {
 	*x = SystemSettingsReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[47]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[47]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2897,7 +2905,7 @@ func (x *SystemSettingsReply) String() string {
 func (*SystemSettingsReply) ProtoMessage() {}
 
 func (x *SystemSettingsReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[47]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[47]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2910,7 +2918,7 @@ func (x *SystemSettingsReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SystemSettingsReply.ProtoReflect.Descriptor instead.
 func (*SystemSettingsReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{47}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *SystemSettingsReply) GetLogourl() string {
@@ -2945,7 +2953,7 @@ type CreateOrderRequest struct {
 func (x *CreateOrderRequest) Reset() {
 	*x = CreateOrderRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[48]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[48]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2958,7 +2966,7 @@ func (x *CreateOrderRequest) String() string {
 func (*CreateOrderRequest) ProtoMessage() {}
 
 func (x *CreateOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[48]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[48]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2971,7 +2979,7 @@ func (x *CreateOrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateOrderRequest.ProtoReflect.Descriptor instead.
 func (*CreateOrderRequest) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{48}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *CreateOrderRequest) GetCourseIds() []int32 {
@@ -2996,7 +3004,7 @@ type OrderDetail struct {
 func (x *OrderDetail) Reset() {
 	*x = OrderDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[49]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[49]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3009,7 +3017,7 @@ func (x *OrderDetail) String() string {
 func (*OrderDetail) ProtoMessage() {}
 
 func (x *OrderDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[49]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[49]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3022,7 +3030,7 @@ func (x *OrderDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrderDetail.ProtoReflect.Descriptor instead.
 func (*OrderDetail) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{49}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *OrderDetail) GetOrderId() int32 {
@@ -3080,7 +3088,7 @@ type CreateOrderReply struct {
 func (x *CreateOrderReply) Reset() {
 	*x = CreateOrderReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[50]
+		mi := &file_helloworld_v1_kubecit_proto_msgTypes[50]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3093,7 +3101,7 @@ func (x *CreateOrderReply) String() string {
 func (*CreateOrderReply) ProtoMessage() {}
 
 func (x *CreateOrderReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_helloworld_v1_kubecit_proto_msgTypes[50]
+	mi := &file_helloworld_v1_kubecit_proto_msgTypes[50]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3106,7 +3114,7 @@ func (x *CreateOrderReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateOrderReply.ProtoReflect.Descriptor instead.
 func (*CreateOrderReply) Descriptor() ([]byte, []int) {
-	return file_api_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{50}
+	return file_helloworld_v1_kubecit_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *CreateOrderReply) GetUserId() int32 {
@@ -3179,26 +3187,36 @@ func (x *CreateOrderReply) GetDetails() []*OrderDetail {
 	return nil
 }
 
-var File_api_helloworld_v1_kubecit_proto protoreflect.FileDescriptor
+var File_helloworld_v1_kubecit_proto protoreflect.FileDescriptor
 
-var file_api_helloworld_v1_kubecit_proto_rawDesc = []byte{
-	0x0a, 0x1f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64,
-	0x2f, 0x76, 0x31, 0x2f, 0x6b, 0x75, 0x62, 0x65, 0x63, 0x69, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x12, 0x0d, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31,
-	0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e,
-	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f,
-	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f,
-	0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x63, 0x2d, 0x67, 0x65, 0x6e, 0x2d, 0x6f, 0x70, 0x65, 0x6e,
-	0x61, 0x70, 0x69, 0x76, 0x32, 0x2f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x61, 0x6e,
-	0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a,
-	0x17, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61,
-	0x74, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x22, 0x0a, 0x0c, 0x48, 0x65, 0x6c, 0x6c,
-	0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x07, 0x0a, 0x05,
-	0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x27, 0x0a, 0x0f, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x74,
-	0x65, 0x67, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x71, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x65, 0x76, 0x65,
-	0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x6c, 0x65, 0x76, 0x65, 0x6c, 0x22, 0x4f,
+var file_helloworld_v1_kubecit_proto_rawDesc = []byte{
+	0x0a, 0x1b, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2f, 0x76, 0x31, 0x2f,
+	0x6b, 0x75, 0x62, 0x65, 0x63, 0x69, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x68,
+	0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x2e, 0x76, 0x31, 0x1a, 0x1c, 0x67, 0x6f,
+	0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65,
+	0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x63, 0x2d, 0x67, 0x65, 0x6e, 0x2d, 0x6f, 0x70, 0x65, 0x6e, 0x61, 0x70, 0x69, 0x76,
+	0x32, 0x2f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x76, 0x61, 0x6c,
+	0x69, 0x64, 0x61, 0x74, 0x65, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x22, 0x22, 0x0a, 0x0c, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70, 0x74,
+	0x79, 0x22, 0xca, 0x01, 0x0a, 0x0f, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f,
+	0x72, 0x79, 0x52, 0x65, 0x71, 0x12, 0x4d, 0x0a, 0x05, 0x6c, 0x65, 0x76, 0x65, 0x6c, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x05, 0x42, 0x32, 0x92, 0x41, 0x2f, 0x2a, 0x0c, 0xe5, 0x88, 0x86, 0xe7, 0xb1,
+	0xbb, 0xe7, 0xba, 0xa7, 0xe5, 0x88, 0xab, 0x32, 0x1f, 0x31, 0xe7, 0xba, 0xa7, 0xe5, 0x88, 0x86,
+	0xe7, 0xb1, 0xbb, 0xef, 0xbc, 0x9a, 0x31, 0xef, 0xbc, 0x9b, 0x32, 0xe7, 0xba, 0xa7, 0xe5, 0x88,
+	0x86, 0xe7, 0xb1, 0xbb, 0xef, 0xbc, 0x9a, 0x32, 0x48, 0x00, 0x52, 0x05, 0x6c, 0x65, 0x76, 0x65,
+	0x6c, 0x88, 0x01, 0x01, 0x12, 0x51, 0x0a, 0x08, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x74, 0x49, 0x44,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x42, 0x30, 0x92, 0x41, 0x2d, 0x2a, 0x0c, 0xe4, 0xb8, 0x8a,
+	0xe7, 0xba, 0xa7, 0xe5, 0x88, 0x86, 0xe7, 0xb1, 0xbb, 0x32, 0x1d, 0xe5, 0x88, 0x97, 0xe5, 0x87,
+	0xba, 0x31, 0xe7, 0xba, 0xa7, 0xe5, 0x88, 0x86, 0xe7, 0xb1, 0xbb, 0xe5, 0x86, 0x99, 0x32, 0xe7,
+	0xba, 0xa7, 0xe5, 0x88, 0x86, 0xe7, 0xb1, 0xbb, 0x48, 0x01, 0x52, 0x08, 0x70, 0x61, 0x72, 0x65,
+	0x6e, 0x74, 0x49, 0x44, 0x88, 0x01, 0x01, 0x42, 0x08, 0x0a, 0x06, 0x5f, 0x6c, 0x65, 0x76, 0x65,
+	0x6c, 0x42, 0x0b, 0x0a, 0x09, 0x5f, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x74, 0x49, 0x44, 0x22, 0x4f,
 	0x0a, 0x10, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x52, 0x65,
 	0x73, 0x70, 0x12, 0x3b, 0x0a, 0x0a, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x69, 0x65, 0x73,
 	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x77, 0x6f,
@@ -3729,20 +3747,20 @@ var file_api_helloworld_v1_kubecit_proto_rawDesc = []byte{
 }
 
 var (
-	file_api_helloworld_v1_kubecit_proto_rawDescOnce sync.Once
-	file_api_helloworld_v1_kubecit_proto_rawDescData = file_api_helloworld_v1_kubecit_proto_rawDesc
+	file_helloworld_v1_kubecit_proto_rawDescOnce sync.Once
+	file_helloworld_v1_kubecit_proto_rawDescData = file_helloworld_v1_kubecit_proto_rawDesc
 )
 
-func file_api_helloworld_v1_kubecit_proto_rawDescGZIP() []byte {
-	file_api_helloworld_v1_kubecit_proto_rawDescOnce.Do(func() {
-		file_api_helloworld_v1_kubecit_proto_rawDescData = protoimpl.X.CompressGZIP(file_api_helloworld_v1_kubecit_proto_rawDescData)
+func file_helloworld_v1_kubecit_proto_rawDescGZIP() []byte {
+	file_helloworld_v1_kubecit_proto_rawDescOnce.Do(func() {
+		file_helloworld_v1_kubecit_proto_rawDescData = protoimpl.X.CompressGZIP(file_helloworld_v1_kubecit_proto_rawDescData)
 	})
-	return file_api_helloworld_v1_kubecit_proto_rawDescData
+	return file_helloworld_v1_kubecit_proto_rawDescData
 }
 
-var file_api_helloworld_v1_kubecit_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_api_helloworld_v1_kubecit_proto_msgTypes = make([]protoimpl.MessageInfo, 51)
-var file_api_helloworld_v1_kubecit_proto_goTypes = []interface{}{
+var file_helloworld_v1_kubecit_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_helloworld_v1_kubecit_proto_msgTypes = make([]protoimpl.MessageInfo, 51)
+var file_helloworld_v1_kubecit_proto_goTypes = []interface{}{
 	(CourseStatus)(0),                    // 0: helloworld.v1.CourseStatus
 	(PayType)(0),                         // 1: helloworld.v1.PayType
 	(PayStatus)(0),                       // 2: helloworld.v1.PayStatus
@@ -3799,7 +3817,7 @@ var file_api_helloworld_v1_kubecit_proto_goTypes = []interface{}{
 	(*CreateOrderReply)(nil),             // 53: helloworld.v1.CreateOrderReply
 	(*timestamppb.Timestamp)(nil),        // 54: google.protobuf.Timestamp
 }
-var file_api_helloworld_v1_kubecit_proto_depIdxs = []int32{
+var file_helloworld_v1_kubecit_proto_depIdxs = []int32{
 	7,  // 0: helloworld.v1.ListCategoryResp.categories:type_name -> helloworld.v1.CategoryInfo
 	13, // 1: helloworld.v1.MostNewReply.list:type_name -> helloworld.v1.CourseInfo
 	13, // 2: helloworld.v1.MostNewReplyData.list:type_name -> helloworld.v1.CourseInfo
@@ -3881,13 +3899,13 @@ var file_api_helloworld_v1_kubecit_proto_depIdxs = []int32{
 	0,  // [0:30] is the sub-list for field type_name
 }
 
-func init() { file_api_helloworld_v1_kubecit_proto_init() }
-func file_api_helloworld_v1_kubecit_proto_init() {
-	if File_api_helloworld_v1_kubecit_proto != nil {
+func init() { file_helloworld_v1_kubecit_proto_init() }
+func file_helloworld_v1_kubecit_proto_init() {
+	if File_helloworld_v1_kubecit_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_api_helloworld_v1_kubecit_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*HelloRequest); i {
 			case 0:
 				return &v.state
@@ -3899,7 +3917,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Empty); i {
 			case 0:
 				return &v.state
@@ -3911,7 +3929,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListCategoryReq); i {
 			case 0:
 				return &v.state
@@ -3923,7 +3941,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListCategoryResp); i {
 			case 0:
 				return &v.state
@@ -3935,7 +3953,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CategoryInfo); i {
 			case 0:
 				return &v.state
@@ -3947,7 +3965,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*HelloReply); i {
 			case 0:
 				return &v.state
@@ -3959,7 +3977,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Metadata); i {
 			case 0:
 				return &v.state
@@ -3971,7 +3989,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MostNewReply); i {
 			case 0:
 				return &v.state
@@ -3983,7 +4001,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MostNewReplyData); i {
 			case 0:
 				return &v.state
@@ -3995,7 +4013,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CourseSearchReply); i {
 			case 0:
 				return &v.state
@@ -4007,7 +4025,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CourseInfo); i {
 			case 0:
 				return &v.state
@@ -4019,7 +4037,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TagsListRequest); i {
 			case 0:
 				return &v.state
@@ -4031,7 +4049,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TagsListReply); i {
 			case 0:
 				return &v.state
@@ -4043,7 +4061,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Tag); i {
 			case 0:
 				return &v.state
@@ -4055,7 +4073,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SearchCourseRequest); i {
 			case 0:
 				return &v.state
@@ -4067,7 +4085,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateCourseRequest); i {
 			case 0:
 				return &v.state
@@ -4079,7 +4097,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateCourseReply); i {
 			case 0:
 				return &v.state
@@ -4091,7 +4109,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ReviewCourseRequest); i {
 			case 0:
 				return &v.state
@@ -4103,7 +4121,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ReviewCourseReply); i {
 			case 0:
 				return &v.state
@@ -4115,7 +4133,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateCourseRequest); i {
 			case 0:
 				return &v.state
@@ -4127,7 +4145,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateCourseReply); i {
 			case 0:
 				return &v.state
@@ -4139,7 +4157,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListCoursesRequest); i {
 			case 0:
 				return &v.state
@@ -4151,7 +4169,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListCoursesReply); i {
 			case 0:
 				return &v.state
@@ -4163,7 +4181,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetCourseRequest); i {
 			case 0:
 				return &v.state
@@ -4175,7 +4193,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetCourseReply); i {
 			case 0:
 				return &v.state
@@ -4187,7 +4205,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteCourseRequest); i {
 			case 0:
 				return &v.state
@@ -4199,7 +4217,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteCourseReply); i {
 			case 0:
 				return &v.state
@@ -4211,7 +4229,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SliderInfo); i {
 			case 0:
 				return &v.state
@@ -4223,7 +4241,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateSliderRequest); i {
 			case 0:
 				return &v.state
@@ -4235,7 +4253,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateSliderReply); i {
 			case 0:
 				return &v.state
@@ -4247,7 +4265,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSliderRequest); i {
 			case 0:
 				return &v.state
@@ -4259,7 +4277,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetSliderReply); i {
 			case 0:
 				return &v.state
@@ -4271,7 +4289,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteSliderRequest); i {
 			case 0:
 				return &v.state
@@ -4283,7 +4301,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteSliderReply); i {
 			case 0:
 				return &v.state
@@ -4295,7 +4313,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateSliderRequest); i {
 			case 0:
 				return &v.state
@@ -4307,7 +4325,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateSliderReply); i {
 			case 0:
 				return &v.state
@@ -4319,7 +4337,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListSlidersByPriorityRequest); i {
 			case 0:
 				return &v.state
@@ -4331,7 +4349,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListSlidersByPriorityReply); i {
 			case 0:
 				return &v.state
@@ -4343,7 +4361,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetInfoRequest); i {
 			case 0:
 				return &v.state
@@ -4355,7 +4373,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UserInfoReply); i {
 			case 0:
 				return &v.state
@@ -4367,7 +4385,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[40].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[40].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*LoginByJsonRequest); i {
 			case 0:
 				return &v.state
@@ -4379,7 +4397,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*LoginByJsonReply); i {
 			case 0:
 				return &v.state
@@ -4391,7 +4409,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RegisterUsernameRequest); i {
 			case 0:
 				return &v.state
@@ -4403,7 +4421,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RegisterUsernameReply); i {
 			case 0:
 				return &v.state
@@ -4415,7 +4433,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[44].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[44].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*LoginByJsonReplyData); i {
 			case 0:
 				return &v.state
@@ -4427,7 +4445,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteCategoryReq); i {
 			case 0:
 				return &v.state
@@ -4439,7 +4457,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[46].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[46].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateCategoryReq); i {
 			case 0:
 				return &v.state
@@ -4451,7 +4469,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[47].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[47].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SystemSettingsReply); i {
 			case 0:
 				return &v.state
@@ -4463,7 +4481,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[48].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[48].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateOrderRequest); i {
 			case 0:
 				return &v.state
@@ -4475,7 +4493,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[49].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[49].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*OrderDetail); i {
 			case 0:
 				return &v.state
@@ -4487,7 +4505,7 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 				return nil
 			}
 		}
-		file_api_helloworld_v1_kubecit_proto_msgTypes[50].Exporter = func(v interface{}, i int) interface{} {
+		file_helloworld_v1_kubecit_proto_msgTypes[50].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateOrderReply); i {
 			case 0:
 				return &v.state
@@ -4500,24 +4518,25 @@ func file_api_helloworld_v1_kubecit_proto_init() {
 			}
 		}
 	}
-	file_api_helloworld_v1_kubecit_proto_msgTypes[14].OneofWrappers = []interface{}{}
+	file_helloworld_v1_kubecit_proto_msgTypes[2].OneofWrappers = []interface{}{}
+	file_helloworld_v1_kubecit_proto_msgTypes[14].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_api_helloworld_v1_kubecit_proto_rawDesc,
+			RawDescriptor: file_helloworld_v1_kubecit_proto_rawDesc,
 			NumEnums:      3,
 			NumMessages:   51,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_helloworld_v1_kubecit_proto_goTypes,
-		DependencyIndexes: file_api_helloworld_v1_kubecit_proto_depIdxs,
-		EnumInfos:         file_api_helloworld_v1_kubecit_proto_enumTypes,
-		MessageInfos:      file_api_helloworld_v1_kubecit_proto_msgTypes,
+		GoTypes:           file_helloworld_v1_kubecit_proto_goTypes,
+		DependencyIndexes: file_helloworld_v1_kubecit_proto_depIdxs,
+		EnumInfos:         file_helloworld_v1_kubecit_proto_enumTypes,
+		MessageInfos:      file_helloworld_v1_kubecit_proto_msgTypes,
 	}.Build()
-	File_api_helloworld_v1_kubecit_proto = out.File
-	file_api_helloworld_v1_kubecit_proto_rawDesc = nil
-	file_api_helloworld_v1_kubecit_proto_goTypes = nil
-	file_api_helloworld_v1_kubecit_proto_depIdxs = nil
+	File_helloworld_v1_kubecit_proto = out.File
+	file_helloworld_v1_kubecit_proto_rawDesc = nil
+	file_helloworld_v1_kubecit_proto_goTypes = nil
+	file_helloworld_v1_kubecit_proto_depIdxs = nil
 }
