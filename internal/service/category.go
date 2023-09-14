@@ -8,7 +8,7 @@ import (
 
 // ListCategory 分类列表
 func (s *KubecitService) ListCategory(ctx context.Context, req *pb.ListCategoryReq) (*pb.ListCategoryResp, error) {
-	categories, err := s.cc.ListByLevelAndCategory(ctx, req.Level, req.ParentID)
+	categories, err := s.cc.ListCategory(ctx, req.Level, req.ParentID)
 	if err != nil {
 		return nil, err
 	}
