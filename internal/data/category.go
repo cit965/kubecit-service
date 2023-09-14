@@ -56,7 +56,7 @@ func (c *categoryRepo) ListAll(ctx context.Context) ([]*biz.Category, error) {
 	return categoryResult, nil
 }
 
-func (c *categoryRepo) ListByLevel(ctx context.Context, level, categoryId *int32) ([]*biz.Category, error) {
+func (c *categoryRepo) ListByLevelAndCategory(ctx context.Context, level, categoryId *int32) ([]*biz.Category, error) {
 	query := c.data.db.Category.Query()
 	if level != nil {
 		query.Where(category.Level(int(*level)))
