@@ -38,11 +38,11 @@ func NewGinService() *GinService {
 	//staticFS, _ := fs.Sub(StaticFiles, "dist")
 	//r.StaticFS("web/", http.FS(staticFS))
 	// 签名校验
-	r.GET("/web/wechat/check", CheckSignature)
+	r.GET("/gin/wechat/check", CheckSignature)
 	//二维码生成
-	r.GET("/web/wechat/login", Redirect)
+	r.GET("/gin/wechat/login", Redirect)
 	// 回调地址
-	r.GET("/web/wechat/callback", Callback)
+	r.GET("/gin/wechat/callback", Callback)
 	return &GinService{r}
 }
 
