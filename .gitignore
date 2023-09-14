@@ -41,3 +41,5 @@ bin/
 
 
 test.db
+*.pb.go
+openapi.yaml
