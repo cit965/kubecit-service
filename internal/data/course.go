@@ -203,7 +203,7 @@ func (c *courseRepo) ListChapters(ctx context.Context, courseId int) ([]*biz.Cha
 		c.log.Errorf("chapter repo get error: %v\n", err)
 		return nil, err
 	}
-	res := make([]*biz.Chapter, 0)
+	res := make([]*biz.Chapter, 0, len(chapters))
 	for _, ins := range chapters {
 		res = append(res, &biz.Chapter{
 			Id:             ins.ID,
