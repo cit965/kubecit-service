@@ -42,7 +42,7 @@ type CategoryRepo interface {
 
 // CourseRepo is a Course repo.
 type CourseRepo interface {
-	SearchCourse(ctx context.Context, pageNum, pageSize *int32, categoryIds []int, level *int32, order *int32) ([]*Course, error)
+	SearchCourse(ctx context.Context, pageNum, pageSize *int32, categoryIds []int, level *int32, order *int32) ([]*Course, int32, error)
 	UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error)
 	ReviewCourse(ctx context.Context, id int, status int32) (*Course, error)
 	CreateCourse(ctx context.Context, course *Course) (*Course, error)
@@ -108,14 +108,14 @@ type SearchFilterParam struct {
 	Order            *int32
 }
 
-func (uc *CourseUsecase) SearchCourse(ctx context.Context, filter *SearchFilterParam) ([]*Course, error) {
+func (uc *CourseUsecase) SearchCourse(ctx context.Context, filter *SearchFilterParam) ([]*Course, int32, error) {
 
 	var categoryIds []int
 	if filter.SecondCategoryId == nil {
 		if filter.FirstCategoryId != nil {
 			subCategories, err := uc.repo.ListSubCategories(ctx, *filter.FirstCategoryId)
 			if err != nil {
-				return nil, err
+				return nil, 0, err
 			}
 			for _, v := range subCategories {
 				categoryIds = append(categoryIds, int(v.Id))

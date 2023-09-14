@@ -311,7 +311,8 @@ message Metadata {
 }
 
 message MostNewReply {
-  repeated CourseInfo list = 9;
+  repeated CourseInfo list = 1;
+  int32 total = 2;
 }
 
 message MostNewReplyData {
@@ -320,6 +321,7 @@ message MostNewReplyData {
 
 message CourseSearchReply {
   repeated CourseInfo list = 1;
+  int32 total = 2;
 }
 
 enum CourseStatus {
@@ -341,6 +343,7 @@ message CourseInfo {
   int32 categoryId = 9;
   google.protobuf.Timestamp createdAt = 10;
   google.protobuf.Timestamp updatedAt = 11;
+  int32 people = 12;
 }
 
 

@@ -20,7 +20,7 @@ func NewCourseRepo(data *Data, logger log.Logger) biz.CourseRepo {
 	}
 }
 
-func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32, categories []int, level *int32, order *int32) ([]*biz.Course, error) {
+func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32, categories []int, level *int32, order *int32) ([]*biz.Course, int32, error) {
 	cq := c.data.db.Course.Query()
 	if len(categories) != 0 {
 		cq.Where(course.CategoryIDIn(categories...))
@@ -33,6 +33,10 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 		cq.Order(ent.Asc(course.FieldCreatedAt))
 	} else {
 		cq.Order(ent.Desc(course.FieldCreatedAt))
+	}
+	total, err := cq.Count(ctx)
+	if err != nil {
+		return nil, 0, err
 	}
 	if pageNum != nil {
 		*pageNum--
@@ -49,7 +53,7 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 	result, err := cq.All(ctx)
 	if err != nil {
 		c.log.Errorf("search course errorf: %v\n", err)
-		return nil, err
+		return nil, 0, err
 	}
 	courses := make([]*biz.Course, 0, len(result))
 	for _, v := range result {
@@ -66,7 +70,7 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 			CategoryId: v.CategoryID,
 		})
 	}
-	return courses, nil
+	return courses, int32(total), nil
 }
 
 func (c *courseRepo) GetCourse(ctx context.Context, id int) (*biz.Course, error) {

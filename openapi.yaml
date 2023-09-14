@@ -458,6 +458,9 @@ components:
                 updatedAt:
                     type: string
                     format: date-time
+                people:
+                    type: integer
+                    format: int32
         helloworld.v1.CourseSearchReply:
             type: object
             properties:
@@ -465,6 +468,9 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CourseInfo'
+                total:
+                    type: integer
+                    format: int32
         helloworld.v1.CreateCourseReply:
             type: object
             properties:
@@ -589,6 +595,9 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CourseInfo'
+                total:
+                    type: integer
+                    format: int32
         helloworld.v1.RegisterUsernameReply:
             type: object
             properties:

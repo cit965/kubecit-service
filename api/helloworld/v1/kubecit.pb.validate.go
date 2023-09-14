@@ -883,6 +883,8 @@ func (m *MostNewReply) validate(all bool) error {
 
 	}
 
+	// no validation rules for Total
+
 	if len(errors) > 0 {
 		return MostNewReplyMultiError(errors)
 	}
@@ -1150,6 +1152,8 @@ func (m *CourseSearchReply) validate(all bool) error {
 
 	}
 
+	// no validation rules for Total
+
 	if len(errors) > 0 {
 		return CourseSearchReplyMultiError(errors)
 	}
@@ -1325,6 +1329,8 @@ func (m *CourseInfo) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for People
 
 	if len(errors) > 0 {
 		return CourseInfoMultiError(errors)
