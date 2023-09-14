@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
 	"time"
 
@@ -122,6 +123,21 @@ func (cc *CourseCreate) SetNillableOwnerID(id *int) *CourseCreate {
 // SetOwner sets the "owner" edge to the Category entity.
 func (cc *CourseCreate) SetOwner(c *Category) *CourseCreate {
 	return cc.SetOwnerID(c.ID)
+}
+
+// AddChapterIDs adds the "chapters" edge to the Chapter entity by IDs.
+func (cc *CourseCreate) AddChapterIDs(ids ...int) *CourseCreate {
+	cc.mutation.AddChapterIDs(ids...)
+	return cc
+}
+
+// AddChapters adds the "chapters" edges to the Chapter entity.
+func (cc *CourseCreate) AddChapters(c ...*Chapter) *CourseCreate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cc.AddChapterIDs(ids...)
 }
 
 // Mutation returns the CourseMutation object of the builder.
@@ -275,6 +291,22 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.CategoryID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.ChaptersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   course.ChaptersTable,
+			Columns: []string{course.ChaptersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

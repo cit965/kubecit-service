@@ -36,6 +36,8 @@ const (
 	FieldCategoryID = "category_id"
 	// EdgeOwner holds the string denoting the owner edge name in mutations.
 	EdgeOwner = "owner"
+	// EdgeChapters holds the string denoting the chapters edge name in mutations.
+	EdgeChapters = "chapters"
 	// Table holds the table name of the course in the database.
 	Table = "courses"
 	// OwnerTable is the table that holds the owner relation/edge.
@@ -45,6 +47,13 @@ const (
 	OwnerInverseTable = "categories"
 	// OwnerColumn is the table column denoting the owner relation/edge.
 	OwnerColumn = "category_id"
+	// ChaptersTable is the table that holds the chapters relation/edge.
+	ChaptersTable = "chapters"
+	// ChaptersInverseTable is the table name for the Chapter entity.
+	// It exists in this package in order to avoid circular dependency with the "chapter" package.
+	ChaptersInverseTable = "chapters"
+	// ChaptersColumn is the table column denoting the chapters relation/edge.
+	ChaptersColumn = "course_id"
 )
 
 // Columns holds all SQL columns for course fields.
@@ -145,10 +154,31 @@ func ByOwnerField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newOwnerStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByChaptersCount orders the results by chapters count.
+func ByChaptersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newChaptersStep(), opts...)
+	}
+}
+
+// ByChapters orders the results by chapters terms.
+func ByChapters(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newChaptersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newOwnerStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(OwnerInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, OwnerTable, OwnerColumn),
+	)
+}
+func newChaptersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ChaptersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ChaptersTable, ChaptersColumn),
 	)
 }

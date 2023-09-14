@@ -35,5 +35,6 @@ func (Course) Edges() []ent.Edge {
 			Ref("courses").
 			Unique().
 			Field("category_id"),
+		edge.To("chapters", Chapter.Type),
 	}
 }

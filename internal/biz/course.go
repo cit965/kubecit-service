@@ -30,6 +30,16 @@ type Course struct {
 	CategoryId int
 }
 
+type Chapter struct {
+	Id             int
+	Name           string
+	ReleasedTime   time.Time
+	Description    string
+	Sort           int
+	HasFreePreview int
+	CourseId       int
+}
+
 // CategoryRepo is a Category repo.
 type CategoryRepo interface {
 	ListAll(ctx context.Context) ([]*Category, error)
@@ -48,6 +58,11 @@ type CourseRepo interface {
 	CreateCourse(ctx context.Context, course *Course) (*Course, error)
 	GetCourse(ctx context.Context, id int) (*Course, error)
 	DeleteCourse(ctx context.Context, id int) (int, error)
+
+	CreateChapter(ctx context.Context, chapter *Chapter) (*Chapter, error)
+	DeleteChapter(ctx context.Context, id int) (int, error)
+	ListChapters(ctx context.Context, courseId int) ([]*Chapter, error)
+	UpdateChapter(ctx context.Context, id int, chapter *Chapter) (*Chapter, error)
 }
 
 // CourseUsecase is a Category usecase.
@@ -147,4 +162,20 @@ func (uc *CourseUsecase) GetCourse(ctx context.Context, id int) (*Course, error)
 
 func (uc *CourseUsecase) DeleteCourse(ctx context.Context, id int) (int, error) {
 	return uc.courseRepo.DeleteCourse(ctx, id)
+}
+
+func (uc *CourseUsecase) CreateChapter(ctx context.Context, chapter *Chapter) (*Chapter, error) {
+	return uc.courseRepo.CreateChapter(ctx, chapter)
+}
+
+func (uc *CourseUsecase) DeleteChapter(ctx context.Context, id int) (int, error) {
+	return uc.courseRepo.DeleteChapter(ctx, id)
+}
+
+func (uc *CourseUsecase) ListChapters(ctx context.Context, courseId int) ([]*Chapter, error) {
+	return uc.courseRepo.ListChapters(ctx, courseId)
+}
+
+func (uc *CourseUsecase) UpdateChapter(ctx context.Context, id int, chapter *Chapter) (*Chapter, error) {
+	return uc.courseRepo.UpdateChapter(ctx, id, chapter)
 }

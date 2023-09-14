@@ -156,6 +156,48 @@ service Kubecit {
       tags: "course"
     };
   }
+  rpc CreateChapter (CreateChapterRequest) returns (CreateChapterReply) {
+    option (google.api.http) = {
+      post: "/api/course/chapter",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建章节"
+      tags: "course"
+    };
+  }
+  rpc DeleteChapter (DeleteChapterRequest) returns (DeleteChapterReply) {
+    option (google.api.http) = {
+      delete: "/api/course/chapter/{id}",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "删除章节"
+      tags: "course"
+    };
+  }
+  rpc ListChapters (ListChaptersRequest) returns (ListChaptersReply) {
+    option (google.api.http) = {
+      get: "/api/course/chapter/{courseId}",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "查询章节"
+      tags: "course"
+    };
+  }
+  rpc UpdateChapter (UpdateChapterRequest) returns (UpdateChapterReply) {
+    option (google.api.http) = {
+      put: "/api/course/chapter/{id}",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "更新章节"
+      tags: "course"
+    };
+  }
 
 
   // ========================== 用户相关接口 ===================================
@@ -432,6 +474,50 @@ message DeleteCourseRequest {
 
 message DeleteCourseReply {
   int32 count = 1;
+}
+
+message ChapterInfo {
+  int32 id = 7;
+  string name = 1;
+  google.protobuf.Timestamp releasedTime = 2;
+  string description = 3;
+  int32 sort = 4;
+  int32 hasFreePreview = 5;
+  int32 courseId = 6;
+}
+
+message CreateChapterRequest {
+  string name = 1;
+  string description = 3;
+  optional int32 sort = 4;
+  optional int32 hasFreePreview = 5;
+  optional int32 courseId = 6;
+}
+message CreateChapterReply {
+  ChapterInfo data = 1;
+}
+message DeleteChapterRequest {
+  int32 id = 1;
+}
+message DeleteChapterReply {
+  int32 count = 1;
+}
+message UpdateChapterRequest {
+  int32 id = 7;
+  string name = 1;
+  string description = 3;
+  optional int32 sort = 4;
+  optional int32 hasFreePreview = 5;
+  optional int32 courseId = 6;
+}
+message UpdateChapterReply {
+  ChapterInfo data = 1;
+}
+message ListChaptersRequest {
+  int32 courseId = 1;
+}
+message ListChaptersReply {
+  repeated ChapterInfo data = 1;
 }
 
 message SliderInfo {
