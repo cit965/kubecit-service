@@ -26,7 +26,7 @@ func (Orders) Fields() []ent.Field {
 
 		field.Int32("pay_type").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Default(0).Comment("支付类型 1(支付宝)， 2(微信)"),
+		}).Default(0).Comment("支付类型 0(没支付) 1(支付宝)， 2(微信)， 3(转账)"),
 
 		field.Int32("pay_status").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.

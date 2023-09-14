@@ -560,9 +560,10 @@ message OrderDetail{
 
 // 支付类型
 enum PayType {
-  TRANSFER = 0 ; // 转账
+  NO_PAY = 0 ; // 还未支付
   ALIPAY = 1; // 支付宝
   WECHAT = 2; // 微信支付
+  TRANSFER = 3;  // 转账
 }
 
 //支付状态
