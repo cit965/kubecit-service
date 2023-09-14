@@ -25,6 +25,38 @@ func (s *KubecitService) ListCategory(ctx context.Context, req *pb.ListCategoryR
 	return &pb.ListCategoryResp{Categories: cs}, nil
 }
 
+// ListCategoryV2 分类列表
+func (s *KubecitService) ListCategoryV2(ctx context.Context, req *pb.Empty) (*pb.ListCategoryResp, error) {
+
+	var level int32 = 1
+	categories, err := s.cc.ListCategoryV2(ctx, &level, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var cs []*pb.CategoryInfo
+	for _, v := range categories {
+
+		var tmpchildren []*pb.CategoryInfo
+		for _, vv := range v.Children {
+			tmpchildren = append(tmpchildren, &pb.CategoryInfo{
+				CategoryName: vv.CategoryName,
+				Id:           vv.Id,
+				ParentId:     vv.ParentId,
+				Level:        int32(vv.Level),
+			})
+		}
+		cs = append(cs, &pb.CategoryInfo{
+			CategoryName: v.CategoryName,
+			Id:           v.Id,
+			ParentId:     v.ParentId,
+			Level:        int32(v.Level),
+			Children:     tmpchildren,
+		})
+	}
+	return &pb.ListCategoryResp{Categories: cs}, nil
+}
+
 // CreateCategory 创建分类
 func (s *KubecitService) CreateCategory(ctx context.Context, req *pb.CategoryInfo) (*pb.Empty, error) {
 	err := s.cc.CreateCategory(ctx, &biz.Category{

@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Kubecit_ListCategory_FullMethodName          = "/helloworld.v1.Kubecit/ListCategory"
+	Kubecit_ListCategoryV2_FullMethodName        = "/helloworld.v1.Kubecit/ListCategoryV2"
 	Kubecit_CreateCategory_FullMethodName        = "/helloworld.v1.Kubecit/CreateCategory"
 	Kubecit_DeleteCategory_FullMethodName        = "/helloworld.v1.Kubecit/DeleteCategory"
 	Kubecit_UpdateCategory_FullMethodName        = "/helloworld.v1.Kubecit/UpdateCategory"
@@ -47,6 +48,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type KubecitClient interface {
 	ListCategory(ctx context.Context, in *ListCategoryReq, opts ...grpc.CallOption) (*ListCategoryResp, error)
+	ListCategoryV2(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListCategoryResp, error)
 	CreateCategory(ctx context.Context, in *CategoryInfo, opts ...grpc.CallOption) (*Empty, error)
 	DeleteCategory(ctx context.Context, in *DeleteCategoryReq, opts ...grpc.CallOption) (*Empty, error)
 	UpdateCategory(ctx context.Context, in *UpdateCategoryReq, opts ...grpc.CallOption) (*Empty, error)
@@ -83,6 +85,15 @@ func NewKubecitClient(cc grpc.ClientConnInterface) KubecitClient {
 func (c *kubecitClient) ListCategory(ctx context.Context, in *ListCategoryReq, opts ...grpc.CallOption) (*ListCategoryResp, error) {
 	out := new(ListCategoryResp)
 	err := c.cc.Invoke(ctx, Kubecit_ListCategory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubecitClient) ListCategoryV2(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListCategoryResp, error) {
+	out := new(ListCategoryResp)
+	err := c.cc.Invoke(ctx, Kubecit_ListCategoryV2_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -274,6 +285,7 @@ func (c *kubecitClient) SystemSettings(ctx context.Context, in *Empty, opts ...g
 // for forward compatibility
 type KubecitServer interface {
 	ListCategory(context.Context, *ListCategoryReq) (*ListCategoryResp, error)
+	ListCategoryV2(context.Context, *Empty) (*ListCategoryResp, error)
 	CreateCategory(context.Context, *CategoryInfo) (*Empty, error)
 	DeleteCategory(context.Context, *DeleteCategoryReq) (*Empty, error)
 	UpdateCategory(context.Context, *UpdateCategoryReq) (*Empty, error)
@@ -306,6 +318,9 @@ type UnimplementedKubecitServer struct {
 
 func (UnimplementedKubecitServer) ListCategory(context.Context, *ListCategoryReq) (*ListCategoryResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCategory not implemented")
+}
+func (UnimplementedKubecitServer) ListCategoryV2(context.Context, *Empty) (*ListCategoryResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListCategoryV2 not implemented")
 }
 func (UnimplementedKubecitServer) CreateCategory(context.Context, *CategoryInfo) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCategory not implemented")
@@ -394,6 +409,24 @@ func _Kubecit_ListCategory_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(KubecitServer).ListCategory(ctx, req.(*ListCategoryReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Kubecit_ListCategoryV2_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).ListCategoryV2(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_ListCategoryV2_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).ListCategoryV2(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -768,6 +801,10 @@ var Kubecit_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListCategory",
 			Handler:    _Kubecit_ListCategory_Handler,
+		},
+		{
+			MethodName: "ListCategoryV2",
+			Handler:    _Kubecit_ListCategoryV2_Handler,
 		},
 		{
 			MethodName: "CreateCategory",

@@ -26,6 +26,16 @@ service Kubecit {
     };
   }
 
+  rpc ListCategoryV2 (Empty) returns (ListCategoryResp) {
+    option (google.api.http) = {
+      get: "/api/categories/v2"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "分类列表v2"
+      tags: "catetory"
+    };
+  }
+
   rpc CreateCategory (CategoryInfo) returns (Empty) {
     option (google.api.http) = {
       post: "/api/categories"
@@ -283,6 +293,7 @@ message CategoryInfo {
   int32 parentId = 3;
   int32 level = 4;
   int32 id = 5;
+  repeated CategoryInfo children = 6;
 }
 
 // The response message containing the greetings

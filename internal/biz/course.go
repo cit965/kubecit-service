@@ -13,6 +13,7 @@ type Category struct {
 	Id           int32
 	ParentId     int32
 	Level        int
+	Children     []*Category
 }
 
 type Course struct {
@@ -68,6 +69,22 @@ func NewCourseUsecase(repo CategoryRepo, courseRepo CourseRepo, logger log.Logge
 
 func (uc *CourseUsecase) ListCategory(ctx context.Context, level, categoryId *int32) ([]*Category, error) {
 	return uc.repo.ListByLevelAndCategory(ctx, level, categoryId)
+}
+
+func (uc *CourseUsecase) ListCategoryV2(ctx context.Context, level, categoryId *int32) ([]*Category, error) {
+	categorires, err := uc.repo.ListByLevelAndCategory(ctx, level, categoryId)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, v := range categorires {
+		sub, err := uc.repo.ListSubCategories(ctx, v.Id)
+		if err != nil {
+			continue
+		}
+		v.Children = sub
+	}
+	return categorires, nil
 }
 
 func (uc *CourseUsecase) CreateCategory(ctx context.Context, category *Category) error {

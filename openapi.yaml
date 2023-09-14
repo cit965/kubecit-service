@@ -81,6 +81,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.Empty'
+    /api/categories/v2:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_ListCategoryV2
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.ListCategoryResp'
     /api/course:
         post:
             tags:
@@ -408,6 +420,10 @@ components:
                 id:
                     type: integer
                     format: int32
+                children:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
         helloworld.v1.CourseInfo:
             type: object
             properties:
