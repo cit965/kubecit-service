@@ -67,6 +67,7 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 			Price:      v.Price,
 			Tags:       v.Tags,
 			CreatedAt:  v.CreatedAt,
+			UpdatedAt:  v.UpdatedAt,
 			Status:     v.Status,
 			CategoryId: v.CategoryID,
 		})
