@@ -10,22 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ouzi-dev/commit-status-updater@v2
-      
-      - name: install protoc
-        run: |
-          sudo apt-get update
-          sudo apt-get install libprotobuf-dev protobuf-compiler 
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v2
       
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: '1.21'
           
-      - name: make init
-        run: make init
-
-      - name: make all
-        run: make all
+      - name: Make
+        run: make init && make all
 
       - name: Build
         run: go build -v ./...
