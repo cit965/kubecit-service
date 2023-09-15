@@ -133,10 +133,10 @@ var (
 	OrderInfosColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "order_id", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "course_id", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "course_name", Type: field.TypeString, SchemaType: map[string]string{"mysql": "VARCHAR(64)"}},
-		{Name: "course_price", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "course_describe", Type: field.TypeString, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "product_id", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "product_name", Type: field.TypeString, SchemaType: map[string]string{"mysql": "VARCHAR(64)"}},
+		{Name: "product_price", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "product_describe", Type: field.TypeString, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
 		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
 	}

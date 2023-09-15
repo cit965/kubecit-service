@@ -21,29 +21,29 @@ func (OrderInfos) Fields() []ent.Field {
 			dialect.MySQL: "int", // Override MySQL.
 		}).Comment("	订单id"),
 
-		field.Int32("course_id").SchemaType(map[string]string{
+		field.Int32("product_id").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Comment("课程id"),
+		}).Comment("商品id"),
 
-		field.String("course_name").SchemaType(map[string]string{
+		field.String("product_name").SchemaType(map[string]string{
 			dialect.MySQL: "VARCHAR(64)", // Override MySQL.
-		}).Comment("课程名称"),
+		}).Comment("商品名称"),
 
-		field.Int32("course_price").SchemaType(map[string]string{
+		field.Int32("product_price").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Comment("课程价格(单位分)"),
+		}).Comment("商品价格(单位分)"),
 
-		field.Text("course_describe").SchemaType(map[string]string{
+		field.Text("product_describe").SchemaType(map[string]string{
 			dialect.MySQL: "text", // Override MySQL.
-		}).Comment("课程描述"),
+		}).Comment("商品描述"),
 
 		field.Time("create_time").SchemaType(map[string]string{
 			dialect.MySQL: "datetime", // Override MySQL.
-		}).Default(time.Now()).Comment("创建时间"),
+		}).Default(time.Now).Comment("创建时间"),
 
 		field.Time("update_time").SchemaType(map[string]string{
 			dialect.MySQL: "datetime", // Override MySQL.
-		}).Default(time.Now()).UpdateDefault(time.Now).Comment("更新时间"),
+		}).Default(time.Now).UpdateDefault(time.Now).Comment("更新时间"),
 	}
 }
 

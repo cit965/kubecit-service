@@ -652,10 +652,10 @@ message CreateOrderRequest {
 
 message OrderDetail{
   int32 orderId = 1;
-  int32 courseId = 2;
-  string courseName = 3;
-  int32 coursePrice = 4;
-  string courseDescription = 5;
+  int32 productId = 2;
+  string productName = 3;
+  int32 productPrice = 4;
+  string productDescription = 5;
 }
 
 // 支付类型
@@ -664,6 +664,7 @@ enum PayType {
   ALIPAY = 1; // 支付宝
   WECHAT = 2; // 微信支付
   TRANSFER = 3;  // 转账
+  INTERNAL = 4;  //内部币
 }
 
 //支付状态

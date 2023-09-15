@@ -46,11 +46,11 @@ func (Orders) Fields() []ent.Field {
 
 		field.Time("create_time").SchemaType(map[string]string{
 			dialect.MySQL: "datetime", // Override MySQL.
-		}).Default(time.Now()).Comment("创建时间"),
+		}).Default(time.Now).Comment("创建时间"),
 
 		field.Time("update_time").SchemaType(map[string]string{
 			dialect.MySQL: "datetime", // Override MySQL.
-		}).Default(time.Now()).UpdateDefault(time.Now).Comment("更新时间"),
+		}).Default(time.Now).UpdateDefault(time.Now).Comment("更新时间"),
 	}
 
 }

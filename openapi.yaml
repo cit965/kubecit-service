@@ -799,15 +799,15 @@ components:
                 orderId:
                     type: integer
                     format: int32
-                courseId:
+                productId:
                     type: integer
                     format: int32
-                courseName:
+                productName:
                     type: string
-                coursePrice:
+                productPrice:
                     type: integer
                     format: int32
-                courseDescription:
+                productDescription:
                     type: string
         helloworld.v1.RegisterUsernameReply:
             type: object

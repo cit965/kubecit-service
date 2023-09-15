@@ -21,14 +21,14 @@ type Order struct {
 }
 
 type OrderInfo struct {
-	Id             int
-	OrderId        int32
-	CourseId       int32
-	CourseName     string
-	CoursePrice    int32
-	CourseDescribe string
-	CreateTime     time.Time
-	UpdateTime     time.Time
+	Id              int
+	OrderId         int32
+	ProductId       int32
+	ProductName     string
+	ProductPrice    int32
+	ProductDescribe string
+	CreateTime      time.Time
+	UpdateTime      time.Time
 }
 
 type OrderRepo interface {

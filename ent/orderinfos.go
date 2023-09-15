@@ -19,14 +19,14 @@ type OrderInfos struct {
 	ID int `json:"id,omitempty"`
 	// 	订单id
 	OrderID int32 `json:"order_id,omitempty"`
-	// 课程id
-	CourseID int32 `json:"course_id,omitempty"`
-	// 课程名称
-	CourseName string `json:"course_name,omitempty"`
-	// 课程价格(单位分)
-	CoursePrice int32 `json:"course_price,omitempty"`
-	// 课程描述
-	CourseDescribe string `json:"course_describe,omitempty"`
+	// 商品id
+	ProductID int32 `json:"product_id,omitempty"`
+	// 商品名称
+	ProductName string `json:"product_name,omitempty"`
+	// 商品价格(单位分)
+	ProductPrice int32 `json:"product_price,omitempty"`
+	// 商品描述
+	ProductDescribe string `json:"product_describe,omitempty"`
 	// 创建时间
 	CreateTime time.Time `json:"create_time,omitempty"`
 	// 更新时间
@@ -39,9 +39,9 @@ func (*OrderInfos) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case orderinfos.FieldID, orderinfos.FieldOrderID, orderinfos.FieldCourseID, orderinfos.FieldCoursePrice:
+		case orderinfos.FieldID, orderinfos.FieldOrderID, orderinfos.FieldProductID, orderinfos.FieldProductPrice:
 			values[i] = new(sql.NullInt64)
-		case orderinfos.FieldCourseName, orderinfos.FieldCourseDescribe:
+		case orderinfos.FieldProductName, orderinfos.FieldProductDescribe:
 			values[i] = new(sql.NullString)
 		case orderinfos.FieldCreateTime, orderinfos.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
@@ -72,29 +72,29 @@ func (oi *OrderInfos) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				oi.OrderID = int32(value.Int64)
 			}
-		case orderinfos.FieldCourseID:
+		case orderinfos.FieldProductID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field course_id", values[i])
+				return fmt.Errorf("unexpected type %T for field product_id", values[i])
 			} else if value.Valid {
-				oi.CourseID = int32(value.Int64)
+				oi.ProductID = int32(value.Int64)
 			}
-		case orderinfos.FieldCourseName:
+		case orderinfos.FieldProductName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field course_name", values[i])
+				return fmt.Errorf("unexpected type %T for field product_name", values[i])
 			} else if value.Valid {
-				oi.CourseName = value.String
+				oi.ProductName = value.String
 			}
-		case orderinfos.FieldCoursePrice:
+		case orderinfos.FieldProductPrice:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field course_price", values[i])
+				return fmt.Errorf("unexpected type %T for field product_price", values[i])
 			} else if value.Valid {
-				oi.CoursePrice = int32(value.Int64)
+				oi.ProductPrice = int32(value.Int64)
 			}
-		case orderinfos.FieldCourseDescribe:
+		case orderinfos.FieldProductDescribe:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field course_describe", values[i])
+				return fmt.Errorf("unexpected type %T for field product_describe", values[i])
 			} else if value.Valid {
-				oi.CourseDescribe = value.String
+				oi.ProductDescribe = value.String
 			}
 		case orderinfos.FieldCreateTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -147,17 +147,17 @@ func (oi *OrderInfos) String() string {
 	builder.WriteString("order_id=")
 	builder.WriteString(fmt.Sprintf("%v", oi.OrderID))
 	builder.WriteString(", ")
-	builder.WriteString("course_id=")
-	builder.WriteString(fmt.Sprintf("%v", oi.CourseID))
+	builder.WriteString("product_id=")
+	builder.WriteString(fmt.Sprintf("%v", oi.ProductID))
 	builder.WriteString(", ")
-	builder.WriteString("course_name=")
-	builder.WriteString(oi.CourseName)
+	builder.WriteString("product_name=")
+	builder.WriteString(oi.ProductName)
 	builder.WriteString(", ")
-	builder.WriteString("course_price=")
-	builder.WriteString(fmt.Sprintf("%v", oi.CoursePrice))
+	builder.WriteString("product_price=")
+	builder.WriteString(fmt.Sprintf("%v", oi.ProductPrice))
 	builder.WriteString(", ")
-	builder.WriteString("course_describe=")
-	builder.WriteString(oi.CourseDescribe)
+	builder.WriteString("product_describe=")
+	builder.WriteString(oi.ProductDescribe)
 	builder.WriteString(", ")
 	builder.WriteString("create_time=")
 	builder.WriteString(oi.CreateTime.Format(time.ANSIC))

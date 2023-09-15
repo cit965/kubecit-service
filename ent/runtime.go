@@ -80,11 +80,11 @@ func init() {
 	// orderinfosDescCreateTime is the schema descriptor for create_time field.
 	orderinfosDescCreateTime := orderinfosFields[5].Descriptor()
 	// orderinfos.DefaultCreateTime holds the default value on creation for the create_time field.
-	orderinfos.DefaultCreateTime = orderinfosDescCreateTime.Default.(time.Time)
+	orderinfos.DefaultCreateTime = orderinfosDescCreateTime.Default.(func() time.Time)
 	// orderinfosDescUpdateTime is the schema descriptor for update_time field.
 	orderinfosDescUpdateTime := orderinfosFields[6].Descriptor()
 	// orderinfos.DefaultUpdateTime holds the default value on creation for the update_time field.
-	orderinfos.DefaultUpdateTime = orderinfosDescUpdateTime.Default.(time.Time)
+	orderinfos.DefaultUpdateTime = orderinfosDescUpdateTime.Default.(func() time.Time)
 	// orderinfos.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	orderinfos.UpdateDefaultUpdateTime = orderinfosDescUpdateTime.UpdateDefault.(func() time.Time)
 	ordersFields := schema.Orders{}.Fields()
@@ -100,11 +100,11 @@ func init() {
 	// ordersDescCreateTime is the schema descriptor for create_time field.
 	ordersDescCreateTime := ordersFields[7].Descriptor()
 	// orders.DefaultCreateTime holds the default value on creation for the create_time field.
-	orders.DefaultCreateTime = ordersDescCreateTime.Default.(time.Time)
+	orders.DefaultCreateTime = ordersDescCreateTime.Default.(func() time.Time)
 	// ordersDescUpdateTime is the schema descriptor for update_time field.
 	ordersDescUpdateTime := ordersFields[8].Descriptor()
 	// orders.DefaultUpdateTime holds the default value on creation for the update_time field.
-	orders.DefaultUpdateTime = ordersDescUpdateTime.Default.(time.Time)
+	orders.DefaultUpdateTime = ordersDescUpdateTime.Default.(func() time.Time)
 	// orders.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	orders.UpdateDefaultUpdateTime = ordersDescUpdateTime.UpdateDefault.(func() time.Time)
 	sliderFields := schema.Slider{}.Fields()

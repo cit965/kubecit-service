@@ -4132,23 +4132,23 @@ func (m *LessonMutation) ResetEdge(name string) error {
 // OrderInfosMutation represents an operation that mutates the OrderInfos nodes in the graph.
 type OrderInfosMutation struct {
 	config
-	op              Op
-	typ             string
-	id              *int
-	order_id        *int32
-	addorder_id     *int32
-	course_id       *int32
-	addcourse_id    *int32
-	course_name     *string
-	course_price    *int32
-	addcourse_price *int32
-	course_describe *string
-	create_time     *time.Time
-	update_time     *time.Time
-	clearedFields   map[string]struct{}
-	done            bool
-	oldValue        func(context.Context) (*OrderInfos, error)
-	predicates      []predicate.OrderInfos
+	op               Op
+	typ              string
+	id               *int
+	order_id         *int32
+	addorder_id      *int32
+	product_id       *int32
+	addproduct_id    *int32
+	product_name     *string
+	product_price    *int32
+	addproduct_price *int32
+	product_describe *string
+	create_time      *time.Time
+	update_time      *time.Time
+	clearedFields    map[string]struct{}
+	done             bool
+	oldValue         func(context.Context) (*OrderInfos, error)
+	predicates       []predicate.OrderInfos
 }
 
 var _ ent.Mutation = (*OrderInfosMutation)(nil)
@@ -4305,188 +4305,188 @@ func (m *OrderInfosMutation) ResetOrderID() {
 	m.addorder_id = nil
 }
 
-// SetCourseID sets the "course_id" field.
-func (m *OrderInfosMutation) SetCourseID(i int32) {
-	m.course_id = &i
-	m.addcourse_id = nil
+// SetProductID sets the "product_id" field.
+func (m *OrderInfosMutation) SetProductID(i int32) {
+	m.product_id = &i
+	m.addproduct_id = nil
 }
 
-// CourseID returns the value of the "course_id" field in the mutation.
-func (m *OrderInfosMutation) CourseID() (r int32, exists bool) {
-	v := m.course_id
+// ProductID returns the value of the "product_id" field in the mutation.
+func (m *OrderInfosMutation) ProductID() (r int32, exists bool) {
+	v := m.product_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCourseID returns the old "course_id" field's value of the OrderInfos entity.
+// OldProductID returns the old "product_id" field's value of the OrderInfos entity.
 // If the OrderInfos object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderInfosMutation) OldCourseID(ctx context.Context) (v int32, err error) {
+func (m *OrderInfosMutation) OldProductID(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCourseID is only allowed on UpdateOne operations")
+		return v, errors.New("OldProductID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCourseID requires an ID field in the mutation")
+		return v, errors.New("OldProductID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCourseID: %w", err)
+		return v, fmt.Errorf("querying old value for OldProductID: %w", err)
 	}
-	return oldValue.CourseID, nil
+	return oldValue.ProductID, nil
 }
 
-// AddCourseID adds i to the "course_id" field.
-func (m *OrderInfosMutation) AddCourseID(i int32) {
-	if m.addcourse_id != nil {
-		*m.addcourse_id += i
+// AddProductID adds i to the "product_id" field.
+func (m *OrderInfosMutation) AddProductID(i int32) {
+	if m.addproduct_id != nil {
+		*m.addproduct_id += i
 	} else {
-		m.addcourse_id = &i
+		m.addproduct_id = &i
 	}
 }
 
-// AddedCourseID returns the value that was added to the "course_id" field in this mutation.
-func (m *OrderInfosMutation) AddedCourseID() (r int32, exists bool) {
-	v := m.addcourse_id
+// AddedProductID returns the value that was added to the "product_id" field in this mutation.
+func (m *OrderInfosMutation) AddedProductID() (r int32, exists bool) {
+	v := m.addproduct_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetCourseID resets all changes to the "course_id" field.
-func (m *OrderInfosMutation) ResetCourseID() {
-	m.course_id = nil
-	m.addcourse_id = nil
+// ResetProductID resets all changes to the "product_id" field.
+func (m *OrderInfosMutation) ResetProductID() {
+	m.product_id = nil
+	m.addproduct_id = nil
 }
 
-// SetCourseName sets the "course_name" field.
-func (m *OrderInfosMutation) SetCourseName(s string) {
-	m.course_name = &s
+// SetProductName sets the "product_name" field.
+func (m *OrderInfosMutation) SetProductName(s string) {
+	m.product_name = &s
 }
 
-// CourseName returns the value of the "course_name" field in the mutation.
-func (m *OrderInfosMutation) CourseName() (r string, exists bool) {
-	v := m.course_name
+// ProductName returns the value of the "product_name" field in the mutation.
+func (m *OrderInfosMutation) ProductName() (r string, exists bool) {
+	v := m.product_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCourseName returns the old "course_name" field's value of the OrderInfos entity.
+// OldProductName returns the old "product_name" field's value of the OrderInfos entity.
 // If the OrderInfos object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderInfosMutation) OldCourseName(ctx context.Context) (v string, err error) {
+func (m *OrderInfosMutation) OldProductName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCourseName is only allowed on UpdateOne operations")
+		return v, errors.New("OldProductName is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCourseName requires an ID field in the mutation")
+		return v, errors.New("OldProductName requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCourseName: %w", err)
+		return v, fmt.Errorf("querying old value for OldProductName: %w", err)
 	}
-	return oldValue.CourseName, nil
+	return oldValue.ProductName, nil
 }
 
-// ResetCourseName resets all changes to the "course_name" field.
-func (m *OrderInfosMutation) ResetCourseName() {
-	m.course_name = nil
+// ResetProductName resets all changes to the "product_name" field.
+func (m *OrderInfosMutation) ResetProductName() {
+	m.product_name = nil
 }
 
-// SetCoursePrice sets the "course_price" field.
-func (m *OrderInfosMutation) SetCoursePrice(i int32) {
-	m.course_price = &i
-	m.addcourse_price = nil
+// SetProductPrice sets the "product_price" field.
+func (m *OrderInfosMutation) SetProductPrice(i int32) {
+	m.product_price = &i
+	m.addproduct_price = nil
 }
 
-// CoursePrice returns the value of the "course_price" field in the mutation.
-func (m *OrderInfosMutation) CoursePrice() (r int32, exists bool) {
-	v := m.course_price
+// ProductPrice returns the value of the "product_price" field in the mutation.
+func (m *OrderInfosMutation) ProductPrice() (r int32, exists bool) {
+	v := m.product_price
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCoursePrice returns the old "course_price" field's value of the OrderInfos entity.
+// OldProductPrice returns the old "product_price" field's value of the OrderInfos entity.
 // If the OrderInfos object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderInfosMutation) OldCoursePrice(ctx context.Context) (v int32, err error) {
+func (m *OrderInfosMutation) OldProductPrice(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCoursePrice is only allowed on UpdateOne operations")
+		return v, errors.New("OldProductPrice is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCoursePrice requires an ID field in the mutation")
+		return v, errors.New("OldProductPrice requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCoursePrice: %w", err)
+		return v, fmt.Errorf("querying old value for OldProductPrice: %w", err)
 	}
-	return oldValue.CoursePrice, nil
+	return oldValue.ProductPrice, nil
 }
 
-// AddCoursePrice adds i to the "course_price" field.
-func (m *OrderInfosMutation) AddCoursePrice(i int32) {
-	if m.addcourse_price != nil {
-		*m.addcourse_price += i
+// AddProductPrice adds i to the "product_price" field.
+func (m *OrderInfosMutation) AddProductPrice(i int32) {
+	if m.addproduct_price != nil {
+		*m.addproduct_price += i
 	} else {
-		m.addcourse_price = &i
+		m.addproduct_price = &i
 	}
 }
 
-// AddedCoursePrice returns the value that was added to the "course_price" field in this mutation.
-func (m *OrderInfosMutation) AddedCoursePrice() (r int32, exists bool) {
-	v := m.addcourse_price
+// AddedProductPrice returns the value that was added to the "product_price" field in this mutation.
+func (m *OrderInfosMutation) AddedProductPrice() (r int32, exists bool) {
+	v := m.addproduct_price
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetCoursePrice resets all changes to the "course_price" field.
-func (m *OrderInfosMutation) ResetCoursePrice() {
-	m.course_price = nil
-	m.addcourse_price = nil
+// ResetProductPrice resets all changes to the "product_price" field.
+func (m *OrderInfosMutation) ResetProductPrice() {
+	m.product_price = nil
+	m.addproduct_price = nil
 }
 
-// SetCourseDescribe sets the "course_describe" field.
-func (m *OrderInfosMutation) SetCourseDescribe(s string) {
-	m.course_describe = &s
+// SetProductDescribe sets the "product_describe" field.
+func (m *OrderInfosMutation) SetProductDescribe(s string) {
+	m.product_describe = &s
 }
 
-// CourseDescribe returns the value of the "course_describe" field in the mutation.
-func (m *OrderInfosMutation) CourseDescribe() (r string, exists bool) {
-	v := m.course_describe
+// ProductDescribe returns the value of the "product_describe" field in the mutation.
+func (m *OrderInfosMutation) ProductDescribe() (r string, exists bool) {
+	v := m.product_describe
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCourseDescribe returns the old "course_describe" field's value of the OrderInfos entity.
+// OldProductDescribe returns the old "product_describe" field's value of the OrderInfos entity.
 // If the OrderInfos object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderInfosMutation) OldCourseDescribe(ctx context.Context) (v string, err error) {
+func (m *OrderInfosMutation) OldProductDescribe(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCourseDescribe is only allowed on UpdateOne operations")
+		return v, errors.New("OldProductDescribe is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCourseDescribe requires an ID field in the mutation")
+		return v, errors.New("OldProductDescribe requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCourseDescribe: %w", err)
+		return v, fmt.Errorf("querying old value for OldProductDescribe: %w", err)
 	}
-	return oldValue.CourseDescribe, nil
+	return oldValue.ProductDescribe, nil
 }
 
-// ResetCourseDescribe resets all changes to the "course_describe" field.
-func (m *OrderInfosMutation) ResetCourseDescribe() {
-	m.course_describe = nil
+// ResetProductDescribe resets all changes to the "product_describe" field.
+func (m *OrderInfosMutation) ResetProductDescribe() {
+	m.product_describe = nil
 }
 
 // SetCreateTime sets the "create_time" field.
@@ -4599,17 +4599,17 @@ func (m *OrderInfosMutation) Fields() []string {
 	if m.order_id != nil {
 		fields = append(fields, orderinfos.FieldOrderID)
 	}
-	if m.course_id != nil {
-		fields = append(fields, orderinfos.FieldCourseID)
+	if m.product_id != nil {
+		fields = append(fields, orderinfos.FieldProductID)
 	}
-	if m.course_name != nil {
-		fields = append(fields, orderinfos.FieldCourseName)
+	if m.product_name != nil {
+		fields = append(fields, orderinfos.FieldProductName)
 	}
-	if m.course_price != nil {
-		fields = append(fields, orderinfos.FieldCoursePrice)
+	if m.product_price != nil {
+		fields = append(fields, orderinfos.FieldProductPrice)
 	}
-	if m.course_describe != nil {
-		fields = append(fields, orderinfos.FieldCourseDescribe)
+	if m.product_describe != nil {
+		fields = append(fields, orderinfos.FieldProductDescribe)
 	}
 	if m.create_time != nil {
 		fields = append(fields, orderinfos.FieldCreateTime)
@@ -4627,14 +4627,14 @@ func (m *OrderInfosMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case orderinfos.FieldOrderID:
 		return m.OrderID()
-	case orderinfos.FieldCourseID:
-		return m.CourseID()
-	case orderinfos.FieldCourseName:
-		return m.CourseName()
-	case orderinfos.FieldCoursePrice:
-		return m.CoursePrice()
-	case orderinfos.FieldCourseDescribe:
-		return m.CourseDescribe()
+	case orderinfos.FieldProductID:
+		return m.ProductID()
+	case orderinfos.FieldProductName:
+		return m.ProductName()
+	case orderinfos.FieldProductPrice:
+		return m.ProductPrice()
+	case orderinfos.FieldProductDescribe:
+		return m.ProductDescribe()
 	case orderinfos.FieldCreateTime:
 		return m.CreateTime()
 	case orderinfos.FieldUpdateTime:
@@ -4650,14 +4650,14 @@ func (m *OrderInfosMutation) OldField(ctx context.Context, name string) (ent.Val
 	switch name {
 	case orderinfos.FieldOrderID:
 		return m.OldOrderID(ctx)
-	case orderinfos.FieldCourseID:
-		return m.OldCourseID(ctx)
-	case orderinfos.FieldCourseName:
-		return m.OldCourseName(ctx)
-	case orderinfos.FieldCoursePrice:
-		return m.OldCoursePrice(ctx)
-	case orderinfos.FieldCourseDescribe:
-		return m.OldCourseDescribe(ctx)
+	case orderinfos.FieldProductID:
+		return m.OldProductID(ctx)
+	case orderinfos.FieldProductName:
+		return m.OldProductName(ctx)
+	case orderinfos.FieldProductPrice:
+		return m.OldProductPrice(ctx)
+	case orderinfos.FieldProductDescribe:
+		return m.OldProductDescribe(ctx)
 	case orderinfos.FieldCreateTime:
 		return m.OldCreateTime(ctx)
 	case orderinfos.FieldUpdateTime:
@@ -4678,33 +4678,33 @@ func (m *OrderInfosMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetOrderID(v)
 		return nil
-	case orderinfos.FieldCourseID:
+	case orderinfos.FieldProductID:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCourseID(v)
+		m.SetProductID(v)
 		return nil
-	case orderinfos.FieldCourseName:
+	case orderinfos.FieldProductName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCourseName(v)
+		m.SetProductName(v)
 		return nil
-	case orderinfos.FieldCoursePrice:
+	case orderinfos.FieldProductPrice:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCoursePrice(v)
+		m.SetProductPrice(v)
 		return nil
-	case orderinfos.FieldCourseDescribe:
+	case orderinfos.FieldProductDescribe:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCourseDescribe(v)
+		m.SetProductDescribe(v)
 		return nil
 	case orderinfos.FieldCreateTime:
 		v, ok := value.(time.Time)
@@ -4731,11 +4731,11 @@ func (m *OrderInfosMutation) AddedFields() []string {
 	if m.addorder_id != nil {
 		fields = append(fields, orderinfos.FieldOrderID)
 	}
-	if m.addcourse_id != nil {
-		fields = append(fields, orderinfos.FieldCourseID)
+	if m.addproduct_id != nil {
+		fields = append(fields, orderinfos.FieldProductID)
 	}
-	if m.addcourse_price != nil {
-		fields = append(fields, orderinfos.FieldCoursePrice)
+	if m.addproduct_price != nil {
+		fields = append(fields, orderinfos.FieldProductPrice)
 	}
 	return fields
 }
@@ -4747,10 +4747,10 @@ func (m *OrderInfosMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case orderinfos.FieldOrderID:
 		return m.AddedOrderID()
-	case orderinfos.FieldCourseID:
-		return m.AddedCourseID()
-	case orderinfos.FieldCoursePrice:
-		return m.AddedCoursePrice()
+	case orderinfos.FieldProductID:
+		return m.AddedProductID()
+	case orderinfos.FieldProductPrice:
+		return m.AddedProductPrice()
 	}
 	return nil, false
 }
@@ -4767,19 +4767,19 @@ func (m *OrderInfosMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddOrderID(v)
 		return nil
-	case orderinfos.FieldCourseID:
+	case orderinfos.FieldProductID:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddCourseID(v)
+		m.AddProductID(v)
 		return nil
-	case orderinfos.FieldCoursePrice:
+	case orderinfos.FieldProductPrice:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddCoursePrice(v)
+		m.AddProductPrice(v)
 		return nil
 	}
 	return fmt.Errorf("unknown OrderInfos numeric field %s", name)
@@ -4811,17 +4811,17 @@ func (m *OrderInfosMutation) ResetField(name string) error {
 	case orderinfos.FieldOrderID:
 		m.ResetOrderID()
 		return nil
-	case orderinfos.FieldCourseID:
-		m.ResetCourseID()
+	case orderinfos.FieldProductID:
+		m.ResetProductID()
 		return nil
-	case orderinfos.FieldCourseName:
-		m.ResetCourseName()
+	case orderinfos.FieldProductName:
+		m.ResetProductName()
 		return nil
-	case orderinfos.FieldCoursePrice:
-		m.ResetCoursePrice()
+	case orderinfos.FieldProductPrice:
+		m.ResetProductPrice()
 		return nil
-	case orderinfos.FieldCourseDescribe:
-		m.ResetCourseDescribe()
+	case orderinfos.FieldProductDescribe:
+		m.ResetProductDescribe()
 		return nil
 	case orderinfos.FieldCreateTime:
 		m.ResetCreateTime()

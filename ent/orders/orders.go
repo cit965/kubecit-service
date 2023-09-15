@@ -65,9 +65,9 @@ var (
 	// DefaultPayStatus holds the default value on creation for the "pay_status" field.
 	DefaultPayStatus int32
 	// DefaultCreateTime holds the default value on creation for the "create_time" field.
-	DefaultCreateTime time.Time
+	DefaultCreateTime func() time.Time
 	// DefaultUpdateTime holds the default value on creation for the "update_time" field.
-	DefaultUpdateTime time.Time
+	DefaultUpdateTime func() time.Time
 	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
 	UpdateDefaultUpdateTime func() time.Time
 )

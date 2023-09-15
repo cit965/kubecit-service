@@ -166,11 +166,11 @@ func (oc *OrdersCreate) defaults() {
 		oc.mutation.SetPayStatus(v)
 	}
 	if _, ok := oc.mutation.CreateTime(); !ok {
-		v := orders.DefaultCreateTime
+		v := orders.DefaultCreateTime()
 		oc.mutation.SetCreateTime(v)
 	}
 	if _, ok := oc.mutation.UpdateTime(); !ok {
-		v := orders.DefaultUpdateTime
+		v := orders.DefaultUpdateTime()
 		oc.mutation.SetUpdateTime(v)
 	}
 }

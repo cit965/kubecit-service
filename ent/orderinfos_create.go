@@ -26,27 +26,27 @@ func (oic *OrderInfosCreate) SetOrderID(i int32) *OrderInfosCreate {
 	return oic
 }
 
-// SetCourseID sets the "course_id" field.
-func (oic *OrderInfosCreate) SetCourseID(i int32) *OrderInfosCreate {
-	oic.mutation.SetCourseID(i)
+// SetProductID sets the "product_id" field.
+func (oic *OrderInfosCreate) SetProductID(i int32) *OrderInfosCreate {
+	oic.mutation.SetProductID(i)
 	return oic
 }
 
-// SetCourseName sets the "course_name" field.
-func (oic *OrderInfosCreate) SetCourseName(s string) *OrderInfosCreate {
-	oic.mutation.SetCourseName(s)
+// SetProductName sets the "product_name" field.
+func (oic *OrderInfosCreate) SetProductName(s string) *OrderInfosCreate {
+	oic.mutation.SetProductName(s)
 	return oic
 }
 
-// SetCoursePrice sets the "course_price" field.
-func (oic *OrderInfosCreate) SetCoursePrice(i int32) *OrderInfosCreate {
-	oic.mutation.SetCoursePrice(i)
+// SetProductPrice sets the "product_price" field.
+func (oic *OrderInfosCreate) SetProductPrice(i int32) *OrderInfosCreate {
+	oic.mutation.SetProductPrice(i)
 	return oic
 }
 
-// SetCourseDescribe sets the "course_describe" field.
-func (oic *OrderInfosCreate) SetCourseDescribe(s string) *OrderInfosCreate {
-	oic.mutation.SetCourseDescribe(s)
+// SetProductDescribe sets the "product_describe" field.
+func (oic *OrderInfosCreate) SetProductDescribe(s string) *OrderInfosCreate {
+	oic.mutation.SetProductDescribe(s)
 	return oic
 }
 
@@ -114,11 +114,11 @@ func (oic *OrderInfosCreate) ExecX(ctx context.Context) {
 // defaults sets the default values of the builder before save.
 func (oic *OrderInfosCreate) defaults() {
 	if _, ok := oic.mutation.CreateTime(); !ok {
-		v := orderinfos.DefaultCreateTime
+		v := orderinfos.DefaultCreateTime()
 		oic.mutation.SetCreateTime(v)
 	}
 	if _, ok := oic.mutation.UpdateTime(); !ok {
-		v := orderinfos.DefaultUpdateTime
+		v := orderinfos.DefaultUpdateTime()
 		oic.mutation.SetUpdateTime(v)
 	}
 }
@@ -128,17 +128,17 @@ func (oic *OrderInfosCreate) check() error {
 	if _, ok := oic.mutation.OrderID(); !ok {
 		return &ValidationError{Name: "order_id", err: errors.New(`ent: missing required field "OrderInfos.order_id"`)}
 	}
-	if _, ok := oic.mutation.CourseID(); !ok {
-		return &ValidationError{Name: "course_id", err: errors.New(`ent: missing required field "OrderInfos.course_id"`)}
+	if _, ok := oic.mutation.ProductID(); !ok {
+		return &ValidationError{Name: "product_id", err: errors.New(`ent: missing required field "OrderInfos.product_id"`)}
 	}
-	if _, ok := oic.mutation.CourseName(); !ok {
-		return &ValidationError{Name: "course_name", err: errors.New(`ent: missing required field "OrderInfos.course_name"`)}
+	if _, ok := oic.mutation.ProductName(); !ok {
+		return &ValidationError{Name: "product_name", err: errors.New(`ent: missing required field "OrderInfos.product_name"`)}
 	}
-	if _, ok := oic.mutation.CoursePrice(); !ok {
-		return &ValidationError{Name: "course_price", err: errors.New(`ent: missing required field "OrderInfos.course_price"`)}
+	if _, ok := oic.mutation.ProductPrice(); !ok {
+		return &ValidationError{Name: "product_price", err: errors.New(`ent: missing required field "OrderInfos.product_price"`)}
 	}
-	if _, ok := oic.mutation.CourseDescribe(); !ok {
-		return &ValidationError{Name: "course_describe", err: errors.New(`ent: missing required field "OrderInfos.course_describe"`)}
+	if _, ok := oic.mutation.ProductDescribe(); !ok {
+		return &ValidationError{Name: "product_describe", err: errors.New(`ent: missing required field "OrderInfos.product_describe"`)}
 	}
 	if _, ok := oic.mutation.CreateTime(); !ok {
 		return &ValidationError{Name: "create_time", err: errors.New(`ent: missing required field "OrderInfos.create_time"`)}
@@ -176,21 +176,21 @@ func (oic *OrderInfosCreate) createSpec() (*OrderInfos, *sqlgraph.CreateSpec) {
 		_spec.SetField(orderinfos.FieldOrderID, field.TypeInt32, value)
 		_node.OrderID = value
 	}
-	if value, ok := oic.mutation.CourseID(); ok {
-		_spec.SetField(orderinfos.FieldCourseID, field.TypeInt32, value)
-		_node.CourseID = value
+	if value, ok := oic.mutation.ProductID(); ok {
+		_spec.SetField(orderinfos.FieldProductID, field.TypeInt32, value)
+		_node.ProductID = value
 	}
-	if value, ok := oic.mutation.CourseName(); ok {
-		_spec.SetField(orderinfos.FieldCourseName, field.TypeString, value)
-		_node.CourseName = value
+	if value, ok := oic.mutation.ProductName(); ok {
+		_spec.SetField(orderinfos.FieldProductName, field.TypeString, value)
+		_node.ProductName = value
 	}
-	if value, ok := oic.mutation.CoursePrice(); ok {
-		_spec.SetField(orderinfos.FieldCoursePrice, field.TypeInt32, value)
-		_node.CoursePrice = value
+	if value, ok := oic.mutation.ProductPrice(); ok {
+		_spec.SetField(orderinfos.FieldProductPrice, field.TypeInt32, value)
+		_node.ProductPrice = value
 	}
-	if value, ok := oic.mutation.CourseDescribe(); ok {
-		_spec.SetField(orderinfos.FieldCourseDescribe, field.TypeString, value)
-		_node.CourseDescribe = value
+	if value, ok := oic.mutation.ProductDescribe(); ok {
+		_spec.SetField(orderinfos.FieldProductDescribe, field.TypeString, value)
+		_node.ProductDescribe = value
 	}
 	if value, ok := oic.mutation.CreateTime(); ok {
 		_spec.SetField(orderinfos.FieldCreateTime, field.TypeTime, value)

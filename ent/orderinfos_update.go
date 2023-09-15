@@ -41,41 +41,41 @@ func (oiu *OrderInfosUpdate) AddOrderID(i int32) *OrderInfosUpdate {
 	return oiu
 }
 
-// SetCourseID sets the "course_id" field.
-func (oiu *OrderInfosUpdate) SetCourseID(i int32) *OrderInfosUpdate {
-	oiu.mutation.ResetCourseID()
-	oiu.mutation.SetCourseID(i)
+// SetProductID sets the "product_id" field.
+func (oiu *OrderInfosUpdate) SetProductID(i int32) *OrderInfosUpdate {
+	oiu.mutation.ResetProductID()
+	oiu.mutation.SetProductID(i)
 	return oiu
 }
 
-// AddCourseID adds i to the "course_id" field.
-func (oiu *OrderInfosUpdate) AddCourseID(i int32) *OrderInfosUpdate {
-	oiu.mutation.AddCourseID(i)
+// AddProductID adds i to the "product_id" field.
+func (oiu *OrderInfosUpdate) AddProductID(i int32) *OrderInfosUpdate {
+	oiu.mutation.AddProductID(i)
 	return oiu
 }
 
-// SetCourseName sets the "course_name" field.
-func (oiu *OrderInfosUpdate) SetCourseName(s string) *OrderInfosUpdate {
-	oiu.mutation.SetCourseName(s)
+// SetProductName sets the "product_name" field.
+func (oiu *OrderInfosUpdate) SetProductName(s string) *OrderInfosUpdate {
+	oiu.mutation.SetProductName(s)
 	return oiu
 }
 
-// SetCoursePrice sets the "course_price" field.
-func (oiu *OrderInfosUpdate) SetCoursePrice(i int32) *OrderInfosUpdate {
-	oiu.mutation.ResetCoursePrice()
-	oiu.mutation.SetCoursePrice(i)
+// SetProductPrice sets the "product_price" field.
+func (oiu *OrderInfosUpdate) SetProductPrice(i int32) *OrderInfosUpdate {
+	oiu.mutation.ResetProductPrice()
+	oiu.mutation.SetProductPrice(i)
 	return oiu
 }
 
-// AddCoursePrice adds i to the "course_price" field.
-func (oiu *OrderInfosUpdate) AddCoursePrice(i int32) *OrderInfosUpdate {
-	oiu.mutation.AddCoursePrice(i)
+// AddProductPrice adds i to the "product_price" field.
+func (oiu *OrderInfosUpdate) AddProductPrice(i int32) *OrderInfosUpdate {
+	oiu.mutation.AddProductPrice(i)
 	return oiu
 }
 
-// SetCourseDescribe sets the "course_describe" field.
-func (oiu *OrderInfosUpdate) SetCourseDescribe(s string) *OrderInfosUpdate {
-	oiu.mutation.SetCourseDescribe(s)
+// SetProductDescribe sets the "product_describe" field.
+func (oiu *OrderInfosUpdate) SetProductDescribe(s string) *OrderInfosUpdate {
+	oiu.mutation.SetProductDescribe(s)
 	return oiu
 }
 
@@ -155,23 +155,23 @@ func (oiu *OrderInfosUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := oiu.mutation.AddedOrderID(); ok {
 		_spec.AddField(orderinfos.FieldOrderID, field.TypeInt32, value)
 	}
-	if value, ok := oiu.mutation.CourseID(); ok {
-		_spec.SetField(orderinfos.FieldCourseID, field.TypeInt32, value)
+	if value, ok := oiu.mutation.ProductID(); ok {
+		_spec.SetField(orderinfos.FieldProductID, field.TypeInt32, value)
 	}
-	if value, ok := oiu.mutation.AddedCourseID(); ok {
-		_spec.AddField(orderinfos.FieldCourseID, field.TypeInt32, value)
+	if value, ok := oiu.mutation.AddedProductID(); ok {
+		_spec.AddField(orderinfos.FieldProductID, field.TypeInt32, value)
 	}
-	if value, ok := oiu.mutation.CourseName(); ok {
-		_spec.SetField(orderinfos.FieldCourseName, field.TypeString, value)
+	if value, ok := oiu.mutation.ProductName(); ok {
+		_spec.SetField(orderinfos.FieldProductName, field.TypeString, value)
 	}
-	if value, ok := oiu.mutation.CoursePrice(); ok {
-		_spec.SetField(orderinfos.FieldCoursePrice, field.TypeInt32, value)
+	if value, ok := oiu.mutation.ProductPrice(); ok {
+		_spec.SetField(orderinfos.FieldProductPrice, field.TypeInt32, value)
 	}
-	if value, ok := oiu.mutation.AddedCoursePrice(); ok {
-		_spec.AddField(orderinfos.FieldCoursePrice, field.TypeInt32, value)
+	if value, ok := oiu.mutation.AddedProductPrice(); ok {
+		_spec.AddField(orderinfos.FieldProductPrice, field.TypeInt32, value)
 	}
-	if value, ok := oiu.mutation.CourseDescribe(); ok {
-		_spec.SetField(orderinfos.FieldCourseDescribe, field.TypeString, value)
+	if value, ok := oiu.mutation.ProductDescribe(); ok {
+		_spec.SetField(orderinfos.FieldProductDescribe, field.TypeString, value)
 	}
 	if value, ok := oiu.mutation.CreateTime(); ok {
 		_spec.SetField(orderinfos.FieldCreateTime, field.TypeTime, value)
@@ -212,41 +212,41 @@ func (oiuo *OrderInfosUpdateOne) AddOrderID(i int32) *OrderInfosUpdateOne {
 	return oiuo
 }
 
-// SetCourseID sets the "course_id" field.
-func (oiuo *OrderInfosUpdateOne) SetCourseID(i int32) *OrderInfosUpdateOne {
-	oiuo.mutation.ResetCourseID()
-	oiuo.mutation.SetCourseID(i)
+// SetProductID sets the "product_id" field.
+func (oiuo *OrderInfosUpdateOne) SetProductID(i int32) *OrderInfosUpdateOne {
+	oiuo.mutation.ResetProductID()
+	oiuo.mutation.SetProductID(i)
 	return oiuo
 }
 
-// AddCourseID adds i to the "course_id" field.
-func (oiuo *OrderInfosUpdateOne) AddCourseID(i int32) *OrderInfosUpdateOne {
-	oiuo.mutation.AddCourseID(i)
+// AddProductID adds i to the "product_id" field.
+func (oiuo *OrderInfosUpdateOne) AddProductID(i int32) *OrderInfosUpdateOne {
+	oiuo.mutation.AddProductID(i)
 	return oiuo
 }
 
-// SetCourseName sets the "course_name" field.
-func (oiuo *OrderInfosUpdateOne) SetCourseName(s string) *OrderInfosUpdateOne {
-	oiuo.mutation.SetCourseName(s)
+// SetProductName sets the "product_name" field.
+func (oiuo *OrderInfosUpdateOne) SetProductName(s string) *OrderInfosUpdateOne {
+	oiuo.mutation.SetProductName(s)
 	return oiuo
 }
 
-// SetCoursePrice sets the "course_price" field.
-func (oiuo *OrderInfosUpdateOne) SetCoursePrice(i int32) *OrderInfosUpdateOne {
-	oiuo.mutation.ResetCoursePrice()
-	oiuo.mutation.SetCoursePrice(i)
+// SetProductPrice sets the "product_price" field.
+func (oiuo *OrderInfosUpdateOne) SetProductPrice(i int32) *OrderInfosUpdateOne {
+	oiuo.mutation.ResetProductPrice()
+	oiuo.mutation.SetProductPrice(i)
 	return oiuo
 }
 
-// AddCoursePrice adds i to the "course_price" field.
-func (oiuo *OrderInfosUpdateOne) AddCoursePrice(i int32) *OrderInfosUpdateOne {
-	oiuo.mutation.AddCoursePrice(i)
+// AddProductPrice adds i to the "product_price" field.
+func (oiuo *OrderInfosUpdateOne) AddProductPrice(i int32) *OrderInfosUpdateOne {
+	oiuo.mutation.AddProductPrice(i)
 	return oiuo
 }
 
-// SetCourseDescribe sets the "course_describe" field.
-func (oiuo *OrderInfosUpdateOne) SetCourseDescribe(s string) *OrderInfosUpdateOne {
-	oiuo.mutation.SetCourseDescribe(s)
+// SetProductDescribe sets the "product_describe" field.
+func (oiuo *OrderInfosUpdateOne) SetProductDescribe(s string) *OrderInfosUpdateOne {
+	oiuo.mutation.SetProductDescribe(s)
 	return oiuo
 }
 
@@ -356,23 +356,23 @@ func (oiuo *OrderInfosUpdateOne) sqlSave(ctx context.Context) (_node *OrderInfos
 	if value, ok := oiuo.mutation.AddedOrderID(); ok {
 		_spec.AddField(orderinfos.FieldOrderID, field.TypeInt32, value)
 	}
-	if value, ok := oiuo.mutation.CourseID(); ok {
-		_spec.SetField(orderinfos.FieldCourseID, field.TypeInt32, value)
+	if value, ok := oiuo.mutation.ProductID(); ok {
+		_spec.SetField(orderinfos.FieldProductID, field.TypeInt32, value)
 	}
-	if value, ok := oiuo.mutation.AddedCourseID(); ok {
-		_spec.AddField(orderinfos.FieldCourseID, field.TypeInt32, value)
+	if value, ok := oiuo.mutation.AddedProductID(); ok {
+		_spec.AddField(orderinfos.FieldProductID, field.TypeInt32, value)
 	}
-	if value, ok := oiuo.mutation.CourseName(); ok {
-		_spec.SetField(orderinfos.FieldCourseName, field.TypeString, value)
+	if value, ok := oiuo.mutation.ProductName(); ok {
+		_spec.SetField(orderinfos.FieldProductName, field.TypeString, value)
 	}
-	if value, ok := oiuo.mutation.CoursePrice(); ok {
-		_spec.SetField(orderinfos.FieldCoursePrice, field.TypeInt32, value)
+	if value, ok := oiuo.mutation.ProductPrice(); ok {
+		_spec.SetField(orderinfos.FieldProductPrice, field.TypeInt32, value)
 	}
-	if value, ok := oiuo.mutation.AddedCoursePrice(); ok {
-		_spec.AddField(orderinfos.FieldCoursePrice, field.TypeInt32, value)
+	if value, ok := oiuo.mutation.AddedProductPrice(); ok {
+		_spec.AddField(orderinfos.FieldProductPrice, field.TypeInt32, value)
 	}
-	if value, ok := oiuo.mutation.CourseDescribe(); ok {
-		_spec.SetField(orderinfos.FieldCourseDescribe, field.TypeString, value)
+	if value, ok := oiuo.mutation.ProductDescribe(); ok {
+		_spec.SetField(orderinfos.FieldProductDescribe, field.TypeString, value)
 	}
 	if value, ok := oiuo.mutation.CreateTime(); ok {
 		_spec.SetField(orderinfos.FieldCreateTime, field.TypeTime, value)

@@ -15,14 +15,14 @@ const (
 	FieldID = "id"
 	// FieldOrderID holds the string denoting the order_id field in the database.
 	FieldOrderID = "order_id"
-	// FieldCourseID holds the string denoting the course_id field in the database.
-	FieldCourseID = "course_id"
-	// FieldCourseName holds the string denoting the course_name field in the database.
-	FieldCourseName = "course_name"
-	// FieldCoursePrice holds the string denoting the course_price field in the database.
-	FieldCoursePrice = "course_price"
-	// FieldCourseDescribe holds the string denoting the course_describe field in the database.
-	FieldCourseDescribe = "course_describe"
+	// FieldProductID holds the string denoting the product_id field in the database.
+	FieldProductID = "product_id"
+	// FieldProductName holds the string denoting the product_name field in the database.
+	FieldProductName = "product_name"
+	// FieldProductPrice holds the string denoting the product_price field in the database.
+	FieldProductPrice = "product_price"
+	// FieldProductDescribe holds the string denoting the product_describe field in the database.
+	FieldProductDescribe = "product_describe"
 	// FieldCreateTime holds the string denoting the create_time field in the database.
 	FieldCreateTime = "create_time"
 	// FieldUpdateTime holds the string denoting the update_time field in the database.
@@ -35,10 +35,10 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldOrderID,
-	FieldCourseID,
-	FieldCourseName,
-	FieldCoursePrice,
-	FieldCourseDescribe,
+	FieldProductID,
+	FieldProductName,
+	FieldProductPrice,
+	FieldProductDescribe,
 	FieldCreateTime,
 	FieldUpdateTime,
 }
@@ -55,9 +55,9 @@ func ValidColumn(column string) bool {
 
 var (
 	// DefaultCreateTime holds the default value on creation for the "create_time" field.
-	DefaultCreateTime time.Time
+	DefaultCreateTime func() time.Time
 	// DefaultUpdateTime holds the default value on creation for the "update_time" field.
-	DefaultUpdateTime time.Time
+	DefaultUpdateTime func() time.Time
 	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
 	UpdateDefaultUpdateTime func() time.Time
 )
@@ -75,24 +75,24 @@ func ByOrderID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOrderID, opts...).ToFunc()
 }
 
-// ByCourseID orders the results by the course_id field.
-func ByCourseID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCourseID, opts...).ToFunc()
+// ByProductID orders the results by the product_id field.
+func ByProductID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProductID, opts...).ToFunc()
 }
 
-// ByCourseName orders the results by the course_name field.
-func ByCourseName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCourseName, opts...).ToFunc()
+// ByProductName orders the results by the product_name field.
+func ByProductName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProductName, opts...).ToFunc()
 }
 
-// ByCoursePrice orders the results by the course_price field.
-func ByCoursePrice(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCoursePrice, opts...).ToFunc()
+// ByProductPrice orders the results by the product_price field.
+func ByProductPrice(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProductPrice, opts...).ToFunc()
 }
 
-// ByCourseDescribe orders the results by the course_describe field.
-func ByCourseDescribe(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCourseDescribe, opts...).ToFunc()
+// ByProductDescribe orders the results by the product_describe field.
+func ByProductDescribe(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProductDescribe, opts...).ToFunc()
 }
 
 // ByCreateTime orders the results by the create_time field.

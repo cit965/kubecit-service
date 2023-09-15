@@ -42,20 +42,20 @@ func (or *orderRepo) Create(ctx context.Context, courseIds []int32) (*biz.Order,
 }
 
 func (or *orderRepo) createOrderTx(ctx context.Context, courseIds []int32) (*biz.Order, error) {
-	var coursePrice int32
-	for _, id := range courseIds {
-		c, err := or.data.db.Course.Query().Where(course.IDEQ(int(id))).First(ctx)
-		if err != nil {
-			return nil, errors.New(400, "课程不存在！", "根据课程ID查询课程失败")
-		}
-		coursePrice += int32(c.Price)
+	var numsInt []int
+	for _, num := range courseIds {
+		numsInt = append(numsInt, int(num))
 	}
-	userIdRaw := ctx.Value("userId")
+	coursePrice, err := or.data.db.Course.Query().Where(course.IDIn(numsInt...)).Aggregate(ent.Sum(course.FieldPrice)).Int(ctx)
+	if err != nil {
+		return nil, errors.BadRequest("", err.Error())
+	}
+	userIdRaw := ctx.Value("user_id")
 	userId, ok := userIdRaw.(int32)
 	if !ok {
 		return nil, errors.New(400, "用户ID不存在", "从token中解析不出用户ID")
 	}
-	orderObj, err := or.data.db.Orders.Create().SetOrderSn(GenerateOrderSn(userId)).SetTradePrice(coursePrice).SetUserID(userId).Save(ctx)
+	orderObj, err := or.data.db.Orders.Create().SetOrderSn(GenerateOrderSn(userId)).SetTradePrice(int32(coursePrice)).SetUserID(userId).Save(ctx)
 	if err != nil {
 		return nil, errors.BadRequest("创建订单失败", err.Error())
 	}
@@ -66,20 +66,20 @@ func (or *orderRepo) createOrderTx(ctx context.Context, courseIds []int32) (*biz
 		if err != nil {
 			return nil, errors.BadRequest("根据课程ID查询课程失败", err.Error())
 		}
-		info, err := or.data.db.OrderInfos.Create().SetOrderID(int32(orderObj.ID)).SetCourseID(id).SetCourseDescribe(c.Detail).SetCourseName(c.Name).SetCoursePrice(int32(c.Price)).Save(ctx)
+		info, err := or.data.db.OrderInfos.Create().SetOrderID(int32(orderObj.ID)).SetProductID(id).SetProductDescribe(c.Detail).SetProductName(c.Name).SetProductPrice(int32(c.Price)).Save(ctx)
 		if err != nil {
 			return nil, errors.BadRequest("创建订单详情失败", err.Error())
 		}
 
 		infos = append(infos, &biz.OrderInfo{
-			Id:             info.ID,
-			CourseName:     info.CourseName,
-			CourseDescribe: info.CourseDescribe,
-			CoursePrice:    int32(c.Price),
-			CreateTime:     info.CreateTime,
-			UpdateTime:     info.UpdateTime,
-			OrderId:        int32(orderObj.ID),
-			CourseId:       id,
+			Id:              info.ID,
+			ProductName:     info.ProductName,
+			ProductDescribe: info.ProductDescribe,
+			ProductPrice:    int32(c.Price),
+			CreateTime:      info.CreateTime,
+			UpdateTime:      info.UpdateTime,
+			OrderId:         int32(orderObj.ID),
+			ProductId:       id,
 		})
 	}
 	order := &biz.Order{

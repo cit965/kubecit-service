@@ -59,24 +59,24 @@ func OrderID(v int32) predicate.OrderInfos {
 	return predicate.OrderInfos(sql.FieldEQ(FieldOrderID, v))
 }
 
-// CourseID applies equality check predicate on the "course_id" field. It's identical to CourseIDEQ.
-func CourseID(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEQ(FieldCourseID, v))
+// ProductID applies equality check predicate on the "product_id" field. It's identical to ProductIDEQ.
+func ProductID(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEQ(FieldProductID, v))
 }
 
-// CourseName applies equality check predicate on the "course_name" field. It's identical to CourseNameEQ.
-func CourseName(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEQ(FieldCourseName, v))
+// ProductName applies equality check predicate on the "product_name" field. It's identical to ProductNameEQ.
+func ProductName(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEQ(FieldProductName, v))
 }
 
-// CoursePrice applies equality check predicate on the "course_price" field. It's identical to CoursePriceEQ.
-func CoursePrice(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEQ(FieldCoursePrice, v))
+// ProductPrice applies equality check predicate on the "product_price" field. It's identical to ProductPriceEQ.
+func ProductPrice(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEQ(FieldProductPrice, v))
 }
 
-// CourseDescribe applies equality check predicate on the "course_describe" field. It's identical to CourseDescribeEQ.
-func CourseDescribe(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEQ(FieldCourseDescribe, v))
+// ProductDescribe applies equality check predicate on the "product_describe" field. It's identical to ProductDescribeEQ.
+func ProductDescribe(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEQ(FieldProductDescribe, v))
 }
 
 // CreateTime applies equality check predicate on the "create_time" field. It's identical to CreateTimeEQ.
@@ -129,214 +129,214 @@ func OrderIDLTE(v int32) predicate.OrderInfos {
 	return predicate.OrderInfos(sql.FieldLTE(FieldOrderID, v))
 }
 
-// CourseIDEQ applies the EQ predicate on the "course_id" field.
-func CourseIDEQ(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEQ(FieldCourseID, v))
+// ProductIDEQ applies the EQ predicate on the "product_id" field.
+func ProductIDEQ(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEQ(FieldProductID, v))
 }
 
-// CourseIDNEQ applies the NEQ predicate on the "course_id" field.
-func CourseIDNEQ(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldNEQ(FieldCourseID, v))
+// ProductIDNEQ applies the NEQ predicate on the "product_id" field.
+func ProductIDNEQ(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldNEQ(FieldProductID, v))
 }
 
-// CourseIDIn applies the In predicate on the "course_id" field.
-func CourseIDIn(vs ...int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldIn(FieldCourseID, vs...))
+// ProductIDIn applies the In predicate on the "product_id" field.
+func ProductIDIn(vs ...int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldIn(FieldProductID, vs...))
 }
 
-// CourseIDNotIn applies the NotIn predicate on the "course_id" field.
-func CourseIDNotIn(vs ...int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldNotIn(FieldCourseID, vs...))
+// ProductIDNotIn applies the NotIn predicate on the "product_id" field.
+func ProductIDNotIn(vs ...int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldNotIn(FieldProductID, vs...))
 }
 
-// CourseIDGT applies the GT predicate on the "course_id" field.
-func CourseIDGT(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldGT(FieldCourseID, v))
+// ProductIDGT applies the GT predicate on the "product_id" field.
+func ProductIDGT(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldGT(FieldProductID, v))
 }
 
-// CourseIDGTE applies the GTE predicate on the "course_id" field.
-func CourseIDGTE(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldGTE(FieldCourseID, v))
+// ProductIDGTE applies the GTE predicate on the "product_id" field.
+func ProductIDGTE(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldGTE(FieldProductID, v))
 }
 
-// CourseIDLT applies the LT predicate on the "course_id" field.
-func CourseIDLT(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldLT(FieldCourseID, v))
+// ProductIDLT applies the LT predicate on the "product_id" field.
+func ProductIDLT(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldLT(FieldProductID, v))
 }
 
-// CourseIDLTE applies the LTE predicate on the "course_id" field.
-func CourseIDLTE(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldLTE(FieldCourseID, v))
+// ProductIDLTE applies the LTE predicate on the "product_id" field.
+func ProductIDLTE(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldLTE(FieldProductID, v))
 }
 
-// CourseNameEQ applies the EQ predicate on the "course_name" field.
-func CourseNameEQ(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEQ(FieldCourseName, v))
+// ProductNameEQ applies the EQ predicate on the "product_name" field.
+func ProductNameEQ(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEQ(FieldProductName, v))
 }
 
-// CourseNameNEQ applies the NEQ predicate on the "course_name" field.
-func CourseNameNEQ(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldNEQ(FieldCourseName, v))
+// ProductNameNEQ applies the NEQ predicate on the "product_name" field.
+func ProductNameNEQ(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldNEQ(FieldProductName, v))
 }
 
-// CourseNameIn applies the In predicate on the "course_name" field.
-func CourseNameIn(vs ...string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldIn(FieldCourseName, vs...))
+// ProductNameIn applies the In predicate on the "product_name" field.
+func ProductNameIn(vs ...string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldIn(FieldProductName, vs...))
 }
 
-// CourseNameNotIn applies the NotIn predicate on the "course_name" field.
-func CourseNameNotIn(vs ...string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldNotIn(FieldCourseName, vs...))
+// ProductNameNotIn applies the NotIn predicate on the "product_name" field.
+func ProductNameNotIn(vs ...string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldNotIn(FieldProductName, vs...))
 }
 
-// CourseNameGT applies the GT predicate on the "course_name" field.
-func CourseNameGT(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldGT(FieldCourseName, v))
+// ProductNameGT applies the GT predicate on the "product_name" field.
+func ProductNameGT(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldGT(FieldProductName, v))
 }
 
-// CourseNameGTE applies the GTE predicate on the "course_name" field.
-func CourseNameGTE(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldGTE(FieldCourseName, v))
+// ProductNameGTE applies the GTE predicate on the "product_name" field.
+func ProductNameGTE(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldGTE(FieldProductName, v))
 }
 
-// CourseNameLT applies the LT predicate on the "course_name" field.
-func CourseNameLT(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldLT(FieldCourseName, v))
+// ProductNameLT applies the LT predicate on the "product_name" field.
+func ProductNameLT(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldLT(FieldProductName, v))
 }
 
-// CourseNameLTE applies the LTE predicate on the "course_name" field.
-func CourseNameLTE(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldLTE(FieldCourseName, v))
+// ProductNameLTE applies the LTE predicate on the "product_name" field.
+func ProductNameLTE(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldLTE(FieldProductName, v))
 }
 
-// CourseNameContains applies the Contains predicate on the "course_name" field.
-func CourseNameContains(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldContains(FieldCourseName, v))
+// ProductNameContains applies the Contains predicate on the "product_name" field.
+func ProductNameContains(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldContains(FieldProductName, v))
 }
 
-// CourseNameHasPrefix applies the HasPrefix predicate on the "course_name" field.
-func CourseNameHasPrefix(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldHasPrefix(FieldCourseName, v))
+// ProductNameHasPrefix applies the HasPrefix predicate on the "product_name" field.
+func ProductNameHasPrefix(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldHasPrefix(FieldProductName, v))
 }
 
-// CourseNameHasSuffix applies the HasSuffix predicate on the "course_name" field.
-func CourseNameHasSuffix(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldHasSuffix(FieldCourseName, v))
+// ProductNameHasSuffix applies the HasSuffix predicate on the "product_name" field.
+func ProductNameHasSuffix(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldHasSuffix(FieldProductName, v))
 }
 
-// CourseNameEqualFold applies the EqualFold predicate on the "course_name" field.
-func CourseNameEqualFold(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEqualFold(FieldCourseName, v))
+// ProductNameEqualFold applies the EqualFold predicate on the "product_name" field.
+func ProductNameEqualFold(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEqualFold(FieldProductName, v))
 }
 
-// CourseNameContainsFold applies the ContainsFold predicate on the "course_name" field.
-func CourseNameContainsFold(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldContainsFold(FieldCourseName, v))
+// ProductNameContainsFold applies the ContainsFold predicate on the "product_name" field.
+func ProductNameContainsFold(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldContainsFold(FieldProductName, v))
 }
 
-// CoursePriceEQ applies the EQ predicate on the "course_price" field.
-func CoursePriceEQ(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEQ(FieldCoursePrice, v))
+// ProductPriceEQ applies the EQ predicate on the "product_price" field.
+func ProductPriceEQ(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEQ(FieldProductPrice, v))
 }
 
-// CoursePriceNEQ applies the NEQ predicate on the "course_price" field.
-func CoursePriceNEQ(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldNEQ(FieldCoursePrice, v))
+// ProductPriceNEQ applies the NEQ predicate on the "product_price" field.
+func ProductPriceNEQ(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldNEQ(FieldProductPrice, v))
 }
 
-// CoursePriceIn applies the In predicate on the "course_price" field.
-func CoursePriceIn(vs ...int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldIn(FieldCoursePrice, vs...))
+// ProductPriceIn applies the In predicate on the "product_price" field.
+func ProductPriceIn(vs ...int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldIn(FieldProductPrice, vs...))
 }
 
-// CoursePriceNotIn applies the NotIn predicate on the "course_price" field.
-func CoursePriceNotIn(vs ...int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldNotIn(FieldCoursePrice, vs...))
+// ProductPriceNotIn applies the NotIn predicate on the "product_price" field.
+func ProductPriceNotIn(vs ...int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldNotIn(FieldProductPrice, vs...))
 }
 
-// CoursePriceGT applies the GT predicate on the "course_price" field.
-func CoursePriceGT(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldGT(FieldCoursePrice, v))
+// ProductPriceGT applies the GT predicate on the "product_price" field.
+func ProductPriceGT(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldGT(FieldProductPrice, v))
 }
 
-// CoursePriceGTE applies the GTE predicate on the "course_price" field.
-func CoursePriceGTE(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldGTE(FieldCoursePrice, v))
+// ProductPriceGTE applies the GTE predicate on the "product_price" field.
+func ProductPriceGTE(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldGTE(FieldProductPrice, v))
 }
 
-// CoursePriceLT applies the LT predicate on the "course_price" field.
-func CoursePriceLT(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldLT(FieldCoursePrice, v))
+// ProductPriceLT applies the LT predicate on the "product_price" field.
+func ProductPriceLT(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldLT(FieldProductPrice, v))
 }
 
-// CoursePriceLTE applies the LTE predicate on the "course_price" field.
-func CoursePriceLTE(v int32) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldLTE(FieldCoursePrice, v))
+// ProductPriceLTE applies the LTE predicate on the "product_price" field.
+func ProductPriceLTE(v int32) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldLTE(FieldProductPrice, v))
 }
 
-// CourseDescribeEQ applies the EQ predicate on the "course_describe" field.
-func CourseDescribeEQ(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEQ(FieldCourseDescribe, v))
+// ProductDescribeEQ applies the EQ predicate on the "product_describe" field.
+func ProductDescribeEQ(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEQ(FieldProductDescribe, v))
 }
 
-// CourseDescribeNEQ applies the NEQ predicate on the "course_describe" field.
-func CourseDescribeNEQ(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldNEQ(FieldCourseDescribe, v))
+// ProductDescribeNEQ applies the NEQ predicate on the "product_describe" field.
+func ProductDescribeNEQ(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldNEQ(FieldProductDescribe, v))
 }
 
-// CourseDescribeIn applies the In predicate on the "course_describe" field.
-func CourseDescribeIn(vs ...string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldIn(FieldCourseDescribe, vs...))
+// ProductDescribeIn applies the In predicate on the "product_describe" field.
+func ProductDescribeIn(vs ...string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldIn(FieldProductDescribe, vs...))
 }
 
-// CourseDescribeNotIn applies the NotIn predicate on the "course_describe" field.
-func CourseDescribeNotIn(vs ...string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldNotIn(FieldCourseDescribe, vs...))
+// ProductDescribeNotIn applies the NotIn predicate on the "product_describe" field.
+func ProductDescribeNotIn(vs ...string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldNotIn(FieldProductDescribe, vs...))
 }
 
-// CourseDescribeGT applies the GT predicate on the "course_describe" field.
-func CourseDescribeGT(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldGT(FieldCourseDescribe, v))
+// ProductDescribeGT applies the GT predicate on the "product_describe" field.
+func ProductDescribeGT(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldGT(FieldProductDescribe, v))
 }
 
-// CourseDescribeGTE applies the GTE predicate on the "course_describe" field.
-func CourseDescribeGTE(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldGTE(FieldCourseDescribe, v))
+// ProductDescribeGTE applies the GTE predicate on the "product_describe" field.
+func ProductDescribeGTE(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldGTE(FieldProductDescribe, v))
 }
 
-// CourseDescribeLT applies the LT predicate on the "course_describe" field.
-func CourseDescribeLT(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldLT(FieldCourseDescribe, v))
+// ProductDescribeLT applies the LT predicate on the "product_describe" field.
+func ProductDescribeLT(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldLT(FieldProductDescribe, v))
 }
 
-// CourseDescribeLTE applies the LTE predicate on the "course_describe" field.
-func CourseDescribeLTE(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldLTE(FieldCourseDescribe, v))
+// ProductDescribeLTE applies the LTE predicate on the "product_describe" field.
+func ProductDescribeLTE(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldLTE(FieldProductDescribe, v))
 }
 
-// CourseDescribeContains applies the Contains predicate on the "course_describe" field.
-func CourseDescribeContains(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldContains(FieldCourseDescribe, v))
+// ProductDescribeContains applies the Contains predicate on the "product_describe" field.
+func ProductDescribeContains(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldContains(FieldProductDescribe, v))
 }
 
-// CourseDescribeHasPrefix applies the HasPrefix predicate on the "course_describe" field.
-func CourseDescribeHasPrefix(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldHasPrefix(FieldCourseDescribe, v))
+// ProductDescribeHasPrefix applies the HasPrefix predicate on the "product_describe" field.
+func ProductDescribeHasPrefix(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldHasPrefix(FieldProductDescribe, v))
 }
 
-// CourseDescribeHasSuffix applies the HasSuffix predicate on the "course_describe" field.
-func CourseDescribeHasSuffix(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldHasSuffix(FieldCourseDescribe, v))
+// ProductDescribeHasSuffix applies the HasSuffix predicate on the "product_describe" field.
+func ProductDescribeHasSuffix(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldHasSuffix(FieldProductDescribe, v))
 }
 
-// CourseDescribeEqualFold applies the EqualFold predicate on the "course_describe" field.
-func CourseDescribeEqualFold(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldEqualFold(FieldCourseDescribe, v))
+// ProductDescribeEqualFold applies the EqualFold predicate on the "product_describe" field.
+func ProductDescribeEqualFold(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldEqualFold(FieldProductDescribe, v))
 }
 
-// CourseDescribeContainsFold applies the ContainsFold predicate on the "course_describe" field.
-func CourseDescribeContainsFold(v string) predicate.OrderInfos {
-	return predicate.OrderInfos(sql.FieldContainsFold(FieldCourseDescribe, v))
+// ProductDescribeContainsFold applies the ContainsFold predicate on the "product_describe" field.
+func ProductDescribeContainsFold(v string) predicate.OrderInfos {
+	return predicate.OrderInfos(sql.FieldContainsFold(FieldProductDescribe, v))
 }
 
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.

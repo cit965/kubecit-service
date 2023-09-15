@@ -17,11 +17,11 @@ func (s *KubecitService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq
 	details := make([]*pb.OrderDetail, 0)
 	for _, info := range order.Info {
 		details = append(details, &pb.OrderDetail{
-			OrderId:           info.OrderId,
-			CourseId:          info.CourseId,
-			CourseName:        info.CourseName,
-			CoursePrice:       info.CoursePrice,
-			CourseDescription: info.CourseDescribe,
+			OrderId:            info.OrderId,
+			ProductId:          info.ProductId,
+			ProductName:        info.ProductName,
+			ProductPrice:       info.ProductPrice,
+			ProductDescription: info.ProductDescribe,
 		})
 	}
 
