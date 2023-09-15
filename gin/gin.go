@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-kratos/kratos/v2/config"
+	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/skip2/go-qrcode"
 	"kubecit-service/ent"
 	"kubecit-service/ent/account"
@@ -24,11 +26,34 @@ type GinService struct {
 	*gin.Engine
 }
 
-const (
-	TOKEN     = "111"
-	AppId     = "wx4edbdc4895597796"
-	AppSecret = "cea927f6ae8a5974a0ce3e266a4cad0b"
+var (
+	TOKEN     = ""
+	AppId     = ""
+	AppSecret = ""
+	Driver    = ""
+	Source    = ""
 )
+
+func init() {
+	initConfig()
+}
+
+func initConfig() {
+	c := config.New(
+		config.WithSource(
+			file.NewSource("./gin/config.yaml"),
+		),
+	)
+	if err := c.Load(); err != nil {
+		panic(err)
+	}
+
+	TOKEN, _ = c.Value("wechat.token").String()
+	AppId, _ = c.Value("wechat.appid").String()
+	AppSecret, _ = c.Value("wechat.app_secret").String()
+	Driver, _ = c.Value("databases.driver").String()
+	Source, _ = c.Value("databases.source").String()
+}
 
 func NewGinService() *GinService {
 	r := gin.Default()
@@ -53,7 +78,6 @@ func CheckSignature(c *gin.Context) {
 	nonce := c.Query("nonce")
 	echostr := c.Query("echostr")
 
-	fmt.Println(signature)
 	// 创建包含令牌、时间戳和随机数的字符串切片
 	tmpArr := []string{TOKEN, timestamp, nonce}
 	// 对切片进行字典排序
@@ -67,8 +91,7 @@ func CheckSignature(c *gin.Context) {
 	tmpHash := sha1.New()
 	tmpHash.Write([]byte(tmpStr))
 	tmpStr = fmt.Sprintf("%x", tmpHash.Sum(nil))
-	fmt.Println(tmpStr)
-	fmt.Println(signature)
+
 	// 将计算得到的签名与请求中提供的签名进行比较，并根据结果发送相应的响应
 	if tmpStr == signature {
 		c.String(200, echostr)
