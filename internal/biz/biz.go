@@ -9,7 +9,7 @@ import (
 )
 
 // ProviderSet is biz providers.
-var ProviderSet = wire.NewSet(NewCourseUsecase, NewUserUsecase, NewSystemUsecase)
+var ProviderSet = wire.NewSet(NewCourseUsecase, NewUserUsecase, NewSystemUsecase, NewOrderUseCase)
 
 // 以下代码为示例代码
 var (

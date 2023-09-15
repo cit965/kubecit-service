@@ -68,6 +68,30 @@ func (f LessonFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.LessonMutation", m)
 }
 
+// The OrderInfosFunc type is an adapter to allow the use of ordinary
+// function as OrderInfos mutator.
+type OrderInfosFunc func(context.Context, *ent.OrderInfosMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f OrderInfosFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.OrderInfosMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.OrderInfosMutation", m)
+}
+
+// The OrdersFunc type is an adapter to allow the use of ordinary
+// function as Orders mutator.
+type OrdersFunc func(context.Context, *ent.OrdersMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f OrdersFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.OrdersMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.OrdersMutation", m)
+}
+
 // The SettingFunc type is an adapter to allow the use of ordinary
 // function as Setting mutator.
 type SettingFunc func(context.Context, *ent.SettingMutation) (ent.Value, error)

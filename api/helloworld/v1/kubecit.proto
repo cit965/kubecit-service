@@ -302,6 +302,18 @@ service Kubecit {
     };
   }
 
+  // ========================== 订单相关接口 ===================================
+  rpc CreateOrder (CreateOrderRequest) returns (CreateOrderReply) {
+    option (google.api.http) = {
+      post: "/api/order",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建订单,传参课程[id]"
+      tags: "order"
+    };
+  }
 }
 
 // The request message containing the user's name.
@@ -631,4 +643,52 @@ message SystemSettingsReply {
   string logourl = 1;
   string wechaturl = 2;
   string computerurl = 3;
+}
+
+
+message CreateOrderRequest {
+  repeated int32 courseIds = 1;
+}
+
+message OrderDetail{
+  int32 orderId = 1;
+  int32 productId = 2;
+  string productName = 3;
+  int32 productPrice = 4;
+  string productDescription = 5;
+}
+
+// 支付类型
+enum PayType {
+  NO_PAY = 0 ; // 还未支付
+  ALIPAY = 1; // 支付宝
+  WECHAT = 2; // 微信支付
+  TRANSFER = 3;  // 转账
+  INTERNAL = 4;  //内部币
+}
+
+//支付状态
+enum PayStatus {
+  UNPAID = 0; // 未支付
+  PAID = 1; // 已支付
+  FAILED = 2; //支付失败
+  CLOSED = 3; //关闭
+  CANCELED = 4; //取消
+  REFUNDING = 5; //退款中
+  REFUNDED = 6; //退款成功
+  REFUND_FAILED = 7;//退款失败
+}
+
+
+message CreateOrderReply {
+  int32 userId = 1;
+  string orderSn = 2;
+  PayType payType = 3;
+  PayStatus payStatus = 4;
+  int32 tradePrice = 5;
+  string tradeNo = 6;
+  google.protobuf.Timestamp payTime = 7;
+  google.protobuf.Timestamp createTime = 8;
+  google.protobuf.Timestamp updateTime = 9;
+  repeated OrderDetail details = 10;
 }

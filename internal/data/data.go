@@ -16,7 +16,7 @@ import (
 
 // ProviderSet is data providers.
 
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewCategoryRepo, NewSliderRepo, NewAccountRepo, NewUserRepo, NewCourseRepo)
+var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewCategoryRepo, NewSliderRepo, NewAccountRepo, NewUserRepo, NewCourseRepo, NewOrderRepo)
 
 // Data .
 type Data struct {
@@ -64,6 +64,30 @@ func (data *Data) WithTx(ctx context.Context, fn func(tx *ent.Tx) error) error {
 		return fmt.Errorf("committing transaction: %w", err)
 	}
 	return nil
+}
+
+func (data *Data) WithResultTx(ctx context.Context, fn func(tx *ent.Tx) (interface{}, error)) (interface{}, error) {
+	tx, err := data.db.Tx(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		if v := recover(); v != nil {
+			tx.Rollback()
+			panic(v)
+		}
+	}()
+	result, err := fn(tx)
+	if err != nil {
+		if rerr := tx.Rollback(); rerr != nil {
+			err = fmt.Errorf("%w: rolling back transaction: %v", err, rerr)
+		}
+		return nil, err
+	}
+	if err := tx.Commit(); err != nil {
+		return nil, fmt.Errorf("committing transaction: %w", err)
+	}
+	return result, nil
 }
 
 // example code
