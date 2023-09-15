@@ -14,7 +14,7 @@ func Auth() middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req interface{}) (reply interface{}, err error) {
 			if header, ok := transport.FromServerContext(ctx); ok {
-				token := header.RequestHeader().Get("kubecit-usertoken")
+				token := header.RequestHeader().Get("Authorization")
 				if token != "" {
 					if claims, err := jwt.VerifyToken(token); err == nil {
 						ctx = context.WithValue(ctx, "user_id", claims.UserID)
