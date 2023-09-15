@@ -15,6 +15,8 @@ import (
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/lesson"
+	"kubecit-service/ent/orderinfos"
+	"kubecit-service/ent/orders"
 	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/user"
@@ -40,6 +42,10 @@ type Client struct {
 	Course *CourseClient
 	// Lesson is the client for interacting with the Lesson builders.
 	Lesson *LessonClient
+	// OrderInfos is the client for interacting with the OrderInfos builders.
+	OrderInfos *OrderInfosClient
+	// Orders is the client for interacting with the Orders builders.
+	Orders *OrdersClient
 	// Setting is the client for interacting with the Setting builders.
 	Setting *SettingClient
 	// Slider is the client for interacting with the Slider builders.
@@ -64,6 +70,8 @@ func (c *Client) init() {
 	c.Chapter = NewChapterClient(c.config)
 	c.Course = NewCourseClient(c.config)
 	c.Lesson = NewLessonClient(c.config)
+	c.OrderInfos = NewOrderInfosClient(c.config)
+	c.Orders = NewOrdersClient(c.config)
 	c.Setting = NewSettingClient(c.config)
 	c.Slider = NewSliderClient(c.config)
 	c.User = NewUserClient(c.config)
@@ -147,16 +155,18 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:      ctx,
-		config:   cfg,
-		Account:  NewAccountClient(cfg),
-		Category: NewCategoryClient(cfg),
-		Chapter:  NewChapterClient(cfg),
-		Course:   NewCourseClient(cfg),
-		Lesson:   NewLessonClient(cfg),
-		Setting:  NewSettingClient(cfg),
-		Slider:   NewSliderClient(cfg),
-		User:     NewUserClient(cfg),
+		ctx:        ctx,
+		config:     cfg,
+		Account:    NewAccountClient(cfg),
+		Category:   NewCategoryClient(cfg),
+		Chapter:    NewChapterClient(cfg),
+		Course:     NewCourseClient(cfg),
+		Lesson:     NewLessonClient(cfg),
+		OrderInfos: NewOrderInfosClient(cfg),
+		Orders:     NewOrdersClient(cfg),
+		Setting:    NewSettingClient(cfg),
+		Slider:     NewSliderClient(cfg),
+		User:       NewUserClient(cfg),
 	}, nil
 }
 
@@ -174,16 +184,18 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:      ctx,
-		config:   cfg,
-		Account:  NewAccountClient(cfg),
-		Category: NewCategoryClient(cfg),
-		Chapter:  NewChapterClient(cfg),
-		Course:   NewCourseClient(cfg),
-		Lesson:   NewLessonClient(cfg),
-		Setting:  NewSettingClient(cfg),
-		Slider:   NewSliderClient(cfg),
-		User:     NewUserClient(cfg),
+		ctx:        ctx,
+		config:     cfg,
+		Account:    NewAccountClient(cfg),
+		Category:   NewCategoryClient(cfg),
+		Chapter:    NewChapterClient(cfg),
+		Course:     NewCourseClient(cfg),
+		Lesson:     NewLessonClient(cfg),
+		OrderInfos: NewOrderInfosClient(cfg),
+		Orders:     NewOrdersClient(cfg),
+		Setting:    NewSettingClient(cfg),
+		Slider:     NewSliderClient(cfg),
+		User:       NewUserClient(cfg),
 	}, nil
 }
 
@@ -213,8 +225,8 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.Setting, c.Slider,
-		c.User,
+		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.OrderInfos, c.Orders,
+		c.Setting, c.Slider, c.User,
 	} {
 		n.Use(hooks...)
 	}
@@ -224,8 +236,8 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.Setting, c.Slider,
-		c.User,
+		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.OrderInfos, c.Orders,
+		c.Setting, c.Slider, c.User,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -244,6 +256,10 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Course.mutate(ctx, m)
 	case *LessonMutation:
 		return c.Lesson.mutate(ctx, m)
+	case *OrderInfosMutation:
+		return c.OrderInfos.mutate(ctx, m)
+	case *OrdersMutation:
+		return c.Orders.mutate(ctx, m)
 	case *SettingMutation:
 		return c.Setting.mutate(ctx, m)
 	case *SliderMutation:
@@ -973,6 +989,242 @@ func (c *LessonClient) mutate(ctx context.Context, m *LessonMutation) (Value, er
 	}
 }
 
+// OrderInfosClient is a client for the OrderInfos schema.
+type OrderInfosClient struct {
+	config
+}
+
+// NewOrderInfosClient returns a client for the OrderInfos from the given config.
+func NewOrderInfosClient(c config) *OrderInfosClient {
+	return &OrderInfosClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `orderinfos.Hooks(f(g(h())))`.
+func (c *OrderInfosClient) Use(hooks ...Hook) {
+	c.hooks.OrderInfos = append(c.hooks.OrderInfos, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `orderinfos.Intercept(f(g(h())))`.
+func (c *OrderInfosClient) Intercept(interceptors ...Interceptor) {
+	c.inters.OrderInfos = append(c.inters.OrderInfos, interceptors...)
+}
+
+// Create returns a builder for creating a OrderInfos entity.
+func (c *OrderInfosClient) Create() *OrderInfosCreate {
+	mutation := newOrderInfosMutation(c.config, OpCreate)
+	return &OrderInfosCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of OrderInfos entities.
+func (c *OrderInfosClient) CreateBulk(builders ...*OrderInfosCreate) *OrderInfosCreateBulk {
+	return &OrderInfosCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for OrderInfos.
+func (c *OrderInfosClient) Update() *OrderInfosUpdate {
+	mutation := newOrderInfosMutation(c.config, OpUpdate)
+	return &OrderInfosUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *OrderInfosClient) UpdateOne(oi *OrderInfos) *OrderInfosUpdateOne {
+	mutation := newOrderInfosMutation(c.config, OpUpdateOne, withOrderInfos(oi))
+	return &OrderInfosUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *OrderInfosClient) UpdateOneID(id int) *OrderInfosUpdateOne {
+	mutation := newOrderInfosMutation(c.config, OpUpdateOne, withOrderInfosID(id))
+	return &OrderInfosUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for OrderInfos.
+func (c *OrderInfosClient) Delete() *OrderInfosDelete {
+	mutation := newOrderInfosMutation(c.config, OpDelete)
+	return &OrderInfosDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *OrderInfosClient) DeleteOne(oi *OrderInfos) *OrderInfosDeleteOne {
+	return c.DeleteOneID(oi.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *OrderInfosClient) DeleteOneID(id int) *OrderInfosDeleteOne {
+	builder := c.Delete().Where(orderinfos.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &OrderInfosDeleteOne{builder}
+}
+
+// Query returns a query builder for OrderInfos.
+func (c *OrderInfosClient) Query() *OrderInfosQuery {
+	return &OrderInfosQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeOrderInfos},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a OrderInfos entity by its id.
+func (c *OrderInfosClient) Get(ctx context.Context, id int) (*OrderInfos, error) {
+	return c.Query().Where(orderinfos.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *OrderInfosClient) GetX(ctx context.Context, id int) *OrderInfos {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *OrderInfosClient) Hooks() []Hook {
+	return c.hooks.OrderInfos
+}
+
+// Interceptors returns the client interceptors.
+func (c *OrderInfosClient) Interceptors() []Interceptor {
+	return c.inters.OrderInfos
+}
+
+func (c *OrderInfosClient) mutate(ctx context.Context, m *OrderInfosMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&OrderInfosCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&OrderInfosUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&OrderInfosUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&OrderInfosDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown OrderInfos mutation op: %q", m.Op())
+	}
+}
+
+// OrdersClient is a client for the Orders schema.
+type OrdersClient struct {
+	config
+}
+
+// NewOrdersClient returns a client for the Orders from the given config.
+func NewOrdersClient(c config) *OrdersClient {
+	return &OrdersClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `orders.Hooks(f(g(h())))`.
+func (c *OrdersClient) Use(hooks ...Hook) {
+	c.hooks.Orders = append(c.hooks.Orders, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `orders.Intercept(f(g(h())))`.
+func (c *OrdersClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Orders = append(c.inters.Orders, interceptors...)
+}
+
+// Create returns a builder for creating a Orders entity.
+func (c *OrdersClient) Create() *OrdersCreate {
+	mutation := newOrdersMutation(c.config, OpCreate)
+	return &OrdersCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Orders entities.
+func (c *OrdersClient) CreateBulk(builders ...*OrdersCreate) *OrdersCreateBulk {
+	return &OrdersCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Orders.
+func (c *OrdersClient) Update() *OrdersUpdate {
+	mutation := newOrdersMutation(c.config, OpUpdate)
+	return &OrdersUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *OrdersClient) UpdateOne(o *Orders) *OrdersUpdateOne {
+	mutation := newOrdersMutation(c.config, OpUpdateOne, withOrders(o))
+	return &OrdersUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *OrdersClient) UpdateOneID(id int) *OrdersUpdateOne {
+	mutation := newOrdersMutation(c.config, OpUpdateOne, withOrdersID(id))
+	return &OrdersUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Orders.
+func (c *OrdersClient) Delete() *OrdersDelete {
+	mutation := newOrdersMutation(c.config, OpDelete)
+	return &OrdersDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *OrdersClient) DeleteOne(o *Orders) *OrdersDeleteOne {
+	return c.DeleteOneID(o.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *OrdersClient) DeleteOneID(id int) *OrdersDeleteOne {
+	builder := c.Delete().Where(orders.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &OrdersDeleteOne{builder}
+}
+
+// Query returns a query builder for Orders.
+func (c *OrdersClient) Query() *OrdersQuery {
+	return &OrdersQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeOrders},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Orders entity by its id.
+func (c *OrdersClient) Get(ctx context.Context, id int) (*Orders, error) {
+	return c.Query().Where(orders.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *OrdersClient) GetX(ctx context.Context, id int) *Orders {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *OrdersClient) Hooks() []Hook {
+	return c.hooks.Orders
+}
+
+// Interceptors returns the client interceptors.
+func (c *OrdersClient) Interceptors() []Interceptor {
+	return c.inters.Orders
+}
+
+func (c *OrdersClient) mutate(ctx context.Context, m *OrdersMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&OrdersCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&OrdersUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&OrdersUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&OrdersDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Orders mutation op: %q", m.Op())
+	}
+}
+
 // SettingClient is a client for the Setting schema.
 type SettingClient struct {
 	config
@@ -1330,10 +1582,11 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Account, Category, Chapter, Course, Lesson, Setting, Slider, User []ent.Hook
+		Account, Category, Chapter, Course, Lesson, OrderInfos, Orders, Setting, Slider,
+		User []ent.Hook
 	}
 	inters struct {
-		Account, Category, Chapter, Course, Lesson, Setting, Slider,
+		Account, Category, Chapter, Course, Lesson, OrderInfos, Orders, Setting, Slider,
 		User []ent.Interceptor
 	}
 )

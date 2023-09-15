@@ -55,7 +55,6 @@ func (or *orderRepo) createOrderTx(ctx context.Context, courseIds []int32) (*biz
 	if !ok {
 		return nil, errors.New(400, "用户ID不存在", "从token中解析不出用户ID")
 	}
-	// Proceed with the userId value
 	orderObj, err := or.data.db.Orders.Create().SetOrderSn(GenerateOrderSn(userId)).SetTradePrice(coursePrice).SetUserID(userId).Save(ctx)
 	if err != nil {
 		return nil, errors.BadRequest("创建订单失败", err.Error())
