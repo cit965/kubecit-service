@@ -41,18 +41,19 @@ func init() {
 func initConfig() {
 	c := config.New(
 		config.WithSource(
-			file.NewSource("./gin/config.yaml"),
+			file.NewSource("./configs/qa_config.yaml"),
 		),
 	)
+	defer c.Close()
 	if err := c.Load(); err != nil {
 		panic(err)
 	}
-
 	TOKEN, _ = c.Value("wechat.token").String()
 	AppId, _ = c.Value("wechat.appid").String()
 	AppSecret, _ = c.Value("wechat.app_secret").String()
-	Driver, _ = c.Value("databases.driver").String()
-	Source, _ = c.Value("databases.source").String()
+	Driver, _ = c.Value("data.database.driver").String()
+	Source, _ = c.Value("data.database.source").String()
+
 }
 
 func NewGinService() *GinService {
@@ -72,6 +73,10 @@ func NewGinService() *GinService {
 }
 
 func CheckSignature(c *gin.Context) {
+	s := fmt.Sprintf("token:%s, appid:%s, app_secret:%s", TOKEN, AppId, AppSecret)
+	sprintf := fmt.Sprintf("driver:%s, source:%s", Driver, Source)
+	fmt.Println(s, sprintf)
+
 	// 获取查询参数中的签名、时间戳和随机数
 	signature := c.Query("signature")
 	timestamp := c.Query("timestamp")
@@ -154,7 +159,7 @@ func Callback(ctx *gin.Context) {
 		FailWithMessage("解析微信用户信息失败", ctx)
 		return
 	}
-	entClient, err := ent.Open("sqlite3", "./test.db?_fk=1")
+	entClient, err := ent.Open(Driver, Source)
 	if err != nil {
 		FailWithMessage("连接数据库失败", ctx)
 		return

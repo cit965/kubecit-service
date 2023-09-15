@@ -13,3 +13,7 @@ data:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
     write_timeout: 0.2s
+wechat:
+  token: 111
+  appid: wx4edbdc4895597796
+  app_secret: cea927f6ae8a5974a0ce3e266a4cad0b
