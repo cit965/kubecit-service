@@ -76,7 +76,7 @@ service Kubecit {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "获取最新课程列表"
+      description: "获取最新科目列表"
       tags: "course"
     };
   }
@@ -88,7 +88,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "获取课程标签列表"
+      description: "获取科目标签列表"
       tags: "course"
     };
   }
@@ -99,7 +99,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "筛选课程列表"
+      description: "筛选科目列表"
       tags: "course"
     };
   }
@@ -110,7 +110,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "更新课程信息"
+      description: "更新科目信息"
       tags: "course"
     };
   }
@@ -121,7 +121,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "审核课程"
+      description: "审核科目"
       tags: "course"
     };
   }
@@ -132,7 +132,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "创建课程"
+      description: "创建科目"
       tags: "course"
     };
   }
@@ -142,7 +142,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "获取课程信息"
+      description: "获取科目信息"
       tags: "course"
     };
   }
@@ -152,7 +152,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "删除课程"
+      description: "删除科目"
       tags: "course"
     };
   }
@@ -198,7 +198,48 @@ service Kubecit {
       tags: "course"
     };
   }
+  rpc CreateLesson (CreateLessonRequest) returns (CreateLessonReply) {
+    option (google.api.http) = {
+      post: "/api/course/lesson",
+      body: "*"
+    };
 
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建课程"
+      tags: "course"
+    };
+  }
+  rpc ListLessons (ListChapterLessonsWithCourIdRequest) returns (ListChapterLessonsWithCourIdReply) {
+    option (google.api.http) = {
+      get: "/api/course/{courseId}/lessons",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "获取科目下所有课程"
+      tags: "course"
+    };
+  }
+  rpc UpdateLesson (UpdateLessonRequest) returns (UpdateLessonReply) {
+    option (google.api.http) = {
+      put: "/api/course/lesson/{lessonId}",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "更新课程"
+      tags: "course"
+    };
+  }
+  rpc DeleteLesson (DeleteLessonRequest) returns (DeleteLessonReply) {
+    option (google.api.http) = {
+      delete: "/api/course/lesson/{lessonId}",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "更新课程"
+      tags: "course"
+    };
+  }
 
   // ========================== 用户相关接口 ===================================
   rpc GetInfo (GetInfoRequest) returns (UserInfoReply) {
@@ -532,8 +573,80 @@ message ListChaptersReply {
   repeated ChapterInfo data = 1;
 }
 
+message CreateLessonRequest {
+  string name = 1;
+  optional int32 sort = 2;
+  optional int32 type = 3;
+  string storagePath = 4;
+  string source = 5;
+  string courseware = 6;
+  optional int32 isFreePreview = 7;
+  optional int32 chapterId = 8;
+}
+
+message CreateLessonReply {
+  LessonInfo data = 1;
+}
+
+message ListChapterLessonsWithCourIdRequest {
+  optional int32 courseId = 1;
+}
+
+message ListChapterLessonsWithCourIdReply {
+  repeated ChapterLessonsInfo data = 1;
+}
+
+message ChapterLessonsInfo {
+  ChapterInfo chapter = 1;
+  repeated LessonInfo lessons = 2;
+}
+
+message UpdateLessonRequest {
+  string name = 1;
+  optional int32 sort = 2;
+  optional int32 type = 3;
+  string storagePath = 4;
+  string source = 5;
+  string courseware = 6;
+  optional int32 isFreePreview = 7;
+  optional int32 chapterId = 8;
+  optional int32 lessonId = 9;
+}
+message UpdateLessonReply {
+  string name = 1;
+  int32 sort = 2;
+  int32 type = 3;
+  string storagePath = 4;
+  string source = 5;
+  string courseware = 6;
+  int32 isFreePreview = 7;
+  int32 chapterId = 8;
+  int32 id = 9;
+  google.protobuf.Timestamp releasedTime = 10;
+}
+
+message DeleteLessonRequest {
+  int32 lessonId = 1;
+}
+message DeleteLessonReply {
+  int32 count = 1;
+}
+
+message LessonInfo {
+  string name = 1;
+  int32 sort = 2;
+  int32 type = 3;
+  string storagePath = 4;
+  string source = 5;
+  string courseware = 6;
+  int32 isFreePreview = 7;
+  int32 chapterId = 8;
+  int32 id = 9;
+  google.protobuf.Timestamp releasedTime = 10;
+}
+
 message SliderInfo {
-  int32 id = 1;
+   int32 id = 1;
   string title = 2;
   string content = 3;
   string imageLink = 4;

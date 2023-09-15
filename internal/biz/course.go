@@ -30,6 +30,11 @@ type Course struct {
 	CategoryId int
 }
 
+type CourseChapterLessons struct {
+	Course
+	Chapters ChapterLessons
+}
+
 type Chapter struct {
 	Id             int
 	Name           string
@@ -38,6 +43,24 @@ type Chapter struct {
 	Sort           int
 	HasFreePreview int
 	CourseId       int
+}
+
+type Lesson struct {
+	Id            int
+	Name          string
+	ReleasedTime  time.Time
+	Sort          int
+	Type          int
+	StoragePath   string
+	Source        string
+	Courseware    string
+	IsFreePreview int
+	ChapterId     int
+}
+
+type ChapterLessons struct {
+	*Chapter
+	Lessons []*Lesson
 }
 
 // CategoryRepo is a Category repo.
@@ -63,6 +86,11 @@ type CourseRepo interface {
 	DeleteChapter(ctx context.Context, id int) (int, error)
 	ListChapters(ctx context.Context, courseId int) ([]*Chapter, error)
 	UpdateChapter(ctx context.Context, id int, chapter *Chapter) (*Chapter, error)
+
+	CreateLesson(ctx context.Context, lesson *Lesson) (*Lesson, error)
+	DeleteLesson(ctx context.Context, id int) (int, error)
+	ListLessons(ctx context.Context, chapterId int) ([]*Lesson, error)
+	UpdateLesson(ctx context.Context, id int, chapter *Lesson) (*Lesson, error)
 }
 
 // CourseUsecase is a Category usecase.
@@ -178,4 +206,34 @@ func (uc *CourseUsecase) ListChapters(ctx context.Context, courseId int) ([]*Cha
 
 func (uc *CourseUsecase) UpdateChapter(ctx context.Context, id int, chapter *Chapter) (*Chapter, error) {
 	return uc.courseRepo.UpdateChapter(ctx, id, chapter)
+}
+
+func (uc *CourseUsecase) CreateLesson(ctx context.Context, lesson *Lesson) (*Lesson, error) {
+	return uc.courseRepo.CreateLesson(ctx, lesson)
+}
+func (uc *CourseUsecase) DeleteLesson(ctx context.Context, id int) (int, error) {
+	return uc.courseRepo.DeleteLesson(ctx, id)
+}
+
+func (uc *CourseUsecase) ListChapterLessonsWithCourseId(ctx context.Context, courseId int) ([]*ChapterLessons, error) {
+	chapters, err := uc.courseRepo.ListChapters(ctx, courseId)
+	if err != nil || len(chapters) == 0 {
+		return nil, err
+	}
+	result := make([]*ChapterLessons, 0, len(chapters))
+	for _, chapter := range chapters {
+		lessons, err := uc.courseRepo.ListLessons(ctx, chapter.Id)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, &ChapterLessons{
+			Chapter: chapter,
+			Lessons: lessons,
+		})
+	}
+	return result, nil
+}
+
+func (uc *CourseUsecase) UpdateLesson(ctx context.Context, id int, chapter *Lesson) (*Lesson, error) {
+	return uc.courseRepo.UpdateLesson(ctx, id, chapter)
 }
