@@ -1,0 +1,29 @@
+name: Docker
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+
+env:
+  IMAGE_VERSION: latest
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: docker login
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: docker build
+        run: |
+          docker build -t chaoyue/kubecit-service:${{env.IMAGE_VERSION}} -f ./Dockerfile .
+
+      - name: docker push
+        run: |
+          docker push chaoyue/kubecit-service:${{env.IMAGE_VERSION}}
