@@ -1,7 +1,0 @@
-wechat:
-  token: 111
-  appid: wx4edbdc4895597796
-  app_secret: cea927f6ae8a5974a0ce3e266a4cad0b
-databases:
-  driver: mysql
-  source: root:Cq3at3LG0cb2kg70EDi9@tcp(wlb965-mysql)/kubecit?charset=utf8&parseTime=True&loc=Local
