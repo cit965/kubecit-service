@@ -5,9 +5,9 @@ package ent
 import (
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
-	"kubecit-service/ent/orderinfos"
-	"kubecit-service/ent/orders"
+	"kubecit-service/ent/lesson"
 	"kubecit-service/ent/schema"
 	"kubecit-service/ent/slider"
 	"time"
@@ -37,6 +37,18 @@ func init() {
 	categoryDescName := categoryFields[0].Descriptor()
 	// category.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	category.NameValidator = categoryDescName.Validators[0].(func(string) error)
+	chapterFields := schema.Chapter{}.Fields()
+	_ = chapterFields
+	// chapterDescReleasedTime is the schema descriptor for released_time field.
+	chapterDescReleasedTime := chapterFields[1].Descriptor()
+	// chapter.DefaultReleasedTime holds the default value on creation for the released_time field.
+	chapter.DefaultReleasedTime = chapterDescReleasedTime.Default.(func() time.Time)
+	// chapter.UpdateDefaultReleasedTime holds the default value on update for the released_time field.
+	chapter.UpdateDefaultReleasedTime = chapterDescReleasedTime.UpdateDefault.(func() time.Time)
+	// chapterDescHasFreePreview is the schema descriptor for has_free_preview field.
+	chapterDescHasFreePreview := chapterFields[4].Descriptor()
+	// chapter.DefaultHasFreePreview holds the default value on creation for the has_free_preview field.
+	chapter.DefaultHasFreePreview = chapterDescHasFreePreview.Default.(int)
 	courseFields := schema.Course{}.Fields()
 	_ = courseFields
 	// courseDescUpdatedAt is the schema descriptor for updated_at field.
@@ -49,38 +61,18 @@ func init() {
 	courseDescCreatedAt := courseFields[7].Descriptor()
 	// course.DefaultCreatedAt holds the default value on creation for the created_at field.
 	course.DefaultCreatedAt = courseDescCreatedAt.Default.(time.Time)
-	orderinfosFields := schema.OrderInfos{}.Fields()
-	_ = orderinfosFields
-	// orderinfosDescCreateTime is the schema descriptor for create_time field.
-	orderinfosDescCreateTime := orderinfosFields[5].Descriptor()
-	// orderinfos.DefaultCreateTime holds the default value on creation for the create_time field.
-	orderinfos.DefaultCreateTime = orderinfosDescCreateTime.Default.(time.Time)
-	// orderinfosDescUpdateTime is the schema descriptor for update_time field.
-	orderinfosDescUpdateTime := orderinfosFields[6].Descriptor()
-	// orderinfos.DefaultUpdateTime holds the default value on creation for the update_time field.
-	orderinfos.DefaultUpdateTime = orderinfosDescUpdateTime.Default.(time.Time)
-	// orderinfos.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
-	orderinfos.UpdateDefaultUpdateTime = orderinfosDescUpdateTime.UpdateDefault.(func() time.Time)
-	ordersFields := schema.Orders{}.Fields()
-	_ = ordersFields
-	// ordersDescPayType is the schema descriptor for pay_type field.
-	ordersDescPayType := ordersFields[2].Descriptor()
-	// orders.DefaultPayType holds the default value on creation for the pay_type field.
-	orders.DefaultPayType = ordersDescPayType.Default.(int32)
-	// ordersDescPayStatus is the schema descriptor for pay_status field.
-	ordersDescPayStatus := ordersFields[3].Descriptor()
-	// orders.DefaultPayStatus holds the default value on creation for the pay_status field.
-	orders.DefaultPayStatus = ordersDescPayStatus.Default.(int32)
-	// ordersDescCreateTime is the schema descriptor for create_time field.
-	ordersDescCreateTime := ordersFields[7].Descriptor()
-	// orders.DefaultCreateTime holds the default value on creation for the create_time field.
-	orders.DefaultCreateTime = ordersDescCreateTime.Default.(time.Time)
-	// ordersDescUpdateTime is the schema descriptor for update_time field.
-	ordersDescUpdateTime := ordersFields[8].Descriptor()
-	// orders.DefaultUpdateTime holds the default value on creation for the update_time field.
-	orders.DefaultUpdateTime = ordersDescUpdateTime.Default.(time.Time)
-	// orders.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
-	orders.UpdateDefaultUpdateTime = ordersDescUpdateTime.UpdateDefault.(func() time.Time)
+	lessonFields := schema.Lesson{}.Fields()
+	_ = lessonFields
+	// lessonDescReleasedTime is the schema descriptor for released_time field.
+	lessonDescReleasedTime := lessonFields[1].Descriptor()
+	// lesson.DefaultReleasedTime holds the default value on creation for the released_time field.
+	lesson.DefaultReleasedTime = lessonDescReleasedTime.Default.(func() time.Time)
+	// lesson.UpdateDefaultReleasedTime holds the default value on update for the released_time field.
+	lesson.UpdateDefaultReleasedTime = lessonDescReleasedTime.UpdateDefault.(func() time.Time)
+	// lessonDescIsFreePreview is the schema descriptor for is_free_preview field.
+	lessonDescIsFreePreview := lessonFields[7].Descriptor()
+	// lesson.DefaultIsFreePreview holds the default value on creation for the is_free_preview field.
+	lesson.DefaultIsFreePreview = lessonDescIsFreePreview.Default.(int)
 	sliderFields := schema.Slider{}.Fields()
 	_ = sliderFields
 	// sliderDescTitle is the schema descriptor for title field.

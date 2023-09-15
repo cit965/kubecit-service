@@ -12,7 +12,7 @@ import (
 // MostNew 最新好课
 func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNewReply, error) {
 
-	courses, err := s.cc.SearchCourse(ctx, &biz.SearchFilterParam{})
+	courses, total, err := s.cc.SearchCourse(ctx, &biz.SearchFilterParam{})
 	if err != nil {
 		return nil, err
 	}
@@ -31,10 +31,11 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNe
 			UpdatedAt:  timestamppb.New(v.UpdatedAt),
 			Status:     pb.CourseStatus(v.Status),
 			CategoryId: int32(v.CategoryId),
+			People:     102,
 		}
 		result = append(result, tmp)
 	}
-	return &pb.MostNewReply{List: result}, nil
+	return &pb.MostNewReply{List: result, Total: total}, nil
 }
 
 // TagsList 课程标签
@@ -50,7 +51,7 @@ func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) 
 // SearchCourse 搜索课程
 func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseRequest) (*pb.CourseSearchReply, error) {
 
-	courses, err := s.cc.SearchCourse(ctx, &biz.SearchFilterParam{
+	courses, total, err := s.cc.SearchCourse(ctx, &biz.SearchFilterParam{
 		SecondCategoryId: req.SecondCategory,
 		FirstCategoryId:  req.FirstCategory,
 		Level:            req.Level,
@@ -75,10 +76,12 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 			UpdatedAt:  timestamppb.New(course.UpdatedAt),
 			Status:     pb.CourseStatus(course.Status),
 			CategoryId: int32(course.CategoryId),
+			People:     102,
 		})
 	}
 	return &pb.CourseSearchReply{
-		List: list,
+		List:  list,
+		Total: total,
 	}, nil
 }
 
@@ -179,7 +182,7 @@ func (s *KubecitService) CreateCourse(ctx context.Context, req *pb.CreateCourseR
 }
 
 func (s *KubecitService) GetCourse(ctx context.Context, req *pb.GetCourseRequest) (*pb.GetCourseReply, error) {
-	res, err := s.cc.GetCourse(ctx, int(req.Id))
+	res, err := s.cc.GetCourse(ctx, int(req.GetId()))
 	if err != nil {
 		return nil, err
 	}
@@ -199,11 +202,90 @@ func (s *KubecitService) GetCourse(ctx context.Context, req *pb.GetCourseRequest
 		}}, nil
 }
 
+// DeleteCourse TODO delete chapter record together
 func (s *KubecitService) DeleteCourse(ctx context.Context, req *pb.DeleteCourseRequest) (*pb.DeleteCourseReply, error) {
-	count, err := s.cc.DeleteCourse(ctx, int(req.Id))
+	count, err := s.cc.DeleteCourse(ctx, int(req.GetId()))
 	if err != nil {
 		return nil, err
 	}
 	return &pb.DeleteCourseReply{
 		Count: int32(count)}, nil
+}
+
+func (s *KubecitService) CreateChapter(ctx context.Context, req *pb.CreateChapterRequest) (*pb.CreateChapterReply, error) {
+	ins := &biz.Chapter{
+		Name:           req.GetName(),
+		Description:    req.GetDescription(),
+		Sort:           int(req.GetSort()),
+		HasFreePreview: int(req.GetHasFreePreview()),
+		CourseId:       int(req.GetCourseId()),
+	}
+
+	res, err := s.cc.CreateChapter(ctx, ins)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateChapterReply{Data: &pb.ChapterInfo{
+		Id:             int32(res.Id),
+		Name:           res.Name,
+		ReleasedTime:   timestamppb.New(res.ReleasedTime),
+		Description:    res.Description,
+		Sort:           int32(res.Sort),
+		HasFreePreview: int32(res.HasFreePreview),
+		CourseId:       int32(res.CourseId),
+	}}, nil
+}
+
+func (s *KubecitService) DeleteChapter(ctx context.Context, req *pb.DeleteChapterRequest) (*pb.DeleteChapterReply, error) {
+	res, err := s.cc.DeleteChapter(ctx, int(req.GetId()))
+	if err != nil {
+		return nil, err
+	}
+	return &pb.DeleteChapterReply{
+		Count: int32(res),
+	}, nil
+}
+
+func (s *KubecitService) ListChapters(ctx context.Context, req *pb.ListChaptersRequest) (*pb.ListChaptersReply, error) {
+	res, err := s.cc.ListChapters(ctx, int(req.GetCourseId()))
+	if err != nil {
+		return nil, err
+	}
+	chapters := make([]*pb.ChapterInfo, 0, len(res))
+	for _, chapter := range res {
+		chapters = append(chapters, &pb.ChapterInfo{
+			Id:             int32(chapter.Id),
+			Name:           chapter.Name,
+			ReleasedTime:   timestamppb.New(chapter.ReleasedTime),
+			Description:    chapter.Description,
+			Sort:           int32(chapter.Sort),
+			HasFreePreview: int32(chapter.HasFreePreview),
+			CourseId:       int32(chapter.CourseId),
+		})
+	}
+	return &pb.ListChaptersReply{Data: chapters}, nil
+}
+
+func (s *KubecitService) UpdateChapter(ctx context.Context, req *pb.UpdateChapterRequest) (*pb.UpdateChapterReply, error) {
+	ins := &biz.Chapter{
+		Id:             int(req.GetId()),
+		Name:           req.GetName(),
+		Description:    req.GetDescription(),
+		Sort:           int(req.GetSort()),
+		HasFreePreview: int(req.GetHasFreePreview()),
+		CourseId:       int(req.GetCourseId()),
+	}
+	res, err := s.cc.UpdateChapter(ctx, int(req.Id), ins)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.UpdateChapterReply{Data: &pb.ChapterInfo{
+		Id:             int32(res.Id),
+		Name:           res.Name,
+		ReleasedTime:   timestamppb.New(res.ReleasedTime),
+		Description:    res.Description,
+		Sort:           int32(res.Sort),
+		HasFreePreview: int32(res.HasFreePreview),
+		CourseId:       int32(res.CourseId),
+	}}, nil
 }

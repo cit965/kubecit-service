@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/category"
+	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 	"time"
@@ -151,6 +152,21 @@ func (cu *CourseUpdate) SetOwner(c *Category) *CourseUpdate {
 	return cu.SetOwnerID(c.ID)
 }
 
+// AddChapterIDs adds the "chapters" edge to the Chapter entity by IDs.
+func (cu *CourseUpdate) AddChapterIDs(ids ...int) *CourseUpdate {
+	cu.mutation.AddChapterIDs(ids...)
+	return cu
+}
+
+// AddChapters adds the "chapters" edges to the Chapter entity.
+func (cu *CourseUpdate) AddChapters(c ...*Chapter) *CourseUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.AddChapterIDs(ids...)
+}
+
 // Mutation returns the CourseMutation object of the builder.
 func (cu *CourseUpdate) Mutation() *CourseMutation {
 	return cu.mutation
@@ -160,6 +176,27 @@ func (cu *CourseUpdate) Mutation() *CourseMutation {
 func (cu *CourseUpdate) ClearOwner() *CourseUpdate {
 	cu.mutation.ClearOwner()
 	return cu
+}
+
+// ClearChapters clears all "chapters" edges to the Chapter entity.
+func (cu *CourseUpdate) ClearChapters() *CourseUpdate {
+	cu.mutation.ClearChapters()
+	return cu
+}
+
+// RemoveChapterIDs removes the "chapters" edge to Chapter entities by IDs.
+func (cu *CourseUpdate) RemoveChapterIDs(ids ...int) *CourseUpdate {
+	cu.mutation.RemoveChapterIDs(ids...)
+	return cu
+}
+
+// RemoveChapters removes "chapters" edges to Chapter entities.
+func (cu *CourseUpdate) RemoveChapters(c ...*Chapter) *CourseUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.RemoveChapterIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -265,6 +302,51 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.ChaptersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   course.ChaptersTable,
+			Columns: []string{course.ChaptersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedChaptersIDs(); len(nodes) > 0 && !cu.mutation.ChaptersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   course.ChaptersTable,
+			Columns: []string{course.ChaptersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.ChaptersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   course.ChaptersTable,
+			Columns: []string{course.ChaptersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -414,6 +496,21 @@ func (cuo *CourseUpdateOne) SetOwner(c *Category) *CourseUpdateOne {
 	return cuo.SetOwnerID(c.ID)
 }
 
+// AddChapterIDs adds the "chapters" edge to the Chapter entity by IDs.
+func (cuo *CourseUpdateOne) AddChapterIDs(ids ...int) *CourseUpdateOne {
+	cuo.mutation.AddChapterIDs(ids...)
+	return cuo
+}
+
+// AddChapters adds the "chapters" edges to the Chapter entity.
+func (cuo *CourseUpdateOne) AddChapters(c ...*Chapter) *CourseUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.AddChapterIDs(ids...)
+}
+
 // Mutation returns the CourseMutation object of the builder.
 func (cuo *CourseUpdateOne) Mutation() *CourseMutation {
 	return cuo.mutation
@@ -423,6 +520,27 @@ func (cuo *CourseUpdateOne) Mutation() *CourseMutation {
 func (cuo *CourseUpdateOne) ClearOwner() *CourseUpdateOne {
 	cuo.mutation.ClearOwner()
 	return cuo
+}
+
+// ClearChapters clears all "chapters" edges to the Chapter entity.
+func (cuo *CourseUpdateOne) ClearChapters() *CourseUpdateOne {
+	cuo.mutation.ClearChapters()
+	return cuo
+}
+
+// RemoveChapterIDs removes the "chapters" edge to Chapter entities by IDs.
+func (cuo *CourseUpdateOne) RemoveChapterIDs(ids ...int) *CourseUpdateOne {
+	cuo.mutation.RemoveChapterIDs(ids...)
+	return cuo
+}
+
+// RemoveChapters removes "chapters" edges to Chapter entities.
+func (cuo *CourseUpdateOne) RemoveChapters(c ...*Chapter) *CourseUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.RemoveChapterIDs(ids...)
 }
 
 // Where appends a list predicates to the CourseUpdate builder.
@@ -558,6 +676,51 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(category.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.ChaptersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   course.ChaptersTable,
+			Columns: []string{course.ChaptersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedChaptersIDs(); len(nodes) > 0 && !cuo.mutation.ChaptersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   course.ChaptersTable,
+			Columns: []string{course.ChaptersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.ChaptersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   course.ChaptersTable,
+			Columns: []string{course.ChaptersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

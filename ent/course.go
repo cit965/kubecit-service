@@ -48,9 +48,11 @@ type Course struct {
 type CourseEdges struct {
 	// Owner holds the value of the owner edge.
 	Owner *Category `json:"owner,omitempty"`
+	// Chapters holds the value of the chapters edge.
+	Chapters []*Chapter `json:"chapters,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 }
 
 // OwnerOrErr returns the Owner value or an error if the edge
@@ -64,6 +66,15 @@ func (e CourseEdges) OwnerOrErr() (*Category, error) {
 		return e.Owner, nil
 	}
 	return nil, &NotLoadedError{edge: "owner"}
+}
+
+// ChaptersOrErr returns the Chapters value or an error if the edge
+// was not loaded in eager-loading.
+func (e CourseEdges) ChaptersOrErr() ([]*Chapter, error) {
+	if e.loadedTypes[1] {
+		return e.Chapters, nil
+	}
+	return nil, &NotLoadedError{edge: "chapters"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -176,6 +187,11 @@ func (c *Course) Value(name string) (ent.Value, error) {
 // QueryOwner queries the "owner" edge of the Course entity.
 func (c *Course) QueryOwner() *CategoryQuery {
 	return NewCourseClient(c.config).QueryOwner(c)
+}
+
+// QueryChapters queries the "chapters" edge of the Course entity.
+func (c *Course) QueryChapters() *ChapterQuery {
+	return NewCourseClient(c.config).QueryChapters(c)
 }
 
 // Update returns a builder for updating this Course.

@@ -13,6 +13,7 @@ type Category struct {
 	Id           int32
 	ParentId     int32
 	Level        int
+	Children     []*Category
 }
 
 type Course struct {
@@ -29,6 +30,16 @@ type Course struct {
 	CategoryId int
 }
 
+type Chapter struct {
+	Id             int
+	Name           string
+	ReleasedTime   time.Time
+	Description    string
+	Sort           int
+	HasFreePreview int
+	CourseId       int
+}
+
 // CategoryRepo is a Category repo.
 type CategoryRepo interface {
 	ListAll(ctx context.Context) ([]*Category, error)
@@ -41,12 +52,17 @@ type CategoryRepo interface {
 
 // CourseRepo is a Course repo.
 type CourseRepo interface {
-	SearchCourse(ctx context.Context, pageNum, pageSize *int32, categoryIds []int, level *int32, order *int32) ([]*Course, error)
+	SearchCourse(ctx context.Context, pageNum, pageSize *int32, categoryIds []int, level *int32, order *int32) ([]*Course, int32, error)
 	UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error)
 	ReviewCourse(ctx context.Context, id int, status int32) (*Course, error)
 	CreateCourse(ctx context.Context, course *Course) (*Course, error)
 	GetCourse(ctx context.Context, id int) (*Course, error)
 	DeleteCourse(ctx context.Context, id int) (int, error)
+
+	CreateChapter(ctx context.Context, chapter *Chapter) (*Chapter, error)
+	DeleteChapter(ctx context.Context, id int) (int, error)
+	ListChapters(ctx context.Context, courseId int) ([]*Chapter, error)
+	UpdateChapter(ctx context.Context, id int, chapter *Chapter) (*Chapter, error)
 }
 
 // CourseUsecase is a Category usecase.
@@ -70,6 +86,22 @@ func (uc *CourseUsecase) ListCategory(ctx context.Context, level, categoryId *in
 	return uc.repo.ListByLevelAndCategory(ctx, level, categoryId)
 }
 
+func (uc *CourseUsecase) ListCategoryV2(ctx context.Context, level, categoryId *int32) ([]*Category, error) {
+	categorires, err := uc.repo.ListByLevelAndCategory(ctx, level, categoryId)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, v := range categorires {
+		sub, err := uc.repo.ListSubCategories(ctx, v.Id)
+		if err != nil {
+			continue
+		}
+		v.Children = sub
+	}
+	return categorires, nil
+}
+
 func (uc *CourseUsecase) CreateCategory(ctx context.Context, category *Category) error {
 	return uc.repo.Create(ctx, category)
 }
@@ -91,14 +123,14 @@ type SearchFilterParam struct {
 	Order            *int32
 }
 
-func (uc *CourseUsecase) SearchCourse(ctx context.Context, filter *SearchFilterParam) ([]*Course, error) {
+func (uc *CourseUsecase) SearchCourse(ctx context.Context, filter *SearchFilterParam) ([]*Course, int32, error) {
 
 	var categoryIds []int
 	if filter.SecondCategoryId == nil {
 		if filter.FirstCategoryId != nil {
 			subCategories, err := uc.repo.ListSubCategories(ctx, *filter.FirstCategoryId)
 			if err != nil {
-				return nil, err
+				return nil, 0, err
 			}
 			for _, v := range subCategories {
 				categoryIds = append(categoryIds, int(v.Id))
@@ -130,4 +162,20 @@ func (uc *CourseUsecase) GetCourse(ctx context.Context, id int) (*Course, error)
 
 func (uc *CourseUsecase) DeleteCourse(ctx context.Context, id int) (int, error) {
 	return uc.courseRepo.DeleteCourse(ctx, id)
+}
+
+func (uc *CourseUsecase) CreateChapter(ctx context.Context, chapter *Chapter) (*Chapter, error) {
+	return uc.courseRepo.CreateChapter(ctx, chapter)
+}
+
+func (uc *CourseUsecase) DeleteChapter(ctx context.Context, id int) (int, error) {
+	return uc.courseRepo.DeleteChapter(ctx, id)
+}
+
+func (uc *CourseUsecase) ListChapters(ctx context.Context, courseId int) ([]*Chapter, error) {
+	return uc.courseRepo.ListChapters(ctx, courseId)
+}
+
+func (uc *CourseUsecase) UpdateChapter(ctx context.Context, id int, chapter *Chapter) (*Chapter, error) {
+	return uc.courseRepo.UpdateChapter(ctx, id, chapter)
 }

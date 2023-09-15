@@ -50,6 +50,30 @@ var (
 			},
 		},
 	}
+	// ChaptersColumns holds the columns for the "chapters" table.
+	ChaptersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "released_time", Type: field.TypeTime},
+		{Name: "description", Type: field.TypeString},
+		{Name: "sort", Type: field.TypeInt},
+		{Name: "has_free_preview", Type: field.TypeInt, Default: 2},
+		{Name: "course_id", Type: field.TypeInt, Nullable: true},
+	}
+	// ChaptersTable holds the schema information for the "chapters" table.
+	ChaptersTable = &schema.Table{
+		Name:       "chapters",
+		Columns:    ChaptersColumns,
+		PrimaryKey: []*schema.Column{ChaptersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "chapters_courses_chapters",
+				Columns:    []*schema.Column{ChaptersColumns[6]},
+				RefColumns: []*schema.Column{CoursesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
 	// CoursesColumns holds the columns for the "courses" table.
 	CoursesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -78,41 +102,32 @@ var (
 			},
 		},
 	}
-	// OrderInfosColumns holds the columns for the "order_infos" table.
-	OrderInfosColumns = []*schema.Column{
+	// LessonsColumns holds the columns for the "lessons" table.
+	LessonsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "order_id", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "course_id", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "course_name", Type: field.TypeString, SchemaType: map[string]string{"mysql": "VARCHAR(64)"}},
-		{Name: "course_price", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "course_describe", Type: field.TypeString, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
-		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
-		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "name", Type: field.TypeString},
+		{Name: "released_time", Type: field.TypeTime},
+		{Name: "sort", Type: field.TypeInt},
+		{Name: "type", Type: field.TypeInt},
+		{Name: "storage_path", Type: field.TypeString},
+		{Name: "source", Type: field.TypeString},
+		{Name: "courseware", Type: field.TypeString},
+		{Name: "is_free_preview", Type: field.TypeInt, Default: 2},
+		{Name: "chapter_id", Type: field.TypeInt, Nullable: true},
 	}
-	// OrderInfosTable holds the schema information for the "order_infos" table.
-	OrderInfosTable = &schema.Table{
-		Name:       "order_infos",
-		Columns:    OrderInfosColumns,
-		PrimaryKey: []*schema.Column{OrderInfosColumns[0]},
-	}
-	// OrdersColumns holds the columns for the "orders" table.
-	OrdersColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "user_id", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "order_sn", Type: field.TypeString, SchemaType: map[string]string{"mysql": "varchar(64)"}},
-		{Name: "pay_type", Type: field.TypeInt32, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "pay_status", Type: field.TypeInt32, Nullable: true, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "trade_price", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "trade_no", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(64)"}},
-		{Name: "pay_time", Type: field.TypeTime, Nullable: true, SchemaType: map[string]string{"mysql": "datetime"}},
-		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
-		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
-	}
-	// OrdersTable holds the schema information for the "orders" table.
-	OrdersTable = &schema.Table{
-		Name:       "orders",
-		Columns:    OrdersColumns,
-		PrimaryKey: []*schema.Column{OrdersColumns[0]},
+	// LessonsTable holds the schema information for the "lessons" table.
+	LessonsTable = &schema.Table{
+		Name:       "lessons",
+		Columns:    LessonsColumns,
+		PrimaryKey: []*schema.Column{LessonsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "lessons_chapters_lessons",
+				Columns:    []*schema.Column{LessonsColumns[9]},
+				RefColumns: []*schema.Column{ChaptersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// SettingsColumns holds the columns for the "settings" table.
 	SettingsColumns = []*schema.Column{
@@ -161,9 +176,9 @@ var (
 	Tables = []*schema.Table{
 		AccountsTable,
 		CategoriesTable,
+		ChaptersTable,
 		CoursesTable,
-		OrderInfosTable,
-		OrdersTable,
+		LessonsTable,
 		SettingsTable,
 		SlidersTable,
 		UsersTable,
@@ -172,5 +187,7 @@ var (
 
 func init() {
 	CategoriesTable.ForeignKeys[0].RefTable = CategoriesTable
+	ChaptersTable.ForeignKeys[0].RefTable = CoursesTable
 	CoursesTable.ForeignKeys[0].RefTable = CategoriesTable
+	LessonsTable.ForeignKeys[0].RefTable = ChaptersTable
 }
