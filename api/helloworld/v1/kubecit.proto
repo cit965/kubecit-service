@@ -314,6 +314,45 @@ service Kubecit {
       tags: "order"
     };
   }
+  //=============================讲师相关================================================
+  rpc ListAllTeacher (Empty) returns (ListAllTeacherReply) {
+    option (google.api.http) = {
+      get: "/api/teachers",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "所有讲师"
+      tags: "teacher"
+    };
+  }
+  rpc GetTeacher (GetTeacherRequest) returns (TeacherInfo) {
+    option (google.api.http) = {
+      get: "/api/teacher/{id}",
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "讲师详情"
+      tags: "teacher"
+    };
+  }
+
+}
+
+message GetTeacherRequest {
+  int32 id = 1;
+}
+message ListAllTeacherReply {
+    repeated TeacherInfo teachers =1;
+}
+
+message TeacherInfo {
+  string detail = 1; // 讲师详情
+  string curriculum_vitae = 2; // 履历描述
+  string works = 3; // 以往作品
+  string skills = 4; // 技能点
+  string avator = 5; // 头像
+  google.protobuf.Timestamp create_at = 6; // 创建时间
+  google.protobuf.Timestamp update_at = 7; // 更新时间
+  int32 id = 8;
 }
 
 // The request message containing the user's name.

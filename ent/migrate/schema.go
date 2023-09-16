@@ -195,6 +195,23 @@ var (
 		Columns:    SlidersColumns,
 		PrimaryKey: []*schema.Column{SlidersColumns[0]},
 	}
+	// TeachersColumns holds the columns for the "teachers" table.
+	TeachersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "detail", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "curriculum_vitae", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "works", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "skills", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "avator", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
+		{Name: "create_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "update_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+	}
+	// TeachersTable holds the schema information for the "teachers" table.
+	TeachersTable = &schema.Table{
+		Name:       "teachers",
+		Columns:    TeachersColumns,
+		PrimaryKey: []*schema.Column{TeachersColumns[0]},
+	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -219,6 +236,7 @@ var (
 		OrdersTable,
 		SettingsTable,
 		SlidersTable,
+		TeachersTable,
 		UsersTable,
 	}
 )

@@ -31,6 +31,8 @@ const OperationKubecitDeleteSlider = "/helloworld.v1.Kubecit/DeleteSlider"
 const OperationKubecitGetCourse = "/helloworld.v1.Kubecit/GetCourse"
 const OperationKubecitGetInfo = "/helloworld.v1.Kubecit/GetInfo"
 const OperationKubecitGetSlider = "/helloworld.v1.Kubecit/GetSlider"
+const OperationKubecitGetTeacher = "/helloworld.v1.Kubecit/GetTeacher"
+const OperationKubecitListAllTeacher = "/helloworld.v1.Kubecit/ListAllTeacher"
 const OperationKubecitListCategory = "/helloworld.v1.Kubecit/ListCategory"
 const OperationKubecitListCategoryV2 = "/helloworld.v1.Kubecit/ListCategoryV2"
 const OperationKubecitListChapters = "/helloworld.v1.Kubecit/ListChapters"
@@ -63,6 +65,9 @@ type KubecitHTTPServer interface {
 	// GetInfo ========================== 用户相关接口 ===================================
 	GetInfo(context.Context, *GetInfoRequest) (*UserInfoReply, error)
 	GetSlider(context.Context, *GetSliderRequest) (*GetSliderReply, error)
+	GetTeacher(context.Context, *GetTeacherRequest) (*TeacherInfo, error)
+	// ListAllTeacher=============================讲师相关================================================
+	ListAllTeacher(context.Context, *Empty) (*ListAllTeacherReply, error)
 	ListCategory(context.Context, *ListCategoryReq) (*ListCategoryResp, error)
 	ListCategoryV2(context.Context, *Empty) (*ListCategoryResp, error)
 	ListChapters(context.Context, *ListChaptersRequest) (*ListChaptersReply, error)
@@ -110,6 +115,8 @@ func RegisterKubecitHTTPServer(s *http.Server, srv KubecitHTTPServer) {
 	r.GET("/api/sliders", _Kubecit_ListSlidersByPriority0_HTTP_Handler(srv))
 	r.GET("/api/systemsettings", _Kubecit_SystemSettings0_HTTP_Handler(srv))
 	r.POST("/api/order", _Kubecit_CreateOrder0_HTTP_Handler(srv))
+	r.GET("/api/teachers", _Kubecit_ListAllTeacher0_HTTP_Handler(srv))
+	r.GET("/api/teacher/{id}", _Kubecit_GetTeacher0_HTTP_Handler(srv))
 }
 
 func _Kubecit_ListCategory0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
@@ -700,6 +707,47 @@ func _Kubecit_CreateOrder0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Con
 	}
 }
 
+func _Kubecit_ListAllTeacher0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in Empty
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationKubecitListAllTeacher)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListAllTeacher(ctx, req.(*Empty))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListAllTeacherReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Kubecit_GetTeacher0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetTeacherRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationKubecitGetTeacher)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetTeacher(ctx, req.(*GetTeacherRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*TeacherInfo)
+		return ctx.Result(200, reply)
+	}
+}
+
 type KubecitHTTPClient interface {
 	CreateCategory(ctx context.Context, req *CategoryInfo, opts ...http.CallOption) (rsp *Empty, err error)
 	CreateChapter(ctx context.Context, req *CreateChapterRequest, opts ...http.CallOption) (rsp *CreateChapterReply, err error)
@@ -713,6 +761,8 @@ type KubecitHTTPClient interface {
 	GetCourse(ctx context.Context, req *GetCourseRequest, opts ...http.CallOption) (rsp *GetCourseReply, err error)
 	GetInfo(ctx context.Context, req *GetInfoRequest, opts ...http.CallOption) (rsp *UserInfoReply, err error)
 	GetSlider(ctx context.Context, req *GetSliderRequest, opts ...http.CallOption) (rsp *GetSliderReply, err error)
+	GetTeacher(ctx context.Context, req *GetTeacherRequest, opts ...http.CallOption) (rsp *TeacherInfo, err error)
+	ListAllTeacher(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *ListAllTeacherReply, err error)
 	ListCategory(ctx context.Context, req *ListCategoryReq, opts ...http.CallOption) (rsp *ListCategoryResp, err error)
 	ListCategoryV2(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *ListCategoryResp, err error)
 	ListChapters(ctx context.Context, req *ListChaptersRequest, opts ...http.CallOption) (rsp *ListChaptersReply, err error)
@@ -886,6 +936,32 @@ func (c *KubecitHTTPClientImpl) GetSlider(ctx context.Context, in *GetSliderRequ
 	pattern := "/api/slider/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationKubecitGetSlider))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *KubecitHTTPClientImpl) GetTeacher(ctx context.Context, in *GetTeacherRequest, opts ...http.CallOption) (*TeacherInfo, error) {
+	var out TeacherInfo
+	pattern := "/api/teacher/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationKubecitGetTeacher))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *KubecitHTTPClientImpl) ListAllTeacher(ctx context.Context, in *Empty, opts ...http.CallOption) (*ListAllTeacherReply, error) {
+	var out ListAllTeacherReply
+	pattern := "/api/teachers"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationKubecitListAllTeacher))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

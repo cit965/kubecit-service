@@ -17,9 +17,10 @@ type KubecitService struct {
 	su          *biz.SystemUsecase
 	userUseCase *biz.UserUsecase
 	orderCase   *biz.OrderUseCase
+	teacherCase *biz.TeacherCase
 }
 
 // NewGreeterService new a greeter service.
-func NewKubecitService(cc *biz.CourseUsecase, su *biz.SystemUsecase, userUseCase *biz.UserUsecase, orderCase *biz.OrderUseCase) *KubecitService {
-	return &KubecitService{cc: cc, su: su, userUseCase: userUseCase, orderCase: orderCase}
+func NewKubecitService(cc *biz.CourseUsecase, su *biz.SystemUsecase, userUseCase *biz.UserUsecase, orderCase *biz.OrderUseCase, teacherCase *biz.TeacherCase) *KubecitService {
+	return &KubecitService{cc: cc, su: su, userUseCase: userUseCase, orderCase: orderCase, teacherCase: teacherCase}
 }
