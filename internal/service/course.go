@@ -372,16 +372,18 @@ func (s *KubecitService) UpdateLesson(ctx context.Context, req *pb.UpdateLessonR
 		return nil, err
 	}
 	return &pb.UpdateLessonReply{
-		Name:          res.Name,
-		Sort:          int32(res.Sort),
-		Type:          int32(res.Type),
-		StoragePath:   res.StoragePath,
-		Source:        res.Source,
-		Courseware:    res.Courseware,
-		IsFreePreview: int32(res.IsFreePreview),
-		ChapterId:     int32(res.ChapterId),
-		Id:            int32(res.Id),
-		ReleasedTime:  timestamppb.New(res.ReleasedTime),
+		Data: &pb.LessonInfo{
+			Name:          res.Name,
+			Sort:          int32(res.Sort),
+			Type:          int32(res.Type),
+			StoragePath:   res.StoragePath,
+			Source:        res.Source,
+			Courseware:    res.Courseware,
+			IsFreePreview: int32(res.IsFreePreview),
+			ChapterId:     int32(res.ChapterId),
+			Id:            int32(res.Id),
+			ReleasedTime:  timestamppb.New(res.ReleasedTime),
+		},
 	}, nil
 }
 func (s *KubecitService) DeleteLesson(ctx context.Context, req *pb.DeleteLessonRequest) (*pb.DeleteLessonReply, error) {

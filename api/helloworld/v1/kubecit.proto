@@ -3,6 +3,7 @@ syntax = "proto3";
 package helloworld.v1;
 
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
@@ -427,18 +428,68 @@ enum CourseStatus {
 }
 
 message CourseInfo {
-  int32 id = 1;
-  int32 level = 2;
-  string name = 3;
-  string detail = 4;
-  string cover = 5;
-  float price = 6;
-  repeated string tags = 7;
-  CourseStatus status = 8;
-  int32 categoryId = 9;
+  int32 id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目id",
+      description: "科目id"
+    }
+  ];
+  int32 level = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目级别",
+      description: "科目级别 0 初级 1 中级 2 高级"
+    }
+  ];
+  string name = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目名称",
+      description: "科目名称"
+    }
+  ];
+  string detail = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目描述",
+      description: "科目描述"
+    }
+  ];
+  string cover = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目封面",
+      description: "科目封面"
+    }
+  ];
+  float price = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目价格",
+      description: "科目价格"
+    }
+  ];
+  repeated string tags = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目标签",
+      description: "科目标签"
+    }
+  ];
+  CourseStatus status = 8[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目状态",
+      description: "NOT_REVIEWED = 0; // 未审核 REVIEWED = 1; // 已审核 SHELVED = 2; // 已上架 OFF_SHELVED = 3; // 已下架"
+    }
+  ];
+  int32 categoryId = 9[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "分类ID",
+      description: "分类ID"
+    }
+  ];
   google.protobuf.Timestamp createdAt = 10;
   google.protobuf.Timestamp updatedAt = 11;
-  int32 people = 12;
+  int32 people = 12[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "人数",
+      description: "人数"
+    }
+  ];
 }
 
 
@@ -458,24 +509,108 @@ message Tag {
 }
 
 message SearchCourseRequest {
-  optional int32 pageNum = 1;
-  optional int32 pageSize = 2;
-  optional int32 firstCategory = 3;
-  optional int32 secondCategory = 4;
-  optional  int32 level = 5;
-  optional int32 order = 6;
+  optional int32 pageNum = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "页码",
+      description: "页码"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 pageSize = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "页数量",
+      description: "页数量"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 firstCategory = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目id",
+      description: "需要审核的科目id"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional int32 secondCategory = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "二级分类id",
+      description: "二级分类id"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional  int32 level = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目等级",
+      description: "0 初级 1 中级 2 高级"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional int32 order = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "是否排序",
+      description: "不传值则按科目创建时间正序排列，传值则按创建时间倒序排列"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
 }
 
 
 message UpdateCourseRequest {
-  int32 id = 1;
-  int32 level = 2;
-  string name = 3;
-  string detail = 4;
-  string cover = 5;
-  float price = 6;
-  repeated string tags = 7;
-  int32 categoryId = 9;
+  int32 id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目ID",
+      description: "科目ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int32 level = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目等级",
+      description: "0 初级 1 中级 2 高级"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string name = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目名称",
+      description: "科目名称"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string detail = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目描述",
+      description: "科目描述"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string cover = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目封面",
+      description: "科目封面"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  float price = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目价格",
+      description: "科目价格"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  repeated string tags = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目标签",
+      description: "科目标签"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int32 categoryId = 9[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目分类ID",
+      description: "科目分类ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message UpdateCourseReply {
@@ -483,8 +618,20 @@ message UpdateCourseReply {
 }
 
 message ReviewCourseRequest {
-  int32 id = 1;
-  CourseStatus status = 2;
+  int32 id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目id",
+      description: "需要审核的科目id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  CourseStatus status = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目状态",
+      description: "NOT_REVIEWED = 0; // 未审核 REVIEWED = 1; // 已审核 SHELVED = 2; // 已上架 OFF_SHELVED = 3; // 已下架"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message ReviewCourseReply {
@@ -492,13 +639,55 @@ message ReviewCourseReply {
 }
 
 message CreateCourseRequest {
-  int32 level = 2;
-  string name = 3;
-  string detail = 4;
-  string cover = 5;
-  float price = 6;
-  repeated string tags = 7;
-  int32 categoryId = 9;
+  int32 level = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目等级",
+      description: "0 初级 1 中级 2 高级"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  string name = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目名称",
+      description: "科目名称"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string detail = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目详情",
+      description: "科目详情"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string cover = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目封面",
+      description: "科目封面"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  float price = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目价格",
+      description: "科目价格"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  repeated string tags = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目标签",
+      description: "NOT_REVIEWED = 0; // 未审核 REVIEWED = 1; // 已审核 SHELVED = 2; // 已上架 OFF_SHELVED = 3; // 已下架"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  int32 categoryId = 9[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "分类Id",
+      description: "分类Id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message CreateCourseReply {
@@ -514,7 +703,13 @@ message ListCoursesReply {
 }
 
 message GetCourseRequest {
-  int32 id = 1;
+  int32 id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目id",
+      description: "科目id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message GetCourseReply {
@@ -526,28 +721,104 @@ message DeleteCourseRequest {
 }
 
 message DeleteCourseReply {
-  int32 count = 1;
+  int32 count = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目id",
+      description: "科目id"
+    }
+  ];
 }
 
 message ChapterInfo {
-  int32 id = 7;
-  string name = 1;
-  google.protobuf.Timestamp releasedTime = 2;
-  string description = 3;
-  int32 sort = 4;
-  int32 hasFreePreview = 5;
-  int32 courseId = 6;
+  int32 id = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节ID",
+      description: "章节ID"
+    }
+  ];
+  string name = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节名称",
+      description: "章节名称"
+    }
+  ];
+  google.protobuf.Timestamp releasedTime = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "发布时间",
+      description: "发布时间"
+    }
+  ];
+  string description = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节描述",
+      description: "章节描述"
+    }
+  ];
+  int32 sort = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节排序",
+      description: "章节排序"
+    }
+  ];
+  int32 hasFreePreview = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "是否有免费预览",
+      description: "1 有 2 没有"
+    }
+  ];
+  int32 courseId = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目id",
+      description: "科目id"
+    }
+  ];
 }
 
 message CreateChapterRequest {
-  string name = 1;
-  string description = 3;
-  optional int32 sort = 4;
-  optional int32 hasFreePreview = 5;
-  optional int32 courseId = 6;
+  string name = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节id",
+      description: "章节id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string description = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节描述",
+      description: "章节描述"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional int32 sort = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "排序序号",
+      description: "排序序号"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional int32 hasFreePreview = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "是否有免费预览课程",
+      description: "1 有 2 没有"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional int32 courseId = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目id",
+      description: "科目id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 message CreateChapterReply {
-  ChapterInfo data = 1;
+  ChapterInfo data = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节id",
+      description: "章节id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 message DeleteChapterRequest {
   int32 id = 1;
@@ -556,32 +827,122 @@ message DeleteChapterReply {
   int32 count = 1;
 }
 message UpdateChapterRequest {
-  int32 id = 7;
-  string name = 1;
-  string description = 3;
-  optional int32 sort = 4;
-  optional int32 hasFreePreview = 5;
-  optional int32 courseId = 6;
+  int32 id = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节id",
+      description: "章节id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string name = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节名称",
+      description: "章节名称"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string description = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节描述",
+      description: "章节描述"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 sort = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节排序",
+      description: "章节排序"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 hasFreePreview = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "是否有免费预览课程",
+      description: "1 有 2 没有"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 courseId = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目ID",
+      description: "科目ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 message UpdateChapterReply {
   ChapterInfo data = 1;
 }
 message ListChaptersRequest {
-  int32 courseId = 1;
+  int32 courseId = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目ID",
+      description: "科目ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 message ListChaptersReply {
   repeated ChapterInfo data = 1;
 }
 
 message CreateLessonRequest {
-  string name = 1;
-  optional int32 sort = 2;
-  optional int32 type = 3;
-  string storagePath = 4;
-  string source = 5;
-  string courseware = 6;
-  optional int32 isFreePreview = 7;
-  optional int32 chapterId = 8;
+  string name = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程ID",
+      description: "课程ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 sort = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程排序",
+      description: "课程排序"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional int32 type = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程类型",
+      description: "1 视频 2 音频"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  string storagePath = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程文件地址",
+      description: "课程文件地址"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  string source = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程来源",
+      description: "课程来源"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  string courseware = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课件地址",
+      description: "课件地址"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional int32 isFreePreview = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "是否为免费预览",
+      description: "1 是 2 不是"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional int32 chapterId = 8[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "科目ID",
+      description: "科目ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message CreateLessonReply {
@@ -589,7 +950,13 @@ message CreateLessonReply {
 }
 
 message ListChapterLessonsWithCourIdRequest {
-   int32 courseId = 1;
+   int32 courseId = 1[
+     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+       title: "科目ID",
+       description: "科目ID"
+     },
+     (google.api.field_behavior) = REQUIRED
+   ];
 }
 
 message ListChapterLessonsWithCourIdReply {
@@ -602,47 +969,138 @@ message ChapterLessonsInfo {
 }
 
 message UpdateLessonRequest {
-  string name = 1;
-  optional int32 sort = 2;
-  optional int32 type = 3;
-  string storagePath = 4;
-  string source = 5;
-  string courseware = 6;
-  optional int32 isFreePreview = 7;
-  optional int32 chapterId = 8;
-   int32 lessonId = 9;
+  string name = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程名称",
+      description: "课程名称"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 sort = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程排序",
+      description: "课程排序"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 type = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程类型",
+      description: "课程类型"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string storagePath = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程文件地址",
+      description: "课程文件地址"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string source = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程来源",
+      description: "课程来源"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string courseware = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课件地址",
+      description: "课件地址"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 isFreePreview = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "是否免费预览",
+      description: "1 是 2 否"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional int32 chapterId = 8[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节ID",
+      description: "章节ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int32 lessonId = 9[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程ID",
+      description: "课程ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 message UpdateLessonReply {
-  string name = 1;
-  int32 sort = 2;
-  int32 type = 3;
-  string storagePath = 4;
-  string source = 5;
-  string courseware = 6;
-  int32 isFreePreview = 7;
-  int32 chapterId = 8;
-  int32 id = 9;
-  google.protobuf.Timestamp releasedTime = 10;
+  LessonInfo data = 1;
 }
 
 message DeleteLessonRequest {
-  int32 lessonId = 1;
+  int32 lessonId = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程ID",
+      description: "课程ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 message DeleteLessonReply {
   int32 count = 1;
 }
 
 message LessonInfo {
-  string name = 1;
-  int32 sort = 2;
-  int32 type = 3;
-  string storagePath = 4;
-  string source = 5;
-  string courseware = 6;
-  int32 isFreePreview = 7;
-  int32 chapterId = 8;
-  int32 id = 9;
-  google.protobuf.Timestamp releasedTime = 10;
+  string name = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程名称",
+      description: "课程名称"
+    }];
+  int32 sort = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程排序",
+      description: "课程排序"
+    }];
+  int32 type = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程类型",
+      description: "1 视频 2 音频"
+    }];
+  string storagePath = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程文件路径",
+      description: "课程文件路径"
+    }];
+  string source = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程来源",
+      description: "课程来源"
+    }];
+  string courseware = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课件地址",
+      description: "课件地址"
+    }];
+  int32 isFreePreview = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "是否免费预览",
+      description: "1 是 2 否"
+    }];
+  int32 chapterId = 8[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "章节ID",
+      description: "章节ID"
+    }];
+  int32 id = 9[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程ID",
+      description: "课程ID"
+    }];
+  google.protobuf.Timestamp releasedTime = 10[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "发布时间",
+      description: "发布时间"
+    }];
 }
 
 message SliderInfo {

@@ -4647,9 +4647,7 @@ func (m *ListChapterLessonsWithCourIdRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.CourseId != nil {
-		// no validation rules for CourseId
-	}
+	// no validation rules for CourseId
 
 	if len(errors) > 0 {
 		return ListChapterLessonsWithCourIdRequestMultiError(errors)
@@ -5067,6 +5065,8 @@ func (m *UpdateLessonRequest) validate(all bool) error {
 
 	// no validation rules for Courseware
 
+	// no validation rules for LessonId
+
 	if m.Sort != nil {
 		// no validation rules for Sort
 	}
@@ -5081,10 +5081,6 @@ func (m *UpdateLessonRequest) validate(all bool) error {
 
 	if m.ChapterId != nil {
 		// no validation rules for ChapterId
-	}
-
-	if m.LessonId != nil {
-		// no validation rules for LessonId
 	}
 
 	if len(errors) > 0 {
@@ -5189,30 +5185,12 @@ func (m *UpdateLessonReply) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Name
-
-	// no validation rules for Sort
-
-	// no validation rules for Type
-
-	// no validation rules for StoragePath
-
-	// no validation rules for Source
-
-	// no validation rules for Courseware
-
-	// no validation rules for IsFreePreview
-
-	// no validation rules for ChapterId
-
-	// no validation rules for Id
-
 	if all {
-		switch v := interface{}(m.GetReleasedTime()).(type) {
+		switch v := interface{}(m.GetData()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, UpdateLessonReplyValidationError{
-					field:  "ReleasedTime",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -5220,16 +5198,16 @@ func (m *UpdateLessonReply) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, UpdateLessonReplyValidationError{
-					field:  "ReleasedTime",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetReleasedTime()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return UpdateLessonReplyValidationError{
-				field:  "ReleasedTime",
+				field:  "Data",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
