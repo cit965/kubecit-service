@@ -202,6 +202,8 @@ var (
 		{Name: "curriculum_vitae", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
 		{Name: "works", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
 		{Name: "skills", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "name", Type: field.TypeString, SchemaType: map[string]string{"mysql": "varchar(64)"}},
+		{Name: "level", Type: field.TypeInt, SchemaType: map[string]string{"mysql": "int"}},
 		{Name: "avator", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
 		{Name: "create_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "update_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},

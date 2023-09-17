@@ -44,6 +44,8 @@ func (t *teacherRepo) GetById(ctx context.Context, id int) (*biz.Teacher, error)
 		Works:           teacher.Works,
 		Skills:          teacher.Skills,
 		Avator:          teacher.Avator,
+		Name:            teacher.Name,
+		Level:           int32(teacher.Level),
 		CreateAt:        teacher.CreateAt,
 		UpdateAt:        teacher.UpdateAt,
 	}, nil

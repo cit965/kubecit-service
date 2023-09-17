@@ -1134,6 +1134,11 @@ components:
                 id:
                     type: integer
                     format: int32
+                name:
+                    type: string
+                level:
+                    type: integer
+                    format: enum
         helloworld.v1.UpdateCategoryReq:
             type: object
             properties:

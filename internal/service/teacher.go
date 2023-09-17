@@ -24,6 +24,8 @@ func (s *KubecitService) ListAllTeacher(ctx context.Context, req *pb.Empty) (*pb
 			Avator:          teacher.Avator,
 			CreateAt:        timestamppb.New(teacher.CreateAt),
 			UpdateAt:        timestamppb.New(teacher.UpdateAt),
+			Name:            teacher.Name,
+			Level:           pb.TeacherLevel(teacher.Level),
 		}
 		teacherAll = append(teacherAll, data)
 	}
@@ -48,5 +50,7 @@ func (s *KubecitService) GetTeacher(ctx context.Context, req *pb.GetTeacherReque
 		Avator:          teacher.Avator,
 		CreateAt:        timestamppb.New(teacher.CreateAt),
 		UpdateAt:        timestamppb.New(teacher.UpdateAt),
+		Name:            teacher.Name,
+		Level:           pb.TeacherLevel(teacher.Level),
 	}, nil
 }

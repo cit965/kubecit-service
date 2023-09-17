@@ -6967,6 +6967,9 @@ type TeacherMutation struct {
 	curriculum_vitae *string
 	works            *string
 	skills           *string
+	name             *string
+	level            *int
+	addlevel         *int
 	avator           *string
 	create_at        *time.Time
 	update_at        *time.Time
@@ -7270,6 +7273,98 @@ func (m *TeacherMutation) ResetSkills() {
 	delete(m.clearedFields, teacher.FieldSkills)
 }
 
+// SetName sets the "name" field.
+func (m *TeacherMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *TeacherMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *TeacherMutation) ResetName() {
+	m.name = nil
+}
+
+// SetLevel sets the "level" field.
+func (m *TeacherMutation) SetLevel(i int) {
+	m.level = &i
+	m.addlevel = nil
+}
+
+// Level returns the value of the "level" field in the mutation.
+func (m *TeacherMutation) Level() (r int, exists bool) {
+	v := m.level
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLevel returns the old "level" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldLevel(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLevel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLevel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLevel: %w", err)
+	}
+	return oldValue.Level, nil
+}
+
+// AddLevel adds i to the "level" field.
+func (m *TeacherMutation) AddLevel(i int) {
+	if m.addlevel != nil {
+		*m.addlevel += i
+	} else {
+		m.addlevel = &i
+	}
+}
+
+// AddedLevel returns the value that was added to the "level" field in this mutation.
+func (m *TeacherMutation) AddedLevel() (r int, exists bool) {
+	v := m.addlevel
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetLevel resets all changes to the "level" field.
+func (m *TeacherMutation) ResetLevel() {
+	m.level = nil
+	m.addlevel = nil
+}
+
 // SetAvator sets the "avator" field.
 func (m *TeacherMutation) SetAvator(s string) {
 	m.avator = &s
@@ -7425,7 +7520,7 @@ func (m *TeacherMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TeacherMutation) Fields() []string {
-	fields := make([]string, 0, 7)
+	fields := make([]string, 0, 9)
 	if m.detail != nil {
 		fields = append(fields, teacher.FieldDetail)
 	}
@@ -7437,6 +7532,12 @@ func (m *TeacherMutation) Fields() []string {
 	}
 	if m.skills != nil {
 		fields = append(fields, teacher.FieldSkills)
+	}
+	if m.name != nil {
+		fields = append(fields, teacher.FieldName)
+	}
+	if m.level != nil {
+		fields = append(fields, teacher.FieldLevel)
 	}
 	if m.avator != nil {
 		fields = append(fields, teacher.FieldAvator)
@@ -7463,6 +7564,10 @@ func (m *TeacherMutation) Field(name string) (ent.Value, bool) {
 		return m.Works()
 	case teacher.FieldSkills:
 		return m.Skills()
+	case teacher.FieldName:
+		return m.Name()
+	case teacher.FieldLevel:
+		return m.Level()
 	case teacher.FieldAvator:
 		return m.Avator()
 	case teacher.FieldCreateAt:
@@ -7486,6 +7591,10 @@ func (m *TeacherMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldWorks(ctx)
 	case teacher.FieldSkills:
 		return m.OldSkills(ctx)
+	case teacher.FieldName:
+		return m.OldName(ctx)
+	case teacher.FieldLevel:
+		return m.OldLevel(ctx)
 	case teacher.FieldAvator:
 		return m.OldAvator(ctx)
 	case teacher.FieldCreateAt:
@@ -7529,6 +7638,20 @@ func (m *TeacherMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetSkills(v)
 		return nil
+	case teacher.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case teacher.FieldLevel:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLevel(v)
+		return nil
 	case teacher.FieldAvator:
 		v, ok := value.(string)
 		if !ok {
@@ -7557,13 +7680,21 @@ func (m *TeacherMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *TeacherMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addlevel != nil {
+		fields = append(fields, teacher.FieldLevel)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *TeacherMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case teacher.FieldLevel:
+		return m.AddedLevel()
+	}
 	return nil, false
 }
 
@@ -7572,6 +7703,13 @@ func (m *TeacherMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *TeacherMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case teacher.FieldLevel:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddLevel(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Teacher numeric field %s", name)
 }
@@ -7643,6 +7781,12 @@ func (m *TeacherMutation) ResetField(name string) error {
 		return nil
 	case teacher.FieldSkills:
 		m.ResetSkills()
+		return nil
+	case teacher.FieldName:
+		m.ResetName()
+		return nil
+	case teacher.FieldLevel:
+		m.ResetLevel()
 		return nil
 	case teacher.FieldAvator:
 		m.ResetAvator()

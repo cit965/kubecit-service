@@ -385,6 +385,15 @@ message ListAllTeacherReply {
     repeated TeacherInfo teachers =1;
 }
 
+enum TeacherLevel {
+  ENTRY = 0; // 入门
+  PRIMARY = 1; //初级
+  INTERMEDIATE = 2; //中级
+  SENIOR = 3;//高级
+  MASTER = 4;//大师
+}
+
+
 message TeacherInfo {
   string detail = 1; // 讲师详情
   string curriculum_vitae = 2; // 履历描述
@@ -394,6 +403,8 @@ message TeacherInfo {
   google.protobuf.Timestamp create_at = 6; // 创建时间
   google.protobuf.Timestamp update_at = 7; // 更新时间
   int32 id = 8;
+  string name = 9;
+  TeacherLevel level= 10;
 }
 
 // The request message containing the user's name.

@@ -139,11 +139,11 @@ func init() {
 	teacherFields := schema.Teacher{}.Fields()
 	_ = teacherFields
 	// teacherDescCreateAt is the schema descriptor for create_at field.
-	teacherDescCreateAt := teacherFields[5].Descriptor()
+	teacherDescCreateAt := teacherFields[7].Descriptor()
 	// teacher.DefaultCreateAt holds the default value on creation for the create_at field.
 	teacher.DefaultCreateAt = teacherDescCreateAt.Default.(func() time.Time)
 	// teacherDescUpdateAt is the schema descriptor for update_at field.
-	teacherDescUpdateAt := teacherFields[6].Descriptor()
+	teacherDescUpdateAt := teacherFields[8].Descriptor()
 	// teacher.DefaultUpdateAt holds the default value on creation for the update_at field.
 	teacher.DefaultUpdateAt = teacherDescUpdateAt.Default.(func() time.Time)
 	// teacher.UpdateDefaultUpdateAt holds the default value on update for the update_at field.

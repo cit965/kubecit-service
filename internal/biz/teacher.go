@@ -13,6 +13,8 @@ type Teacher struct {
 	Works           string
 	Skills          string
 	Avator          string
+	Name            string
+	Level           int32
 	CreateAt        time.Time
 	UpdateAt        time.Time
 }

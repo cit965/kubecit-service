@@ -367,6 +367,10 @@ func (m *TeacherInfo) validate(all bool) error {
 
 	// no validation rules for Id
 
+	// no validation rules for Name
+
+	// no validation rules for Level
+
 	if len(errors) > 0 {
 		return TeacherInfoMultiError(errors)
 	}
@@ -5056,9 +5060,7 @@ func (m *ListChapterLessonsWithCourIdRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.CourseId != nil {
-		// no validation rules for CourseId
-	}
+	// no validation rules for CourseId
 
 	if len(errors) > 0 {
 		return ListChapterLessonsWithCourIdRequestMultiError(errors)
@@ -5476,6 +5478,8 @@ func (m *UpdateLessonRequest) validate(all bool) error {
 
 	// no validation rules for Courseware
 
+	// no validation rules for LessonId
+
 	if m.Sort != nil {
 		// no validation rules for Sort
 	}
@@ -5490,10 +5494,6 @@ func (m *UpdateLessonRequest) validate(all bool) error {
 
 	if m.ChapterId != nil {
 		// no validation rules for ChapterId
-	}
-
-	if m.LessonId != nil {
-		// no validation rules for LessonId
 	}
 
 	if len(errors) > 0 {

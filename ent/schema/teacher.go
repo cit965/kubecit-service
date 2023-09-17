@@ -33,6 +33,14 @@ func (Teacher) Fields() []ent.Field {
 			dialect.MySQL: "text", // Override MySQL.
 		}).Optional().Comment("技能点"),
 
+		field.String("name").SchemaType(map[string]string{
+			dialect.MySQL: "varchar(64)", // Override MySQL.
+		}).Comment("名字"),
+
+		field.Int("level").SchemaType(map[string]string{
+			dialect.MySQL: "int", // Override MySQL.
+		}).Comment("级别"),
+
 		field.String("avator").SchemaType(map[string]string{
 			dialect.MySQL: "varchar(255)", // Override MySQL.
 		}).Optional().Comment("头像"),
