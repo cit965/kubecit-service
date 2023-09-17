@@ -547,6 +547,38 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.SystemSettingsReply'
+    /api/teacher/{id}:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_GetTeacher
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.TeacherInfo'
+    /api/teachers:
+        get:
+            tags:
+                - Kubecit
+            description: =============================讲师相关================================================
+            operationId: Kubecit_ListAllTeacher
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.ListAllTeacherReply'
     /api/u/loginByJson:
         post:
             tags:
@@ -882,6 +914,13 @@ components:
                 releasedTime:
                     type: string
                     format: date-time
+        helloworld.v1.ListAllTeacherReply:
+            type: object
+            properties:
+                teachers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.TeacherInfo'
         helloworld.v1.ListCategoryResp:
             type: object
             properties:
@@ -1071,6 +1110,28 @@ components:
                     type: integer
                     format: int32
                 course:
+                    type: integer
+                    format: int32
+        helloworld.v1.TeacherInfo:
+            type: object
+            properties:
+                detail:
+                    type: string
+                curriculumVitae:
+                    type: string
+                works:
+                    type: string
+                skills:
+                    type: string
+                avator:
+                    type: string
+                createAt:
+                    type: string
+                    format: date-time
+                updateAt:
+                    type: string
+                    format: date-time
+                id:
                     type: integer
                     format: int32
         helloworld.v1.UpdateCategoryReq:
