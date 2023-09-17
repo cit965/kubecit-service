@@ -628,7 +628,7 @@ message CreateLessonReply {
 }
 
 message ListChapterLessonsWithCourIdRequest {
-  optional int32 courseId = 1;
+   int32 courseId = 1;
 }
 
 message ListChapterLessonsWithCourIdReply {
@@ -649,7 +649,7 @@ message UpdateLessonRequest {
   string courseware = 6;
   optional int32 isFreePreview = 7;
   optional int32 chapterId = 8;
-  optional int32 lessonId = 9;
+   int32 lessonId = 9;
 }
 message UpdateLessonReply {
   string name = 1;
