@@ -289,3 +289,105 @@ func (s *KubecitService) UpdateChapter(ctx context.Context, req *pb.UpdateChapte
 		CourseId:       int32(res.CourseId),
 	}}, nil
 }
+
+func (s *KubecitService) CreateLesson(ctx context.Context, req *pb.CreateLessonRequest) (*pb.CreateLessonReply, error) {
+	ins := &biz.Lesson{
+		Name:          req.GetName(),
+		Sort:          int(req.GetSort()),
+		Type:          int(req.GetType()),
+		StoragePath:   req.GetStoragePath(),
+		Source:        req.GetSource(),
+		Courseware:    req.GetCourseware(),
+		IsFreePreview: int(req.GetIsFreePreview()),
+		ChapterId:     int(req.GetChapterId()),
+	}
+	res, err := s.cc.CreateLesson(ctx, ins)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateLessonReply{Data: &pb.LessonInfo{
+		Name:          res.Name,
+		Sort:          int32(res.Sort),
+		Type:          int32(res.Type),
+		StoragePath:   res.StoragePath,
+		Source:        res.Source,
+		Courseware:    res.Courseware,
+		IsFreePreview: int32(res.IsFreePreview),
+		ChapterId:     int32(res.ChapterId),
+		Id:            int32(res.Id),
+		ReleasedTime:  timestamppb.New(res.ReleasedTime),
+	}}, nil
+}
+func (s *KubecitService) ListLessons(ctx context.Context, req *pb.ListChapterLessonsWithCourIdRequest) (*pb.ListChapterLessonsWithCourIdReply, error) {
+	chapterLessons, err := s.cc.ListChapterLessonsWithCourseId(ctx, int(req.GetCourseId()))
+	if err != nil {
+		return nil, err
+	}
+	data := make([]*pb.ChapterLessonsInfo, 0, len(chapterLessons))
+	for _, chapterLesson := range chapterLessons {
+		lessonData := make([]*pb.LessonInfo, 0, len(chapterLesson.Lessons))
+		for _, lesson := range chapterLesson.Lessons {
+			lessonData = append(lessonData, &pb.LessonInfo{
+				Name:          lesson.Name,
+				Sort:          int32(lesson.Sort),
+				Type:          int32(lesson.Type),
+				StoragePath:   lesson.StoragePath,
+				Source:        lesson.Source,
+				Courseware:    lesson.Courseware,
+				IsFreePreview: int32(lesson.IsFreePreview),
+				ChapterId:     int32(lesson.ChapterId),
+				Id:            int32(lesson.Id),
+				ReleasedTime:  timestamppb.New(lesson.ReleasedTime),
+			})
+		}
+		data = append(data, &pb.ChapterLessonsInfo{
+			Chapter: &pb.ChapterInfo{
+				Id:             int32(chapterLesson.Id),
+				Name:           chapterLesson.Name,
+				ReleasedTime:   timestamppb.New(chapterLesson.ReleasedTime),
+				Description:    chapterLesson.Description,
+				Sort:           int32(chapterLesson.Sort),
+				HasFreePreview: int32(chapterLesson.HasFreePreview),
+				CourseId:       int32(chapterLesson.CourseId),
+			},
+			Lessons: lessonData,
+		})
+	}
+
+	return &pb.ListChapterLessonsWithCourIdReply{Data: data}, nil
+}
+func (s *KubecitService) UpdateLesson(ctx context.Context, req *pb.UpdateLessonRequest) (*pb.UpdateLessonReply, error) {
+	ins := &biz.Lesson{
+		Name:          req.GetName(),
+		Sort:          int(req.GetSort()),
+		Type:          int(req.GetType()),
+		StoragePath:   req.GetStoragePath(),
+		Source:        req.GetSource(),
+		Courseware:    req.GetCourseware(),
+		IsFreePreview: int(req.GetIsFreePreview()),
+		ChapterId:     int(req.GetChapterId()),
+	}
+	res, err := s.cc.UpdateLesson(ctx, int(req.GetLessonId()), ins)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.UpdateLessonReply{
+		Name:          res.Name,
+		Sort:          int32(res.Sort),
+		Type:          int32(res.Type),
+		StoragePath:   res.StoragePath,
+		Source:        res.Source,
+		Courseware:    res.Courseware,
+		IsFreePreview: int32(res.IsFreePreview),
+		ChapterId:     int32(res.ChapterId),
+		Id:            int32(res.Id),
+		ReleasedTime:  timestamppb.New(res.ReleasedTime),
+	}, nil
+}
+func (s *KubecitService) DeleteLesson(ctx context.Context, req *pb.DeleteLessonRequest) (*pb.DeleteLessonReply, error) {
+	count, err := s.cc.DeleteLesson(ctx, int(req.GetLessonId()))
+	if err != nil {
+		return nil, err
+	}
+	return &pb.DeleteLessonReply{Count: int32(count)}, nil
+}
