@@ -81,7 +81,7 @@ func Cover(v string) predicate.Course {
 }
 
 // Price applies equality check predicate on the "price" field. It's identical to PriceEQ.
-func Price(v float32) predicate.Course {
+func Price(v int32) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldPrice, v))
 }
 
@@ -381,42 +381,42 @@ func CoverContainsFold(v string) predicate.Course {
 }
 
 // PriceEQ applies the EQ predicate on the "price" field.
-func PriceEQ(v float32) predicate.Course {
+func PriceEQ(v int32) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldPrice, v))
 }
 
 // PriceNEQ applies the NEQ predicate on the "price" field.
-func PriceNEQ(v float32) predicate.Course {
+func PriceNEQ(v int32) predicate.Course {
 	return predicate.Course(sql.FieldNEQ(FieldPrice, v))
 }
 
 // PriceIn applies the In predicate on the "price" field.
-func PriceIn(vs ...float32) predicate.Course {
+func PriceIn(vs ...int32) predicate.Course {
 	return predicate.Course(sql.FieldIn(FieldPrice, vs...))
 }
 
 // PriceNotIn applies the NotIn predicate on the "price" field.
-func PriceNotIn(vs ...float32) predicate.Course {
+func PriceNotIn(vs ...int32) predicate.Course {
 	return predicate.Course(sql.FieldNotIn(FieldPrice, vs...))
 }
 
 // PriceGT applies the GT predicate on the "price" field.
-func PriceGT(v float32) predicate.Course {
+func PriceGT(v int32) predicate.Course {
 	return predicate.Course(sql.FieldGT(FieldPrice, v))
 }
 
 // PriceGTE applies the GTE predicate on the "price" field.
-func PriceGTE(v float32) predicate.Course {
+func PriceGTE(v int32) predicate.Course {
 	return predicate.Course(sql.FieldGTE(FieldPrice, v))
 }
 
 // PriceLT applies the LT predicate on the "price" field.
-func PriceLT(v float32) predicate.Course {
+func PriceLT(v int32) predicate.Course {
 	return predicate.Course(sql.FieldLT(FieldPrice, v))
 }
 
 // PriceLTE applies the LTE predicate on the "price" field.
-func PriceLTE(v float32) predicate.Course {
+func PriceLTE(v int32) predicate.Course {
 	return predicate.Course(sql.FieldLTE(FieldPrice, v))
 }
 

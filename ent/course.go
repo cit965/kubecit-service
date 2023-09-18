@@ -29,7 +29,7 @@ type Course struct {
 	// Cover holds the value of the "cover" field.
 	Cover string `json:"cover,omitempty"`
 	// Price holds the value of the "price" field.
-	Price float32 `json:"price,omitempty"`
+	Price int32 `json:"price,omitempty"`
 	// Tags holds the value of the "tags" field.
 	Tags string `json:"tags,omitempty"`
 	// 创建时间
@@ -82,9 +82,7 @@ func (*Course) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case course.FieldPrice:
-			values[i] = new(sql.NullFloat64)
-		case course.FieldID, course.FieldLevel, course.FieldStatus, course.FieldCategoryID:
+		case course.FieldID, course.FieldLevel, course.FieldPrice, course.FieldStatus, course.FieldCategoryID:
 			values[i] = new(sql.NullInt64)
 		case course.FieldName, course.FieldDetail, course.FieldCover, course.FieldTags:
 			values[i] = new(sql.NullString)
@@ -142,10 +140,10 @@ func (c *Course) assignValues(columns []string, values []any) error {
 				c.Cover = value.String
 			}
 		case course.FieldPrice:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field price", values[i])
 			} else if value.Valid {
-				c.Price = float32(value.Float64)
+				c.Price = int32(value.Int64)
 			}
 		case course.FieldTags:
 			if value, ok := values[i].(*sql.NullString); !ok {

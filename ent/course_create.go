@@ -61,8 +61,8 @@ func (cc *CourseCreate) SetCover(s string) *CourseCreate {
 }
 
 // SetPrice sets the "price" field.
-func (cc *CourseCreate) SetPrice(f float32) *CourseCreate {
-	cc.mutation.SetPrice(f)
+func (cc *CourseCreate) SetPrice(i int32) *CourseCreate {
+	cc.mutation.SetPrice(i)
 	return cc
 }
 
@@ -176,11 +176,11 @@ func (cc *CourseCreate) ExecX(ctx context.Context) {
 // defaults sets the default values of the builder before save.
 func (cc *CourseCreate) defaults() {
 	if _, ok := cc.mutation.UpdatedAt(); !ok {
-		v := course.DefaultUpdatedAt
+		v := course.DefaultUpdatedAt()
 		cc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := cc.mutation.CreatedAt(); !ok {
-		v := course.DefaultCreatedAt
+		v := course.DefaultCreatedAt()
 		cc.mutation.SetCreatedAt(v)
 	}
 }
@@ -261,7 +261,7 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 		_node.Cover = value
 	}
 	if value, ok := cc.mutation.Price(); ok {
-		_spec.SetField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.SetField(course.FieldPrice, field.TypeInt32, value)
 		_node.Price = value
 	}
 	if value, ok := cc.mutation.Tags(); ok {

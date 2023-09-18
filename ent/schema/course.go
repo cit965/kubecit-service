@@ -16,13 +16,13 @@ type Course struct {
 func (Course) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int32("level"),
-		field.Time("updated_at").Default(time.Now()).UpdateDefault(time.Now).Comment("修改时间"),
+		field.Time("updated_at").Default(time.Now).UpdateDefault(time.Now).Comment("修改时间"),
 		field.String("name"),
 		field.String("detail"),
 		field.String("cover"),
-		field.Float32("price"),
+		field.Int32("price"),
 		field.String("tags"),
-		field.Time("created_at").Default(time.Now()).Comment("创建时间"),
+		field.Time("created_at").Default(time.Now).Comment("创建时间"),
 		field.Int32("status"),
 		field.Int("category_id").Optional(),
 	}

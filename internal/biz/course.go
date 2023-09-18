@@ -22,7 +22,7 @@ type Course struct {
 	Name       string
 	Detail     string
 	Cover      string
-	Price      float32
+	Price      int32
 	Tags       string
 	CreatedAt  time.Time
 	UpdatedAt  time.Time

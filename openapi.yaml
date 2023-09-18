@@ -650,15 +650,15 @@ components:
                 cover:
                     type: string
                 price:
-                    type: number
-                    format: float
+                    type: integer
+                    format: int32
                 tags:
                     type: array
                     items:
                         type: string
                 status:
                     type: integer
-                    format: enum
+                    format: int32
                 categoryId:
                     type: integer
                     format: int32
@@ -703,7 +703,7 @@ components:
                     format: int32
                 hasFreePreview:
                     type: integer
-                    format: int32
+                    format: enum
                 courseId:
                     type: integer
                     format: int32
@@ -723,7 +723,7 @@ components:
             properties:
                 level:
                     type: integer
-                    format: int32
+                    format: enum
                 name:
                     type: string
                 detail:
@@ -731,8 +731,8 @@ components:
                 cover:
                     type: string
                 price:
-                    type: number
-                    format: float
+                    type: integer
+                    format: int32
                 tags:
                     type: array
                     items:
@@ -758,7 +758,7 @@ components:
                     format: int32
                 type:
                     type: integer
-                    format: int32
+                    format: enum
                 storagePath:
                     type: string
                 source:
@@ -767,7 +767,7 @@ components:
                     type: string
                 isFreePreview:
                     type: integer
-                    format: int32
+                    format: enum
                 chapterId:
                     type: integer
                     format: int32
@@ -1033,7 +1033,7 @@ components:
                     format: int32
                 level:
                     type: integer
-                    format: int32
+                    format: enum
                 order:
                     type: integer
                     format: int32
@@ -1128,7 +1128,7 @@ components:
                     format: int32
                 hasFreePreview:
                     type: integer
-                    format: int32
+                    format: enum
                 courseId:
                     type: integer
                     format: int32
@@ -1154,7 +1154,7 @@ components:
                     format: int32
                 level:
                     type: integer
-                    format: int32
+                    format: enum
                 name:
                     type: string
                 detail:
@@ -1162,8 +1162,8 @@ components:
                 cover:
                     type: string
                 price:
-                    type: number
-                    format: float
+                    type: integer
+                    format: int32
                 tags:
                     type: array
                     items:
@@ -1196,7 +1196,7 @@ components:
                     format: int32
                 type:
                     type: integer
-                    format: int32
+                    format: enum
                 storagePath:
                     type: string
                 source:
@@ -1205,7 +1205,7 @@ components:
                     type: string
                 isFreePreview:
                     type: integer
-                    format: int32
+                    format: enum
                 chapterId:
                     type: integer
                     format: int32

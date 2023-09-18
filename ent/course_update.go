@@ -68,15 +68,15 @@ func (cu *CourseUpdate) SetCover(s string) *CourseUpdate {
 }
 
 // SetPrice sets the "price" field.
-func (cu *CourseUpdate) SetPrice(f float32) *CourseUpdate {
+func (cu *CourseUpdate) SetPrice(i int32) *CourseUpdate {
 	cu.mutation.ResetPrice()
-	cu.mutation.SetPrice(f)
+	cu.mutation.SetPrice(i)
 	return cu
 }
 
-// AddPrice adds f to the "price" field.
-func (cu *CourseUpdate) AddPrice(f float32) *CourseUpdate {
-	cu.mutation.AddPrice(f)
+// AddPrice adds i to the "price" field.
+func (cu *CourseUpdate) AddPrice(i int32) *CourseUpdate {
+	cu.mutation.AddPrice(i)
 	return cu
 }
 
@@ -263,10 +263,10 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(course.FieldCover, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.Price(); ok {
-		_spec.SetField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.SetField(course.FieldPrice, field.TypeInt32, value)
 	}
 	if value, ok := cu.mutation.AddedPrice(); ok {
-		_spec.AddField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.AddField(course.FieldPrice, field.TypeInt32, value)
 	}
 	if value, ok := cu.mutation.Tags(); ok {
 		_spec.SetField(course.FieldTags, field.TypeString, value)
@@ -412,15 +412,15 @@ func (cuo *CourseUpdateOne) SetCover(s string) *CourseUpdateOne {
 }
 
 // SetPrice sets the "price" field.
-func (cuo *CourseUpdateOne) SetPrice(f float32) *CourseUpdateOne {
+func (cuo *CourseUpdateOne) SetPrice(i int32) *CourseUpdateOne {
 	cuo.mutation.ResetPrice()
-	cuo.mutation.SetPrice(f)
+	cuo.mutation.SetPrice(i)
 	return cuo
 }
 
-// AddPrice adds f to the "price" field.
-func (cuo *CourseUpdateOne) AddPrice(f float32) *CourseUpdateOne {
-	cuo.mutation.AddPrice(f)
+// AddPrice adds i to the "price" field.
+func (cuo *CourseUpdateOne) AddPrice(i int32) *CourseUpdateOne {
+	cuo.mutation.AddPrice(i)
 	return cuo
 }
 
@@ -637,10 +637,10 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 		_spec.SetField(course.FieldCover, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.Price(); ok {
-		_spec.SetField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.SetField(course.FieldPrice, field.TypeInt32, value)
 	}
 	if value, ok := cuo.mutation.AddedPrice(); ok {
-		_spec.AddField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.AddField(course.FieldPrice, field.TypeInt32, value)
 	}
 	if value, ok := cuo.mutation.Tags(); ok {
 		_spec.SetField(course.FieldTags, field.TypeString, value)

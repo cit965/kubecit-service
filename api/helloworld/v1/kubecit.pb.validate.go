@@ -1771,6 +1771,8 @@ func (m *SearchCourseRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Level
+
 	if m.PageNum != nil {
 		// no validation rules for PageNum
 	}
@@ -1785,10 +1787,6 @@ func (m *SearchCourseRequest) validate(all bool) error {
 
 	if m.SecondCategory != nil {
 		// no validation rules for SecondCategory
-	}
-
-	if m.Level != nil {
-		// no validation rules for Level
 	}
 
 	if m.Order != nil {
@@ -3445,12 +3443,10 @@ func (m *CreateChapterRequest) validate(all bool) error {
 
 	// no validation rules for Description
 
+	// no validation rules for HasFreePreview
+
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.HasFreePreview != nil {
-		// no validation rules for HasFreePreview
 	}
 
 	if m.CourseId != nil {
@@ -3904,12 +3900,10 @@ func (m *UpdateChapterRequest) validate(all bool) error {
 
 	// no validation rules for Description
 
+	// no validation rules for HasFreePreview
+
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.HasFreePreview != nil {
-		// no validation rules for HasFreePreview
 	}
 
 	if m.CourseId != nil {
@@ -4391,22 +4385,18 @@ func (m *CreateLessonRequest) validate(all bool) error {
 
 	// no validation rules for Name
 
+	// no validation rules for Type
+
 	// no validation rules for StoragePath
 
 	// no validation rules for Source
 
 	// no validation rules for Courseware
 
+	// no validation rules for IsFreePreview
+
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.Type != nil {
-		// no validation rules for Type
-	}
-
-	if m.IsFreePreview != nil {
-		// no validation rules for IsFreePreview
 	}
 
 	if m.ChapterId != nil {
@@ -5059,24 +5049,20 @@ func (m *UpdateLessonRequest) validate(all bool) error {
 
 	// no validation rules for Name
 
+	// no validation rules for Type
+
 	// no validation rules for StoragePath
 
 	// no validation rules for Source
 
 	// no validation rules for Courseware
 
+	// no validation rules for IsFreePreview
+
 	// no validation rules for LessonId
 
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.Type != nil {
-		// no validation rules for Type
-	}
-
-	if m.IsFreePreview != nil {
-		// no validation rules for IsFreePreview
 	}
 
 	if m.ChapterId != nil {

@@ -82,7 +82,7 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "detail", Type: field.TypeString},
 		{Name: "cover", Type: field.TypeString},
-		{Name: "price", Type: field.TypeFloat32},
+		{Name: "price", Type: field.TypeInt32},
 		{Name: "tags", Type: field.TypeString},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "status", Type: field.TypeInt32},

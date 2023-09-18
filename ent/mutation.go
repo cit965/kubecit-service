@@ -2119,8 +2119,8 @@ type CourseMutation struct {
 	name            *string
 	detail          *string
 	cover           *string
-	price           *float32
-	addprice        *float32
+	price           *int32
+	addprice        *int32
 	tags            *string
 	created_at      *time.Time
 	status          *int32
@@ -2435,13 +2435,13 @@ func (m *CourseMutation) ResetCover() {
 }
 
 // SetPrice sets the "price" field.
-func (m *CourseMutation) SetPrice(f float32) {
-	m.price = &f
+func (m *CourseMutation) SetPrice(i int32) {
+	m.price = &i
 	m.addprice = nil
 }
 
 // Price returns the value of the "price" field in the mutation.
-func (m *CourseMutation) Price() (r float32, exists bool) {
+func (m *CourseMutation) Price() (r int32, exists bool) {
 	v := m.price
 	if v == nil {
 		return
@@ -2452,7 +2452,7 @@ func (m *CourseMutation) Price() (r float32, exists bool) {
 // OldPrice returns the old "price" field's value of the Course entity.
 // If the Course object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CourseMutation) OldPrice(ctx context.Context) (v float32, err error) {
+func (m *CourseMutation) OldPrice(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldPrice is only allowed on UpdateOne operations")
 	}
@@ -2466,17 +2466,17 @@ func (m *CourseMutation) OldPrice(ctx context.Context) (v float32, err error) {
 	return oldValue.Price, nil
 }
 
-// AddPrice adds f to the "price" field.
-func (m *CourseMutation) AddPrice(f float32) {
+// AddPrice adds i to the "price" field.
+func (m *CourseMutation) AddPrice(i int32) {
 	if m.addprice != nil {
-		*m.addprice += f
+		*m.addprice += i
 	} else {
-		m.addprice = &f
+		m.addprice = &i
 	}
 }
 
 // AddedPrice returns the value that was added to the "price" field in this mutation.
-func (m *CourseMutation) AddedPrice() (r float32, exists bool) {
+func (m *CourseMutation) AddedPrice() (r int32, exists bool) {
 	v := m.addprice
 	if v == nil {
 		return
@@ -2927,7 +2927,7 @@ func (m *CourseMutation) SetField(name string, value ent.Value) error {
 		m.SetCover(v)
 		return nil
 	case course.FieldPrice:
-		v, ok := value.(float32)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3009,7 +3009,7 @@ func (m *CourseMutation) AddField(name string, value ent.Value) error {
 		m.AddLevel(v)
 		return nil
 	case course.FieldPrice:
-		v, ok := value.(float32)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
