@@ -22,6 +22,7 @@ type Teacher struct {
 type TeacherRepo interface {
 	ListAll(ctx context.Context, pageNum, pageSize *int32) ([]*Teacher, error)
 	GetById(ctx context.Context, id int) (*Teacher, error)
+	Create(ctx context.Context, teacher *Teacher) (*Teacher, error)
 }
 
 type TeacherCase struct {
@@ -33,10 +34,14 @@ func NewTeacherCase(repo TeacherRepo, logger log.Logger) *TeacherCase {
 	return &TeacherCase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (uc *TeacherCase) ListTeachers(ctx context.Context, pageNum, pageSize *int32) ([]*Teacher, error) {
-	return uc.repo.ListAll(ctx, pageNum, pageSize)
+func (tc *TeacherCase) ListTeachers(ctx context.Context, pageNum, pageSize *int32) ([]*Teacher, error) {
+	return tc.repo.ListAll(ctx, pageNum, pageSize)
 }
 
-func (uc *TeacherCase) GetTeacher(ctx context.Context, id int) (*Teacher, error) {
-	return uc.repo.GetById(ctx, id)
+func (tc *TeacherCase) GetTeacher(ctx context.Context, id int) (*Teacher, error) {
+	return tc.repo.GetById(ctx, id)
+}
+
+func (tc *TeacherCase) CreateTeacher(ctx context.Context, teacher *Teacher) (*Teacher, error) {
+	return tc.repo.Create(ctx, teacher)
 }

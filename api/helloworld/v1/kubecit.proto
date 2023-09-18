@@ -362,7 +362,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "所有讲师"
+      description: "分页查询讲师"
       tags: "teacher"
     };
   }
@@ -375,7 +375,27 @@ service Kubecit {
       tags: "teacher"
     };
   }
+  rpc CreateTeacher (CreateTeacherRequest) returns (TeacherInfo) {
+    option (google.api.http) = {
+      post: "/api/teacher",
+      body: "*"
+    };
 
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建讲师"
+      tags: "teacher"
+    };
+  }
+
+}
+message CreateTeacherRequest {
+  string detail = 1; // 讲师详情
+  string curriculum_vitae = 2; // 履历描述
+  string works = 3; // 以往作品
+  string skills = 4; // 技能点
+  string avator = 5; // 头像
+  string name = 6;  // 姓名
+  int32 level= 17;  // 等级
 }
 
 message ListAllTeacherRequest {

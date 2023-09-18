@@ -547,6 +547,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.SystemSettingsReply'
+    /api/teacher:
+        post:
+            tags:
+                - Kubecit
+            operationId: Kubecit_CreateTeacher
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.CreateTeacherRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.TeacherInfo'
     /api/teacher/{id}:
         get:
             tags:
@@ -857,6 +875,24 @@ components:
                 isValid:
                     type: boolean
                 priority:
+                    type: integer
+                    format: int32
+        helloworld.v1.CreateTeacherRequest:
+            type: object
+            properties:
+                detail:
+                    type: string
+                curriculumVitae:
+                    type: string
+                works:
+                    type: string
+                skills:
+                    type: string
+                avator:
+                    type: string
+                name:
+                    type: string
+                level:
                     type: integer
                     format: int32
         helloworld.v1.DeleteChapterReply:

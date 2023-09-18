@@ -52,6 +52,7 @@ const (
 	Kubecit_CreateOrder_FullMethodName           = "/helloworld.v1.Kubecit/CreateOrder"
 	Kubecit_ListAllTeacher_FullMethodName        = "/helloworld.v1.Kubecit/ListAllTeacher"
 	Kubecit_GetTeacher_FullMethodName            = "/helloworld.v1.Kubecit/GetTeacher"
+	Kubecit_CreateTeacher_FullMethodName         = "/helloworld.v1.Kubecit/CreateTeacher"
 )
 
 // KubecitClient is the client API for Kubecit service.
@@ -96,6 +97,7 @@ type KubecitClient interface {
 	//=============================讲师相关================================================
 	ListAllTeacher(ctx context.Context, in *ListAllTeacherRequest, opts ...grpc.CallOption) (*ListAllTeacherReply, error)
 	GetTeacher(ctx context.Context, in *GetTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error)
+	CreateTeacher(ctx context.Context, in *CreateTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error)
 }
 
 type kubecitClient struct {
@@ -403,6 +405,15 @@ func (c *kubecitClient) GetTeacher(ctx context.Context, in *GetTeacherRequest, o
 	return out, nil
 }
 
+func (c *kubecitClient) CreateTeacher(ctx context.Context, in *CreateTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error) {
+	out := new(TeacherInfo)
+	err := c.cc.Invoke(ctx, Kubecit_CreateTeacher_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // KubecitServer is the server API for Kubecit service.
 // All implementations must embed UnimplementedKubecitServer
 // for forward compatibility
@@ -445,6 +456,7 @@ type KubecitServer interface {
 	//=============================讲师相关================================================
 	ListAllTeacher(context.Context, *ListAllTeacherRequest) (*ListAllTeacherReply, error)
 	GetTeacher(context.Context, *GetTeacherRequest) (*TeacherInfo, error)
+	CreateTeacher(context.Context, *CreateTeacherRequest) (*TeacherInfo, error)
 	mustEmbedUnimplementedKubecitServer()
 }
 
@@ -550,6 +562,9 @@ func (UnimplementedKubecitServer) ListAllTeacher(context.Context, *ListAllTeache
 }
 func (UnimplementedKubecitServer) GetTeacher(context.Context, *GetTeacherRequest) (*TeacherInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTeacher not implemented")
+}
+func (UnimplementedKubecitServer) CreateTeacher(context.Context, *CreateTeacherRequest) (*TeacherInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTeacher not implemented")
 }
 func (UnimplementedKubecitServer) mustEmbedUnimplementedKubecitServer() {}
 
@@ -1158,6 +1173,24 @@ func _Kubecit_GetTeacher_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Kubecit_CreateTeacher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateTeacherRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).CreateTeacher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_CreateTeacher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).CreateTeacher(ctx, req.(*CreateTeacherRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Kubecit_ServiceDesc is the grpc.ServiceDesc for Kubecit service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1296,6 +1329,10 @@ var Kubecit_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTeacher",
 			Handler:    _Kubecit_GetTeacher_Handler,
+		},
+		{
+			MethodName: "CreateTeacher",
+			Handler:    _Kubecit_CreateTeacher_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

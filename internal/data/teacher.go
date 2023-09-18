@@ -64,3 +64,24 @@ func (t *teacherRepo) GetById(ctx context.Context, id int) (*biz.Teacher, error)
 		UpdateAt:        teacher.UpdateAt,
 	}, nil
 }
+
+func (t *teacherRepo) Create(ctx context.Context, teacher *biz.Teacher) (*biz.Teacher, error) {
+	tc, err := t.data.db.Teacher.Create().SetDetail(teacher.Detail).SetCurriculumVitae(teacher.CurriculumVitae).SetWorks(teacher.Works).
+		SetSkills(teacher.Skills).SetAvator(teacher.Avator).SetName(teacher.Name).SetLevel(int(teacher.Level)).Save(ctx)
+	if err != nil {
+		return nil, errors.BadRequest(err.Error(), "讲师创建失败")
+	}
+	teacherModel := &biz.Teacher{
+		Id:              tc.ID,
+		Detail:          tc.Detail,
+		CurriculumVitae: tc.CurriculumVitae,
+		Works:           tc.Works,
+		Skills:          tc.Skills,
+		Avator:          tc.Avator,
+		Name:            tc.Name,
+		Level:           int32(tc.Level),
+		CreateAt:        tc.CreateAt,
+		UpdateAt:        tc.UpdateAt,
+	}
+	return teacherModel, nil
+}

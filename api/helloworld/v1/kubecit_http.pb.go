@@ -25,6 +25,7 @@ const OperationKubecitCreateCourse = "/helloworld.v1.Kubecit/CreateCourse"
 const OperationKubecitCreateLesson = "/helloworld.v1.Kubecit/CreateLesson"
 const OperationKubecitCreateOrder = "/helloworld.v1.Kubecit/CreateOrder"
 const OperationKubecitCreateSlider = "/helloworld.v1.Kubecit/CreateSlider"
+const OperationKubecitCreateTeacher = "/helloworld.v1.Kubecit/CreateTeacher"
 const OperationKubecitDeleteCategory = "/helloworld.v1.Kubecit/DeleteCategory"
 const OperationKubecitDeleteChapter = "/helloworld.v1.Kubecit/DeleteChapter"
 const OperationKubecitDeleteCourse = "/helloworld.v1.Kubecit/DeleteCourse"
@@ -62,6 +63,7 @@ type KubecitHTTPServer interface {
 	CreateOrder(context.Context, *CreateOrderRequest) (*CreateOrderReply, error)
 	// CreateSlider ========================== 系统设置相关接口 ===================================
 	CreateSlider(context.Context, *CreateSliderRequest) (*CreateSliderReply, error)
+	CreateTeacher(context.Context, *CreateTeacherRequest) (*TeacherInfo, error)
 	DeleteCategory(context.Context, *DeleteCategoryReq) (*Empty, error)
 	DeleteChapter(context.Context, *DeleteChapterRequest) (*DeleteChapterReply, error)
 	DeleteCourse(context.Context, *DeleteCourseRequest) (*DeleteCourseReply, error)
@@ -129,6 +131,7 @@ func RegisterKubecitHTTPServer(s *http.Server, srv KubecitHTTPServer) {
 	r.POST("/api/order", _Kubecit_CreateOrder0_HTTP_Handler(srv))
 	r.GET("/api/teachers", _Kubecit_ListAllTeacher0_HTTP_Handler(srv))
 	r.GET("/api/teacher/{id}", _Kubecit_GetTeacher0_HTTP_Handler(srv))
+	r.POST("/api/teacher", _Kubecit_CreateTeacher0_HTTP_Handler(srv))
 }
 
 func _Kubecit_ListCategory0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
@@ -851,6 +854,28 @@ func _Kubecit_GetTeacher0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Cont
 	}
 }
 
+func _Kubecit_CreateTeacher0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateTeacherRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationKubecitCreateTeacher)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateTeacher(ctx, req.(*CreateTeacherRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*TeacherInfo)
+		return ctx.Result(200, reply)
+	}
+}
+
 type KubecitHTTPClient interface {
 	CreateCategory(ctx context.Context, req *CategoryInfo, opts ...http.CallOption) (rsp *Empty, err error)
 	CreateChapter(ctx context.Context, req *CreateChapterRequest, opts ...http.CallOption) (rsp *CreateChapterReply, err error)
@@ -858,6 +883,7 @@ type KubecitHTTPClient interface {
 	CreateLesson(ctx context.Context, req *CreateLessonRequest, opts ...http.CallOption) (rsp *CreateLessonReply, err error)
 	CreateOrder(ctx context.Context, req *CreateOrderRequest, opts ...http.CallOption) (rsp *CreateOrderReply, err error)
 	CreateSlider(ctx context.Context, req *CreateSliderRequest, opts ...http.CallOption) (rsp *CreateSliderReply, err error)
+	CreateTeacher(ctx context.Context, req *CreateTeacherRequest, opts ...http.CallOption) (rsp *TeacherInfo, err error)
 	DeleteCategory(ctx context.Context, req *DeleteCategoryReq, opts ...http.CallOption) (rsp *Empty, err error)
 	DeleteChapter(ctx context.Context, req *DeleteChapterRequest, opts ...http.CallOption) (rsp *DeleteChapterReply, err error)
 	DeleteCourse(ctx context.Context, req *DeleteCourseRequest, opts ...http.CallOption) (rsp *DeleteCourseReply, err error)
@@ -965,6 +991,19 @@ func (c *KubecitHTTPClientImpl) CreateSlider(ctx context.Context, in *CreateSlid
 	pattern := "/api/slider"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationKubecitCreateSlider))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *KubecitHTTPClientImpl) CreateTeacher(ctx context.Context, in *CreateTeacherRequest, opts ...http.CallOption) (*TeacherInfo, error) {
+	var out TeacherInfo
+	pattern := "/api/teacher"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationKubecitCreateTeacher))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
