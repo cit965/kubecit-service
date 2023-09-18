@@ -356,7 +356,7 @@ service Kubecit {
     };
   }
   //=============================讲师相关================================================
-  rpc ListAllTeacher (Empty) returns (ListAllTeacherReply) {
+  rpc ListAllTeacher (ListAllTeacherRequest) returns (ListAllTeacherReply) {
     option (google.api.http) = {
       get: "/api/teachers",
     };
@@ -378,6 +378,11 @@ service Kubecit {
 
 }
 
+message ListAllTeacherRequest {
+  optional int32 pageNum = 1;
+  optional int32 pageSize = 2;
+}
+
 message GetTeacherRequest {
   int32 id = 1;
 }
@@ -386,11 +391,12 @@ message ListAllTeacherReply {
 }
 
 enum TeacherLevel {
-  ENTRY = 0; // 入门
-  PRIMARY = 1; //初级
-  INTERMEDIATE = 2; //中级
-  SENIOR = 3;//高级
-  MASTER = 4;//大师
+  UNKNOWN = 0;
+  ENTRY = 1; // 入门
+  PRIMARY = 2; //初级
+  INTERMEDIATE = 3; //中级
+  SENIOR = 4;//高级
+  MASTER = 5;//大师
 }
 
 

@@ -572,6 +572,17 @@ paths:
                 - Kubecit
             description: =============================讲师相关================================================
             operationId: Kubecit_ListAllTeacher
+            parameters:
+                - name: pageNum
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: OK

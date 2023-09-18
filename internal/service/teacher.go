@@ -7,8 +7,9 @@ import (
 	pb "kubecit-service/api/helloworld/v1"
 )
 
-func (s *KubecitService) ListAllTeacher(ctx context.Context, req *pb.Empty) (*pb.ListAllTeacherReply, error) {
-	listTeachers, err := s.teacherCase.ListTeachers(ctx)
+func (s *KubecitService) ListAllTeacher(ctx context.Context, req *pb.ListAllTeacherRequest) (*pb.ListAllTeacherReply, error) {
+
+	listTeachers, err := s.teacherCase.ListTeachers(ctx, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, errors.BadRequest(err.Error(), "")
 	}

@@ -18,8 +18,22 @@ func NewTeacherRepo(data *Data, logger log.Logger) biz.TeacherRepo {
 	return &teacherRepo{data: data, log: log.NewHelper(logger)}
 }
 
-func (t *teacherRepo) ListAll(ctx context.Context) ([]*biz.Teacher, error) {
-	teachers, err := t.data.db.Teacher.Query().All(ctx)
+func (t *teacherRepo) ListAll(ctx context.Context, pageNum, pageSize *int32) ([]*biz.Teacher, error) {
+	cq := t.data.db.Teacher.Query()
+	if pageNum != nil {
+		*pageNum--
+		cq.Offset(int(*pageNum))
+	} else {
+		cq.Offset(0)
+	}
+	if pageSize != nil {
+		cq.Limit(int(*pageSize))
+	} else {
+		cq.Limit(20)
+	}
+
+	teachers, err := cq.All(ctx)
+
 	if err != nil {
 		return nil, errors.BadRequest(err.Error(), "获取讲师列表失败！")
 	}

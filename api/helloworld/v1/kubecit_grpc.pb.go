@@ -93,8 +93,8 @@ type KubecitClient interface {
 	SystemSettings(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SystemSettingsReply, error)
 	// ========================== 订单相关接口 ===================================
 	CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderReply, error)
-	// =============================讲师相关================================================
-	ListAllTeacher(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListAllTeacherReply, error)
+	//=============================讲师相关================================================
+	ListAllTeacher(ctx context.Context, in *ListAllTeacherRequest, opts ...grpc.CallOption) (*ListAllTeacherReply, error)
 	GetTeacher(ctx context.Context, in *GetTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error)
 }
 
@@ -385,7 +385,7 @@ func (c *kubecitClient) CreateOrder(ctx context.Context, in *CreateOrderRequest,
 	return out, nil
 }
 
-func (c *kubecitClient) ListAllTeacher(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListAllTeacherReply, error) {
+func (c *kubecitClient) ListAllTeacher(ctx context.Context, in *ListAllTeacherRequest, opts ...grpc.CallOption) (*ListAllTeacherReply, error) {
 	out := new(ListAllTeacherReply)
 	err := c.cc.Invoke(ctx, Kubecit_ListAllTeacher_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -442,8 +442,8 @@ type KubecitServer interface {
 	SystemSettings(context.Context, *Empty) (*SystemSettingsReply, error)
 	// ========================== 订单相关接口 ===================================
 	CreateOrder(context.Context, *CreateOrderRequest) (*CreateOrderReply, error)
-	// =============================讲师相关================================================
-	ListAllTeacher(context.Context, *Empty) (*ListAllTeacherReply, error)
+	//=============================讲师相关================================================
+	ListAllTeacher(context.Context, *ListAllTeacherRequest) (*ListAllTeacherReply, error)
 	GetTeacher(context.Context, *GetTeacherRequest) (*TeacherInfo, error)
 	mustEmbedUnimplementedKubecitServer()
 }
@@ -545,7 +545,7 @@ func (UnimplementedKubecitServer) SystemSettings(context.Context, *Empty) (*Syst
 func (UnimplementedKubecitServer) CreateOrder(context.Context, *CreateOrderRequest) (*CreateOrderReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrder not implemented")
 }
-func (UnimplementedKubecitServer) ListAllTeacher(context.Context, *Empty) (*ListAllTeacherReply, error) {
+func (UnimplementedKubecitServer) ListAllTeacher(context.Context, *ListAllTeacherRequest) (*ListAllTeacherReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAllTeacher not implemented")
 }
 func (UnimplementedKubecitServer) GetTeacher(context.Context, *GetTeacherRequest) (*TeacherInfo, error) {
@@ -1123,7 +1123,7 @@ func _Kubecit_CreateOrder_Handler(srv interface{}, ctx context.Context, dec func
 }
 
 func _Kubecit_ListAllTeacher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(ListAllTeacherRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1135,7 +1135,7 @@ func _Kubecit_ListAllTeacher_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: Kubecit_ListAllTeacher_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(KubecitServer).ListAllTeacher(ctx, req.(*Empty))
+		return srv.(KubecitServer).ListAllTeacher(ctx, req.(*ListAllTeacherRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
