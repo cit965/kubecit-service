@@ -878,6 +878,14 @@ components:
                     type: integer
                     format: int32
         helloworld.v1.CreateTeacherRequest:
+            required:
+                - detail
+                - curriculumVitae
+                - works
+                - skills
+                - avator
+                - name
+                - level
             type: object
             properties:
                 detail:

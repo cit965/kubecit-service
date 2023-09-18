@@ -3,6 +3,7 @@ syntax = "proto3";
 package helloworld.v1;
 
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
@@ -389,13 +390,34 @@ service Kubecit {
 
 }
 message CreateTeacherRequest {
-  string detail = 1; // 讲师详情
-  string curriculum_vitae = 2; // 履历描述
-  string works = 3; // 以往作品
-  string skills = 4; // 技能点
-  string avator = 5; // 头像
-  string name = 6;  // 姓名
-  int32 level= 17;  // 等级
+  string detail = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "讲师详情",
+    description: "讲师详情"
+  }, (google.api.field_behavior) = REQUIRED];
+  string curriculum_vitae = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "履历",
+    description: "履历"
+  }, (google.api.field_behavior) = REQUIRED];
+  string works = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "作品",
+    description: "作品"
+  }, (google.api.field_behavior) = REQUIRED];
+  string skills = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "技能点",
+    description: "技能点"
+  }, (google.api.field_behavior) = REQUIRED];
+  string avator = 5[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "头像",
+    description: "头像"
+  }, (google.api.field_behavior) = REQUIRED];
+  string name = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "姓名",
+    description: "姓名"
+  }, (google.api.field_behavior) = REQUIRED];
+  int32 level = 17[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "等级",
+    description: "ENTRY = 1; // 入门 PRIMARY = 2; //初级 INTERMEDIATE = 3; //中级 SENIOR = 4;//高级 MASTER = 5;//大师"
+  }, (google.api.field_behavior) = REQUIRED];
 }
 
 message ListAllTeacherRequest {
@@ -407,7 +429,7 @@ message GetTeacherRequest {
   int32 id = 1;
 }
 message ListAllTeacherReply {
-    repeated TeacherInfo teachers =1;
+  repeated TeacherInfo teachers = 1;
 }
 
 enum TeacherLevel {
@@ -421,7 +443,7 @@ enum TeacherLevel {
 
 
 message TeacherInfo {
-  string detail = 1; // 讲师详情
+  string detail = 1 ; // 讲师详情
   string curriculum_vitae = 2; // 履历描述
   string works = 3; // 以往作品
   string skills = 4; // 技能点
@@ -430,7 +452,7 @@ message TeacherInfo {
   google.protobuf.Timestamp update_at = 7; // 更新时间
   int32 id = 8;
   string name = 9;
-  TeacherLevel level= 10;
+  TeacherLevel level = 10;
 }
 
 // The request message containing the user's name.
@@ -665,7 +687,7 @@ message CreateLessonReply {
 }
 
 message ListChapterLessonsWithCourIdRequest {
-   int32 courseId = 1;
+  int32 courseId = 1;
 }
 
 message ListChapterLessonsWithCourIdReply {
@@ -686,7 +708,7 @@ message UpdateLessonRequest {
   string courseware = 6;
   optional int32 isFreePreview = 7;
   optional int32 chapterId = 8;
-   int32 lessonId = 9;
+  int32 lessonId = 9;
 }
 message UpdateLessonReply {
   string name = 1;
@@ -722,7 +744,7 @@ message LessonInfo {
 }
 
 message SliderInfo {
-   int32 id = 1;
+  int32 id = 1;
   string title = 2;
   string content = 3;
   string imageLink = 4;
