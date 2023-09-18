@@ -191,6 +191,67 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.DeleteChapterReply'
+    /api/course/lesson:
+        post:
+            tags:
+                - Kubecit
+            operationId: Kubecit_CreateLesson
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.CreateLessonRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.CreateLessonReply'
+    /api/course/lesson/{lessonId}:
+        put:
+            tags:
+                - Kubecit
+            operationId: Kubecit_UpdateLesson
+            parameters:
+                - name: lessonId
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.UpdateLessonRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.UpdateLessonReply'
+        delete:
+            tags:
+                - Kubecit
+            operationId: Kubecit_DeleteLesson
+            parameters:
+                - name: lessonId
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.DeleteLessonReply'
     /api/course/mostNew:
         post:
             tags:
@@ -246,6 +307,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.TagsListReply'
+    /api/course/{courseId}/lessons:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_ListLessons
+            parameters:
+                - name: courseId
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.ListChapterLessonsWithCourIdReply'
     /api/course/{id}:
         get:
             tags:
@@ -344,6 +424,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.UserInfoReply'
+    /api/order:
+        post:
+            tags:
+                - Kubecit
+            description: ========================== 订单相关接口 ===================================
+            operationId: Kubecit_CreateOrder
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.CreateOrderRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.CreateOrderReply'
     /api/slider:
         post:
             tags:
@@ -526,6 +625,15 @@ components:
                 courseId:
                     type: integer
                     format: int32
+        helloworld.v1.ChapterLessonsInfo:
+            type: object
+            properties:
+                chapter:
+                    $ref: '#/components/schemas/helloworld.v1.ChapterInfo'
+                lessons:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.LessonInfo'
         helloworld.v1.CourseInfo:
             type: object
             properties:
@@ -621,6 +729,74 @@ components:
                 categoryId:
                     type: integer
                     format: int32
+        helloworld.v1.CreateLessonReply:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.LessonInfo'
+        helloworld.v1.CreateLessonRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                type:
+                    type: integer
+                    format: int32
+                storagePath:
+                    type: string
+                source:
+                    type: string
+                courseware:
+                    type: string
+                isFreePreview:
+                    type: integer
+                    format: int32
+                chapterId:
+                    type: integer
+                    format: int32
+        helloworld.v1.CreateOrderReply:
+            type: object
+            properties:
+                userId:
+                    type: integer
+                    format: int32
+                orderSn:
+                    type: string
+                payType:
+                    type: integer
+                    format: enum
+                payStatus:
+                    type: integer
+                    format: enum
+                tradePrice:
+                    type: integer
+                    format: int32
+                tradeNo:
+                    type: string
+                payTime:
+                    type: string
+                    format: date-time
+                createTime:
+                    type: string
+                    format: date-time
+                updateTime:
+                    type: string
+                    format: date-time
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.OrderDetail'
+        helloworld.v1.CreateOrderRequest:
+            type: object
+            properties:
+                courseIds:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
         helloworld.v1.CreateSliderReply:
             type: object
             properties:
@@ -652,6 +828,12 @@ components:
                 count:
                     type: integer
                     format: int32
+        helloworld.v1.DeleteLessonReply:
+            type: object
+            properties:
+                count:
+                    type: integer
+                    format: int32
         helloworld.v1.DeleteSliderReply:
             type: object
             properties:
@@ -671,6 +853,35 @@ components:
             properties:
                 data:
                     $ref: '#/components/schemas/helloworld.v1.SliderInfo'
+        helloworld.v1.LessonInfo:
+            type: object
+            properties:
+                name:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                type:
+                    type: integer
+                    format: int32
+                storagePath:
+                    type: string
+                source:
+                    type: string
+                courseware:
+                    type: string
+                isFreePreview:
+                    type: integer
+                    format: int32
+                chapterId:
+                    type: integer
+                    format: int32
+                id:
+                    type: integer
+                    format: int32
+                releasedTime:
+                    type: string
+                    format: date-time
         helloworld.v1.ListCategoryResp:
             type: object
             properties:
@@ -678,6 +889,13 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.CategoryInfo'
+        helloworld.v1.ListChapterLessonsWithCourIdReply:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.ChapterLessonsInfo'
         helloworld.v1.ListChaptersReply:
             type: object
             properties:
@@ -734,6 +952,22 @@ components:
                 total:
                     type: integer
                     format: int32
+        helloworld.v1.OrderDetail:
+            type: object
+            properties:
+                orderId:
+                    type: integer
+                    format: int32
+                productId:
+                    type: integer
+                    format: int32
+                productName:
+                    type: string
+                productPrice:
+                    type: integer
+                    format: int32
+                productDescription:
+                    type: string
         helloworld.v1.RegisterUsernameReply:
             type: object
             properties:
@@ -899,6 +1133,61 @@ components:
                     items:
                         type: string
                 categoryId:
+                    type: integer
+                    format: int32
+        helloworld.v1.UpdateLessonReply:
+            type: object
+            properties:
+                name:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                type:
+                    type: integer
+                    format: int32
+                storagePath:
+                    type: string
+                source:
+                    type: string
+                courseware:
+                    type: string
+                isFreePreview:
+                    type: integer
+                    format: int32
+                chapterId:
+                    type: integer
+                    format: int32
+                id:
+                    type: integer
+                    format: int32
+                releasedTime:
+                    type: string
+                    format: date-time
+        helloworld.v1.UpdateLessonRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                sort:
+                    type: integer
+                    format: int32
+                type:
+                    type: integer
+                    format: int32
+                storagePath:
+                    type: string
+                source:
+                    type: string
+                courseware:
+                    type: string
+                isFreePreview:
+                    type: integer
+                    format: int32
+                chapterId:
+                    type: integer
+                    format: int32
+                lessonId:
                     type: integer
                     format: int32
         helloworld.v1.UpdateSliderReply:

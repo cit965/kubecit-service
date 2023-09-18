@@ -2,10 +2,12 @@ package data
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
 	"kubecit-service/ent"
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/lesson"
 	"kubecit-service/internal/biz"
 )
 
@@ -67,6 +69,7 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 			Price:      v.Price,
 			Tags:       v.Tags,
 			CreatedAt:  v.CreatedAt,
+			UpdatedAt:  v.UpdatedAt,
 			Status:     v.Status,
 			CategoryId: v.CategoryID,
 		})
@@ -192,13 +195,15 @@ func (c *courseRepo) CreateChapter(ctx context.Context, chapter *biz.Chapter) (*
 func (c *courseRepo) DeleteChapter(ctx context.Context, id int) (int, error) {
 	count, err := c.data.db.Chapter.Delete().Where(chapter.IDEQ(id)).Exec(ctx)
 	if err != nil {
+		c.log.Errorf("chapter repo delete error: %v\n", err)
 		return 0, err
 	}
 	return count, nil
 }
 
 func (c *courseRepo) ListChapters(ctx context.Context, courseId int) ([]*biz.Chapter, error) {
-	chapters, err := c.data.db.Chapter.Query().Where(chapter.CourseIDEQ(courseId)).All(ctx)
+	chapters, err := c.data.db.Debug().Chapter.Query().Where(chapter.CourseIDEQ(courseId)).All(ctx)
+	fmt.Printf("%+v\n", chapters)
 	if err != nil {
 		c.log.Errorf("chapter repo get error: %v\n", err)
 		return nil, err
@@ -233,5 +238,81 @@ func (c *courseRepo) UpdateChapter(ctx context.Context, id int, ins *biz.Chapter
 		Sort:           res.Sort,
 		HasFreePreview: res.HasFreePreview,
 		CourseId:       res.CourseID,
+	}, nil
+}
+
+func (c *courseRepo) CreateLesson(ctx context.Context, lesson *biz.Lesson) (*biz.Lesson, error) {
+	res, err := c.data.db.Lesson.Create().SetName(lesson.Name).SetReleasedTime(lesson.ReleasedTime).SetSort(lesson.Sort).
+		SetType(lesson.Type).SetStoragePath(lesson.StoragePath).SetSource(lesson.Source).SetCourseware(lesson.Courseware).
+		SetIsFreePreview(lesson.IsFreePreview).SetChapterID(lesson.ChapterId).Save(ctx)
+	if err != nil {
+		c.log.Errorf("lesson repo create error: %v\n", err)
+		return nil, err
+	}
+	return &biz.Lesson{
+		Id:            res.ID,
+		Name:          res.Name,
+		ReleasedTime:  res.ReleasedTime,
+		Sort:          res.Sort,
+		Type:          res.Type,
+		StoragePath:   res.StoragePath,
+		Source:        res.Source,
+		Courseware:    res.Courseware,
+		IsFreePreview: res.IsFreePreview,
+		ChapterId:     res.ChapterID,
+	}, nil
+}
+
+func (c *courseRepo) DeleteLesson(ctx context.Context, id int) (int, error) {
+	count, err := c.data.db.Lesson.Delete().Where(lesson.IDEQ(id)).Exec(ctx)
+	if err != nil {
+		c.log.Errorf("lesson repo delete error: %v\n", err)
+		return 0, err
+	}
+	return count, nil
+}
+
+func (c *courseRepo) ListLessons(ctx context.Context, chapterId int) ([]*biz.Lesson, error) {
+	lessons, err := c.data.db.Lesson.Query().Where(lesson.ChapterIDEQ(chapterId)).All(ctx)
+	if err != nil {
+		c.log.Errorf("lesson repo list error: %v\n", err)
+		return nil, err
+	}
+	res := make([]*biz.Lesson, 0, len(lessons))
+	for _, ins := range lessons {
+		res = append(res, &biz.Lesson{
+			Id:            ins.ID,
+			Name:          ins.Name,
+			ReleasedTime:  ins.ReleasedTime,
+			Sort:          ins.Sort,
+			Type:          ins.Type,
+			StoragePath:   ins.StoragePath,
+			Source:        ins.Source,
+			Courseware:    ins.Courseware,
+			IsFreePreview: ins.IsFreePreview,
+			ChapterId:     ins.ChapterID,
+		})
+	}
+	return res, nil
+}
+func (c *courseRepo) UpdateLesson(ctx context.Context, id int, lesson *biz.Lesson) (*biz.Lesson, error) {
+	res, err := c.data.db.Lesson.UpdateOneID(id).SetName(lesson.Name).SetReleasedTime(lesson.ReleasedTime).SetSort(lesson.Sort).
+		SetType(lesson.Type).SetStoragePath(lesson.StoragePath).SetSource(lesson.Source).SetCourseware(lesson.Courseware).
+		SetIsFreePreview(lesson.IsFreePreview).SetChapterID(lesson.ChapterId).Save(ctx)
+	if err != nil {
+		c.log.Errorf("lesson repo update error: %v\n", err)
+		return nil, err
+	}
+	return &biz.Lesson{
+		Id:            res.ID,
+		Name:          res.Name,
+		ReleasedTime:  res.ReleasedTime,
+		Sort:          res.Sort,
+		Type:          res.Type,
+		StoragePath:   res.StoragePath,
+		Source:        res.Source,
+		Courseware:    res.Courseware,
+		IsFreePreview: res.IsFreePreview,
+		ChapterId:     res.ChapterID,
 	}, nil
 }
