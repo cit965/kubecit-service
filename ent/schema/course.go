@@ -25,6 +25,9 @@ func (Course) Fields() []ent.Field {
 		field.Time("created_at").Default(time.Now).Comment("创建时间"),
 		field.Int32("status"),
 		field.Int("category_id").Optional(),
+		field.Int32("score").Default(0),
+		field.Int32("duration").Default(0),
+		field.Int32("people").Default(0),
 	}
 }
 

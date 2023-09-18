@@ -671,6 +671,12 @@ components:
                 people:
                     type: integer
                     format: int32
+                duration:
+                    type: integer
+                    format: int32
+                score:
+                    type: integer
+                    format: int32
         helloworld.v1.CourseSearchReply:
             type: object
             properties:

@@ -33,6 +33,8 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNe
 			Status:     v.Status,
 			CategoryId: int32(v.CategoryId),
 			People:     102,
+			Score:      99,
+			Duration:   40,
 		}
 		result = append(result, tmp)
 	}
@@ -78,6 +80,8 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 			Status:     course.Status,
 			CategoryId: int32(course.CategoryId),
 			People:     102,
+			Score:      99,
+			Duration:   40,
 		})
 	}
 	return &pb.CourseSearchReply{
@@ -121,6 +125,9 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 			CategoryId: int32(res.CategoryId),
 			CreatedAt:  timestamppb.New(res.CreatedAt),
 			UpdatedAt:  timestamppb.New(res.UpdatedAt),
+			People:     102,
+			Score:      99,
+			Duration:   40,
 		}}, nil
 }
 
@@ -150,6 +157,9 @@ func (s *KubecitService) ReviewCourse(ctx context.Context, req *pb.ReviewCourseR
 			CategoryId: int32(res.CategoryId),
 			CreatedAt:  timestamppb.New(res.CreatedAt),
 			UpdatedAt:  timestamppb.New(res.UpdatedAt),
+			People:     102,
+			Score:      99,
+			Duration:   40,
 		}}, nil
 }
 
@@ -179,6 +189,9 @@ func (s *KubecitService) CreateCourse(ctx context.Context, req *pb.CreateCourseR
 		CategoryId: int32(res.CategoryId),
 		CreatedAt:  timestamppb.New(res.CreatedAt),
 		UpdatedAt:  timestamppb.New(res.UpdatedAt),
+		People:     102,
+		Score:      99,
+		Duration:   40,
 	}}, nil
 }
 
@@ -200,6 +213,9 @@ func (s *KubecitService) GetCourse(ctx context.Context, req *pb.GetCourseRequest
 			CategoryId: int32(res.CategoryId),
 			CreatedAt:  timestamppb.New(res.CreatedAt),
 			UpdatedAt:  timestamppb.New(res.UpdatedAt),
+			People:     102,
+			Score:      99,
+			Duration:   40,
 		}}, nil
 }
 

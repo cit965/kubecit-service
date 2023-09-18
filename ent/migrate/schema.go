@@ -86,6 +86,9 @@ var (
 		{Name: "tags", Type: field.TypeString},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "status", Type: field.TypeInt32},
+		{Name: "score", Type: field.TypeInt32, Default: 0},
+		{Name: "duration", Type: field.TypeInt32, Default: 0},
+		{Name: "people", Type: field.TypeInt32, Default: 0},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
 	}
 	// CoursesTable holds the schema information for the "courses" table.
@@ -96,7 +99,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "courses_categories_courses",
-				Columns:    []*schema.Column{CoursesColumns[10]},
+				Columns:    []*schema.Column{CoursesColumns[13]},
 				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

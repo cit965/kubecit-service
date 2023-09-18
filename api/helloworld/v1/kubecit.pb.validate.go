@@ -1332,6 +1332,10 @@ func (m *CourseInfo) validate(all bool) error {
 
 	// no validation rules for People
 
+	// no validation rules for Duration
+
+	// no validation rules for Score
+
 	if len(errors) > 0 {
 		return CourseInfoMultiError(errors)
 	}

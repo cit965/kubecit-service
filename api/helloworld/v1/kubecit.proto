@@ -483,6 +483,18 @@ message CourseInfo {
       description: "人数"
     }
   ];
+  int32 duration = 13[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程时长",
+      description: "课程时长"
+    }
+  ];
+  int32 score = 14[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程评分",
+      description: "课程评分"
+    }
+  ];
 }
 
 

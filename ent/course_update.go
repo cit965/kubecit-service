@@ -133,6 +133,69 @@ func (cu *CourseUpdate) ClearCategoryID() *CourseUpdate {
 	return cu
 }
 
+// SetScore sets the "score" field.
+func (cu *CourseUpdate) SetScore(i int32) *CourseUpdate {
+	cu.mutation.ResetScore()
+	cu.mutation.SetScore(i)
+	return cu
+}
+
+// SetNillableScore sets the "score" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillableScore(i *int32) *CourseUpdate {
+	if i != nil {
+		cu.SetScore(*i)
+	}
+	return cu
+}
+
+// AddScore adds i to the "score" field.
+func (cu *CourseUpdate) AddScore(i int32) *CourseUpdate {
+	cu.mutation.AddScore(i)
+	return cu
+}
+
+// SetDuration sets the "duration" field.
+func (cu *CourseUpdate) SetDuration(i int32) *CourseUpdate {
+	cu.mutation.ResetDuration()
+	cu.mutation.SetDuration(i)
+	return cu
+}
+
+// SetNillableDuration sets the "duration" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillableDuration(i *int32) *CourseUpdate {
+	if i != nil {
+		cu.SetDuration(*i)
+	}
+	return cu
+}
+
+// AddDuration adds i to the "duration" field.
+func (cu *CourseUpdate) AddDuration(i int32) *CourseUpdate {
+	cu.mutation.AddDuration(i)
+	return cu
+}
+
+// SetPeople sets the "people" field.
+func (cu *CourseUpdate) SetPeople(i int32) *CourseUpdate {
+	cu.mutation.ResetPeople()
+	cu.mutation.SetPeople(i)
+	return cu
+}
+
+// SetNillablePeople sets the "people" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillablePeople(i *int32) *CourseUpdate {
+	if i != nil {
+		cu.SetPeople(*i)
+	}
+	return cu
+}
+
+// AddPeople adds i to the "people" field.
+func (cu *CourseUpdate) AddPeople(i int32) *CourseUpdate {
+	cu.mutation.AddPeople(i)
+	return cu
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by ID.
 func (cu *CourseUpdate) SetOwnerID(id int) *CourseUpdate {
 	cu.mutation.SetOwnerID(id)
@@ -279,6 +342,24 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.AddedStatus(); ok {
 		_spec.AddField(course.FieldStatus, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.Score(); ok {
+		_spec.SetField(course.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedScore(); ok {
+		_spec.AddField(course.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.Duration(); ok {
+		_spec.SetField(course.FieldDuration, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedDuration(); ok {
+		_spec.AddField(course.FieldDuration, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.People(); ok {
+		_spec.SetField(course.FieldPeople, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedPeople(); ok {
+		_spec.AddField(course.FieldPeople, field.TypeInt32, value)
 	}
 	if cu.mutation.OwnerCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -477,6 +558,69 @@ func (cuo *CourseUpdateOne) ClearCategoryID() *CourseUpdateOne {
 	return cuo
 }
 
+// SetScore sets the "score" field.
+func (cuo *CourseUpdateOne) SetScore(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetScore()
+	cuo.mutation.SetScore(i)
+	return cuo
+}
+
+// SetNillableScore sets the "score" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillableScore(i *int32) *CourseUpdateOne {
+	if i != nil {
+		cuo.SetScore(*i)
+	}
+	return cuo
+}
+
+// AddScore adds i to the "score" field.
+func (cuo *CourseUpdateOne) AddScore(i int32) *CourseUpdateOne {
+	cuo.mutation.AddScore(i)
+	return cuo
+}
+
+// SetDuration sets the "duration" field.
+func (cuo *CourseUpdateOne) SetDuration(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetDuration()
+	cuo.mutation.SetDuration(i)
+	return cuo
+}
+
+// SetNillableDuration sets the "duration" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillableDuration(i *int32) *CourseUpdateOne {
+	if i != nil {
+		cuo.SetDuration(*i)
+	}
+	return cuo
+}
+
+// AddDuration adds i to the "duration" field.
+func (cuo *CourseUpdateOne) AddDuration(i int32) *CourseUpdateOne {
+	cuo.mutation.AddDuration(i)
+	return cuo
+}
+
+// SetPeople sets the "people" field.
+func (cuo *CourseUpdateOne) SetPeople(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetPeople()
+	cuo.mutation.SetPeople(i)
+	return cuo
+}
+
+// SetNillablePeople sets the "people" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillablePeople(i *int32) *CourseUpdateOne {
+	if i != nil {
+		cuo.SetPeople(*i)
+	}
+	return cuo
+}
+
+// AddPeople adds i to the "people" field.
+func (cuo *CourseUpdateOne) AddPeople(i int32) *CourseUpdateOne {
+	cuo.mutation.AddPeople(i)
+	return cuo
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by ID.
 func (cuo *CourseUpdateOne) SetOwnerID(id int) *CourseUpdateOne {
 	cuo.mutation.SetOwnerID(id)
@@ -653,6 +797,24 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 	}
 	if value, ok := cuo.mutation.AddedStatus(); ok {
 		_spec.AddField(course.FieldStatus, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.Score(); ok {
+		_spec.SetField(course.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedScore(); ok {
+		_spec.AddField(course.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.Duration(); ok {
+		_spec.SetField(course.FieldDuration, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedDuration(); ok {
+		_spec.AddField(course.FieldDuration, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.People(); ok {
+		_spec.SetField(course.FieldPeople, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedPeople(); ok {
+		_spec.AddField(course.FieldPeople, field.TypeInt32, value)
 	}
 	if cuo.mutation.OwnerCleared() {
 		edge := &sqlgraph.EdgeSpec{

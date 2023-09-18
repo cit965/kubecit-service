@@ -28,6 +28,9 @@ type Course struct {
 	UpdatedAt  time.Time
 	Status     int32
 	CategoryId int
+	People     int32
+	Duration   int32
+	Score      int32
 }
 
 type CourseChapterLessons struct {

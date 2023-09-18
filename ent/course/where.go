@@ -105,6 +105,21 @@ func CategoryID(v int) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldCategoryID, v))
 }
 
+// Score applies equality check predicate on the "score" field. It's identical to ScoreEQ.
+func Score(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldScore, v))
+}
+
+// Duration applies equality check predicate on the "duration" field. It's identical to DurationEQ.
+func Duration(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldDuration, v))
+}
+
+// People applies equality check predicate on the "people" field. It's identical to PeopleEQ.
+func People(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldPeople, v))
+}
+
 // LevelEQ applies the EQ predicate on the "level" field.
 func LevelEQ(v int32) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldLevel, v))
@@ -593,6 +608,126 @@ func CategoryIDIsNil() predicate.Course {
 // CategoryIDNotNil applies the NotNil predicate on the "category_id" field.
 func CategoryIDNotNil() predicate.Course {
 	return predicate.Course(sql.FieldNotNull(FieldCategoryID))
+}
+
+// ScoreEQ applies the EQ predicate on the "score" field.
+func ScoreEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldScore, v))
+}
+
+// ScoreNEQ applies the NEQ predicate on the "score" field.
+func ScoreNEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldScore, v))
+}
+
+// ScoreIn applies the In predicate on the "score" field.
+func ScoreIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldScore, vs...))
+}
+
+// ScoreNotIn applies the NotIn predicate on the "score" field.
+func ScoreNotIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldScore, vs...))
+}
+
+// ScoreGT applies the GT predicate on the "score" field.
+func ScoreGT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldScore, v))
+}
+
+// ScoreGTE applies the GTE predicate on the "score" field.
+func ScoreGTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldScore, v))
+}
+
+// ScoreLT applies the LT predicate on the "score" field.
+func ScoreLT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldScore, v))
+}
+
+// ScoreLTE applies the LTE predicate on the "score" field.
+func ScoreLTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldScore, v))
+}
+
+// DurationEQ applies the EQ predicate on the "duration" field.
+func DurationEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldDuration, v))
+}
+
+// DurationNEQ applies the NEQ predicate on the "duration" field.
+func DurationNEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldDuration, v))
+}
+
+// DurationIn applies the In predicate on the "duration" field.
+func DurationIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldDuration, vs...))
+}
+
+// DurationNotIn applies the NotIn predicate on the "duration" field.
+func DurationNotIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldDuration, vs...))
+}
+
+// DurationGT applies the GT predicate on the "duration" field.
+func DurationGT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldDuration, v))
+}
+
+// DurationGTE applies the GTE predicate on the "duration" field.
+func DurationGTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldDuration, v))
+}
+
+// DurationLT applies the LT predicate on the "duration" field.
+func DurationLT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldDuration, v))
+}
+
+// DurationLTE applies the LTE predicate on the "duration" field.
+func DurationLTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldDuration, v))
+}
+
+// PeopleEQ applies the EQ predicate on the "people" field.
+func PeopleEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldPeople, v))
+}
+
+// PeopleNEQ applies the NEQ predicate on the "people" field.
+func PeopleNEQ(v int32) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldPeople, v))
+}
+
+// PeopleIn applies the In predicate on the "people" field.
+func PeopleIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldPeople, vs...))
+}
+
+// PeopleNotIn applies the NotIn predicate on the "people" field.
+func PeopleNotIn(vs ...int32) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldPeople, vs...))
+}
+
+// PeopleGT applies the GT predicate on the "people" field.
+func PeopleGT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGT(FieldPeople, v))
+}
+
+// PeopleGTE applies the GTE predicate on the "people" field.
+func PeopleGTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldGTE(FieldPeople, v))
+}
+
+// PeopleLT applies the LT predicate on the "people" field.
+func PeopleLT(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLT(FieldPeople, v))
+}
+
+// PeopleLTE applies the LTE predicate on the "people" field.
+func PeopleLTE(v int32) predicate.Course {
+	return predicate.Course(sql.FieldLTE(FieldPeople, v))
 }
 
 // HasOwner applies the HasEdge predicate on the "owner" edge.

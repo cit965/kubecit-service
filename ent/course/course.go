@@ -34,6 +34,12 @@ const (
 	FieldStatus = "status"
 	// FieldCategoryID holds the string denoting the category_id field in the database.
 	FieldCategoryID = "category_id"
+	// FieldScore holds the string denoting the score field in the database.
+	FieldScore = "score"
+	// FieldDuration holds the string denoting the duration field in the database.
+	FieldDuration = "duration"
+	// FieldPeople holds the string denoting the people field in the database.
+	FieldPeople = "people"
 	// EdgeOwner holds the string denoting the owner edge name in mutations.
 	EdgeOwner = "owner"
 	// EdgeChapters holds the string denoting the chapters edge name in mutations.
@@ -69,6 +75,9 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldStatus,
 	FieldCategoryID,
+	FieldScore,
+	FieldDuration,
+	FieldPeople,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -88,6 +97,12 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
+	// DefaultScore holds the default value on creation for the "score" field.
+	DefaultScore int32
+	// DefaultDuration holds the default value on creation for the "duration" field.
+	DefaultDuration int32
+	// DefaultPeople holds the default value on creation for the "people" field.
+	DefaultPeople int32
 )
 
 // OrderOption defines the ordering options for the Course queries.
@@ -146,6 +161,21 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 // ByCategoryID orders the results by the category_id field.
 func ByCategoryID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCategoryID, opts...).ToFunc()
+}
+
+// ByScore orders the results by the score field.
+func ByScore(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldScore, opts...).ToFunc()
+}
+
+// ByDuration orders the results by the duration field.
+func ByDuration(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDuration, opts...).ToFunc()
+}
+
+// ByPeople orders the results by the people field.
+func ByPeople(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPeople, opts...).ToFunc()
 }
 
 // ByOwnerField orders the results by owner field.

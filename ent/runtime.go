@@ -63,6 +63,18 @@ func init() {
 	courseDescCreatedAt := courseFields[7].Descriptor()
 	// course.DefaultCreatedAt holds the default value on creation for the created_at field.
 	course.DefaultCreatedAt = courseDescCreatedAt.Default.(func() time.Time)
+	// courseDescScore is the schema descriptor for score field.
+	courseDescScore := courseFields[10].Descriptor()
+	// course.DefaultScore holds the default value on creation for the score field.
+	course.DefaultScore = courseDescScore.Default.(int32)
+	// courseDescDuration is the schema descriptor for duration field.
+	courseDescDuration := courseFields[11].Descriptor()
+	// course.DefaultDuration holds the default value on creation for the duration field.
+	course.DefaultDuration = courseDescDuration.Default.(int32)
+	// courseDescPeople is the schema descriptor for people field.
+	courseDescPeople := courseFields[12].Descriptor()
+	// course.DefaultPeople holds the default value on creation for the people field.
+	course.DefaultPeople = courseDescPeople.Default.(int32)
 	lessonFields := schema.Lesson{}.Fields()
 	_ = lessonFields
 	// lessonDescReleasedTime is the schema descriptor for released_time field.
