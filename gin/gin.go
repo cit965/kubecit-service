@@ -11,6 +11,7 @@ import (
 	"kubecit-service/ent"
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/user"
+	"kubecit-service/internal/conf"
 	"kubecit-service/internal/pkg/jwt"
 	"net/http"
 	"net/url"
@@ -48,12 +49,15 @@ func initConfig() {
 	if err := c.Load(); err != nil {
 		panic(err)
 	}
-	TOKEN, _ = c.Value("wechat.token").String()
-	AppId, _ = c.Value("wechat.appid").String()
-	AppSecret, _ = c.Value("wechat.app_secret").String()
-	Driver, _ = c.Value("data.database.driver").String()
-	Source, _ = c.Value("data.database.source").String()
-
+	var bc conf.Bootstrap
+	if err := c.Scan(&bc); err != nil {
+		panic(err)
+	}
+	TOKEN = bc.Wechat.Token
+	AppId = bc.Wechat.Appid
+	AppSecret = bc.Wechat.AppSecret
+	Driver = bc.Data.Database.Driver
+	Source = bc.Data.Database.Source
 }
 
 func NewGinService() *GinService {
