@@ -15,6 +15,7 @@ import (
 	"kubecit-service/ent/orders"
 	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
+	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
 	"reflect"
 	"sync"
@@ -91,6 +92,7 @@ func checkColumn(table, column string) error {
 			orders.Table:     orders.ValidColumn,
 			setting.Table:    setting.ValidColumn,
 			slider.Table:     slider.ValidColumn,
+			teacher.Table:    teacher.ValidColumn,
 			user.Table:       user.ValidColumn,
 		})
 	})

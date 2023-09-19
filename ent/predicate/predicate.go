@@ -33,5 +33,8 @@ type Setting func(*sql.Selector)
 // Slider is the predicate function for slider builders.
 type Slider func(*sql.Selector)
 
+// Teacher is the predicate function for teacher builders.
+type Teacher func(*sql.Selector)
+
 // User is the predicate function for user builders.
 type User func(*sql.Selector)

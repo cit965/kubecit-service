@@ -19,6 +19,7 @@ import (
 	"kubecit-service/ent/orders"
 	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
+	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
 
 	"entgo.io/ent"
@@ -50,6 +51,8 @@ type Client struct {
 	Setting *SettingClient
 	// Slider is the client for interacting with the Slider builders.
 	Slider *SliderClient
+	// Teacher is the client for interacting with the Teacher builders.
+	Teacher *TeacherClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 }
@@ -74,6 +77,7 @@ func (c *Client) init() {
 	c.Orders = NewOrdersClient(c.config)
 	c.Setting = NewSettingClient(c.config)
 	c.Slider = NewSliderClient(c.config)
+	c.Teacher = NewTeacherClient(c.config)
 	c.User = NewUserClient(c.config)
 }
 
@@ -166,6 +170,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Orders:     NewOrdersClient(cfg),
 		Setting:    NewSettingClient(cfg),
 		Slider:     NewSliderClient(cfg),
+		Teacher:    NewTeacherClient(cfg),
 		User:       NewUserClient(cfg),
 	}, nil
 }
@@ -195,6 +200,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Orders:     NewOrdersClient(cfg),
 		Setting:    NewSettingClient(cfg),
 		Slider:     NewSliderClient(cfg),
+		Teacher:    NewTeacherClient(cfg),
 		User:       NewUserClient(cfg),
 	}, nil
 }
@@ -226,7 +232,7 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.OrderInfos, c.Orders,
-		c.Setting, c.Slider, c.User,
+		c.Setting, c.Slider, c.Teacher, c.User,
 	} {
 		n.Use(hooks...)
 	}
@@ -237,7 +243,7 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.OrderInfos, c.Orders,
-		c.Setting, c.Slider, c.User,
+		c.Setting, c.Slider, c.Teacher, c.User,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -264,6 +270,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Setting.mutate(ctx, m)
 	case *SliderMutation:
 		return c.Slider.mutate(ctx, m)
+	case *TeacherMutation:
+		return c.Teacher.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	default:
@@ -1461,6 +1469,124 @@ func (c *SliderClient) mutate(ctx context.Context, m *SliderMutation) (Value, er
 	}
 }
 
+// TeacherClient is a client for the Teacher schema.
+type TeacherClient struct {
+	config
+}
+
+// NewTeacherClient returns a client for the Teacher from the given config.
+func NewTeacherClient(c config) *TeacherClient {
+	return &TeacherClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `teacher.Hooks(f(g(h())))`.
+func (c *TeacherClient) Use(hooks ...Hook) {
+	c.hooks.Teacher = append(c.hooks.Teacher, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `teacher.Intercept(f(g(h())))`.
+func (c *TeacherClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Teacher = append(c.inters.Teacher, interceptors...)
+}
+
+// Create returns a builder for creating a Teacher entity.
+func (c *TeacherClient) Create() *TeacherCreate {
+	mutation := newTeacherMutation(c.config, OpCreate)
+	return &TeacherCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Teacher entities.
+func (c *TeacherClient) CreateBulk(builders ...*TeacherCreate) *TeacherCreateBulk {
+	return &TeacherCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Teacher.
+func (c *TeacherClient) Update() *TeacherUpdate {
+	mutation := newTeacherMutation(c.config, OpUpdate)
+	return &TeacherUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TeacherClient) UpdateOne(t *Teacher) *TeacherUpdateOne {
+	mutation := newTeacherMutation(c.config, OpUpdateOne, withTeacher(t))
+	return &TeacherUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TeacherClient) UpdateOneID(id int) *TeacherUpdateOne {
+	mutation := newTeacherMutation(c.config, OpUpdateOne, withTeacherID(id))
+	return &TeacherUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Teacher.
+func (c *TeacherClient) Delete() *TeacherDelete {
+	mutation := newTeacherMutation(c.config, OpDelete)
+	return &TeacherDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TeacherClient) DeleteOne(t *Teacher) *TeacherDeleteOne {
+	return c.DeleteOneID(t.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *TeacherClient) DeleteOneID(id int) *TeacherDeleteOne {
+	builder := c.Delete().Where(teacher.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TeacherDeleteOne{builder}
+}
+
+// Query returns a query builder for Teacher.
+func (c *TeacherClient) Query() *TeacherQuery {
+	return &TeacherQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeTeacher},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Teacher entity by its id.
+func (c *TeacherClient) Get(ctx context.Context, id int) (*Teacher, error) {
+	return c.Query().Where(teacher.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TeacherClient) GetX(ctx context.Context, id int) *Teacher {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *TeacherClient) Hooks() []Hook {
+	return c.hooks.Teacher
+}
+
+// Interceptors returns the client interceptors.
+func (c *TeacherClient) Interceptors() []Interceptor {
+	return c.inters.Teacher
+}
+
+func (c *TeacherClient) mutate(ctx context.Context, m *TeacherMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&TeacherCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&TeacherUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&TeacherUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&TeacherDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Teacher mutation op: %q", m.Op())
+	}
+}
+
 // UserClient is a client for the User schema.
 type UserClient struct {
 	config
@@ -1583,10 +1709,10 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 type (
 	hooks struct {
 		Account, Category, Chapter, Course, Lesson, OrderInfos, Orders, Setting, Slider,
-		User []ent.Hook
+		Teacher, User []ent.Hook
 	}
 	inters struct {
 		Account, Category, Chapter, Course, Lesson, OrderInfos, Orders, Setting, Slider,
-		User []ent.Interceptor
+		Teacher, User []ent.Interceptor
 	}
 )

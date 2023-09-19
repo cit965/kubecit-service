@@ -356,6 +356,103 @@ service Kubecit {
       tags: "order"
     };
   }
+  //=============================讲师相关================================================
+  rpc ListAllTeacher (ListAllTeacherRequest) returns (ListAllTeacherReply) {
+    option (google.api.http) = {
+      get: "/api/teachers",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "分页查询讲师"
+      tags: "teacher"
+    };
+  }
+  rpc GetTeacher (GetTeacherRequest) returns (TeacherInfo) {
+    option (google.api.http) = {
+      get: "/api/teacher/{id}",
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "讲师详情"
+      tags: "teacher"
+    };
+  }
+  rpc CreateTeacher (CreateTeacherRequest) returns (TeacherInfo) {
+    option (google.api.http) = {
+      post: "/api/teacher",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "创建讲师"
+      tags: "teacher"
+    };
+  }
+
+}
+message CreateTeacherRequest {
+  string detail = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "讲师详情",
+    description: "讲师详情"
+  }, (google.api.field_behavior) = REQUIRED];
+  string curriculum_vitae = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "履历",
+    description: "履历"
+  }, (google.api.field_behavior) = REQUIRED];
+  string works = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "作品",
+    description: "作品"
+  }, (google.api.field_behavior) = REQUIRED];
+  string skills = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "技能点",
+    description: "技能点"
+  }, (google.api.field_behavior) = REQUIRED];
+  string avator = 5[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "头像",
+    description: "头像"
+  }, (google.api.field_behavior) = REQUIRED];
+  string name = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "姓名",
+    description: "姓名"
+  }, (google.api.field_behavior) = REQUIRED];
+  int32 level = 17[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "等级",
+    description: "ENTRY = 1; // 入门 PRIMARY = 2; //初级 INTERMEDIATE = 3; //中级 SENIOR = 4;//高级 MASTER = 5;//大师"
+  }, (google.api.field_behavior) = REQUIRED];
+}
+
+message ListAllTeacherRequest {
+  optional int32 pageNum = 1;
+  optional int32 pageSize = 2;
+}
+
+message GetTeacherRequest {
+  int32 id = 1;
+}
+message ListAllTeacherReply {
+  repeated TeacherInfo teachers = 1;
+}
+
+enum TeacherLevel {
+  TEACHER_LEVEL_UNKNOWN = 0;
+  TEACHER_ENTRY = 1; // 入门
+  TEACHER_PRIMARY = 2; //初级
+  TEACHER_INTERMEDIATE = 3; //中级
+  TEACHER_SENIOR = 4;//高级
+  TEACHER_MASTER = 5;//大师
+}
+
+
+message TeacherInfo {
+  string detail = 1 ; // 讲师详情
+  string curriculum_vitae = 2; // 履历描述
+  string works = 3; // 以往作品
+  string skills = 4; // 技能点
+  string avator = 5; // 头像
+  google.protobuf.Timestamp create_at = 6; // 创建时间
+  google.protobuf.Timestamp update_at = 7; // 更新时间
+  int32 id = 8;
+  string name = 9;
+  TeacherLevel level = 10;
 }
 
 // The request message containing the user's name.
@@ -1137,7 +1234,7 @@ enum  FreePreview {
 }
 
 message SliderInfo {
-   int32 id = 1;
+  int32 id = 1;
   string title = 2;
   string content = 3;
   string imageLink = 4;
