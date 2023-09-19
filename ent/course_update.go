@@ -68,15 +68,15 @@ func (cu *CourseUpdate) SetCover(s string) *CourseUpdate {
 }
 
 // SetPrice sets the "price" field.
-func (cu *CourseUpdate) SetPrice(f float32) *CourseUpdate {
+func (cu *CourseUpdate) SetPrice(i int32) *CourseUpdate {
 	cu.mutation.ResetPrice()
-	cu.mutation.SetPrice(f)
+	cu.mutation.SetPrice(i)
 	return cu
 }
 
-// AddPrice adds f to the "price" field.
-func (cu *CourseUpdate) AddPrice(f float32) *CourseUpdate {
-	cu.mutation.AddPrice(f)
+// AddPrice adds i to the "price" field.
+func (cu *CourseUpdate) AddPrice(i int32) *CourseUpdate {
+	cu.mutation.AddPrice(i)
 	return cu
 }
 
@@ -130,6 +130,69 @@ func (cu *CourseUpdate) SetNillableCategoryID(i *int) *CourseUpdate {
 // ClearCategoryID clears the value of the "category_id" field.
 func (cu *CourseUpdate) ClearCategoryID() *CourseUpdate {
 	cu.mutation.ClearCategoryID()
+	return cu
+}
+
+// SetScore sets the "score" field.
+func (cu *CourseUpdate) SetScore(i int32) *CourseUpdate {
+	cu.mutation.ResetScore()
+	cu.mutation.SetScore(i)
+	return cu
+}
+
+// SetNillableScore sets the "score" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillableScore(i *int32) *CourseUpdate {
+	if i != nil {
+		cu.SetScore(*i)
+	}
+	return cu
+}
+
+// AddScore adds i to the "score" field.
+func (cu *CourseUpdate) AddScore(i int32) *CourseUpdate {
+	cu.mutation.AddScore(i)
+	return cu
+}
+
+// SetDuration sets the "duration" field.
+func (cu *CourseUpdate) SetDuration(i int32) *CourseUpdate {
+	cu.mutation.ResetDuration()
+	cu.mutation.SetDuration(i)
+	return cu
+}
+
+// SetNillableDuration sets the "duration" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillableDuration(i *int32) *CourseUpdate {
+	if i != nil {
+		cu.SetDuration(*i)
+	}
+	return cu
+}
+
+// AddDuration adds i to the "duration" field.
+func (cu *CourseUpdate) AddDuration(i int32) *CourseUpdate {
+	cu.mutation.AddDuration(i)
+	return cu
+}
+
+// SetPeople sets the "people" field.
+func (cu *CourseUpdate) SetPeople(i int32) *CourseUpdate {
+	cu.mutation.ResetPeople()
+	cu.mutation.SetPeople(i)
+	return cu
+}
+
+// SetNillablePeople sets the "people" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillablePeople(i *int32) *CourseUpdate {
+	if i != nil {
+		cu.SetPeople(*i)
+	}
+	return cu
+}
+
+// AddPeople adds i to the "people" field.
+func (cu *CourseUpdate) AddPeople(i int32) *CourseUpdate {
+	cu.mutation.AddPeople(i)
 	return cu
 }
 
@@ -263,10 +326,10 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(course.FieldCover, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.Price(); ok {
-		_spec.SetField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.SetField(course.FieldPrice, field.TypeInt32, value)
 	}
 	if value, ok := cu.mutation.AddedPrice(); ok {
-		_spec.AddField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.AddField(course.FieldPrice, field.TypeInt32, value)
 	}
 	if value, ok := cu.mutation.Tags(); ok {
 		_spec.SetField(course.FieldTags, field.TypeString, value)
@@ -279,6 +342,24 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.AddedStatus(); ok {
 		_spec.AddField(course.FieldStatus, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.Score(); ok {
+		_spec.SetField(course.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedScore(); ok {
+		_spec.AddField(course.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.Duration(); ok {
+		_spec.SetField(course.FieldDuration, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedDuration(); ok {
+		_spec.AddField(course.FieldDuration, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.People(); ok {
+		_spec.SetField(course.FieldPeople, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedPeople(); ok {
+		_spec.AddField(course.FieldPeople, field.TypeInt32, value)
 	}
 	if cu.mutation.OwnerCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -412,15 +493,15 @@ func (cuo *CourseUpdateOne) SetCover(s string) *CourseUpdateOne {
 }
 
 // SetPrice sets the "price" field.
-func (cuo *CourseUpdateOne) SetPrice(f float32) *CourseUpdateOne {
+func (cuo *CourseUpdateOne) SetPrice(i int32) *CourseUpdateOne {
 	cuo.mutation.ResetPrice()
-	cuo.mutation.SetPrice(f)
+	cuo.mutation.SetPrice(i)
 	return cuo
 }
 
-// AddPrice adds f to the "price" field.
-func (cuo *CourseUpdateOne) AddPrice(f float32) *CourseUpdateOne {
-	cuo.mutation.AddPrice(f)
+// AddPrice adds i to the "price" field.
+func (cuo *CourseUpdateOne) AddPrice(i int32) *CourseUpdateOne {
+	cuo.mutation.AddPrice(i)
 	return cuo
 }
 
@@ -474,6 +555,69 @@ func (cuo *CourseUpdateOne) SetNillableCategoryID(i *int) *CourseUpdateOne {
 // ClearCategoryID clears the value of the "category_id" field.
 func (cuo *CourseUpdateOne) ClearCategoryID() *CourseUpdateOne {
 	cuo.mutation.ClearCategoryID()
+	return cuo
+}
+
+// SetScore sets the "score" field.
+func (cuo *CourseUpdateOne) SetScore(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetScore()
+	cuo.mutation.SetScore(i)
+	return cuo
+}
+
+// SetNillableScore sets the "score" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillableScore(i *int32) *CourseUpdateOne {
+	if i != nil {
+		cuo.SetScore(*i)
+	}
+	return cuo
+}
+
+// AddScore adds i to the "score" field.
+func (cuo *CourseUpdateOne) AddScore(i int32) *CourseUpdateOne {
+	cuo.mutation.AddScore(i)
+	return cuo
+}
+
+// SetDuration sets the "duration" field.
+func (cuo *CourseUpdateOne) SetDuration(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetDuration()
+	cuo.mutation.SetDuration(i)
+	return cuo
+}
+
+// SetNillableDuration sets the "duration" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillableDuration(i *int32) *CourseUpdateOne {
+	if i != nil {
+		cuo.SetDuration(*i)
+	}
+	return cuo
+}
+
+// AddDuration adds i to the "duration" field.
+func (cuo *CourseUpdateOne) AddDuration(i int32) *CourseUpdateOne {
+	cuo.mutation.AddDuration(i)
+	return cuo
+}
+
+// SetPeople sets the "people" field.
+func (cuo *CourseUpdateOne) SetPeople(i int32) *CourseUpdateOne {
+	cuo.mutation.ResetPeople()
+	cuo.mutation.SetPeople(i)
+	return cuo
+}
+
+// SetNillablePeople sets the "people" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillablePeople(i *int32) *CourseUpdateOne {
+	if i != nil {
+		cuo.SetPeople(*i)
+	}
+	return cuo
+}
+
+// AddPeople adds i to the "people" field.
+func (cuo *CourseUpdateOne) AddPeople(i int32) *CourseUpdateOne {
+	cuo.mutation.AddPeople(i)
 	return cuo
 }
 
@@ -637,10 +781,10 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 		_spec.SetField(course.FieldCover, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.Price(); ok {
-		_spec.SetField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.SetField(course.FieldPrice, field.TypeInt32, value)
 	}
 	if value, ok := cuo.mutation.AddedPrice(); ok {
-		_spec.AddField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.AddField(course.FieldPrice, field.TypeInt32, value)
 	}
 	if value, ok := cuo.mutation.Tags(); ok {
 		_spec.SetField(course.FieldTags, field.TypeString, value)
@@ -653,6 +797,24 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 	}
 	if value, ok := cuo.mutation.AddedStatus(); ok {
 		_spec.AddField(course.FieldStatus, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.Score(); ok {
+		_spec.SetField(course.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedScore(); ok {
+		_spec.AddField(course.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.Duration(); ok {
+		_spec.SetField(course.FieldDuration, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedDuration(); ok {
+		_spec.AddField(course.FieldDuration, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.People(); ok {
+		_spec.SetField(course.FieldPeople, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedPeople(); ok {
+		_spec.AddField(course.FieldPeople, field.TypeInt32, value)
 	}
 	if cuo.mutation.OwnerCleared() {
 		edge := &sqlgraph.EdgeSpec{

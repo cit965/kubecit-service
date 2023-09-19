@@ -1332,6 +1332,10 @@ func (m *CourseInfo) validate(all bool) error {
 
 	// no validation rules for People
 
+	// no validation rules for Duration
+
+	// no validation rules for Score
+
 	if len(errors) > 0 {
 		return CourseInfoMultiError(errors)
 	}
@@ -1771,6 +1775,8 @@ func (m *SearchCourseRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Level
+
 	if m.PageNum != nil {
 		// no validation rules for PageNum
 	}
@@ -1785,10 +1791,6 @@ func (m *SearchCourseRequest) validate(all bool) error {
 
 	if m.SecondCategory != nil {
 		// no validation rules for SecondCategory
-	}
-
-	if m.Level != nil {
-		// no validation rules for Level
 	}
 
 	if m.Order != nil {
@@ -3445,12 +3447,10 @@ func (m *CreateChapterRequest) validate(all bool) error {
 
 	// no validation rules for Description
 
+	// no validation rules for HasFreePreview
+
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.HasFreePreview != nil {
-		// no validation rules for HasFreePreview
 	}
 
 	if m.CourseId != nil {
@@ -3904,12 +3904,10 @@ func (m *UpdateChapterRequest) validate(all bool) error {
 
 	// no validation rules for Description
 
+	// no validation rules for HasFreePreview
+
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.HasFreePreview != nil {
-		// no validation rules for HasFreePreview
 	}
 
 	if m.CourseId != nil {
@@ -4391,22 +4389,18 @@ func (m *CreateLessonRequest) validate(all bool) error {
 
 	// no validation rules for Name
 
+	// no validation rules for Type
+
 	// no validation rules for StoragePath
 
 	// no validation rules for Source
 
 	// no validation rules for Courseware
 
+	// no validation rules for IsFreePreview
+
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.Type != nil {
-		// no validation rules for Type
-	}
-
-	if m.IsFreePreview != nil {
-		// no validation rules for IsFreePreview
 	}
 
 	if m.ChapterId != nil {
@@ -4647,9 +4641,7 @@ func (m *ListChapterLessonsWithCourIdRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.CourseId != nil {
-		// no validation rules for CourseId
-	}
+	// no validation rules for CourseId
 
 	if len(errors) > 0 {
 		return ListChapterLessonsWithCourIdRequestMultiError(errors)
@@ -5061,30 +5053,24 @@ func (m *UpdateLessonRequest) validate(all bool) error {
 
 	// no validation rules for Name
 
+	// no validation rules for Type
+
 	// no validation rules for StoragePath
 
 	// no validation rules for Source
 
 	// no validation rules for Courseware
 
+	// no validation rules for IsFreePreview
+
+	// no validation rules for LessonId
+
 	if m.Sort != nil {
 		// no validation rules for Sort
 	}
 
-	if m.Type != nil {
-		// no validation rules for Type
-	}
-
-	if m.IsFreePreview != nil {
-		// no validation rules for IsFreePreview
-	}
-
 	if m.ChapterId != nil {
 		// no validation rules for ChapterId
-	}
-
-	if m.LessonId != nil {
-		// no validation rules for LessonId
 	}
 
 	if len(errors) > 0 {
@@ -5189,30 +5175,12 @@ func (m *UpdateLessonReply) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Name
-
-	// no validation rules for Sort
-
-	// no validation rules for Type
-
-	// no validation rules for StoragePath
-
-	// no validation rules for Source
-
-	// no validation rules for Courseware
-
-	// no validation rules for IsFreePreview
-
-	// no validation rules for ChapterId
-
-	// no validation rules for Id
-
 	if all {
-		switch v := interface{}(m.GetReleasedTime()).(type) {
+		switch v := interface{}(m.GetData()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, UpdateLessonReplyValidationError{
-					field:  "ReleasedTime",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -5220,16 +5188,16 @@ func (m *UpdateLessonReply) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, UpdateLessonReplyValidationError{
-					field:  "ReleasedTime",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetReleasedTime()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return UpdateLessonReplyValidationError{
-				field:  "ReleasedTime",
+				field:  "Data",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
