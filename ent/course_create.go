@@ -61,8 +61,8 @@ func (cc *CourseCreate) SetCover(s string) *CourseCreate {
 }
 
 // SetPrice sets the "price" field.
-func (cc *CourseCreate) SetPrice(f float32) *CourseCreate {
-	cc.mutation.SetPrice(f)
+func (cc *CourseCreate) SetPrice(i int32) *CourseCreate {
+	cc.mutation.SetPrice(i)
 	return cc
 }
 
@@ -102,6 +102,48 @@ func (cc *CourseCreate) SetCategoryID(i int) *CourseCreate {
 func (cc *CourseCreate) SetNillableCategoryID(i *int) *CourseCreate {
 	if i != nil {
 		cc.SetCategoryID(*i)
+	}
+	return cc
+}
+
+// SetScore sets the "score" field.
+func (cc *CourseCreate) SetScore(i int32) *CourseCreate {
+	cc.mutation.SetScore(i)
+	return cc
+}
+
+// SetNillableScore sets the "score" field if the given value is not nil.
+func (cc *CourseCreate) SetNillableScore(i *int32) *CourseCreate {
+	if i != nil {
+		cc.SetScore(*i)
+	}
+	return cc
+}
+
+// SetDuration sets the "duration" field.
+func (cc *CourseCreate) SetDuration(i int32) *CourseCreate {
+	cc.mutation.SetDuration(i)
+	return cc
+}
+
+// SetNillableDuration sets the "duration" field if the given value is not nil.
+func (cc *CourseCreate) SetNillableDuration(i *int32) *CourseCreate {
+	if i != nil {
+		cc.SetDuration(*i)
+	}
+	return cc
+}
+
+// SetPeople sets the "people" field.
+func (cc *CourseCreate) SetPeople(i int32) *CourseCreate {
+	cc.mutation.SetPeople(i)
+	return cc
+}
+
+// SetNillablePeople sets the "people" field if the given value is not nil.
+func (cc *CourseCreate) SetNillablePeople(i *int32) *CourseCreate {
+	if i != nil {
+		cc.SetPeople(*i)
 	}
 	return cc
 }
@@ -176,12 +218,24 @@ func (cc *CourseCreate) ExecX(ctx context.Context) {
 // defaults sets the default values of the builder before save.
 func (cc *CourseCreate) defaults() {
 	if _, ok := cc.mutation.UpdatedAt(); !ok {
-		v := course.DefaultUpdatedAt
+		v := course.DefaultUpdatedAt()
 		cc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := cc.mutation.CreatedAt(); !ok {
-		v := course.DefaultCreatedAt
+		v := course.DefaultCreatedAt()
 		cc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := cc.mutation.Score(); !ok {
+		v := course.DefaultScore
+		cc.mutation.SetScore(v)
+	}
+	if _, ok := cc.mutation.Duration(); !ok {
+		v := course.DefaultDuration
+		cc.mutation.SetDuration(v)
+	}
+	if _, ok := cc.mutation.People(); !ok {
+		v := course.DefaultPeople
+		cc.mutation.SetPeople(v)
 	}
 }
 
@@ -213,6 +267,15 @@ func (cc *CourseCreate) check() error {
 	}
 	if _, ok := cc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Course.status"`)}
+	}
+	if _, ok := cc.mutation.Score(); !ok {
+		return &ValidationError{Name: "score", err: errors.New(`ent: missing required field "Course.score"`)}
+	}
+	if _, ok := cc.mutation.Duration(); !ok {
+		return &ValidationError{Name: "duration", err: errors.New(`ent: missing required field "Course.duration"`)}
+	}
+	if _, ok := cc.mutation.People(); !ok {
+		return &ValidationError{Name: "people", err: errors.New(`ent: missing required field "Course.people"`)}
 	}
 	return nil
 }
@@ -261,7 +324,7 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 		_node.Cover = value
 	}
 	if value, ok := cc.mutation.Price(); ok {
-		_spec.SetField(course.FieldPrice, field.TypeFloat32, value)
+		_spec.SetField(course.FieldPrice, field.TypeInt32, value)
 		_node.Price = value
 	}
 	if value, ok := cc.mutation.Tags(); ok {
@@ -275,6 +338,18 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.Status(); ok {
 		_spec.SetField(course.FieldStatus, field.TypeInt32, value)
 		_node.Status = value
+	}
+	if value, ok := cc.mutation.Score(); ok {
+		_spec.SetField(course.FieldScore, field.TypeInt32, value)
+		_node.Score = value
+	}
+	if value, ok := cc.mutation.Duration(); ok {
+		_spec.SetField(course.FieldDuration, field.TypeInt32, value)
+		_node.Duration = value
+	}
+	if value, ok := cc.mutation.People(); ok {
+		_spec.SetField(course.FieldPeople, field.TypeInt32, value)
+		_node.People = value
 	}
 	if nodes := cc.mutation.OwnerIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

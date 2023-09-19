@@ -12,7 +12,7 @@ import (
 	"kubecit-service/ent/orders"
 	"kubecit-service/ent/schema"
 	"kubecit-service/ent/slider"
-	"kubecit-service/ent/wallet"
+	"kubecit-service/ent/teacher"
 	"time"
 )
 
@@ -57,13 +57,25 @@ func init() {
 	// courseDescUpdatedAt is the schema descriptor for updated_at field.
 	courseDescUpdatedAt := courseFields[1].Descriptor()
 	// course.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	course.DefaultUpdatedAt = courseDescUpdatedAt.Default.(time.Time)
+	course.DefaultUpdatedAt = courseDescUpdatedAt.Default.(func() time.Time)
 	// course.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	course.UpdateDefaultUpdatedAt = courseDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// courseDescCreatedAt is the schema descriptor for created_at field.
 	courseDescCreatedAt := courseFields[7].Descriptor()
 	// course.DefaultCreatedAt holds the default value on creation for the created_at field.
-	course.DefaultCreatedAt = courseDescCreatedAt.Default.(time.Time)
+	course.DefaultCreatedAt = courseDescCreatedAt.Default.(func() time.Time)
+	// courseDescScore is the schema descriptor for score field.
+	courseDescScore := courseFields[10].Descriptor()
+	// course.DefaultScore holds the default value on creation for the score field.
+	course.DefaultScore = courseDescScore.Default.(int32)
+	// courseDescDuration is the schema descriptor for duration field.
+	courseDescDuration := courseFields[11].Descriptor()
+	// course.DefaultDuration holds the default value on creation for the duration field.
+	course.DefaultDuration = courseDescDuration.Default.(int32)
+	// courseDescPeople is the schema descriptor for people field.
+	courseDescPeople := courseFields[12].Descriptor()
+	// course.DefaultPeople holds the default value on creation for the people field.
+	course.DefaultPeople = courseDescPeople.Default.(int32)
 	lessonFields := schema.Lesson{}.Fields()
 	_ = lessonFields
 	// lessonDescReleasedTime is the schema descriptor for released_time field.
@@ -136,32 +148,16 @@ func init() {
 	sliderDescIsValid := sliderFields[5].Descriptor()
 	// slider.DefaultIsValid holds the default value on creation for the is_valid field.
 	slider.DefaultIsValid = sliderDescIsValid.Default.(bool)
-	walletFields := schema.Wallet{}.Fields()
-	_ = walletFields
-	// walletDescGoldLeaf is the schema descriptor for gold_leaf field.
-	walletDescGoldLeaf := walletFields[0].Descriptor()
-	// wallet.DefaultGoldLeaf holds the default value on creation for the gold_leaf field.
-	wallet.DefaultGoldLeaf = walletDescGoldLeaf.Default.(int32)
-	// walletDescSilverLeaf is the schema descriptor for silver_leaf field.
-	walletDescSilverLeaf := walletFields[1].Descriptor()
-	// wallet.DefaultSilverLeaf holds the default value on creation for the silver_leaf field.
-	wallet.DefaultSilverLeaf = walletDescSilverLeaf.Default.(int32)
-	// walletDescFrozenGoldLeaf is the schema descriptor for frozen_gold_leaf field.
-	walletDescFrozenGoldLeaf := walletFields[2].Descriptor()
-	// wallet.DefaultFrozenGoldLeaf holds the default value on creation for the frozen_gold_leaf field.
-	wallet.DefaultFrozenGoldLeaf = walletDescFrozenGoldLeaf.Default.(int32)
-	// walletDescFrozenSilverLeaf is the schema descriptor for frozen_silver_leaf field.
-	walletDescFrozenSilverLeaf := walletFields[3].Descriptor()
-	// wallet.DefaultFrozenSilverLeaf holds the default value on creation for the frozen_silver_leaf field.
-	wallet.DefaultFrozenSilverLeaf = walletDescFrozenSilverLeaf.Default.(int32)
-	// walletDescCreateAt is the schema descriptor for create_at field.
-	walletDescCreateAt := walletFields[6].Descriptor()
-	// wallet.DefaultCreateAt holds the default value on creation for the create_at field.
-	wallet.DefaultCreateAt = walletDescCreateAt.Default.(func() time.Time)
-	// walletDescUpdateAt is the schema descriptor for update_at field.
-	walletDescUpdateAt := walletFields[7].Descriptor()
-	// wallet.DefaultUpdateAt holds the default value on creation for the update_at field.
-	wallet.DefaultUpdateAt = walletDescUpdateAt.Default.(func() time.Time)
-	// wallet.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
-	wallet.UpdateDefaultUpdateAt = walletDescUpdateAt.UpdateDefault.(func() time.Time)
+	teacherFields := schema.Teacher{}.Fields()
+	_ = teacherFields
+	// teacherDescCreateAt is the schema descriptor for create_at field.
+	teacherDescCreateAt := teacherFields[7].Descriptor()
+	// teacher.DefaultCreateAt holds the default value on creation for the create_at field.
+	teacher.DefaultCreateAt = teacherDescCreateAt.Default.(func() time.Time)
+	// teacherDescUpdateAt is the schema descriptor for update_at field.
+	teacherDescUpdateAt := teacherFields[8].Descriptor()
+	// teacher.DefaultUpdateAt holds the default value on creation for the update_at field.
+	teacher.DefaultUpdateAt = teacherDescUpdateAt.Default.(func() time.Time)
+	// teacher.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
+	teacher.UpdateDefaultUpdateAt = teacherDescUpdateAt.UpdateDefault.(func() time.Time)
 }

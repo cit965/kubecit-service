@@ -30,6 +30,8 @@ type Tx struct {
 	Setting *SettingClient
 	// Slider is the client for interacting with the Slider builders.
 	Slider *SliderClient
+	// Teacher is the client for interacting with the Teacher builders.
+	Teacher *TeacherClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 	// Wallet is the client for interacting with the Wallet builders.
@@ -174,6 +176,7 @@ func (tx *Tx) init() {
 	tx.Orders = NewOrdersClient(tx.config)
 	tx.Setting = NewSettingClient(tx.config)
 	tx.Slider = NewSliderClient(tx.config)
+	tx.Teacher = NewTeacherClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 	tx.Wallet = NewWalletClient(tx.config)
 }

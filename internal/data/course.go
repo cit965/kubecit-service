@@ -33,9 +33,13 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 		cq.Where(course.LevelEQ(*level))
 	}
 	if order != nil {
-		cq.Order(ent.Asc(course.FieldCreatedAt))
-	} else {
-		cq.Order(ent.Desc(course.FieldCreatedAt))
+		if *order == 1 {
+			// 最新排序
+			cq.Order(ent.Asc(course.FieldCreatedAt))
+		} else if *order == 2 {
+			// 综合排序
+			cq.Order(ent.Desc(course.FieldCreatedAt))
+		}
 	}
 	total, err := cq.Count(ctx)
 	if err != nil {
@@ -242,7 +246,7 @@ func (c *courseRepo) UpdateChapter(ctx context.Context, id int, ins *biz.Chapter
 }
 
 func (c *courseRepo) CreateLesson(ctx context.Context, lesson *biz.Lesson) (*biz.Lesson, error) {
-	res, err := c.data.db.Lesson.Create().SetName(lesson.Name).SetReleasedTime(lesson.ReleasedTime).SetSort(lesson.Sort).
+	res, err := c.data.db.Lesson.Create().SetName(lesson.Name).SetSort(lesson.Sort).
 		SetType(lesson.Type).SetStoragePath(lesson.StoragePath).SetSource(lesson.Source).SetCourseware(lesson.Courseware).
 		SetIsFreePreview(lesson.IsFreePreview).SetChapterID(lesson.ChapterId).Save(ctx)
 	if err != nil {
@@ -296,7 +300,7 @@ func (c *courseRepo) ListLessons(ctx context.Context, chapterId int) ([]*biz.Les
 	return res, nil
 }
 func (c *courseRepo) UpdateLesson(ctx context.Context, id int, lesson *biz.Lesson) (*biz.Lesson, error) {
-	res, err := c.data.db.Lesson.UpdateOneID(id).SetName(lesson.Name).SetReleasedTime(lesson.ReleasedTime).SetSort(lesson.Sort).
+	res, err := c.data.db.Lesson.UpdateOneID(id).SetName(lesson.Name).SetSort(lesson.Sort).
 		SetType(lesson.Type).SetStoragePath(lesson.StoragePath).SetSource(lesson.Source).SetCourseware(lesson.Courseware).
 		SetIsFreePreview(lesson.IsFreePreview).SetChapterID(lesson.ChapterId).Save(ctx)
 	if err != nil {

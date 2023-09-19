@@ -50,7 +50,9 @@ const (
 	Kubecit_ListSlidersByPriority_FullMethodName = "/helloworld.v1.Kubecit/ListSlidersByPriority"
 	Kubecit_SystemSettings_FullMethodName        = "/helloworld.v1.Kubecit/SystemSettings"
 	Kubecit_CreateOrder_FullMethodName           = "/helloworld.v1.Kubecit/CreateOrder"
-	Kubecit_RechargeWallet_FullMethodName        = "/helloworld.v1.Kubecit/RechargeWallet"
+	Kubecit_ListAllTeacher_FullMethodName        = "/helloworld.v1.Kubecit/ListAllTeacher"
+	Kubecit_GetTeacher_FullMethodName            = "/helloworld.v1.Kubecit/GetTeacher"
+	Kubecit_CreateTeacher_FullMethodName         = "/helloworld.v1.Kubecit/CreateTeacher"
 )
 
 // KubecitClient is the client API for Kubecit service.
@@ -92,8 +94,10 @@ type KubecitClient interface {
 	SystemSettings(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*SystemSettingsReply, error)
 	// ========================== 订单相关接口 ===================================
 	CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderReply, error)
-	//=============================用户钱包相关接口=================================================
-	RechargeWallet(ctx context.Context, in *RechargeWalletRequest, opts ...grpc.CallOption) (*WalletInfo, error)
+	//=============================讲师相关================================================
+	ListAllTeacher(ctx context.Context, in *ListAllTeacherRequest, opts ...grpc.CallOption) (*ListAllTeacherReply, error)
+	GetTeacher(ctx context.Context, in *GetTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error)
+	CreateTeacher(ctx context.Context, in *CreateTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error)
 }
 
 type kubecitClient struct {
@@ -383,9 +387,27 @@ func (c *kubecitClient) CreateOrder(ctx context.Context, in *CreateOrderRequest,
 	return out, nil
 }
 
-func (c *kubecitClient) RechargeWallet(ctx context.Context, in *RechargeWalletRequest, opts ...grpc.CallOption) (*WalletInfo, error) {
-	out := new(WalletInfo)
-	err := c.cc.Invoke(ctx, Kubecit_RechargeWallet_FullMethodName, in, out, opts...)
+func (c *kubecitClient) ListAllTeacher(ctx context.Context, in *ListAllTeacherRequest, opts ...grpc.CallOption) (*ListAllTeacherReply, error) {
+	out := new(ListAllTeacherReply)
+	err := c.cc.Invoke(ctx, Kubecit_ListAllTeacher_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubecitClient) GetTeacher(ctx context.Context, in *GetTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error) {
+	out := new(TeacherInfo)
+	err := c.cc.Invoke(ctx, Kubecit_GetTeacher_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubecitClient) CreateTeacher(ctx context.Context, in *CreateTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error) {
+	out := new(TeacherInfo)
+	err := c.cc.Invoke(ctx, Kubecit_CreateTeacher_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -431,8 +453,10 @@ type KubecitServer interface {
 	SystemSettings(context.Context, *Empty) (*SystemSettingsReply, error)
 	// ========================== 订单相关接口 ===================================
 	CreateOrder(context.Context, *CreateOrderRequest) (*CreateOrderReply, error)
-	//=============================用户钱包相关接口=================================================
-	RechargeWallet(context.Context, *RechargeWalletRequest) (*WalletInfo, error)
+	//=============================讲师相关================================================
+	ListAllTeacher(context.Context, *ListAllTeacherRequest) (*ListAllTeacherReply, error)
+	GetTeacher(context.Context, *GetTeacherRequest) (*TeacherInfo, error)
+	CreateTeacher(context.Context, *CreateTeacherRequest) (*TeacherInfo, error)
 	mustEmbedUnimplementedKubecitServer()
 }
 
@@ -533,8 +557,14 @@ func (UnimplementedKubecitServer) SystemSettings(context.Context, *Empty) (*Syst
 func (UnimplementedKubecitServer) CreateOrder(context.Context, *CreateOrderRequest) (*CreateOrderReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrder not implemented")
 }
-func (UnimplementedKubecitServer) RechargeWallet(context.Context, *RechargeWalletRequest) (*WalletInfo, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RechargeWallet not implemented")
+func (UnimplementedKubecitServer) ListAllTeacher(context.Context, *ListAllTeacherRequest) (*ListAllTeacherReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAllTeacher not implemented")
+}
+func (UnimplementedKubecitServer) GetTeacher(context.Context, *GetTeacherRequest) (*TeacherInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTeacher not implemented")
+}
+func (UnimplementedKubecitServer) CreateTeacher(context.Context, *CreateTeacherRequest) (*TeacherInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTeacher not implemented")
 }
 func (UnimplementedKubecitServer) mustEmbedUnimplementedKubecitServer() {}
 
@@ -1107,20 +1137,56 @@ func _Kubecit_CreateOrder_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Kubecit_RechargeWallet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RechargeWalletRequest)
+func _Kubecit_ListAllTeacher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAllTeacherRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(KubecitServer).RechargeWallet(ctx, in)
+		return srv.(KubecitServer).ListAllTeacher(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Kubecit_RechargeWallet_FullMethodName,
+		FullMethod: Kubecit_ListAllTeacher_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(KubecitServer).RechargeWallet(ctx, req.(*RechargeWalletRequest))
+		return srv.(KubecitServer).ListAllTeacher(ctx, req.(*ListAllTeacherRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Kubecit_GetTeacher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTeacherRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).GetTeacher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_GetTeacher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).GetTeacher(ctx, req.(*GetTeacherRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Kubecit_CreateTeacher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateTeacherRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).CreateTeacher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_CreateTeacher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).CreateTeacher(ctx, req.(*CreateTeacherRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1257,8 +1323,16 @@ var Kubecit_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Kubecit_CreateOrder_Handler,
 		},
 		{
-			MethodName: "RechargeWallet",
-			Handler:    _Kubecit_RechargeWallet_Handler,
+			MethodName: "ListAllTeacher",
+			Handler:    _Kubecit_ListAllTeacher_Handler,
+		},
+		{
+			MethodName: "GetTeacher",
+			Handler:    _Kubecit_GetTeacher_Handler,
+		},
+		{
+			MethodName: "CreateTeacher",
+			Handler:    _Kubecit_CreateTeacher_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

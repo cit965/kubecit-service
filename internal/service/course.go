@@ -3,10 +3,11 @@ package service
 import (
 	"context"
 	"errors"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "kubecit-service/api/helloworld/v1"
 	"kubecit-service/internal/biz"
 	"strings"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // MostNew 最新好课
@@ -29,9 +30,11 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNe
 			Tags:       strings.Split(v.Tags, ","),
 			CreatedAt:  timestamppb.New(v.CreatedAt),
 			UpdatedAt:  timestamppb.New(v.UpdatedAt),
-			Status:     pb.CourseStatus(v.Status),
+			Status:     v.Status,
 			CategoryId: int32(v.CategoryId),
 			People:     102,
+			Score:      99,
+			Duration:   40,
 		}
 		result = append(result, tmp)
 	}
@@ -54,7 +57,7 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 	courses, total, err := s.cc.SearchCourse(ctx, &biz.SearchFilterParam{
 		SecondCategoryId: req.SecondCategory,
 		FirstCategoryId:  req.FirstCategory,
-		Level:            req.Level,
+		Level:            (*int32)(req.GetLevel().Enum()),
 		Order:            req.Order,
 		PageNum:          req.PageNum,
 		PageSize:         req.PageSize,
@@ -74,9 +77,11 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 			Tags:       strings.Split(course.Tags, ","),
 			CreatedAt:  timestamppb.New(course.CreatedAt),
 			UpdatedAt:  timestamppb.New(course.UpdatedAt),
-			Status:     pb.CourseStatus(course.Status),
+			Status:     course.Status,
 			CategoryId: int32(course.CategoryId),
 			People:     102,
+			Score:      99,
+			Duration:   40,
 		})
 	}
 	return &pb.CourseSearchReply{
@@ -95,7 +100,7 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 	}
 	course := &biz.Course{
 		Id:         int(req.GetId()),
-		Level:      req.GetLevel(),
+		Level:      int32(req.GetLevel().Number()),
 		Name:       req.GetName(),
 		Detail:     req.GetDetail(),
 		Cover:      req.GetCover(),
@@ -116,10 +121,13 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 			Cover:      res.Cover,
 			Price:      res.Price,
 			Tags:       strings.Split(res.Tags, ","),
-			Status:     pb.CourseStatus(res.Status),
+			Status:     res.Status,
 			CategoryId: int32(res.CategoryId),
 			CreatedAt:  timestamppb.New(res.CreatedAt),
 			UpdatedAt:  timestamppb.New(res.UpdatedAt),
+			People:     102,
+			Score:      99,
+			Duration:   40,
 		}}, nil
 }
 
@@ -145,16 +153,19 @@ func (s *KubecitService) ReviewCourse(ctx context.Context, req *pb.ReviewCourseR
 			Cover:      res.Cover,
 			Price:      res.Price,
 			Tags:       strings.Split(res.Tags, ","),
-			Status:     pb.CourseStatus(res.Status),
+			Status:     res.Status,
 			CategoryId: int32(res.CategoryId),
 			CreatedAt:  timestamppb.New(res.CreatedAt),
 			UpdatedAt:  timestamppb.New(res.UpdatedAt),
+			People:     102,
+			Score:      99,
+			Duration:   40,
 		}}, nil
 }
 
 func (s *KubecitService) CreateCourse(ctx context.Context, req *pb.CreateCourseRequest) (*pb.CreateCourseReply, error) {
 	ins := &biz.Course{
-		Level:      req.GetLevel(),
+		Level:      int32(req.GetLevel().Number()),
 		Name:       req.GetName(),
 		Detail:     req.GetDetail(),
 		Cover:      req.GetCover(),
@@ -174,10 +185,13 @@ func (s *KubecitService) CreateCourse(ctx context.Context, req *pb.CreateCourseR
 		Cover:      res.Cover,
 		Price:      res.Price,
 		Tags:       strings.Split(res.Tags, ","),
-		Status:     pb.CourseStatus(res.Status),
+		Status:     res.Status,
 		CategoryId: int32(res.CategoryId),
 		CreatedAt:  timestamppb.New(res.CreatedAt),
 		UpdatedAt:  timestamppb.New(res.UpdatedAt),
+		People:     102,
+		Score:      99,
+		Duration:   40,
 	}}, nil
 }
 
@@ -195,10 +209,13 @@ func (s *KubecitService) GetCourse(ctx context.Context, req *pb.GetCourseRequest
 			Cover:      res.Cover,
 			Price:      res.Price,
 			Tags:       strings.Split(res.Tags, ","),
-			Status:     pb.CourseStatus(res.Status),
+			Status:     res.Status,
 			CategoryId: int32(res.CategoryId),
 			CreatedAt:  timestamppb.New(res.CreatedAt),
 			UpdatedAt:  timestamppb.New(res.UpdatedAt),
+			People:     102,
+			Score:      99,
+			Duration:   40,
 		}}, nil
 }
 
@@ -372,16 +389,18 @@ func (s *KubecitService) UpdateLesson(ctx context.Context, req *pb.UpdateLessonR
 		return nil, err
 	}
 	return &pb.UpdateLessonReply{
-		Name:          res.Name,
-		Sort:          int32(res.Sort),
-		Type:          int32(res.Type),
-		StoragePath:   res.StoragePath,
-		Source:        res.Source,
-		Courseware:    res.Courseware,
-		IsFreePreview: int32(res.IsFreePreview),
-		ChapterId:     int32(res.ChapterId),
-		Id:            int32(res.Id),
-		ReleasedTime:  timestamppb.New(res.ReleasedTime),
+		Data: &pb.LessonInfo{
+			Name:          res.Name,
+			Sort:          int32(res.Sort),
+			Type:          int32(res.Type),
+			StoragePath:   res.StoragePath,
+			Source:        res.Source,
+			Courseware:    res.Courseware,
+			IsFreePreview: int32(res.IsFreePreview),
+			ChapterId:     int32(res.ChapterId),
+			Id:            int32(res.Id),
+			ReleasedTime:  timestamppb.New(res.ReleasedTime),
+		},
 	}, nil
 }
 func (s *KubecitService) DeleteLesson(ctx context.Context, req *pb.DeleteLessonRequest) (*pb.DeleteLessonReply, error) {

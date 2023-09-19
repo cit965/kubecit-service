@@ -5,10 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-kratos/kratos/v2/config"
+	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/skip2/go-qrcode"
 	"kubecit-service/ent"
 	"kubecit-service/ent/account"
 	"kubecit-service/ent/user"
+	"kubecit-service/internal/conf"
 	"kubecit-service/internal/pkg/jwt"
 	"net/http"
 	"net/url"
@@ -24,11 +27,38 @@ type GinService struct {
 	*gin.Engine
 }
 
-const (
-	TOKEN     = "111"
-	AppId     = "wx4edbdc4895597796"
-	AppSecret = "cea927f6ae8a5974a0ce3e266a4cad0b"
+var (
+	TOKEN     = ""
+	AppId     = ""
+	AppSecret = ""
+	Driver    = ""
+	Source    = ""
 )
+
+func init() {
+	initConfig()
+}
+
+func initConfig() {
+	c := config.New(
+		config.WithSource(
+			file.NewSource("./configs/qa_config.yaml"),
+		),
+	)
+	defer c.Close()
+	if err := c.Load(); err != nil {
+		panic(err)
+	}
+	var bc conf.Bootstrap
+	if err := c.Scan(&bc); err != nil {
+		panic(err)
+	}
+	TOKEN = bc.Wechat.Token
+	AppId = bc.Wechat.Appid
+	AppSecret = bc.Wechat.AppSecret
+	Driver = bc.Data.Database.Driver
+	Source = bc.Data.Database.Source
+}
 
 func NewGinService() *GinService {
 	r := gin.Default()
@@ -47,13 +77,16 @@ func NewGinService() *GinService {
 }
 
 func CheckSignature(c *gin.Context) {
+	s := fmt.Sprintf("token:%s, appid:%s, app_secret:%s", TOKEN, AppId, AppSecret)
+	sprintf := fmt.Sprintf("driver:%s, source:%s", Driver, Source)
+	fmt.Println(s, sprintf)
+
 	// 获取查询参数中的签名、时间戳和随机数
 	signature := c.Query("signature")
 	timestamp := c.Query("timestamp")
 	nonce := c.Query("nonce")
 	echostr := c.Query("echostr")
 
-	fmt.Println(signature)
 	// 创建包含令牌、时间戳和随机数的字符串切片
 	tmpArr := []string{TOKEN, timestamp, nonce}
 	// 对切片进行字典排序
@@ -67,8 +100,7 @@ func CheckSignature(c *gin.Context) {
 	tmpHash := sha1.New()
 	tmpHash.Write([]byte(tmpStr))
 	tmpStr = fmt.Sprintf("%x", tmpHash.Sum(nil))
-	fmt.Println(tmpStr)
-	fmt.Println(signature)
+
 	// 将计算得到的签名与请求中提供的签名进行比较，并根据结果发送相应的响应
 	if tmpStr == signature {
 		c.String(200, echostr)
@@ -131,7 +163,7 @@ func Callback(ctx *gin.Context) {
 		FailWithMessage("解析微信用户信息失败", ctx)
 		return
 	}
-	entClient, err := ent.Open("sqlite3", "./test.db?_fk=1")
+	entClient, err := ent.Open(Driver, Source)
 	if err != nil {
 		FailWithMessage("连接数据库失败", ctx)
 		return

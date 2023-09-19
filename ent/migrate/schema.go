@@ -82,10 +82,13 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "detail", Type: field.TypeString},
 		{Name: "cover", Type: field.TypeString},
-		{Name: "price", Type: field.TypeFloat32},
+		{Name: "price", Type: field.TypeInt32},
 		{Name: "tags", Type: field.TypeString},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "status", Type: field.TypeInt32},
+		{Name: "score", Type: field.TypeInt32, Default: 0},
+		{Name: "duration", Type: field.TypeInt32, Default: 0},
+		{Name: "people", Type: field.TypeInt32, Default: 0},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
 	}
 	// CoursesTable holds the schema information for the "courses" table.
@@ -96,7 +99,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "courses_categories_courses",
-				Columns:    []*schema.Column{CoursesColumns[10]},
+				Columns:    []*schema.Column{CoursesColumns[13]},
 				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -195,6 +198,25 @@ var (
 		Columns:    SlidersColumns,
 		PrimaryKey: []*schema.Column{SlidersColumns[0]},
 	}
+	// TeachersColumns holds the columns for the "teachers" table.
+	TeachersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "detail", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "curriculum_vitae", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "works", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "skills", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "text"}},
+		{Name: "name", Type: field.TypeString, SchemaType: map[string]string{"mysql": "varchar(64)"}},
+		{Name: "level", Type: field.TypeInt, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "avator", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
+		{Name: "create_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "update_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+	}
+	// TeachersTable holds the schema information for the "teachers" table.
+	TeachersTable = &schema.Table{
+		Name:       "teachers",
+		Columns:    TeachersColumns,
+		PrimaryKey: []*schema.Column{TeachersColumns[0]},
+	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -237,6 +259,7 @@ var (
 		OrdersTable,
 		SettingsTable,
 		SlidersTable,
+		TeachersTable,
 		UsersTable,
 		WalletsTable,
 	}

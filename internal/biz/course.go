@@ -22,12 +22,15 @@ type Course struct {
 	Name       string
 	Detail     string
 	Cover      string
-	Price      float32
+	Price      int32
 	Tags       string
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 	Status     int32
 	CategoryId int
+	People     int32
+	Duration   int32
+	Score      int32
 }
 
 type CourseChapterLessons struct {

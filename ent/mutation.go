@@ -16,6 +16,7 @@ import (
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/setting"
 	"kubecit-service/ent/slider"
+	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
 	"kubecit-service/ent/wallet"
 	"sync"
@@ -43,6 +44,7 @@ const (
 	TypeOrders     = "Orders"
 	TypeSetting    = "Setting"
 	TypeSlider     = "Slider"
+	TypeTeacher    = "Teacher"
 	TypeUser       = "User"
 	TypeWallet     = "Wallet"
 )
@@ -2121,12 +2123,18 @@ type CourseMutation struct {
 	name            *string
 	detail          *string
 	cover           *string
-	price           *float32
-	addprice        *float32
+	price           *int32
+	addprice        *int32
 	tags            *string
 	created_at      *time.Time
 	status          *int32
 	addstatus       *int32
+	score           *int32
+	addscore        *int32
+	duration        *int32
+	addduration     *int32
+	people          *int32
+	addpeople       *int32
 	clearedFields   map[string]struct{}
 	owner           *int
 	clearedowner    bool
@@ -2437,13 +2445,13 @@ func (m *CourseMutation) ResetCover() {
 }
 
 // SetPrice sets the "price" field.
-func (m *CourseMutation) SetPrice(f float32) {
-	m.price = &f
+func (m *CourseMutation) SetPrice(i int32) {
+	m.price = &i
 	m.addprice = nil
 }
 
 // Price returns the value of the "price" field in the mutation.
-func (m *CourseMutation) Price() (r float32, exists bool) {
+func (m *CourseMutation) Price() (r int32, exists bool) {
 	v := m.price
 	if v == nil {
 		return
@@ -2454,7 +2462,7 @@ func (m *CourseMutation) Price() (r float32, exists bool) {
 // OldPrice returns the old "price" field's value of the Course entity.
 // If the Course object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CourseMutation) OldPrice(ctx context.Context) (v float32, err error) {
+func (m *CourseMutation) OldPrice(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldPrice is only allowed on UpdateOne operations")
 	}
@@ -2468,17 +2476,17 @@ func (m *CourseMutation) OldPrice(ctx context.Context) (v float32, err error) {
 	return oldValue.Price, nil
 }
 
-// AddPrice adds f to the "price" field.
-func (m *CourseMutation) AddPrice(f float32) {
+// AddPrice adds i to the "price" field.
+func (m *CourseMutation) AddPrice(i int32) {
 	if m.addprice != nil {
-		*m.addprice += f
+		*m.addprice += i
 	} else {
-		m.addprice = &f
+		m.addprice = &i
 	}
 }
 
 // AddedPrice returns the value that was added to the "price" field in this mutation.
-func (m *CourseMutation) AddedPrice() (r float32, exists bool) {
+func (m *CourseMutation) AddedPrice() (r int32, exists bool) {
 	v := m.addprice
 	if v == nil {
 		return
@@ -2669,6 +2677,174 @@ func (m *CourseMutation) ResetCategoryID() {
 	delete(m.clearedFields, course.FieldCategoryID)
 }
 
+// SetScore sets the "score" field.
+func (m *CourseMutation) SetScore(i int32) {
+	m.score = &i
+	m.addscore = nil
+}
+
+// Score returns the value of the "score" field in the mutation.
+func (m *CourseMutation) Score() (r int32, exists bool) {
+	v := m.score
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldScore returns the old "score" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldScore(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldScore is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldScore requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldScore: %w", err)
+	}
+	return oldValue.Score, nil
+}
+
+// AddScore adds i to the "score" field.
+func (m *CourseMutation) AddScore(i int32) {
+	if m.addscore != nil {
+		*m.addscore += i
+	} else {
+		m.addscore = &i
+	}
+}
+
+// AddedScore returns the value that was added to the "score" field in this mutation.
+func (m *CourseMutation) AddedScore() (r int32, exists bool) {
+	v := m.addscore
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetScore resets all changes to the "score" field.
+func (m *CourseMutation) ResetScore() {
+	m.score = nil
+	m.addscore = nil
+}
+
+// SetDuration sets the "duration" field.
+func (m *CourseMutation) SetDuration(i int32) {
+	m.duration = &i
+	m.addduration = nil
+}
+
+// Duration returns the value of the "duration" field in the mutation.
+func (m *CourseMutation) Duration() (r int32, exists bool) {
+	v := m.duration
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDuration returns the old "duration" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldDuration(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDuration is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDuration requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDuration: %w", err)
+	}
+	return oldValue.Duration, nil
+}
+
+// AddDuration adds i to the "duration" field.
+func (m *CourseMutation) AddDuration(i int32) {
+	if m.addduration != nil {
+		*m.addduration += i
+	} else {
+		m.addduration = &i
+	}
+}
+
+// AddedDuration returns the value that was added to the "duration" field in this mutation.
+func (m *CourseMutation) AddedDuration() (r int32, exists bool) {
+	v := m.addduration
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDuration resets all changes to the "duration" field.
+func (m *CourseMutation) ResetDuration() {
+	m.duration = nil
+	m.addduration = nil
+}
+
+// SetPeople sets the "people" field.
+func (m *CourseMutation) SetPeople(i int32) {
+	m.people = &i
+	m.addpeople = nil
+}
+
+// People returns the value of the "people" field in the mutation.
+func (m *CourseMutation) People() (r int32, exists bool) {
+	v := m.people
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPeople returns the old "people" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldPeople(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPeople is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPeople requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPeople: %w", err)
+	}
+	return oldValue.People, nil
+}
+
+// AddPeople adds i to the "people" field.
+func (m *CourseMutation) AddPeople(i int32) {
+	if m.addpeople != nil {
+		*m.addpeople += i
+	} else {
+		m.addpeople = &i
+	}
+}
+
+// AddedPeople returns the value that was added to the "people" field in this mutation.
+func (m *CourseMutation) AddedPeople() (r int32, exists bool) {
+	v := m.addpeople
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPeople resets all changes to the "people" field.
+func (m *CourseMutation) ResetPeople() {
+	m.people = nil
+	m.addpeople = nil
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by id.
 func (m *CourseMutation) SetOwnerID(id int) {
 	m.owner = &id
@@ -2796,7 +2972,7 @@ func (m *CourseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CourseMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 13)
 	if m.level != nil {
 		fields = append(fields, course.FieldLevel)
 	}
@@ -2827,6 +3003,15 @@ func (m *CourseMutation) Fields() []string {
 	if m.owner != nil {
 		fields = append(fields, course.FieldCategoryID)
 	}
+	if m.score != nil {
+		fields = append(fields, course.FieldScore)
+	}
+	if m.duration != nil {
+		fields = append(fields, course.FieldDuration)
+	}
+	if m.people != nil {
+		fields = append(fields, course.FieldPeople)
+	}
 	return fields
 }
 
@@ -2855,6 +3040,12 @@ func (m *CourseMutation) Field(name string) (ent.Value, bool) {
 		return m.Status()
 	case course.FieldCategoryID:
 		return m.CategoryID()
+	case course.FieldScore:
+		return m.Score()
+	case course.FieldDuration:
+		return m.Duration()
+	case course.FieldPeople:
+		return m.People()
 	}
 	return nil, false
 }
@@ -2884,6 +3075,12 @@ func (m *CourseMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldStatus(ctx)
 	case course.FieldCategoryID:
 		return m.OldCategoryID(ctx)
+	case course.FieldScore:
+		return m.OldScore(ctx)
+	case course.FieldDuration:
+		return m.OldDuration(ctx)
+	case course.FieldPeople:
+		return m.OldPeople(ctx)
 	}
 	return nil, fmt.Errorf("unknown Course field %s", name)
 }
@@ -2929,7 +3126,7 @@ func (m *CourseMutation) SetField(name string, value ent.Value) error {
 		m.SetCover(v)
 		return nil
 	case course.FieldPrice:
-		v, ok := value.(float32)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2963,6 +3160,27 @@ func (m *CourseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCategoryID(v)
 		return nil
+	case course.FieldScore:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetScore(v)
+		return nil
+	case course.FieldDuration:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDuration(v)
+		return nil
+	case course.FieldPeople:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPeople(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Course field %s", name)
 }
@@ -2980,6 +3198,15 @@ func (m *CourseMutation) AddedFields() []string {
 	if m.addstatus != nil {
 		fields = append(fields, course.FieldStatus)
 	}
+	if m.addscore != nil {
+		fields = append(fields, course.FieldScore)
+	}
+	if m.addduration != nil {
+		fields = append(fields, course.FieldDuration)
+	}
+	if m.addpeople != nil {
+		fields = append(fields, course.FieldPeople)
+	}
 	return fields
 }
 
@@ -2994,6 +3221,12 @@ func (m *CourseMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedPrice()
 	case course.FieldStatus:
 		return m.AddedStatus()
+	case course.FieldScore:
+		return m.AddedScore()
+	case course.FieldDuration:
+		return m.AddedDuration()
+	case course.FieldPeople:
+		return m.AddedPeople()
 	}
 	return nil, false
 }
@@ -3011,7 +3244,7 @@ func (m *CourseMutation) AddField(name string, value ent.Value) error {
 		m.AddLevel(v)
 		return nil
 	case course.FieldPrice:
-		v, ok := value.(float32)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3023,6 +3256,27 @@ func (m *CourseMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
+		return nil
+	case course.FieldScore:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddScore(v)
+		return nil
+	case course.FieldDuration:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDuration(v)
+		return nil
+	case course.FieldPeople:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPeople(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Course numeric field %s", name)
@@ -3089,6 +3343,15 @@ func (m *CourseMutation) ResetField(name string) error {
 		return nil
 	case course.FieldCategoryID:
 		m.ResetCategoryID()
+		return nil
+	case course.FieldScore:
+		m.ResetScore()
+		return nil
+	case course.FieldDuration:
+		m.ResetDuration()
+		return nil
+	case course.FieldPeople:
+		m.ResetPeople()
 		return nil
 	}
 	return fmt.Errorf("unknown Course field %s", name)
@@ -6955,6 +7218,898 @@ func (m *SliderMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *SliderMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Slider edge %s", name)
+}
+
+// TeacherMutation represents an operation that mutates the Teacher nodes in the graph.
+type TeacherMutation struct {
+	config
+	op               Op
+	typ              string
+	id               *int
+	detail           *string
+	curriculum_vitae *string
+	works            *string
+	skills           *string
+	name             *string
+	level            *int
+	addlevel         *int
+	avator           *string
+	create_at        *time.Time
+	update_at        *time.Time
+	clearedFields    map[string]struct{}
+	done             bool
+	oldValue         func(context.Context) (*Teacher, error)
+	predicates       []predicate.Teacher
+}
+
+var _ ent.Mutation = (*TeacherMutation)(nil)
+
+// teacherOption allows management of the mutation configuration using functional options.
+type teacherOption func(*TeacherMutation)
+
+// newTeacherMutation creates new mutation for the Teacher entity.
+func newTeacherMutation(c config, op Op, opts ...teacherOption) *TeacherMutation {
+	m := &TeacherMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeTeacher,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withTeacherID sets the ID field of the mutation.
+func withTeacherID(id int) teacherOption {
+	return func(m *TeacherMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Teacher
+		)
+		m.oldValue = func(ctx context.Context) (*Teacher, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Teacher.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withTeacher sets the old Teacher of the mutation.
+func withTeacher(node *Teacher) teacherOption {
+	return func(m *TeacherMutation) {
+		m.oldValue = func(context.Context) (*Teacher, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m TeacherMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m TeacherMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *TeacherMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *TeacherMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Teacher.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetDetail sets the "detail" field.
+func (m *TeacherMutation) SetDetail(s string) {
+	m.detail = &s
+}
+
+// Detail returns the value of the "detail" field in the mutation.
+func (m *TeacherMutation) Detail() (r string, exists bool) {
+	v := m.detail
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDetail returns the old "detail" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldDetail(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDetail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDetail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDetail: %w", err)
+	}
+	return oldValue.Detail, nil
+}
+
+// ClearDetail clears the value of the "detail" field.
+func (m *TeacherMutation) ClearDetail() {
+	m.detail = nil
+	m.clearedFields[teacher.FieldDetail] = struct{}{}
+}
+
+// DetailCleared returns if the "detail" field was cleared in this mutation.
+func (m *TeacherMutation) DetailCleared() bool {
+	_, ok := m.clearedFields[teacher.FieldDetail]
+	return ok
+}
+
+// ResetDetail resets all changes to the "detail" field.
+func (m *TeacherMutation) ResetDetail() {
+	m.detail = nil
+	delete(m.clearedFields, teacher.FieldDetail)
+}
+
+// SetCurriculumVitae sets the "curriculum_vitae" field.
+func (m *TeacherMutation) SetCurriculumVitae(s string) {
+	m.curriculum_vitae = &s
+}
+
+// CurriculumVitae returns the value of the "curriculum_vitae" field in the mutation.
+func (m *TeacherMutation) CurriculumVitae() (r string, exists bool) {
+	v := m.curriculum_vitae
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCurriculumVitae returns the old "curriculum_vitae" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldCurriculumVitae(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCurriculumVitae is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCurriculumVitae requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCurriculumVitae: %w", err)
+	}
+	return oldValue.CurriculumVitae, nil
+}
+
+// ClearCurriculumVitae clears the value of the "curriculum_vitae" field.
+func (m *TeacherMutation) ClearCurriculumVitae() {
+	m.curriculum_vitae = nil
+	m.clearedFields[teacher.FieldCurriculumVitae] = struct{}{}
+}
+
+// CurriculumVitaeCleared returns if the "curriculum_vitae" field was cleared in this mutation.
+func (m *TeacherMutation) CurriculumVitaeCleared() bool {
+	_, ok := m.clearedFields[teacher.FieldCurriculumVitae]
+	return ok
+}
+
+// ResetCurriculumVitae resets all changes to the "curriculum_vitae" field.
+func (m *TeacherMutation) ResetCurriculumVitae() {
+	m.curriculum_vitae = nil
+	delete(m.clearedFields, teacher.FieldCurriculumVitae)
+}
+
+// SetWorks sets the "works" field.
+func (m *TeacherMutation) SetWorks(s string) {
+	m.works = &s
+}
+
+// Works returns the value of the "works" field in the mutation.
+func (m *TeacherMutation) Works() (r string, exists bool) {
+	v := m.works
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldWorks returns the old "works" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldWorks(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldWorks is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldWorks requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldWorks: %w", err)
+	}
+	return oldValue.Works, nil
+}
+
+// ClearWorks clears the value of the "works" field.
+func (m *TeacherMutation) ClearWorks() {
+	m.works = nil
+	m.clearedFields[teacher.FieldWorks] = struct{}{}
+}
+
+// WorksCleared returns if the "works" field was cleared in this mutation.
+func (m *TeacherMutation) WorksCleared() bool {
+	_, ok := m.clearedFields[teacher.FieldWorks]
+	return ok
+}
+
+// ResetWorks resets all changes to the "works" field.
+func (m *TeacherMutation) ResetWorks() {
+	m.works = nil
+	delete(m.clearedFields, teacher.FieldWorks)
+}
+
+// SetSkills sets the "skills" field.
+func (m *TeacherMutation) SetSkills(s string) {
+	m.skills = &s
+}
+
+// Skills returns the value of the "skills" field in the mutation.
+func (m *TeacherMutation) Skills() (r string, exists bool) {
+	v := m.skills
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSkills returns the old "skills" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldSkills(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSkills is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSkills requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSkills: %w", err)
+	}
+	return oldValue.Skills, nil
+}
+
+// ClearSkills clears the value of the "skills" field.
+func (m *TeacherMutation) ClearSkills() {
+	m.skills = nil
+	m.clearedFields[teacher.FieldSkills] = struct{}{}
+}
+
+// SkillsCleared returns if the "skills" field was cleared in this mutation.
+func (m *TeacherMutation) SkillsCleared() bool {
+	_, ok := m.clearedFields[teacher.FieldSkills]
+	return ok
+}
+
+// ResetSkills resets all changes to the "skills" field.
+func (m *TeacherMutation) ResetSkills() {
+	m.skills = nil
+	delete(m.clearedFields, teacher.FieldSkills)
+}
+
+// SetName sets the "name" field.
+func (m *TeacherMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *TeacherMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *TeacherMutation) ResetName() {
+	m.name = nil
+}
+
+// SetLevel sets the "level" field.
+func (m *TeacherMutation) SetLevel(i int) {
+	m.level = &i
+	m.addlevel = nil
+}
+
+// Level returns the value of the "level" field in the mutation.
+func (m *TeacherMutation) Level() (r int, exists bool) {
+	v := m.level
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLevel returns the old "level" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldLevel(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLevel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLevel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLevel: %w", err)
+	}
+	return oldValue.Level, nil
+}
+
+// AddLevel adds i to the "level" field.
+func (m *TeacherMutation) AddLevel(i int) {
+	if m.addlevel != nil {
+		*m.addlevel += i
+	} else {
+		m.addlevel = &i
+	}
+}
+
+// AddedLevel returns the value that was added to the "level" field in this mutation.
+func (m *TeacherMutation) AddedLevel() (r int, exists bool) {
+	v := m.addlevel
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetLevel resets all changes to the "level" field.
+func (m *TeacherMutation) ResetLevel() {
+	m.level = nil
+	m.addlevel = nil
+}
+
+// SetAvator sets the "avator" field.
+func (m *TeacherMutation) SetAvator(s string) {
+	m.avator = &s
+}
+
+// Avator returns the value of the "avator" field in the mutation.
+func (m *TeacherMutation) Avator() (r string, exists bool) {
+	v := m.avator
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAvator returns the old "avator" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldAvator(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAvator is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAvator requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAvator: %w", err)
+	}
+	return oldValue.Avator, nil
+}
+
+// ClearAvator clears the value of the "avator" field.
+func (m *TeacherMutation) ClearAvator() {
+	m.avator = nil
+	m.clearedFields[teacher.FieldAvator] = struct{}{}
+}
+
+// AvatorCleared returns if the "avator" field was cleared in this mutation.
+func (m *TeacherMutation) AvatorCleared() bool {
+	_, ok := m.clearedFields[teacher.FieldAvator]
+	return ok
+}
+
+// ResetAvator resets all changes to the "avator" field.
+func (m *TeacherMutation) ResetAvator() {
+	m.avator = nil
+	delete(m.clearedFields, teacher.FieldAvator)
+}
+
+// SetCreateAt sets the "create_at" field.
+func (m *TeacherMutation) SetCreateAt(t time.Time) {
+	m.create_at = &t
+}
+
+// CreateAt returns the value of the "create_at" field in the mutation.
+func (m *TeacherMutation) CreateAt() (r time.Time, exists bool) {
+	v := m.create_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateAt returns the old "create_at" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldCreateAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+	}
+	return oldValue.CreateAt, nil
+}
+
+// ResetCreateAt resets all changes to the "create_at" field.
+func (m *TeacherMutation) ResetCreateAt() {
+	m.create_at = nil
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (m *TeacherMutation) SetUpdateAt(t time.Time) {
+	m.update_at = &t
+}
+
+// UpdateAt returns the value of the "update_at" field in the mutation.
+func (m *TeacherMutation) UpdateAt() (r time.Time, exists bool) {
+	v := m.update_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateAt returns the old "update_at" field's value of the Teacher entity.
+// If the Teacher object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TeacherMutation) OldUpdateAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+	}
+	return oldValue.UpdateAt, nil
+}
+
+// ResetUpdateAt resets all changes to the "update_at" field.
+func (m *TeacherMutation) ResetUpdateAt() {
+	m.update_at = nil
+}
+
+// Where appends a list predicates to the TeacherMutation builder.
+func (m *TeacherMutation) Where(ps ...predicate.Teacher) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the TeacherMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *TeacherMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.Teacher, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *TeacherMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *TeacherMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (Teacher).
+func (m *TeacherMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *TeacherMutation) Fields() []string {
+	fields := make([]string, 0, 9)
+	if m.detail != nil {
+		fields = append(fields, teacher.FieldDetail)
+	}
+	if m.curriculum_vitae != nil {
+		fields = append(fields, teacher.FieldCurriculumVitae)
+	}
+	if m.works != nil {
+		fields = append(fields, teacher.FieldWorks)
+	}
+	if m.skills != nil {
+		fields = append(fields, teacher.FieldSkills)
+	}
+	if m.name != nil {
+		fields = append(fields, teacher.FieldName)
+	}
+	if m.level != nil {
+		fields = append(fields, teacher.FieldLevel)
+	}
+	if m.avator != nil {
+		fields = append(fields, teacher.FieldAvator)
+	}
+	if m.create_at != nil {
+		fields = append(fields, teacher.FieldCreateAt)
+	}
+	if m.update_at != nil {
+		fields = append(fields, teacher.FieldUpdateAt)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *TeacherMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case teacher.FieldDetail:
+		return m.Detail()
+	case teacher.FieldCurriculumVitae:
+		return m.CurriculumVitae()
+	case teacher.FieldWorks:
+		return m.Works()
+	case teacher.FieldSkills:
+		return m.Skills()
+	case teacher.FieldName:
+		return m.Name()
+	case teacher.FieldLevel:
+		return m.Level()
+	case teacher.FieldAvator:
+		return m.Avator()
+	case teacher.FieldCreateAt:
+		return m.CreateAt()
+	case teacher.FieldUpdateAt:
+		return m.UpdateAt()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *TeacherMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case teacher.FieldDetail:
+		return m.OldDetail(ctx)
+	case teacher.FieldCurriculumVitae:
+		return m.OldCurriculumVitae(ctx)
+	case teacher.FieldWorks:
+		return m.OldWorks(ctx)
+	case teacher.FieldSkills:
+		return m.OldSkills(ctx)
+	case teacher.FieldName:
+		return m.OldName(ctx)
+	case teacher.FieldLevel:
+		return m.OldLevel(ctx)
+	case teacher.FieldAvator:
+		return m.OldAvator(ctx)
+	case teacher.FieldCreateAt:
+		return m.OldCreateAt(ctx)
+	case teacher.FieldUpdateAt:
+		return m.OldUpdateAt(ctx)
+	}
+	return nil, fmt.Errorf("unknown Teacher field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *TeacherMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case teacher.FieldDetail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDetail(v)
+		return nil
+	case teacher.FieldCurriculumVitae:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCurriculumVitae(v)
+		return nil
+	case teacher.FieldWorks:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetWorks(v)
+		return nil
+	case teacher.FieldSkills:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSkills(v)
+		return nil
+	case teacher.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case teacher.FieldLevel:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLevel(v)
+		return nil
+	case teacher.FieldAvator:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAvator(v)
+		return nil
+	case teacher.FieldCreateAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateAt(v)
+		return nil
+	case teacher.FieldUpdateAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateAt(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Teacher field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *TeacherMutation) AddedFields() []string {
+	var fields []string
+	if m.addlevel != nil {
+		fields = append(fields, teacher.FieldLevel)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *TeacherMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case teacher.FieldLevel:
+		return m.AddedLevel()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *TeacherMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case teacher.FieldLevel:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddLevel(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Teacher numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *TeacherMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(teacher.FieldDetail) {
+		fields = append(fields, teacher.FieldDetail)
+	}
+	if m.FieldCleared(teacher.FieldCurriculumVitae) {
+		fields = append(fields, teacher.FieldCurriculumVitae)
+	}
+	if m.FieldCleared(teacher.FieldWorks) {
+		fields = append(fields, teacher.FieldWorks)
+	}
+	if m.FieldCleared(teacher.FieldSkills) {
+		fields = append(fields, teacher.FieldSkills)
+	}
+	if m.FieldCleared(teacher.FieldAvator) {
+		fields = append(fields, teacher.FieldAvator)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *TeacherMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *TeacherMutation) ClearField(name string) error {
+	switch name {
+	case teacher.FieldDetail:
+		m.ClearDetail()
+		return nil
+	case teacher.FieldCurriculumVitae:
+		m.ClearCurriculumVitae()
+		return nil
+	case teacher.FieldWorks:
+		m.ClearWorks()
+		return nil
+	case teacher.FieldSkills:
+		m.ClearSkills()
+		return nil
+	case teacher.FieldAvator:
+		m.ClearAvator()
+		return nil
+	}
+	return fmt.Errorf("unknown Teacher nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *TeacherMutation) ResetField(name string) error {
+	switch name {
+	case teacher.FieldDetail:
+		m.ResetDetail()
+		return nil
+	case teacher.FieldCurriculumVitae:
+		m.ResetCurriculumVitae()
+		return nil
+	case teacher.FieldWorks:
+		m.ResetWorks()
+		return nil
+	case teacher.FieldSkills:
+		m.ResetSkills()
+		return nil
+	case teacher.FieldName:
+		m.ResetName()
+		return nil
+	case teacher.FieldLevel:
+		m.ResetLevel()
+		return nil
+	case teacher.FieldAvator:
+		m.ResetAvator()
+		return nil
+	case teacher.FieldCreateAt:
+		m.ResetCreateAt()
+		return nil
+	case teacher.FieldUpdateAt:
+		m.ResetUpdateAt()
+		return nil
+	}
+	return fmt.Errorf("unknown Teacher field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *TeacherMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *TeacherMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *TeacherMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *TeacherMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *TeacherMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *TeacherMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *TeacherMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Teacher unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *TeacherMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Teacher edge %s", name)
 }
 
 // UserMutation represents an operation that mutates the User nodes in the graph.
