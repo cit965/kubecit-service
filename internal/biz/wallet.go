@@ -20,6 +20,7 @@ type Wallet struct {
 
 type WalletRepo interface {
 	RechargeGoldLeaf(ctx context.Context, userId, goldLeafAmount int32) (*Wallet, error)
+	Balance(ctx context.Context, userId int32) (*Wallet, error)
 }
 
 type WalletUseCase struct {
@@ -34,6 +35,11 @@ func NewWalletUseCase(walletRepo WalletRepo, logger log.Logger) *WalletUseCase {
 	}
 }
 
-func (oc *WalletUseCase) RechargeGoldLeaf(ctx context.Context, userId, goldLeafAmount int32) (*Wallet, error) {
-	return oc.walletRepo.RechargeGoldLeaf(ctx, userId, goldLeafAmount)
+func (wac *WalletUseCase) RechargeGoldLeafs(ctx context.Context, userId, goldLeafAmount int32) (*Wallet, error) {
+	return wac.walletRepo.RechargeGoldLeaf(ctx, userId, goldLeafAmount)
+}
+
+func (wac WalletUseCase) Balances(ctx context.Context, userId int32) (*Wallet, error) {
+	return wac.walletRepo.Balance(ctx, userId)
+
 }

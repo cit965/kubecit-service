@@ -644,6 +644,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.RegisterUsernameReply'
+    /api/wallet/balance:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_WalletBalance
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.WalletInfo'
     /api/wallet/recharge:
         post:
             tags:

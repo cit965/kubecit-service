@@ -47,3 +47,21 @@ func (w walletRepo) RechargeGoldLeaf(ctx context.Context, userId, goldLeafAmount
 		UpdateAt:         wl.UpdateAt,
 	}, nil
 }
+
+func (w walletRepo) Balance(ctx context.Context, userId int32) (*biz.Wallet, error) {
+	walletObj, err := w.data.db.Wallet.Query().Where(wallet.UserID(userId)).First(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &biz.Wallet{
+		Id:               int32(walletObj.ID),
+		GoldLeaf:         walletObj.GoldLeaf,
+		SilverLeaf:       walletObj.SilverLeaf,
+		FrozenGoldLeaf:   walletObj.FrozenGoldLeaf,
+		FrozenSilverLeaf: walletObj.FrozenSilverLeaf,
+		UserId:           walletObj.UserID,
+		UserName:         walletObj.Username,
+		CreateAt:         walletObj.CreateAt,
+		UpdateAt:         walletObj.UpdateAt,
+	}, nil
+}

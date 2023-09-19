@@ -53,6 +53,8 @@ const (
 	Kubecit_ListAllTeacher_FullMethodName        = "/helloworld.v1.Kubecit/ListAllTeacher"
 	Kubecit_GetTeacher_FullMethodName            = "/helloworld.v1.Kubecit/GetTeacher"
 	Kubecit_CreateTeacher_FullMethodName         = "/helloworld.v1.Kubecit/CreateTeacher"
+	Kubecit_RechargeWallet_FullMethodName        = "/helloworld.v1.Kubecit/RechargeWallet"
+	Kubecit_WalletBalance_FullMethodName         = "/helloworld.v1.Kubecit/WalletBalance"
 )
 
 // KubecitClient is the client API for Kubecit service.
@@ -98,6 +100,9 @@ type KubecitClient interface {
 	ListAllTeacher(ctx context.Context, in *ListAllTeacherRequest, opts ...grpc.CallOption) (*ListAllTeacherReply, error)
 	GetTeacher(ctx context.Context, in *GetTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error)
 	CreateTeacher(ctx context.Context, in *CreateTeacherRequest, opts ...grpc.CallOption) (*TeacherInfo, error)
+	//=============================用户钱包相关接口=================================================
+	RechargeWallet(ctx context.Context, in *RechargeWalletRequest, opts ...grpc.CallOption) (*WalletInfo, error)
+	WalletBalance(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*WalletInfo, error)
 }
 
 type kubecitClient struct {
@@ -414,6 +419,24 @@ func (c *kubecitClient) CreateTeacher(ctx context.Context, in *CreateTeacherRequ
 	return out, nil
 }
 
+func (c *kubecitClient) RechargeWallet(ctx context.Context, in *RechargeWalletRequest, opts ...grpc.CallOption) (*WalletInfo, error) {
+	out := new(WalletInfo)
+	err := c.cc.Invoke(ctx, Kubecit_RechargeWallet_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubecitClient) WalletBalance(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*WalletInfo, error) {
+	out := new(WalletInfo)
+	err := c.cc.Invoke(ctx, Kubecit_WalletBalance_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // KubecitServer is the server API for Kubecit service.
 // All implementations must embed UnimplementedKubecitServer
 // for forward compatibility
@@ -457,6 +480,9 @@ type KubecitServer interface {
 	ListAllTeacher(context.Context, *ListAllTeacherRequest) (*ListAllTeacherReply, error)
 	GetTeacher(context.Context, *GetTeacherRequest) (*TeacherInfo, error)
 	CreateTeacher(context.Context, *CreateTeacherRequest) (*TeacherInfo, error)
+	//=============================用户钱包相关接口=================================================
+	RechargeWallet(context.Context, *RechargeWalletRequest) (*WalletInfo, error)
+	WalletBalance(context.Context, *Empty) (*WalletInfo, error)
 	mustEmbedUnimplementedKubecitServer()
 }
 
@@ -565,6 +591,12 @@ func (UnimplementedKubecitServer) GetTeacher(context.Context, *GetTeacherRequest
 }
 func (UnimplementedKubecitServer) CreateTeacher(context.Context, *CreateTeacherRequest) (*TeacherInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTeacher not implemented")
+}
+func (UnimplementedKubecitServer) RechargeWallet(context.Context, *RechargeWalletRequest) (*WalletInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RechargeWallet not implemented")
+}
+func (UnimplementedKubecitServer) WalletBalance(context.Context, *Empty) (*WalletInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WalletBalance not implemented")
 }
 func (UnimplementedKubecitServer) mustEmbedUnimplementedKubecitServer() {}
 
@@ -1191,6 +1223,42 @@ func _Kubecit_CreateTeacher_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Kubecit_RechargeWallet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RechargeWalletRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).RechargeWallet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_RechargeWallet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).RechargeWallet(ctx, req.(*RechargeWalletRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Kubecit_WalletBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubecitServer).WalletBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Kubecit_WalletBalance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubecitServer).WalletBalance(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Kubecit_ServiceDesc is the grpc.ServiceDesc for Kubecit service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1333,6 +1401,14 @@ var Kubecit_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateTeacher",
 			Handler:    _Kubecit_CreateTeacher_Handler,
+		},
+		{
+			MethodName: "RechargeWallet",
+			Handler:    _Kubecit_RechargeWallet_Handler,
+		},
+		{
+			MethodName: "WalletBalance",
+			Handler:    _Kubecit_WalletBalance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

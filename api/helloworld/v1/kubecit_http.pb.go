@@ -43,6 +43,7 @@ const OperationKubecitListLessons = "/helloworld.v1.Kubecit/ListLessons"
 const OperationKubecitListSlidersByPriority = "/helloworld.v1.Kubecit/ListSlidersByPriority"
 const OperationKubecitLoginByJson = "/helloworld.v1.Kubecit/LoginByJson"
 const OperationKubecitMostNew = "/helloworld.v1.Kubecit/MostNew"
+const OperationKubecitRechargeWallet = "/helloworld.v1.Kubecit/RechargeWallet"
 const OperationKubecitRegisterUsername = "/helloworld.v1.Kubecit/RegisterUsername"
 const OperationKubecitReviewCourse = "/helloworld.v1.Kubecit/ReviewCourse"
 const OperationKubecitSearchCourse = "/helloworld.v1.Kubecit/SearchCourse"
@@ -53,6 +54,7 @@ const OperationKubecitUpdateChapter = "/helloworld.v1.Kubecit/UpdateChapter"
 const OperationKubecitUpdateCourse = "/helloworld.v1.Kubecit/UpdateCourse"
 const OperationKubecitUpdateLesson = "/helloworld.v1.Kubecit/UpdateLesson"
 const OperationKubecitUpdateSlider = "/helloworld.v1.Kubecit/UpdateSlider"
+const OperationKubecitWalletBalance = "/helloworld.v1.Kubecit/WalletBalance"
 
 type KubecitHTTPServer interface {
 	CreateCategory(context.Context, *CategoryInfo) (*Empty, error)
@@ -84,6 +86,8 @@ type KubecitHTTPServer interface {
 	LoginByJson(context.Context, *LoginByJsonRequest) (*LoginByJsonReply, error)
 	// MostNew ========================== 课程相关接口 ===================================
 	MostNew(context.Context, *Empty) (*MostNewReply, error)
+	// RechargeWallet=============================用户钱包相关接口=================================================
+	RechargeWallet(context.Context, *RechargeWalletRequest) (*WalletInfo, error)
 	RegisterUsername(context.Context, *RegisterUsernameRequest) (*RegisterUsernameReply, error)
 	ReviewCourse(context.Context, *ReviewCourseRequest) (*ReviewCourseReply, error)
 	SearchCourse(context.Context, *SearchCourseRequest) (*CourseSearchReply, error)
@@ -94,6 +98,7 @@ type KubecitHTTPServer interface {
 	UpdateCourse(context.Context, *UpdateCourseRequest) (*UpdateCourseReply, error)
 	UpdateLesson(context.Context, *UpdateLessonRequest) (*UpdateLessonReply, error)
 	UpdateSlider(context.Context, *UpdateSliderRequest) (*UpdateSliderReply, error)
+	WalletBalance(context.Context, *Empty) (*WalletInfo, error)
 }
 
 func RegisterKubecitHTTPServer(s *http.Server, srv KubecitHTTPServer) {
@@ -132,6 +137,8 @@ func RegisterKubecitHTTPServer(s *http.Server, srv KubecitHTTPServer) {
 	r.GET("/api/teachers", _Kubecit_ListAllTeacher0_HTTP_Handler(srv))
 	r.GET("/api/teacher/{id}", _Kubecit_GetTeacher0_HTTP_Handler(srv))
 	r.POST("/api/teacher", _Kubecit_CreateTeacher0_HTTP_Handler(srv))
+	r.POST("/api/wallet/recharge", _Kubecit_RechargeWallet0_HTTP_Handler(srv))
+	r.GET("/api/wallet/balance", _Kubecit_WalletBalance0_HTTP_Handler(srv))
 }
 
 func _Kubecit_ListCategory0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
@@ -876,6 +883,47 @@ func _Kubecit_CreateTeacher0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.C
 	}
 }
 
+func _Kubecit_RechargeWallet0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in RechargeWalletRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationKubecitRechargeWallet)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.RechargeWallet(ctx, req.(*RechargeWalletRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*WalletInfo)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Kubecit_WalletBalance0_HTTP_Handler(srv KubecitHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in Empty
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationKubecitWalletBalance)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.WalletBalance(ctx, req.(*Empty))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*WalletInfo)
+		return ctx.Result(200, reply)
+	}
+}
+
 type KubecitHTTPClient interface {
 	CreateCategory(ctx context.Context, req *CategoryInfo, opts ...http.CallOption) (rsp *Empty, err error)
 	CreateChapter(ctx context.Context, req *CreateChapterRequest, opts ...http.CallOption) (rsp *CreateChapterReply, err error)
@@ -901,6 +949,7 @@ type KubecitHTTPClient interface {
 	ListSlidersByPriority(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *ListSlidersByPriorityReply, err error)
 	LoginByJson(ctx context.Context, req *LoginByJsonRequest, opts ...http.CallOption) (rsp *LoginByJsonReply, err error)
 	MostNew(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *MostNewReply, err error)
+	RechargeWallet(ctx context.Context, req *RechargeWalletRequest, opts ...http.CallOption) (rsp *WalletInfo, err error)
 	RegisterUsername(ctx context.Context, req *RegisterUsernameRequest, opts ...http.CallOption) (rsp *RegisterUsernameReply, err error)
 	ReviewCourse(ctx context.Context, req *ReviewCourseRequest, opts ...http.CallOption) (rsp *ReviewCourseReply, err error)
 	SearchCourse(ctx context.Context, req *SearchCourseRequest, opts ...http.CallOption) (rsp *CourseSearchReply, err error)
@@ -911,6 +960,7 @@ type KubecitHTTPClient interface {
 	UpdateCourse(ctx context.Context, req *UpdateCourseRequest, opts ...http.CallOption) (rsp *UpdateCourseReply, err error)
 	UpdateLesson(ctx context.Context, req *UpdateLessonRequest, opts ...http.CallOption) (rsp *UpdateLessonReply, err error)
 	UpdateSlider(ctx context.Context, req *UpdateSliderRequest, opts ...http.CallOption) (rsp *UpdateSliderReply, err error)
+	WalletBalance(ctx context.Context, req *Empty, opts ...http.CallOption) (rsp *WalletInfo, err error)
 }
 
 type KubecitHTTPClientImpl struct {
@@ -1233,6 +1283,19 @@ func (c *KubecitHTTPClientImpl) MostNew(ctx context.Context, in *Empty, opts ...
 	return &out, err
 }
 
+func (c *KubecitHTTPClientImpl) RechargeWallet(ctx context.Context, in *RechargeWalletRequest, opts ...http.CallOption) (*WalletInfo, error) {
+	var out WalletInfo
+	pattern := "/api/wallet/recharge"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationKubecitRechargeWallet))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *KubecitHTTPClientImpl) RegisterUsername(ctx context.Context, in *RegisterUsernameRequest, opts ...http.CallOption) (*RegisterUsernameReply, error) {
 	var out RegisterUsernameReply
 	pattern := "/api/u/registerUsername"
@@ -1357,6 +1420,19 @@ func (c *KubecitHTTPClientImpl) UpdateSlider(ctx context.Context, in *UpdateSlid
 	opts = append(opts, http.Operation(OperationKubecitUpdateSlider))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *KubecitHTTPClientImpl) WalletBalance(ctx context.Context, in *Empty, opts ...http.CallOption) (*WalletInfo, error) {
+	var out WalletInfo
+	pattern := "/api/wallet/balance"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationKubecitWalletBalance))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
