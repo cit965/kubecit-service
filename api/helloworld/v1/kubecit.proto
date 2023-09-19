@@ -3,6 +3,7 @@ syntax = "proto3";
 package helloworld.v1;
 
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
@@ -355,6 +356,59 @@ service Kubecit {
       tags: "order"
     };
   }
+
+  //=============================用户钱包相关接口=================================================
+  rpc RechargeWallet (RechargeWalletRequest) returns (WalletInfo)  {
+    option (google.api.http) = {
+      post: "/api/wallet/recharge",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "为用户充值金叶子. 充值的金叶子数:gold_leaf_amount, 用户ID:user_id"
+      tags: "wallet"
+    };
+  }
+}
+
+message RechargeWalletRequest{
+  int32 gold_leaf_amount = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "充值的金叶子数",
+    description: "充值的金叶子数"
+  }, (google.api.field_behavior) = REQUIRED];
+  int32 user_id = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "用户ID",
+    description: "用户ID"
+  }, (google.api.field_behavior) = REQUIRED];
+}
+message WalletInfo {
+  int32 id = 1;
+  int32 gold_leaf = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "金叶子",
+    description: "金叶子"
+  }];
+  int32 silver_leaf = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "银叶子",
+    description: "银叶子"
+  }];
+  int32 frozen_gold_leaf = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "冻结的金叶子",
+    description: "冻结的金叶子"
+  }];
+  int32 frozen_silver_leaf = 5[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "冻结的银叶子",
+    description: "冻结的银叶子"
+  }];
+  int32 user_id = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "用户ID",
+    description: "用户ID"
+  }];
+  string user_name = 7[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "用户名",
+    description: "用户名"
+  }];
+  google.protobuf.Timestamp createAt = 8;
+  google.protobuf.Timestamp updateAt = 9;
 }
 
 // The request message containing the user's name.
@@ -589,7 +643,7 @@ message CreateLessonReply {
 }
 
 message ListChapterLessonsWithCourIdRequest {
-   int32 courseId = 1;
+  int32 courseId = 1;
 }
 
 message ListChapterLessonsWithCourIdReply {
@@ -610,7 +664,7 @@ message UpdateLessonRequest {
   string courseware = 6;
   optional int32 isFreePreview = 7;
   optional int32 chapterId = 8;
-   int32 lessonId = 9;
+  int32 lessonId = 9;
 }
 message UpdateLessonReply {
   string name = 1;
@@ -646,7 +700,7 @@ message LessonInfo {
 }
 
 message SliderInfo {
-   int32 id = 1;
+  int32 id = 1;
   string title = 2;
   string content = 3;
   string imageLink = 4;

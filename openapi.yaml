@@ -583,6 +583,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.RegisterUsernameReply'
+    /api/wallet/recharge:
+        post:
+            tags:
+                - Kubecit
+            description: =============================用户钱包相关接口=================================================
+            operationId: Kubecit_RechargeWallet
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.RechargeWalletRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.WalletInfo'
 components:
     schemas:
         helloworld.v1.CategoryInfo:
@@ -968,6 +987,18 @@ components:
                     format: int32
                 productDescription:
                     type: string
+        helloworld.v1.RechargeWalletRequest:
+            required:
+                - goldLeafAmount
+                - userId
+            type: object
+            properties:
+                goldLeafAmount:
+                    type: integer
+                    format: int32
+                userId:
+                    type: integer
+                    format: int32
         helloworld.v1.RegisterUsernameReply:
             type: object
             properties:
@@ -1222,5 +1253,34 @@ components:
                     format: uint32
                 channel:
                     type: string
+        helloworld.v1.WalletInfo:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                goldLeaf:
+                    type: integer
+                    format: int32
+                silverLeaf:
+                    type: integer
+                    format: int32
+                frozenGoldLeaf:
+                    type: integer
+                    format: int32
+                frozenSilverLeaf:
+                    type: integer
+                    format: int32
+                userId:
+                    type: integer
+                    format: int32
+                userName:
+                    type: string
+                createAt:
+                    type: string
+                    format: date-time
+                updateAt:
+                    type: string
+                    format: date-time
 tags:
     - name: Kubecit

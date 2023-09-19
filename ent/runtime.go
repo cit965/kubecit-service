@@ -12,6 +12,7 @@ import (
 	"kubecit-service/ent/orders"
 	"kubecit-service/ent/schema"
 	"kubecit-service/ent/slider"
+	"kubecit-service/ent/wallet"
 	"time"
 )
 
@@ -135,4 +136,32 @@ func init() {
 	sliderDescIsValid := sliderFields[5].Descriptor()
 	// slider.DefaultIsValid holds the default value on creation for the is_valid field.
 	slider.DefaultIsValid = sliderDescIsValid.Default.(bool)
+	walletFields := schema.Wallet{}.Fields()
+	_ = walletFields
+	// walletDescGoldLeaf is the schema descriptor for gold_leaf field.
+	walletDescGoldLeaf := walletFields[0].Descriptor()
+	// wallet.DefaultGoldLeaf holds the default value on creation for the gold_leaf field.
+	wallet.DefaultGoldLeaf = walletDescGoldLeaf.Default.(int32)
+	// walletDescSilverLeaf is the schema descriptor for silver_leaf field.
+	walletDescSilverLeaf := walletFields[1].Descriptor()
+	// wallet.DefaultSilverLeaf holds the default value on creation for the silver_leaf field.
+	wallet.DefaultSilverLeaf = walletDescSilverLeaf.Default.(int32)
+	// walletDescFrozenGoldLeaf is the schema descriptor for frozen_gold_leaf field.
+	walletDescFrozenGoldLeaf := walletFields[2].Descriptor()
+	// wallet.DefaultFrozenGoldLeaf holds the default value on creation for the frozen_gold_leaf field.
+	wallet.DefaultFrozenGoldLeaf = walletDescFrozenGoldLeaf.Default.(int32)
+	// walletDescFrozenSilverLeaf is the schema descriptor for frozen_silver_leaf field.
+	walletDescFrozenSilverLeaf := walletFields[3].Descriptor()
+	// wallet.DefaultFrozenSilverLeaf holds the default value on creation for the frozen_silver_leaf field.
+	wallet.DefaultFrozenSilverLeaf = walletDescFrozenSilverLeaf.Default.(int32)
+	// walletDescCreateAt is the schema descriptor for create_at field.
+	walletDescCreateAt := walletFields[6].Descriptor()
+	// wallet.DefaultCreateAt holds the default value on creation for the create_at field.
+	wallet.DefaultCreateAt = walletDescCreateAt.Default.(func() time.Time)
+	// walletDescUpdateAt is the schema descriptor for update_at field.
+	walletDescUpdateAt := walletFields[7].Descriptor()
+	// wallet.DefaultUpdateAt holds the default value on creation for the update_at field.
+	wallet.DefaultUpdateAt = walletDescUpdateAt.Default.(func() time.Time)
+	// wallet.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
+	wallet.UpdateDefaultUpdateAt = walletDescUpdateAt.UpdateDefault.(func() time.Time)
 }

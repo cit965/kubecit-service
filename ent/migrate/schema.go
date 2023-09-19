@@ -208,6 +208,24 @@ var (
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
 	}
+	// WalletsColumns holds the columns for the "wallets" table.
+	WalletsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "gold_leaf", Type: field.TypeInt32, Nullable: true, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "silver_leaf", Type: field.TypeInt32, Nullable: true, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "frozen_gold_leaf", Type: field.TypeInt32, Nullable: true, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "frozen_silver_leaf", Type: field.TypeInt32, Nullable: true, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "user_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int"}},
+		{Name: "username", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(16)"}},
+		{Name: "create_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "update_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+	}
+	// WalletsTable holds the schema information for the "wallets" table.
+	WalletsTable = &schema.Table{
+		Name:       "wallets",
+		Columns:    WalletsColumns,
+		PrimaryKey: []*schema.Column{WalletsColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AccountsTable,
@@ -220,6 +238,7 @@ var (
 		SettingsTable,
 		SlidersTable,
 		UsersTable,
+		WalletsTable,
 	}
 )
 
