@@ -711,15 +711,15 @@ components:
                 cover:
                     type: string
                 price:
-                    type: number
-                    format: float
+                    type: integer
+                    format: int32
                 tags:
                     type: array
                     items:
                         type: string
                 status:
                     type: integer
-                    format: enum
+                    format: int32
                 categoryId:
                     type: integer
                     format: int32
@@ -730,6 +730,12 @@ components:
                     type: string
                     format: date-time
                 people:
+                    type: integer
+                    format: int32
+                duration:
+                    type: integer
+                    format: int32
+                score:
                     type: integer
                     format: int32
         helloworld.v1.CourseSearchReply:
@@ -743,11 +749,16 @@ components:
                     type: integer
                     format: int32
         helloworld.v1.CreateChapterReply:
+            required:
+                - data
             type: object
             properties:
                 data:
                     $ref: '#/components/schemas/helloworld.v1.ChapterInfo'
         helloworld.v1.CreateChapterRequest:
+            required:
+                - name
+                - courseId
             type: object
             properties:
                 name:
@@ -759,7 +770,7 @@ components:
                     format: int32
                 hasFreePreview:
                     type: integer
-                    format: int32
+                    format: enum
                 courseId:
                     type: integer
                     format: int32
@@ -769,11 +780,17 @@ components:
                 data:
                     $ref: '#/components/schemas/helloworld.v1.CourseInfo'
         helloworld.v1.CreateCourseRequest:
+            required:
+                - name
+                - detail
+                - cover
+                - price
+                - categoryId
             type: object
             properties:
                 level:
                     type: integer
-                    format: int32
+                    format: enum
                 name:
                     type: string
                 detail:
@@ -781,8 +798,8 @@ components:
                 cover:
                     type: string
                 price:
-                    type: number
-                    format: float
+                    type: integer
+                    format: int32
                 tags:
                     type: array
                     items:
@@ -796,6 +813,9 @@ components:
                 data:
                     $ref: '#/components/schemas/helloworld.v1.LessonInfo'
         helloworld.v1.CreateLessonRequest:
+            required:
+                - name
+                - chapterId
             type: object
             properties:
                 name:
@@ -805,7 +825,7 @@ components:
                     format: int32
                 type:
                     type: integer
-                    format: int32
+                    format: enum
                 storagePath:
                     type: string
                 source:
@@ -814,7 +834,7 @@ components:
                     type: string
                 isFreePreview:
                     type: integer
-                    format: int32
+                    format: enum
                 chapterId:
                     type: integer
                     format: int32
@@ -1082,6 +1102,9 @@ components:
                 data:
                     $ref: '#/components/schemas/helloworld.v1.CourseInfo'
         helloworld.v1.ReviewCourseRequest:
+            required:
+                - id
+                - status
             type: object
             properties:
                 id:
@@ -1091,6 +1114,9 @@ components:
                     type: integer
                     format: enum
         helloworld.v1.SearchCourseRequest:
+            required:
+                - pageNum
+                - pageSize
             type: object
             properties:
                 pageNum:
@@ -1107,7 +1133,7 @@ components:
                     format: int32
                 level:
                     type: integer
-                    format: int32
+                    format: enum
                 order:
                     type: integer
                     format: int32
@@ -1208,6 +1234,13 @@ components:
                 data:
                     $ref: '#/components/schemas/helloworld.v1.ChapterInfo'
         helloworld.v1.UpdateChapterRequest:
+            required:
+                - id
+                - name
+                - description
+                - sort
+                - hasFreePreview
+                - courseId
             type: object
             properties:
                 id:
@@ -1222,7 +1255,7 @@ components:
                     format: int32
                 hasFreePreview:
                     type: integer
-                    format: int32
+                    format: enum
                 courseId:
                     type: integer
                     format: int32
@@ -1232,6 +1265,15 @@ components:
                 data:
                     $ref: '#/components/schemas/helloworld.v1.CourseInfo'
         helloworld.v1.UpdateCourseRequest:
+            required:
+                - id
+                - level
+                - name
+                - detail
+                - cover
+                - price
+                - tags
+                - categoryId
             type: object
             properties:
                 id:
@@ -1239,7 +1281,7 @@ components:
                     format: int32
                 level:
                     type: integer
-                    format: int32
+                    format: enum
                 name:
                     type: string
                 detail:
@@ -1247,8 +1289,8 @@ components:
                 cover:
                     type: string
                 price:
-                    type: number
-                    format: float
+                    type: integer
+                    format: int32
                 tags:
                     type: array
                     items:
@@ -1259,33 +1301,19 @@ components:
         helloworld.v1.UpdateLessonReply:
             type: object
             properties:
-                name:
-                    type: string
-                sort:
-                    type: integer
-                    format: int32
-                type:
-                    type: integer
-                    format: int32
-                storagePath:
-                    type: string
-                source:
-                    type: string
-                courseware:
-                    type: string
-                isFreePreview:
-                    type: integer
-                    format: int32
-                chapterId:
-                    type: integer
-                    format: int32
-                id:
-                    type: integer
-                    format: int32
-                releasedTime:
-                    type: string
-                    format: date-time
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.LessonInfo'
         helloworld.v1.UpdateLessonRequest:
+            required:
+                - name
+                - sort
+                - type
+                - storagePath
+                - source
+                - courseware
+                - isFreePreview
+                - chapterId
+                - lessonId
             type: object
             properties:
                 name:
@@ -1295,7 +1323,7 @@ components:
                     format: int32
                 type:
                     type: integer
-                    format: int32
+                    format: enum
                 storagePath:
                     type: string
                 source:
@@ -1304,7 +1332,7 @@ components:
                     type: string
                 isFreePreview:
                     type: integer
-                    format: int32
+                    format: enum
                 chapterId:
                     type: integer
                     format: int32

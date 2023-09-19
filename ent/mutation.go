@@ -2121,12 +2121,18 @@ type CourseMutation struct {
 	name            *string
 	detail          *string
 	cover           *string
-	price           *float32
-	addprice        *float32
+	price           *int32
+	addprice        *int32
 	tags            *string
 	created_at      *time.Time
 	status          *int32
 	addstatus       *int32
+	score           *int32
+	addscore        *int32
+	duration        *int32
+	addduration     *int32
+	people          *int32
+	addpeople       *int32
 	clearedFields   map[string]struct{}
 	owner           *int
 	clearedowner    bool
@@ -2437,13 +2443,13 @@ func (m *CourseMutation) ResetCover() {
 }
 
 // SetPrice sets the "price" field.
-func (m *CourseMutation) SetPrice(f float32) {
-	m.price = &f
+func (m *CourseMutation) SetPrice(i int32) {
+	m.price = &i
 	m.addprice = nil
 }
 
 // Price returns the value of the "price" field in the mutation.
-func (m *CourseMutation) Price() (r float32, exists bool) {
+func (m *CourseMutation) Price() (r int32, exists bool) {
 	v := m.price
 	if v == nil {
 		return
@@ -2454,7 +2460,7 @@ func (m *CourseMutation) Price() (r float32, exists bool) {
 // OldPrice returns the old "price" field's value of the Course entity.
 // If the Course object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CourseMutation) OldPrice(ctx context.Context) (v float32, err error) {
+func (m *CourseMutation) OldPrice(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldPrice is only allowed on UpdateOne operations")
 	}
@@ -2468,17 +2474,17 @@ func (m *CourseMutation) OldPrice(ctx context.Context) (v float32, err error) {
 	return oldValue.Price, nil
 }
 
-// AddPrice adds f to the "price" field.
-func (m *CourseMutation) AddPrice(f float32) {
+// AddPrice adds i to the "price" field.
+func (m *CourseMutation) AddPrice(i int32) {
 	if m.addprice != nil {
-		*m.addprice += f
+		*m.addprice += i
 	} else {
-		m.addprice = &f
+		m.addprice = &i
 	}
 }
 
 // AddedPrice returns the value that was added to the "price" field in this mutation.
-func (m *CourseMutation) AddedPrice() (r float32, exists bool) {
+func (m *CourseMutation) AddedPrice() (r int32, exists bool) {
 	v := m.addprice
 	if v == nil {
 		return
@@ -2669,6 +2675,174 @@ func (m *CourseMutation) ResetCategoryID() {
 	delete(m.clearedFields, course.FieldCategoryID)
 }
 
+// SetScore sets the "score" field.
+func (m *CourseMutation) SetScore(i int32) {
+	m.score = &i
+	m.addscore = nil
+}
+
+// Score returns the value of the "score" field in the mutation.
+func (m *CourseMutation) Score() (r int32, exists bool) {
+	v := m.score
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldScore returns the old "score" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldScore(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldScore is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldScore requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldScore: %w", err)
+	}
+	return oldValue.Score, nil
+}
+
+// AddScore adds i to the "score" field.
+func (m *CourseMutation) AddScore(i int32) {
+	if m.addscore != nil {
+		*m.addscore += i
+	} else {
+		m.addscore = &i
+	}
+}
+
+// AddedScore returns the value that was added to the "score" field in this mutation.
+func (m *CourseMutation) AddedScore() (r int32, exists bool) {
+	v := m.addscore
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetScore resets all changes to the "score" field.
+func (m *CourseMutation) ResetScore() {
+	m.score = nil
+	m.addscore = nil
+}
+
+// SetDuration sets the "duration" field.
+func (m *CourseMutation) SetDuration(i int32) {
+	m.duration = &i
+	m.addduration = nil
+}
+
+// Duration returns the value of the "duration" field in the mutation.
+func (m *CourseMutation) Duration() (r int32, exists bool) {
+	v := m.duration
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDuration returns the old "duration" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldDuration(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDuration is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDuration requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDuration: %w", err)
+	}
+	return oldValue.Duration, nil
+}
+
+// AddDuration adds i to the "duration" field.
+func (m *CourseMutation) AddDuration(i int32) {
+	if m.addduration != nil {
+		*m.addduration += i
+	} else {
+		m.addduration = &i
+	}
+}
+
+// AddedDuration returns the value that was added to the "duration" field in this mutation.
+func (m *CourseMutation) AddedDuration() (r int32, exists bool) {
+	v := m.addduration
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDuration resets all changes to the "duration" field.
+func (m *CourseMutation) ResetDuration() {
+	m.duration = nil
+	m.addduration = nil
+}
+
+// SetPeople sets the "people" field.
+func (m *CourseMutation) SetPeople(i int32) {
+	m.people = &i
+	m.addpeople = nil
+}
+
+// People returns the value of the "people" field in the mutation.
+func (m *CourseMutation) People() (r int32, exists bool) {
+	v := m.people
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPeople returns the old "people" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldPeople(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPeople is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPeople requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPeople: %w", err)
+	}
+	return oldValue.People, nil
+}
+
+// AddPeople adds i to the "people" field.
+func (m *CourseMutation) AddPeople(i int32) {
+	if m.addpeople != nil {
+		*m.addpeople += i
+	} else {
+		m.addpeople = &i
+	}
+}
+
+// AddedPeople returns the value that was added to the "people" field in this mutation.
+func (m *CourseMutation) AddedPeople() (r int32, exists bool) {
+	v := m.addpeople
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPeople resets all changes to the "people" field.
+func (m *CourseMutation) ResetPeople() {
+	m.people = nil
+	m.addpeople = nil
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by id.
 func (m *CourseMutation) SetOwnerID(id int) {
 	m.owner = &id
@@ -2796,7 +2970,7 @@ func (m *CourseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CourseMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 13)
 	if m.level != nil {
 		fields = append(fields, course.FieldLevel)
 	}
@@ -2827,6 +3001,15 @@ func (m *CourseMutation) Fields() []string {
 	if m.owner != nil {
 		fields = append(fields, course.FieldCategoryID)
 	}
+	if m.score != nil {
+		fields = append(fields, course.FieldScore)
+	}
+	if m.duration != nil {
+		fields = append(fields, course.FieldDuration)
+	}
+	if m.people != nil {
+		fields = append(fields, course.FieldPeople)
+	}
 	return fields
 }
 
@@ -2855,6 +3038,12 @@ func (m *CourseMutation) Field(name string) (ent.Value, bool) {
 		return m.Status()
 	case course.FieldCategoryID:
 		return m.CategoryID()
+	case course.FieldScore:
+		return m.Score()
+	case course.FieldDuration:
+		return m.Duration()
+	case course.FieldPeople:
+		return m.People()
 	}
 	return nil, false
 }
@@ -2884,6 +3073,12 @@ func (m *CourseMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldStatus(ctx)
 	case course.FieldCategoryID:
 		return m.OldCategoryID(ctx)
+	case course.FieldScore:
+		return m.OldScore(ctx)
+	case course.FieldDuration:
+		return m.OldDuration(ctx)
+	case course.FieldPeople:
+		return m.OldPeople(ctx)
 	}
 	return nil, fmt.Errorf("unknown Course field %s", name)
 }
@@ -2929,7 +3124,7 @@ func (m *CourseMutation) SetField(name string, value ent.Value) error {
 		m.SetCover(v)
 		return nil
 	case course.FieldPrice:
-		v, ok := value.(float32)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2963,6 +3158,27 @@ func (m *CourseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCategoryID(v)
 		return nil
+	case course.FieldScore:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetScore(v)
+		return nil
+	case course.FieldDuration:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDuration(v)
+		return nil
+	case course.FieldPeople:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPeople(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Course field %s", name)
 }
@@ -2980,6 +3196,15 @@ func (m *CourseMutation) AddedFields() []string {
 	if m.addstatus != nil {
 		fields = append(fields, course.FieldStatus)
 	}
+	if m.addscore != nil {
+		fields = append(fields, course.FieldScore)
+	}
+	if m.addduration != nil {
+		fields = append(fields, course.FieldDuration)
+	}
+	if m.addpeople != nil {
+		fields = append(fields, course.FieldPeople)
+	}
 	return fields
 }
 
@@ -2994,6 +3219,12 @@ func (m *CourseMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedPrice()
 	case course.FieldStatus:
 		return m.AddedStatus()
+	case course.FieldScore:
+		return m.AddedScore()
+	case course.FieldDuration:
+		return m.AddedDuration()
+	case course.FieldPeople:
+		return m.AddedPeople()
 	}
 	return nil, false
 }
@@ -3011,7 +3242,7 @@ func (m *CourseMutation) AddField(name string, value ent.Value) error {
 		m.AddLevel(v)
 		return nil
 	case course.FieldPrice:
-		v, ok := value.(float32)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3023,6 +3254,27 @@ func (m *CourseMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
+		return nil
+	case course.FieldScore:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddScore(v)
+		return nil
+	case course.FieldDuration:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDuration(v)
+		return nil
+	case course.FieldPeople:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPeople(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Course numeric field %s", name)
@@ -3089,6 +3341,15 @@ func (m *CourseMutation) ResetField(name string) error {
 		return nil
 	case course.FieldCategoryID:
 		m.ResetCategoryID()
+		return nil
+	case course.FieldScore:
+		m.ResetScore()
+		return nil
+	case course.FieldDuration:
+		m.ResetDuration()
+		return nil
+	case course.FieldPeople:
+		m.ResetPeople()
 		return nil
 	}
 	return fmt.Errorf("unknown Course field %s", name)

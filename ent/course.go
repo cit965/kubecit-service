@@ -29,7 +29,7 @@ type Course struct {
 	// Cover holds the value of the "cover" field.
 	Cover string `json:"cover,omitempty"`
 	// Price holds the value of the "price" field.
-	Price float32 `json:"price,omitempty"`
+	Price int32 `json:"price,omitempty"`
 	// Tags holds the value of the "tags" field.
 	Tags string `json:"tags,omitempty"`
 	// 创建时间
@@ -38,6 +38,12 @@ type Course struct {
 	Status int32 `json:"status,omitempty"`
 	// CategoryID holds the value of the "category_id" field.
 	CategoryID int `json:"category_id,omitempty"`
+	// Score holds the value of the "score" field.
+	Score int32 `json:"score,omitempty"`
+	// Duration holds the value of the "duration" field.
+	Duration int32 `json:"duration,omitempty"`
+	// People holds the value of the "people" field.
+	People int32 `json:"people,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CourseQuery when eager-loading is set.
 	Edges        CourseEdges `json:"edges"`
@@ -82,9 +88,7 @@ func (*Course) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case course.FieldPrice:
-			values[i] = new(sql.NullFloat64)
-		case course.FieldID, course.FieldLevel, course.FieldStatus, course.FieldCategoryID:
+		case course.FieldID, course.FieldLevel, course.FieldPrice, course.FieldStatus, course.FieldCategoryID, course.FieldScore, course.FieldDuration, course.FieldPeople:
 			values[i] = new(sql.NullInt64)
 		case course.FieldName, course.FieldDetail, course.FieldCover, course.FieldTags:
 			values[i] = new(sql.NullString)
@@ -142,10 +146,10 @@ func (c *Course) assignValues(columns []string, values []any) error {
 				c.Cover = value.String
 			}
 		case course.FieldPrice:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field price", values[i])
 			} else if value.Valid {
-				c.Price = float32(value.Float64)
+				c.Price = int32(value.Int64)
 			}
 		case course.FieldTags:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -170,6 +174,24 @@ func (c *Course) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field category_id", values[i])
 			} else if value.Valid {
 				c.CategoryID = int(value.Int64)
+			}
+		case course.FieldScore:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field score", values[i])
+			} else if value.Valid {
+				c.Score = int32(value.Int64)
+			}
+		case course.FieldDuration:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field duration", values[i])
+			} else if value.Valid {
+				c.Duration = int32(value.Int64)
+			}
+		case course.FieldPeople:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field people", values[i])
+			} else if value.Valid {
+				c.People = int32(value.Int64)
 			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
@@ -246,6 +268,15 @@ func (c *Course) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("category_id=")
 	builder.WriteString(fmt.Sprintf("%v", c.CategoryID))
+	builder.WriteString(", ")
+	builder.WriteString("score=")
+	builder.WriteString(fmt.Sprintf("%v", c.Score))
+	builder.WriteString(", ")
+	builder.WriteString("duration=")
+	builder.WriteString(fmt.Sprintf("%v", c.Duration))
+	builder.WriteString(", ")
+	builder.WriteString("people=")
+	builder.WriteString(fmt.Sprintf("%v", c.People))
 	builder.WriteByte(')')
 	return builder.String()
 }
