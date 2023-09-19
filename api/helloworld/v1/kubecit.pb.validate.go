@@ -35,6 +35,122 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on CreateTeacherRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateTeacherRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateTeacherRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateTeacherRequestMultiError, or nil if none found.
+func (m *CreateTeacherRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateTeacherRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Detail
+
+	// no validation rules for CurriculumVitae
+
+	// no validation rules for Works
+
+	// no validation rules for Skills
+
+	// no validation rules for Avator
+
+	// no validation rules for Name
+
+	// no validation rules for Level
+
+	if len(errors) > 0 {
+		return CreateTeacherRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateTeacherRequestMultiError is an error wrapping multiple validation
+// errors returned by CreateTeacherRequest.ValidateAll() if the designated
+// constraints aren't met.
+type CreateTeacherRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateTeacherRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateTeacherRequestMultiError) AllErrors() []error { return m }
+
+// CreateTeacherRequestValidationError is the validation error returned by
+// CreateTeacherRequest.Validate if the designated constraints aren't met.
+type CreateTeacherRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateTeacherRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateTeacherRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateTeacherRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateTeacherRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateTeacherRequestValidationError) ErrorName() string {
+	return "CreateTeacherRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateTeacherRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateTeacherRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateTeacherRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateTeacherRequestValidationError{}
+
 // Validate checks the field values on ListAllTeacherRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -57,9 +173,13 @@ func (m *ListAllTeacherRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for PageNum
+	if m.PageNum != nil {
+		// no validation rules for PageNum
+	}
 
-	// no validation rules for PageSize
+	if m.PageSize != nil {
+		// no validation rules for PageSize
+	}
 
 	if len(errors) > 0 {
 		return ListAllTeacherRequestMultiError(errors)
@@ -1851,6 +1971,10 @@ func (m *CourseInfo) validate(all bool) error {
 
 	// no validation rules for People
 
+	// no validation rules for Duration
+
+	// no validation rules for Score
+
 	if len(errors) > 0 {
 		return CourseInfoMultiError(errors)
 	}
@@ -2290,6 +2414,8 @@ func (m *SearchCourseRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Level
+
 	if m.PageNum != nil {
 		// no validation rules for PageNum
 	}
@@ -2304,10 +2430,6 @@ func (m *SearchCourseRequest) validate(all bool) error {
 
 	if m.SecondCategory != nil {
 		// no validation rules for SecondCategory
-	}
-
-	if m.Level != nil {
-		// no validation rules for Level
 	}
 
 	if m.Order != nil {
@@ -3964,12 +4086,10 @@ func (m *CreateChapterRequest) validate(all bool) error {
 
 	// no validation rules for Description
 
+	// no validation rules for HasFreePreview
+
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.HasFreePreview != nil {
-		// no validation rules for HasFreePreview
 	}
 
 	if m.CourseId != nil {
@@ -4423,12 +4543,10 @@ func (m *UpdateChapterRequest) validate(all bool) error {
 
 	// no validation rules for Description
 
+	// no validation rules for HasFreePreview
+
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.HasFreePreview != nil {
-		// no validation rules for HasFreePreview
 	}
 
 	if m.CourseId != nil {
@@ -4910,22 +5028,18 @@ func (m *CreateLessonRequest) validate(all bool) error {
 
 	// no validation rules for Name
 
+	// no validation rules for Type
+
 	// no validation rules for StoragePath
 
 	// no validation rules for Source
 
 	// no validation rules for Courseware
 
+	// no validation rules for IsFreePreview
+
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.Type != nil {
-		// no validation rules for Type
-	}
-
-	if m.IsFreePreview != nil {
-		// no validation rules for IsFreePreview
 	}
 
 	if m.ChapterId != nil {
@@ -5578,24 +5692,20 @@ func (m *UpdateLessonRequest) validate(all bool) error {
 
 	// no validation rules for Name
 
+	// no validation rules for Type
+
 	// no validation rules for StoragePath
 
 	// no validation rules for Source
 
 	// no validation rules for Courseware
 
+	// no validation rules for IsFreePreview
+
 	// no validation rules for LessonId
 
 	if m.Sort != nil {
 		// no validation rules for Sort
-	}
-
-	if m.Type != nil {
-		// no validation rules for Type
-	}
-
-	if m.IsFreePreview != nil {
-		// no validation rules for IsFreePreview
 	}
 
 	if m.ChapterId != nil {
@@ -5704,30 +5814,12 @@ func (m *UpdateLessonReply) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Name
-
-	// no validation rules for Sort
-
-	// no validation rules for Type
-
-	// no validation rules for StoragePath
-
-	// no validation rules for Source
-
-	// no validation rules for Courseware
-
-	// no validation rules for IsFreePreview
-
-	// no validation rules for ChapterId
-
-	// no validation rules for Id
-
 	if all {
-		switch v := interface{}(m.GetReleasedTime()).(type) {
+		switch v := interface{}(m.GetData()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, UpdateLessonReplyValidationError{
-					field:  "ReleasedTime",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -5735,16 +5827,16 @@ func (m *UpdateLessonReply) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, UpdateLessonReplyValidationError{
-					field:  "ReleasedTime",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetReleasedTime()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return UpdateLessonReplyValidationError{
-				field:  "ReleasedTime",
+				field:  "Data",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}

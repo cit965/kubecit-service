@@ -433,12 +433,12 @@ message ListAllTeacherReply {
 }
 
 enum TeacherLevel {
-  UNKNOWN = 0;
-  ENTRY = 1; // 入门
-  PRIMARY = 2; //初级
-  INTERMEDIATE = 3; //中级
-  SENIOR = 4;//高级
-  MASTER = 5;//大师
+  TEACHER_LEVEL_UNKNOWN = 0;
+  TEACHER_ENTRY = 1; // 入门
+  TEACHER_PRIMARY = 2; //初级
+  TEACHER_INTERMEDIATE = 3; //中级
+  TEACHER_SENIOR = 4;//高级
+  TEACHER_MASTER = 5;//大师
 }
 
 
