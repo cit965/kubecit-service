@@ -19,7 +19,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, g *conf.Gin, d *conf.Data, greeter *service.KubecitService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.ErrorEncoder(errorEncoder),
 		http.Middleware(
@@ -44,7 +44,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.L
 	openAPIHandler := openapiv2.NewHandler()
 	srv.HandlePrefix("/q/", openAPIHandler)
 
-	logService := gin.NewGinService()
+	logService := gin.NewGinService(g, d)
 	srv.HandlePrefix("/gin/", logService)
 	v1.RegisterKubecitHTTPServer(srv, greeter)
 	srv.WalkRoute(func(info http.RouteInfo) error {
