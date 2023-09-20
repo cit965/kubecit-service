@@ -41,11 +41,11 @@ func (Wallet) Fields() []ent.Field {
 			dialect.MySQL: "varchar(16)", // Override MySQL.
 		}).Optional().Comment("用户名"),
 
-		field.Time("create_at").SchemaType(map[string]string{
+		field.Time("created_at").SchemaType(map[string]string{
 			dialect.MySQL: "datetime", // Override MySQL.
 		}).Default(time.Now).Comment("创建时间"),
 
-		field.Time("update_at").SchemaType(map[string]string{
+		field.Time("updated_at").SchemaType(map[string]string{
 			dialect.MySQL: "datetime", // Override MySQL.
 		}).Default(time.Now).UpdateDefault(time.Now).Comment("更新时间"),
 	}
