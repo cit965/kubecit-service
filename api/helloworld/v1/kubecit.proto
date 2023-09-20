@@ -395,7 +395,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "为用户充值金叶子. 充值的金叶子数:gold_leaf_amount, 用户ID:user_id"
+      description: "为用户充值金叶子. 充值的金叶子数*100:gold_leaf_amount, 用户ID:user_id"
       tags: "wallet"
     };
   }
