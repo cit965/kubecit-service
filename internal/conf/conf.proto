@@ -8,7 +8,11 @@ import "google/protobuf/duration.proto";
 message Bootstrap {
   Server server = 1;
   Data data = 2;
-  Wechat wechat = 3;
+  Gin gin = 3;
+}
+
+message Gin {
+  Wechat wechat =1;
 }
 
 message Wechat {
