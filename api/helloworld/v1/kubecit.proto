@@ -515,8 +515,8 @@ message WalletInfo {
     title: "用户名",
     description: "用户名"
   }];
-  google.protobuf.Timestamp createAt = 8;
-  google.protobuf.Timestamp updateAt = 9;
+  google.protobuf.Timestamp createdAt = 8;
+  google.protobuf.Timestamp updatedAt = 9;
 }
 
 // The request message containing the user's name.
