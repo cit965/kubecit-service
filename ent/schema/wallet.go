@@ -19,19 +19,19 @@ func (Wallet) Fields() []ent.Field {
 
 		field.Int32("gold_leaf").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Optional().Default(0).Comment("金叶子"),
+		}).Optional().Default(0).Comment("金叶子,分为单位"),
 
 		field.Int32("silver_leaf").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Optional().Default(0).Comment("银叶子"),
+		}).Optional().Default(0).Comment("银叶子,分为单位"),
 
 		field.Int32("frozen_gold_leaf").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Optional().Default(0).Comment("冻结金叶子"),
+		}).Optional().Default(0).Comment("冻结金叶子,分为单位"),
 
 		field.Int32("frozen_silver_leaf").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Optional().Default(0).Comment("冻结银叶子"),
+		}).Optional().Default(0).Comment("冻结银叶子,分为单位"),
 
 		field.Int32("user_id").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
