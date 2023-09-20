@@ -1437,10 +1437,10 @@ components:
                     format: int32
                 userName:
                     type: string
-                createAt:
+                createdAt:
                     type: string
                     format: date-time
-                updateAt:
+                updatedAt:
                     type: string
                     format: date-time
 tags:

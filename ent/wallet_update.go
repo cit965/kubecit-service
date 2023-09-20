@@ -183,23 +183,23 @@ func (wu *WalletUpdate) ClearUsername() *WalletUpdate {
 	return wu
 }
 
-// SetCreateAt sets the "create_at" field.
-func (wu *WalletUpdate) SetCreateAt(t time.Time) *WalletUpdate {
-	wu.mutation.SetCreateAt(t)
+// SetCreatedAt sets the "created_at" field.
+func (wu *WalletUpdate) SetCreatedAt(t time.Time) *WalletUpdate {
+	wu.mutation.SetCreatedAt(t)
 	return wu
 }
 
-// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (wu *WalletUpdate) SetNillableCreateAt(t *time.Time) *WalletUpdate {
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (wu *WalletUpdate) SetNillableCreatedAt(t *time.Time) *WalletUpdate {
 	if t != nil {
-		wu.SetCreateAt(*t)
+		wu.SetCreatedAt(*t)
 	}
 	return wu
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (wu *WalletUpdate) SetUpdateAt(t time.Time) *WalletUpdate {
-	wu.mutation.SetUpdateAt(t)
+// SetUpdatedAt sets the "updated_at" field.
+func (wu *WalletUpdate) SetUpdatedAt(t time.Time) *WalletUpdate {
+	wu.mutation.SetUpdatedAt(t)
 	return wu
 }
 
@@ -238,9 +238,9 @@ func (wu *WalletUpdate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (wu *WalletUpdate) defaults() {
-	if _, ok := wu.mutation.UpdateAt(); !ok {
-		v := wallet.UpdateDefaultUpdateAt()
-		wu.mutation.SetUpdateAt(v)
+	if _, ok := wu.mutation.UpdatedAt(); !ok {
+		v := wallet.UpdateDefaultUpdatedAt()
+		wu.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -304,11 +304,11 @@ func (wu *WalletUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if wu.mutation.UsernameCleared() {
 		_spec.ClearField(wallet.FieldUsername, field.TypeString)
 	}
-	if value, ok := wu.mutation.CreateAt(); ok {
-		_spec.SetField(wallet.FieldCreateAt, field.TypeTime, value)
+	if value, ok := wu.mutation.CreatedAt(); ok {
+		_spec.SetField(wallet.FieldCreatedAt, field.TypeTime, value)
 	}
-	if value, ok := wu.mutation.UpdateAt(); ok {
-		_spec.SetField(wallet.FieldUpdateAt, field.TypeTime, value)
+	if value, ok := wu.mutation.UpdatedAt(); ok {
+		_spec.SetField(wallet.FieldUpdatedAt, field.TypeTime, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, wu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -485,23 +485,23 @@ func (wuo *WalletUpdateOne) ClearUsername() *WalletUpdateOne {
 	return wuo
 }
 
-// SetCreateAt sets the "create_at" field.
-func (wuo *WalletUpdateOne) SetCreateAt(t time.Time) *WalletUpdateOne {
-	wuo.mutation.SetCreateAt(t)
+// SetCreatedAt sets the "created_at" field.
+func (wuo *WalletUpdateOne) SetCreatedAt(t time.Time) *WalletUpdateOne {
+	wuo.mutation.SetCreatedAt(t)
 	return wuo
 }
 
-// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (wuo *WalletUpdateOne) SetNillableCreateAt(t *time.Time) *WalletUpdateOne {
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (wuo *WalletUpdateOne) SetNillableCreatedAt(t *time.Time) *WalletUpdateOne {
 	if t != nil {
-		wuo.SetCreateAt(*t)
+		wuo.SetCreatedAt(*t)
 	}
 	return wuo
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (wuo *WalletUpdateOne) SetUpdateAt(t time.Time) *WalletUpdateOne {
-	wuo.mutation.SetUpdateAt(t)
+// SetUpdatedAt sets the "updated_at" field.
+func (wuo *WalletUpdateOne) SetUpdatedAt(t time.Time) *WalletUpdateOne {
+	wuo.mutation.SetUpdatedAt(t)
 	return wuo
 }
 
@@ -553,9 +553,9 @@ func (wuo *WalletUpdateOne) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (wuo *WalletUpdateOne) defaults() {
-	if _, ok := wuo.mutation.UpdateAt(); !ok {
-		v := wallet.UpdateDefaultUpdateAt()
-		wuo.mutation.SetUpdateAt(v)
+	if _, ok := wuo.mutation.UpdatedAt(); !ok {
+		v := wallet.UpdateDefaultUpdatedAt()
+		wuo.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -636,11 +636,11 @@ func (wuo *WalletUpdateOne) sqlSave(ctx context.Context) (_node *Wallet, err err
 	if wuo.mutation.UsernameCleared() {
 		_spec.ClearField(wallet.FieldUsername, field.TypeString)
 	}
-	if value, ok := wuo.mutation.CreateAt(); ok {
-		_spec.SetField(wallet.FieldCreateAt, field.TypeTime, value)
+	if value, ok := wuo.mutation.CreatedAt(); ok {
+		_spec.SetField(wallet.FieldCreatedAt, field.TypeTime, value)
 	}
-	if value, ok := wuo.mutation.UpdateAt(); ok {
-		_spec.SetField(wallet.FieldUpdateAt, field.TypeTime, value)
+	if value, ok := wuo.mutation.UpdatedAt(); ok {
+		_spec.SetField(wallet.FieldUpdatedAt, field.TypeTime, value)
 	}
 	_node = &Wallet{config: wuo.config}
 	_spec.Assign = _node.assignValues

@@ -8599,8 +8599,8 @@ type WalletMutation struct {
 	user_id               *int32
 	adduser_id            *int32
 	username              *string
-	create_at             *time.Time
-	update_at             *time.Time
+	created_at            *time.Time
+	updated_at            *time.Time
 	clearedFields         map[string]struct{}
 	done                  bool
 	oldValue              func(context.Context) (*Wallet, error)
@@ -9104,76 +9104,76 @@ func (m *WalletMutation) ResetUsername() {
 	delete(m.clearedFields, wallet.FieldUsername)
 }
 
-// SetCreateAt sets the "create_at" field.
-func (m *WalletMutation) SetCreateAt(t time.Time) {
-	m.create_at = &t
+// SetCreatedAt sets the "created_at" field.
+func (m *WalletMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
 }
 
-// CreateAt returns the value of the "create_at" field in the mutation.
-func (m *WalletMutation) CreateAt() (r time.Time, exists bool) {
-	v := m.create_at
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *WalletMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateAt returns the old "create_at" field's value of the Wallet entity.
+// OldCreatedAt returns the old "created_at" field's value of the Wallet entity.
 // If the Wallet object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WalletMutation) OldCreateAt(ctx context.Context) (v time.Time, err error) {
+func (m *WalletMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateAt requires an ID field in the mutation")
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
 	}
-	return oldValue.CreateAt, nil
+	return oldValue.CreatedAt, nil
 }
 
-// ResetCreateAt resets all changes to the "create_at" field.
-func (m *WalletMutation) ResetCreateAt() {
-	m.create_at = nil
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *WalletMutation) ResetCreatedAt() {
+	m.created_at = nil
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (m *WalletMutation) SetUpdateAt(t time.Time) {
-	m.update_at = &t
+// SetUpdatedAt sets the "updated_at" field.
+func (m *WalletMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
 }
 
-// UpdateAt returns the value of the "update_at" field in the mutation.
-func (m *WalletMutation) UpdateAt() (r time.Time, exists bool) {
-	v := m.update_at
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *WalletMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdateAt returns the old "update_at" field's value of the Wallet entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Wallet entity.
 // If the Wallet object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WalletMutation) OldUpdateAt(ctx context.Context) (v time.Time, err error) {
+func (m *WalletMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateAt requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
 	}
-	return oldValue.UpdateAt, nil
+	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdateAt resets all changes to the "update_at" field.
-func (m *WalletMutation) ResetUpdateAt() {
-	m.update_at = nil
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *WalletMutation) ResetUpdatedAt() {
+	m.updated_at = nil
 }
 
 // Where appends a list predicates to the WalletMutation builder.
@@ -9229,11 +9229,11 @@ func (m *WalletMutation) Fields() []string {
 	if m.username != nil {
 		fields = append(fields, wallet.FieldUsername)
 	}
-	if m.create_at != nil {
-		fields = append(fields, wallet.FieldCreateAt)
+	if m.created_at != nil {
+		fields = append(fields, wallet.FieldCreatedAt)
 	}
-	if m.update_at != nil {
-		fields = append(fields, wallet.FieldUpdateAt)
+	if m.updated_at != nil {
+		fields = append(fields, wallet.FieldUpdatedAt)
 	}
 	return fields
 }
@@ -9255,10 +9255,10 @@ func (m *WalletMutation) Field(name string) (ent.Value, bool) {
 		return m.UserID()
 	case wallet.FieldUsername:
 		return m.Username()
-	case wallet.FieldCreateAt:
-		return m.CreateAt()
-	case wallet.FieldUpdateAt:
-		return m.UpdateAt()
+	case wallet.FieldCreatedAt:
+		return m.CreatedAt()
+	case wallet.FieldUpdatedAt:
+		return m.UpdatedAt()
 	}
 	return nil, false
 }
@@ -9280,10 +9280,10 @@ func (m *WalletMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldUserID(ctx)
 	case wallet.FieldUsername:
 		return m.OldUsername(ctx)
-	case wallet.FieldCreateAt:
-		return m.OldCreateAt(ctx)
-	case wallet.FieldUpdateAt:
-		return m.OldUpdateAt(ctx)
+	case wallet.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case wallet.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
 	}
 	return nil, fmt.Errorf("unknown Wallet field %s", name)
 }
@@ -9335,19 +9335,19 @@ func (m *WalletMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUsername(v)
 		return nil
-	case wallet.FieldCreateAt:
+	case wallet.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateAt(v)
+		m.SetCreatedAt(v)
 		return nil
-	case wallet.FieldUpdateAt:
+	case wallet.FieldUpdatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdateAt(v)
+		m.SetUpdatedAt(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Wallet field %s", name)
@@ -9518,11 +9518,11 @@ func (m *WalletMutation) ResetField(name string) error {
 	case wallet.FieldUsername:
 		m.ResetUsername()
 		return nil
-	case wallet.FieldCreateAt:
-		m.ResetCreateAt()
+	case wallet.FieldCreatedAt:
+		m.ResetCreatedAt()
 		return nil
-	case wallet.FieldUpdateAt:
-		m.ResetUpdateAt()
+	case wallet.FieldUpdatedAt:
+		m.ResetUpdatedAt()
 		return nil
 	}
 	return fmt.Errorf("unknown Wallet field %s", name)

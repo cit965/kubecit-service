@@ -9,6 +9,7 @@ import (
 	"kubecit-service/ent/wallet"
 	"math"
 
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -21,6 +22,7 @@ type WalletQuery struct {
 	order      []wallet.OrderOption
 	inters     []Interceptor
 	predicates []predicate.Wallet
+	modifiers  []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -342,6 +344,9 @@ func (wq *WalletQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Walle
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
 	}
+	if len(wq.modifiers) > 0 {
+		_spec.Modifiers = wq.modifiers
+	}
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -356,6 +361,9 @@ func (wq *WalletQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Walle
 
 func (wq *WalletQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := wq.querySpec()
+	if len(wq.modifiers) > 0 {
+		_spec.Modifiers = wq.modifiers
+	}
 	_spec.Node.Columns = wq.ctx.Fields
 	if len(wq.ctx.Fields) > 0 {
 		_spec.Unique = wq.ctx.Unique != nil && *wq.ctx.Unique
@@ -418,6 +426,9 @@ func (wq *WalletQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if wq.ctx.Unique != nil && *wq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range wq.modifiers {
+		m(selector)
+	}
 	for _, p := range wq.predicates {
 		p(selector)
 	}
@@ -433,6 +444,32 @@ func (wq *WalletQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// ForUpdate locks the selected rows against concurrent updates, and prevent them from being
+// updated, deleted or "selected ... for update" by other sessions, until the transaction is
+// either committed or rolled-back.
+func (wq *WalletQuery) ForUpdate(opts ...sql.LockOption) *WalletQuery {
+	if wq.driver.Dialect() == dialect.Postgres {
+		wq.Unique(false)
+	}
+	wq.modifiers = append(wq.modifiers, func(s *sql.Selector) {
+		s.ForUpdate(opts...)
+	})
+	return wq
+}
+
+// ForShare behaves similarly to ForUpdate, except that it acquires a shared mode lock
+// on any rows that are read. Other sessions can read the rows, but cannot modify them
+// until your transaction commits.
+func (wq *WalletQuery) ForShare(opts ...sql.LockOption) *WalletQuery {
+	if wq.driver.Dialect() == dialect.Postgres {
+		wq.Unique(false)
+	}
+	wq.modifiers = append(wq.modifiers, func(s *sql.Selector) {
+		s.ForShare(opts...)
+	})
+	return wq
 }
 
 // WalletGroupBy is the group-by builder for Wallet entities.

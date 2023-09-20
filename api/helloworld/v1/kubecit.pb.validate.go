@@ -817,11 +817,11 @@ func (m *WalletInfo) validate(all bool) error {
 	// no validation rules for UserName
 
 	if all {
-		switch v := interface{}(m.GetCreateAt()).(type) {
+		switch v := interface{}(m.GetCreatedAt()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, WalletInfoValidationError{
-					field:  "CreateAt",
+					field:  "CreatedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -829,16 +829,16 @@ func (m *WalletInfo) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, WalletInfoValidationError{
-					field:  "CreateAt",
+					field:  "CreatedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetCreateAt()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetCreatedAt()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return WalletInfoValidationError{
-				field:  "CreateAt",
+				field:  "CreatedAt",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -846,11 +846,11 @@ func (m *WalletInfo) validate(all bool) error {
 	}
 
 	if all {
-		switch v := interface{}(m.GetUpdateAt()).(type) {
+		switch v := interface{}(m.GetUpdatedAt()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, WalletInfoValidationError{
-					field:  "UpdateAt",
+					field:  "UpdatedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -858,16 +858,16 @@ func (m *WalletInfo) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, WalletInfoValidationError{
-					field:  "UpdateAt",
+					field:  "UpdatedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetUpdateAt()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetUpdatedAt()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return WalletInfoValidationError{
-				field:  "UpdateAt",
+				field:  "UpdatedAt",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}

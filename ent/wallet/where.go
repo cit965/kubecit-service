@@ -84,14 +84,14 @@ func Username(v string) predicate.Wallet {
 	return predicate.Wallet(sql.FieldEQ(FieldUsername, v))
 }
 
-// CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
-func CreateAt(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldEQ(FieldCreateAt, v))
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
+func CreatedAt(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdateAt applies equality check predicate on the "update_at" field. It's identical to UpdateAtEQ.
-func UpdateAt(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldEQ(FieldUpdateAt, v))
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
+func UpdatedAt(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
 // GoldLeafEQ applies the EQ predicate on the "gold_leaf" field.
@@ -419,84 +419,84 @@ func UsernameContainsFold(v string) predicate.Wallet {
 	return predicate.Wallet(sql.FieldContainsFold(FieldUsername, v))
 }
 
-// CreateAtEQ applies the EQ predicate on the "create_at" field.
-func CreateAtEQ(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldEQ(FieldCreateAt, v))
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
+func CreatedAtEQ(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreateAtNEQ applies the NEQ predicate on the "create_at" field.
-func CreateAtNEQ(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldNEQ(FieldCreateAt, v))
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
+func CreatedAtNEQ(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreateAtIn applies the In predicate on the "create_at" field.
-func CreateAtIn(vs ...time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldIn(FieldCreateAt, vs...))
+// CreatedAtIn applies the In predicate on the "created_at" field.
+func CreatedAtIn(vs ...time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreateAtNotIn applies the NotIn predicate on the "create_at" field.
-func CreateAtNotIn(vs ...time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldNotIn(FieldCreateAt, vs...))
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
+func CreatedAtNotIn(vs ...time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreateAtGT applies the GT predicate on the "create_at" field.
-func CreateAtGT(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldGT(FieldCreateAt, v))
+// CreatedAtGT applies the GT predicate on the "created_at" field.
+func CreatedAtGT(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreateAtGTE applies the GTE predicate on the "create_at" field.
-func CreateAtGTE(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldGTE(FieldCreateAt, v))
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
+func CreatedAtGTE(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreateAtLT applies the LT predicate on the "create_at" field.
-func CreateAtLT(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldLT(FieldCreateAt, v))
+// CreatedAtLT applies the LT predicate on the "created_at" field.
+func CreatedAtLT(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreateAtLTE applies the LTE predicate on the "create_at" field.
-func CreateAtLTE(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldLTE(FieldCreateAt, v))
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
+func CreatedAtLTE(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdateAtEQ applies the EQ predicate on the "update_at" field.
-func UpdateAtEQ(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldEQ(FieldUpdateAt, v))
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
+func UpdatedAtEQ(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdateAtNEQ applies the NEQ predicate on the "update_at" field.
-func UpdateAtNEQ(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldNEQ(FieldUpdateAt, v))
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
+func UpdatedAtNEQ(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdateAtIn applies the In predicate on the "update_at" field.
-func UpdateAtIn(vs ...time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldIn(FieldUpdateAt, vs...))
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
+func UpdatedAtIn(vs ...time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdateAtNotIn applies the NotIn predicate on the "update_at" field.
-func UpdateAtNotIn(vs ...time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldNotIn(FieldUpdateAt, vs...))
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
+func UpdatedAtNotIn(vs ...time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdateAtGT applies the GT predicate on the "update_at" field.
-func UpdateAtGT(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldGT(FieldUpdateAt, v))
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
+func UpdatedAtGT(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdateAtGTE applies the GTE predicate on the "update_at" field.
-func UpdateAtGTE(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldGTE(FieldUpdateAt, v))
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
+func UpdatedAtGTE(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdateAtLT applies the LT predicate on the "update_at" field.
-func UpdateAtLT(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldLT(FieldUpdateAt, v))
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
+func UpdatedAtLT(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdateAtLTE applies the LTE predicate on the "update_at" field.
-func UpdateAtLTE(v time.Time) predicate.Wallet {
-	return predicate.Wallet(sql.FieldLTE(FieldUpdateAt, v))
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
+func UpdatedAtLTE(v time.Time) predicate.Wallet {
+	return predicate.Wallet(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
 // And groups predicates with the AND operator between them.

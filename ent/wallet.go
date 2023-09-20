@@ -17,22 +17,22 @@ type Wallet struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// 金叶子
+	// 金叶子,分为单位
 	GoldLeaf int32 `json:"gold_leaf,omitempty"`
-	// 银叶子
+	// 银叶子,分为单位
 	SilverLeaf int32 `json:"silver_leaf,omitempty"`
-	// 冻结金叶子
+	// 冻结金叶子,分为单位
 	FrozenGoldLeaf int32 `json:"frozen_gold_leaf,omitempty"`
-	// 冻结银叶子
+	// 冻结银叶子,分为单位
 	FrozenSilverLeaf int32 `json:"frozen_silver_leaf,omitempty"`
 	// 用户ID
 	UserID int32 `json:"user_id,omitempty"`
 	// 用户名
 	Username string `json:"username,omitempty"`
 	// 创建时间
-	CreateAt time.Time `json:"create_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 	// 更新时间
-	UpdateAt     time.Time `json:"update_at,omitempty"`
+	UpdatedAt    time.Time `json:"updated_at,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -45,7 +45,7 @@ func (*Wallet) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case wallet.FieldUsername:
 			values[i] = new(sql.NullString)
-		case wallet.FieldCreateAt, wallet.FieldUpdateAt:
+		case wallet.FieldCreatedAt, wallet.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -104,17 +104,17 @@ func (w *Wallet) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				w.Username = value.String
 			}
-		case wallet.FieldCreateAt:
+		case wallet.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field create_at", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				w.CreateAt = value.Time
+				w.CreatedAt = value.Time
 			}
-		case wallet.FieldUpdateAt:
+		case wallet.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field update_at", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				w.UpdateAt = value.Time
+				w.UpdatedAt = value.Time
 			}
 		default:
 			w.selectValues.Set(columns[i], values[i])
@@ -170,11 +170,11 @@ func (w *Wallet) String() string {
 	builder.WriteString("username=")
 	builder.WriteString(w.Username)
 	builder.WriteString(", ")
-	builder.WriteString("create_at=")
-	builder.WriteString(w.CreateAt.Format(time.ANSIC))
+	builder.WriteString("created_at=")
+	builder.WriteString(w.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("update_at=")
-	builder.WriteString(w.UpdateAt.Format(time.ANSIC))
+	builder.WriteString("updated_at=")
+	builder.WriteString(w.UpdatedAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

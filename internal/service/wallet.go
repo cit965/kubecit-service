@@ -19,8 +19,8 @@ func (s *KubecitService) RechargeWallet(ctx context.Context, req *pb.RechargeWal
 		FrozenSilverLeaf: wallet.FrozenSilverLeaf,
 		UserId:           wallet.UserId,
 		UserName:         wallet.UserName,
-		CreateAt:         timestamppb.New(wallet.CreateAt),
-		UpdateAt:         timestamppb.New(wallet.UpdateAt),
+		CreatedAt:        timestamppb.New(wallet.CreateAt),
+		UpdatedAt:        timestamppb.New(wallet.UpdateAt),
 		Id:               wallet.Id,
 	}, nil
 }
@@ -43,8 +43,8 @@ func (s KubecitService) WalletBalance(ctx context.Context, req *pb.Empty) (*pb.W
 		FrozenSilverLeaf: wallet.FrozenSilverLeaf,
 		UserId:           wallet.UserId,
 		UserName:         wallet.UserName,
-		CreateAt:         timestamppb.New(wallet.CreateAt),
-		UpdateAt:         timestamppb.New(wallet.UpdateAt),
+		CreatedAt:        timestamppb.New(wallet.CreateAt),
+		UpdatedAt:        timestamppb.New(wallet.UpdateAt),
 		Id:               wallet.Id,
 	}, nil
 

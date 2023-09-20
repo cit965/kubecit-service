@@ -179,14 +179,14 @@ func init() {
 	walletDescFrozenSilverLeaf := walletFields[3].Descriptor()
 	// wallet.DefaultFrozenSilverLeaf holds the default value on creation for the frozen_silver_leaf field.
 	wallet.DefaultFrozenSilverLeaf = walletDescFrozenSilverLeaf.Default.(int32)
-	// walletDescCreateAt is the schema descriptor for create_at field.
-	walletDescCreateAt := walletFields[6].Descriptor()
-	// wallet.DefaultCreateAt holds the default value on creation for the create_at field.
-	wallet.DefaultCreateAt = walletDescCreateAt.Default.(func() time.Time)
-	// walletDescUpdateAt is the schema descriptor for update_at field.
-	walletDescUpdateAt := walletFields[7].Descriptor()
-	// wallet.DefaultUpdateAt holds the default value on creation for the update_at field.
-	wallet.DefaultUpdateAt = walletDescUpdateAt.Default.(func() time.Time)
-	// wallet.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
-	wallet.UpdateDefaultUpdateAt = walletDescUpdateAt.UpdateDefault.(func() time.Time)
+	// walletDescCreatedAt is the schema descriptor for created_at field.
+	walletDescCreatedAt := walletFields[6].Descriptor()
+	// wallet.DefaultCreatedAt holds the default value on creation for the created_at field.
+	wallet.DefaultCreatedAt = walletDescCreatedAt.Default.(func() time.Time)
+	// walletDescUpdatedAt is the schema descriptor for updated_at field.
+	walletDescUpdatedAt := walletFields[7].Descriptor()
+	// wallet.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	wallet.DefaultUpdatedAt = walletDescUpdatedAt.Default.(func() time.Time)
+	// wallet.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	wallet.UpdateDefaultUpdatedAt = walletDescUpdatedAt.UpdateDefault.(func() time.Time)
 }

@@ -25,10 +25,10 @@ const (
 	FieldUserID = "user_id"
 	// FieldUsername holds the string denoting the username field in the database.
 	FieldUsername = "username"
-	// FieldCreateAt holds the string denoting the create_at field in the database.
-	FieldCreateAt = "create_at"
-	// FieldUpdateAt holds the string denoting the update_at field in the database.
-	FieldUpdateAt = "update_at"
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
+	FieldCreatedAt = "created_at"
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
+	FieldUpdatedAt = "updated_at"
 	// Table holds the table name of the wallet in the database.
 	Table = "wallets"
 )
@@ -42,8 +42,8 @@ var Columns = []string{
 	FieldFrozenSilverLeaf,
 	FieldUserID,
 	FieldUsername,
-	FieldCreateAt,
-	FieldUpdateAt,
+	FieldCreatedAt,
+	FieldUpdatedAt,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -65,12 +65,12 @@ var (
 	DefaultFrozenGoldLeaf int32
 	// DefaultFrozenSilverLeaf holds the default value on creation for the "frozen_silver_leaf" field.
 	DefaultFrozenSilverLeaf int32
-	// DefaultCreateAt holds the default value on creation for the "create_at" field.
-	DefaultCreateAt func() time.Time
-	// DefaultUpdateAt holds the default value on creation for the "update_at" field.
-	DefaultUpdateAt func() time.Time
-	// UpdateDefaultUpdateAt holds the default value on update for the "update_at" field.
-	UpdateDefaultUpdateAt func() time.Time
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
+	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
+	UpdateDefaultUpdatedAt func() time.Time
 )
 
 // OrderOption defines the ordering options for the Wallet queries.
@@ -111,12 +111,12 @@ func ByUsername(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUsername, opts...).ToFunc()
 }
 
-// ByCreateAt orders the results by the create_at field.
-func ByCreateAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreateAt, opts...).ToFunc()
+// ByCreatedAt orders the results by the created_at field.
+func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdateAt orders the results by the update_at field.
-func ByUpdateAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdateAt, opts...).ToFunc()
+// ByUpdatedAt orders the results by the updated_at field.
+func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }

@@ -104,30 +104,30 @@ func (wc *WalletCreate) SetNillableUsername(s *string) *WalletCreate {
 	return wc
 }
 
-// SetCreateAt sets the "create_at" field.
-func (wc *WalletCreate) SetCreateAt(t time.Time) *WalletCreate {
-	wc.mutation.SetCreateAt(t)
+// SetCreatedAt sets the "created_at" field.
+func (wc *WalletCreate) SetCreatedAt(t time.Time) *WalletCreate {
+	wc.mutation.SetCreatedAt(t)
 	return wc
 }
 
-// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (wc *WalletCreate) SetNillableCreateAt(t *time.Time) *WalletCreate {
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (wc *WalletCreate) SetNillableCreatedAt(t *time.Time) *WalletCreate {
 	if t != nil {
-		wc.SetCreateAt(*t)
+		wc.SetCreatedAt(*t)
 	}
 	return wc
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (wc *WalletCreate) SetUpdateAt(t time.Time) *WalletCreate {
-	wc.mutation.SetUpdateAt(t)
+// SetUpdatedAt sets the "updated_at" field.
+func (wc *WalletCreate) SetUpdatedAt(t time.Time) *WalletCreate {
+	wc.mutation.SetUpdatedAt(t)
 	return wc
 }
 
-// SetNillableUpdateAt sets the "update_at" field if the given value is not nil.
-func (wc *WalletCreate) SetNillableUpdateAt(t *time.Time) *WalletCreate {
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (wc *WalletCreate) SetNillableUpdatedAt(t *time.Time) *WalletCreate {
 	if t != nil {
-		wc.SetUpdateAt(*t)
+		wc.SetUpdatedAt(*t)
 	}
 	return wc
 }
@@ -183,23 +183,23 @@ func (wc *WalletCreate) defaults() {
 		v := wallet.DefaultFrozenSilverLeaf
 		wc.mutation.SetFrozenSilverLeaf(v)
 	}
-	if _, ok := wc.mutation.CreateAt(); !ok {
-		v := wallet.DefaultCreateAt()
-		wc.mutation.SetCreateAt(v)
+	if _, ok := wc.mutation.CreatedAt(); !ok {
+		v := wallet.DefaultCreatedAt()
+		wc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := wc.mutation.UpdateAt(); !ok {
-		v := wallet.DefaultUpdateAt()
-		wc.mutation.SetUpdateAt(v)
+	if _, ok := wc.mutation.UpdatedAt(); !ok {
+		v := wallet.DefaultUpdatedAt()
+		wc.mutation.SetUpdatedAt(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (wc *WalletCreate) check() error {
-	if _, ok := wc.mutation.CreateAt(); !ok {
-		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "Wallet.create_at"`)}
+	if _, ok := wc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Wallet.created_at"`)}
 	}
-	if _, ok := wc.mutation.UpdateAt(); !ok {
-		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "Wallet.update_at"`)}
+	if _, ok := wc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Wallet.updated_at"`)}
 	}
 	return nil
 }
@@ -251,13 +251,13 @@ func (wc *WalletCreate) createSpec() (*Wallet, *sqlgraph.CreateSpec) {
 		_spec.SetField(wallet.FieldUsername, field.TypeString, value)
 		_node.Username = value
 	}
-	if value, ok := wc.mutation.CreateAt(); ok {
-		_spec.SetField(wallet.FieldCreateAt, field.TypeTime, value)
-		_node.CreateAt = value
+	if value, ok := wc.mutation.CreatedAt(); ok {
+		_spec.SetField(wallet.FieldCreatedAt, field.TypeTime, value)
+		_node.CreatedAt = value
 	}
-	if value, ok := wc.mutation.UpdateAt(); ok {
-		_spec.SetField(wallet.FieldUpdateAt, field.TypeTime, value)
-		_node.UpdateAt = value
+	if value, ok := wc.mutation.UpdatedAt(); ok {
+		_spec.SetField(wallet.FieldUpdatedAt, field.TypeTime, value)
+		_node.UpdatedAt = value
 	}
 	return _node, _spec
 }

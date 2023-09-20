@@ -10,6 +10,7 @@ import (
 	"kubecit-service/ent/predicate"
 	"math"
 
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -23,6 +24,7 @@ type LessonQuery struct {
 	inters      []Interceptor
 	predicates  []predicate.Lesson
 	withChapter *ChapterQuery
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -382,6 +384,9 @@ func (lq *LessonQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Lesso
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
+	if len(lq.modifiers) > 0 {
+		_spec.Modifiers = lq.modifiers
+	}
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -432,6 +437,9 @@ func (lq *LessonQuery) loadChapter(ctx context.Context, query *ChapterQuery, nod
 
 func (lq *LessonQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := lq.querySpec()
+	if len(lq.modifiers) > 0 {
+		_spec.Modifiers = lq.modifiers
+	}
 	_spec.Node.Columns = lq.ctx.Fields
 	if len(lq.ctx.Fields) > 0 {
 		_spec.Unique = lq.ctx.Unique != nil && *lq.ctx.Unique
@@ -497,6 +505,9 @@ func (lq *LessonQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if lq.ctx.Unique != nil && *lq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range lq.modifiers {
+		m(selector)
+	}
 	for _, p := range lq.predicates {
 		p(selector)
 	}
@@ -512,6 +523,32 @@ func (lq *LessonQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// ForUpdate locks the selected rows against concurrent updates, and prevent them from being
+// updated, deleted or "selected ... for update" by other sessions, until the transaction is
+// either committed or rolled-back.
+func (lq *LessonQuery) ForUpdate(opts ...sql.LockOption) *LessonQuery {
+	if lq.driver.Dialect() == dialect.Postgres {
+		lq.Unique(false)
+	}
+	lq.modifiers = append(lq.modifiers, func(s *sql.Selector) {
+		s.ForUpdate(opts...)
+	})
+	return lq
+}
+
+// ForShare behaves similarly to ForUpdate, except that it acquires a shared mode lock
+// on any rows that are read. Other sessions can read the rows, but cannot modify them
+// until your transaction commits.
+func (lq *LessonQuery) ForShare(opts ...sql.LockOption) *LessonQuery {
+	if lq.driver.Dialect() == dialect.Postgres {
+		lq.Unique(false)
+	}
+	lq.modifiers = append(lq.modifiers, func(s *sql.Selector) {
+		s.ForShare(opts...)
+	})
+	return lq
 }
 
 // LessonGroupBy is the group-by builder for Lesson entities.
