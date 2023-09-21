@@ -387,6 +387,29 @@ service Kubecit {
       tags: "teacher"
     };
   }
+  //=============================用户钱包相关接口=================================================
+  rpc RechargeWallet (RechargeWalletRequest) returns (WalletInfo)  {
+    option (google.api.http) = {
+      post: "/api/wallet/recharge",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "为用户充值金叶子. 充值的金叶子数*100:gold_leaf_amount, 用户ID:user_id"
+      tags: "wallet"
+    };
+  }
+  rpc WalletBalance (Empty) returns (WalletInfo)  {
+    option (google.api.http) = {
+      get: "/api/wallet/balance",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "用户钱包余额"
+      tags: "wallet"
+    };
+  }
+
 
 }
 message CreateTeacherRequest {
@@ -453,6 +476,44 @@ message TeacherInfo {
   int32 id = 8;
   string name = 9;
   TeacherLevel level = 10;
+
+}
+
+message RechargeWalletRequest{
+  int32 gold_leaf_amount = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "充值的金叶子数",
+    description: "充值的金叶子数"
+  }, (google.api.field_behavior) = REQUIRED];
+  int32 user_id = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "用户ID",
+    description: "用户ID"
+  }, (google.api.field_behavior) = REQUIRED];
+}
+message WalletInfo {
+  int32 id = 1;
+  int32 gold_leaf = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "金叶子",
+    description: "金叶子"
+  }];
+  int32 silver_leaf = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "银叶子",
+    description: "银叶子"
+  }];
+  int32 frozen_gold_leaf = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "冻结的金叶子",
+    description: "冻结的金叶子"
+  }];
+  int32 frozen_silver_leaf = 5[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "冻结的银叶子",
+    description: "冻结的银叶子"
+  }];
+  int32 user_id = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "用户ID",
+    description: "用户ID"
+  }];
+
+  google.protobuf.Timestamp createdAt = 8;
+  google.protobuf.Timestamp updatedAt = 9;
 }
 
 // The request message containing the user's name.

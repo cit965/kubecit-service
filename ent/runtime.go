@@ -13,6 +13,7 @@ import (
 	"kubecit-service/ent/schema"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/teacher"
+	"kubecit-service/ent/wallet"
 	"time"
 )
 
@@ -160,4 +161,32 @@ func init() {
 	teacher.DefaultUpdateAt = teacherDescUpdateAt.Default.(func() time.Time)
 	// teacher.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
 	teacher.UpdateDefaultUpdateAt = teacherDescUpdateAt.UpdateDefault.(func() time.Time)
+	walletFields := schema.Wallet{}.Fields()
+	_ = walletFields
+	// walletDescGoldLeaf is the schema descriptor for gold_leaf field.
+	walletDescGoldLeaf := walletFields[0].Descriptor()
+	// wallet.DefaultGoldLeaf holds the default value on creation for the gold_leaf field.
+	wallet.DefaultGoldLeaf = walletDescGoldLeaf.Default.(int32)
+	// walletDescSilverLeaf is the schema descriptor for silver_leaf field.
+	walletDescSilverLeaf := walletFields[1].Descriptor()
+	// wallet.DefaultSilverLeaf holds the default value on creation for the silver_leaf field.
+	wallet.DefaultSilverLeaf = walletDescSilverLeaf.Default.(int32)
+	// walletDescFrozenGoldLeaf is the schema descriptor for frozen_gold_leaf field.
+	walletDescFrozenGoldLeaf := walletFields[2].Descriptor()
+	// wallet.DefaultFrozenGoldLeaf holds the default value on creation for the frozen_gold_leaf field.
+	wallet.DefaultFrozenGoldLeaf = walletDescFrozenGoldLeaf.Default.(int32)
+	// walletDescFrozenSilverLeaf is the schema descriptor for frozen_silver_leaf field.
+	walletDescFrozenSilverLeaf := walletFields[3].Descriptor()
+	// wallet.DefaultFrozenSilverLeaf holds the default value on creation for the frozen_silver_leaf field.
+	wallet.DefaultFrozenSilverLeaf = walletDescFrozenSilverLeaf.Default.(int32)
+	// walletDescCreatedAt is the schema descriptor for created_at field.
+	walletDescCreatedAt := walletFields[5].Descriptor()
+	// wallet.DefaultCreatedAt holds the default value on creation for the created_at field.
+	wallet.DefaultCreatedAt = walletDescCreatedAt.Default.(func() time.Time)
+	// walletDescUpdatedAt is the schema descriptor for updated_at field.
+	walletDescUpdatedAt := walletFields[6].Descriptor()
+	// wallet.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	wallet.DefaultUpdatedAt = walletDescUpdatedAt.Default.(func() time.Time)
+	// wallet.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	wallet.UpdateDefaultUpdatedAt = walletDescUpdatedAt.UpdateDefault.(func() time.Time)
 }
