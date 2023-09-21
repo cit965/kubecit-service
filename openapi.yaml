@@ -129,25 +129,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.CreateChapterReply'
-    /api/course/chapter/{courseId}:
-        get:
-            tags:
-                - Kubecit
-            operationId: Kubecit_ListChapters
-            parameters:
-                - name: courseId
-                  in: path
-                  required: true
-                  schema:
-                    type: integer
-                    format: int32
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/helloworld.v1.ListChaptersReply'
     /api/course/chapter/{id}:
         put:
             tags:
@@ -289,24 +270,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.CourseSearchReply'
-    /api/course/tags/list:
-        post:
-            tags:
-                - Kubecit
-            operationId: Kubecit_TagsList
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/helloworld.v1.TagsListRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/helloworld.v1.TagsListReply'
     /api/course/{courseId}/lessons:
         get:
             tags:
@@ -711,9 +674,6 @@ components:
                 sort:
                     type: integer
                     format: int32
-                hasFreePreview:
-                    type: integer
-                    format: int32
                 courseId:
                     type: integer
                     format: int32
@@ -1041,13 +1001,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.ChapterLessonsInfo'
-        helloworld.v1.ListChaptersReply:
-            type: object
-            properties:
-                data:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/helloworld.v1.ChapterInfo'
         helloworld.v1.ListSlidersByPriorityReply:
             type: object
             properties:
@@ -1157,9 +1110,6 @@ components:
                     type: integer
                     format: enum
         helloworld.v1.SearchCourseRequest:
-            required:
-                - pageNum
-                - pageSize
             type: object
             properties:
                 pageNum:
@@ -1212,30 +1162,6 @@ components:
                     type: string
                 computerurl:
                     type: string
-        helloworld.v1.Tag:
-            type: object
-            properties:
-                name:
-                    type: string
-        helloworld.v1.TagsListReply:
-            type: object
-            properties:
-                tags:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/helloworld.v1.Tag'
-        helloworld.v1.TagsListRequest:
-            type: object
-            properties:
-                pageNum:
-                    type: integer
-                    format: int32
-                pageSize:
-                    type: integer
-                    format: int32
-                course:
-                    type: integer
-                    format: int32
         helloworld.v1.TeacherInfo:
             type: object
             properties:

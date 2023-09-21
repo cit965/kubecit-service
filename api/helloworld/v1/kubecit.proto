@@ -9,9 +9,6 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
 option go_package = "kubecit-service/api/helloworld/v1;v1";
-option java_multiple_files = true;
-option java_package = "dev.kratos.api.helloworld.v1";
-option java_outer_classname = "HelloworldProtoV1";
 
 // The greeting service definition.
 service Kubecit {
@@ -82,17 +79,7 @@ service Kubecit {
     };
   }
 
-  rpc TagsList (TagsListRequest) returns (TagsListReply) {
-    option (google.api.http) = {
-      post: "/api/course/tags/list",
-      body: "*"
-    };
 
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "获取课程标签列表"
-      tags: "course"
-    };
-  }
   rpc SearchCourse (SearchCourseRequest) returns (CourseSearchReply) {
     option (google.api.http) = {
       post: "/api/course/search",
@@ -178,16 +165,7 @@ service Kubecit {
       tags: "course"
     };
   }
-  rpc ListChapters (ListChaptersRequest) returns (ListChaptersReply) {
-    option (google.api.http) = {
-      get: "/api/course/chapter/{courseId}",
-    };
 
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "查询章节"
-      tags: "course"
-    };
-  }
   rpc UpdateChapter (UpdateChapterRequest) returns (UpdateChapterReply) {
     option (google.api.http) = {
       put: "/api/course/chapter/{id}",
@@ -237,7 +215,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "更新小节"
+      description: "删除小节"
       tags: "course"
     };
   }
@@ -657,60 +635,48 @@ message CourseInfo {
 
 
 
-message TagsListRequest {
-  int32 pageNum = 1;
-  int32 pageSize = 2;
-  int32 course = 3;
-}
 
-message TagsListReply {
-  repeated Tag tags = 1;
-}
-
-message Tag {
-  string name = 1;
-}
 
 message SearchCourseRequest {
   optional int32 pageNum = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      title: "页码",
-      description: "页码"
+      title: "当前页码",
+      description: "当前页码，不传默认值1"
     },
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = OPTIONAL
   ];
   optional int32 pageSize = 2[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      title: "页数量",
-      description: "页数量"
+      title: "每页数据",
+      description: "不传默认值20"
     },
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = OPTIONAL
   ];
   optional int32 firstCategory = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      title: "课程id",
-      description: "需要审核的课程id"
+      title: "一级分类id",
+      description: "一级分类id，筛选某个一级分类下所有二级分类的课程"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
   optional int32 secondCategory = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "二级分类id",
-      description: "二级分类id"
+      description: "二级分类id，筛选某个二级分类下课程"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
   CourseLevel level = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      title: "课程等级",
-      description: "1 入门，2初级，3中级 4高级 5大师"
+      title: "课程难度",
+      description: "LEVEL_UNKNOWN = 0; //BEGINNER = 1; // 入门 ELEMENTARY = 2; // 初级 INTERMEDIATE = 3; // 中级 ADVANCED = 4; // 高级 MASTER = 5; // 大师"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
   optional int32 order = 6[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      title: "是否排序",
-      description: "1 标识按照最新排序 2表示按照综合排序"
+      title: "排序规则",
+      description: "1 标识按照最新排序 2表示按照综合排序，还没实现"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
@@ -726,8 +692,8 @@ message UpdateCourseRequest {
   ];
   CourseLevel level = 2[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      title: "课程等级",
-      description: "1 入门，2初级，3中级 4高级 5大师"
+      title: "课程难度",
+      description: "具体参考 course/search 接口注释"
     },
     (google.api.field_behavior) = REQUIRED
   ];
@@ -769,7 +735,7 @@ message UpdateCourseRequest {
   int32 categoryId = 9[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程分类ID",
-      description: "课程分类ID"
+      description: "课程分类ID，只能挂载二级分类下"
     },
     (google.api.field_behavior) = REQUIRED
   ];
@@ -804,35 +770,30 @@ message CreateCourseRequest {
   CourseLevel level = 2[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程等级",
-      description: "1 入门，2初级，3中级 4高级 5大师"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
   string name = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程名称",
-      description: "课程名称"
     },
     (google.api.field_behavior) = REQUIRED
   ];
   string detail = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程详情",
-      description: "课程详情"
     },
     (google.api.field_behavior) = REQUIRED
   ];
   string cover = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程封面",
-      description: "课程封面"
     },
     (google.api.field_behavior) = REQUIRED
   ];
   int32 price = 6[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程价格",
-      description: "课程价格"
     },
     (google.api.field_behavior) = REQUIRED
   ];
@@ -846,7 +807,7 @@ message CreateCourseRequest {
   int32 categoryId = 9[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "分类Id",
-      description: "分类Id"
+      description: "分类Id,只能是二级Id"
     },
     (google.api.field_behavior) = REQUIRED
   ];
@@ -922,13 +883,8 @@ message ChapterInfo {
       description: "章节排序"
     }
   ];
-  int32 hasFreePreview = 5[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      title: "是否有免费预览",
-      description: "1 有 2 没有"
-    }
-  ];
-  int32 courseId = 6[
+
+  int32 courseId = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程id",
       description: "课程id"
@@ -961,7 +917,7 @@ message CreateChapterRequest {
   FreePreview hasFreePreview = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "是否有免费预览小节",
-      description: "1 有 2 没有"
+      description: "TRUE 有 FALSE 没有"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
@@ -1035,18 +991,7 @@ message UpdateChapterRequest {
 message UpdateChapterReply {
   ChapterInfo data = 1;
 }
-message ListChaptersRequest {
-  int32 courseId = 1[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      title: "课程ID",
-      description: "课程ID"
-    },
-    (google.api.field_behavior) = REQUIRED
-  ];
-}
-message ListChaptersReply {
-  repeated ChapterInfo data = 1;
-}
+
 
 message CreateLessonRequest {
   string name = 1[
@@ -1066,7 +1011,7 @@ message CreateLessonRequest {
   LessonType type = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "小节类型",
-      description: "1 视频 2 音频"
+      description: " VIDEO 视频 AUDIO 音频"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
@@ -1080,7 +1025,7 @@ message CreateLessonRequest {
   string source = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "小节来源",
-      description: "小节来源"
+      description: "小节来源,可以不填，视频来自 bilibili/self/youtube"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
@@ -1094,14 +1039,13 @@ message CreateLessonRequest {
   FreePreview  isFreePreview = 7[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "是否为免费预览",
-      description: "1 是 2 不是"
+      description: "TRUE 是 FALSE 不是"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
   optional int32 chapterId = 8[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      title: "课程ID",
-      description: "课程ID"
+      title: "章节ID",
     },
     (google.api.field_behavior) = REQUIRED
   ];

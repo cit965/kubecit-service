@@ -26,8 +26,6 @@ type Chapter struct {
 	Description string `json:"description,omitempty"`
 	// 序号
 	Sort int `json:"sort,omitempty"`
-	// 是否有免费试看
-	HasFreePreview int `json:"has_free_preview,omitempty"`
 	// 课程id
 	CourseID int `json:"course_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -74,7 +72,7 @@ func (*Chapter) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case chapter.FieldID, chapter.FieldSort, chapter.FieldHasFreePreview, chapter.FieldCourseID:
+		case chapter.FieldID, chapter.FieldSort, chapter.FieldCourseID:
 			values[i] = new(sql.NullInt64)
 		case chapter.FieldName, chapter.FieldDescription:
 			values[i] = new(sql.NullString)
@@ -124,12 +122,6 @@ func (c *Chapter) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
 				c.Sort = int(value.Int64)
-			}
-		case chapter.FieldHasFreePreview:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field has_free_preview", values[i])
-			} else if value.Valid {
-				c.HasFreePreview = int(value.Int64)
 			}
 		case chapter.FieldCourseID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -194,9 +186,6 @@ func (c *Chapter) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("sort=")
 	builder.WriteString(fmt.Sprintf("%v", c.Sort))
-	builder.WriteString(", ")
-	builder.WriteString("has_free_preview=")
-	builder.WriteString(fmt.Sprintf("%v", c.HasFreePreview))
 	builder.WriteString(", ")
 	builder.WriteString("course_id=")
 	builder.WriteString(fmt.Sprintf("%v", c.CourseID))

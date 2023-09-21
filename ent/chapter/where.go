@@ -75,11 +75,6 @@ func Sort(v int) predicate.Chapter {
 	return predicate.Chapter(sql.FieldEQ(FieldSort, v))
 }
 
-// HasFreePreview applies equality check predicate on the "has_free_preview" field. It's identical to HasFreePreviewEQ.
-func HasFreePreview(v int) predicate.Chapter {
-	return predicate.Chapter(sql.FieldEQ(FieldHasFreePreview, v))
-}
-
 // CourseID applies equality check predicate on the "course_id" field. It's identical to CourseIDEQ.
 func CourseID(v int) predicate.Chapter {
 	return predicate.Chapter(sql.FieldEQ(FieldCourseID, v))
@@ -293,46 +288,6 @@ func SortLT(v int) predicate.Chapter {
 // SortLTE applies the LTE predicate on the "sort" field.
 func SortLTE(v int) predicate.Chapter {
 	return predicate.Chapter(sql.FieldLTE(FieldSort, v))
-}
-
-// HasFreePreviewEQ applies the EQ predicate on the "has_free_preview" field.
-func HasFreePreviewEQ(v int) predicate.Chapter {
-	return predicate.Chapter(sql.FieldEQ(FieldHasFreePreview, v))
-}
-
-// HasFreePreviewNEQ applies the NEQ predicate on the "has_free_preview" field.
-func HasFreePreviewNEQ(v int) predicate.Chapter {
-	return predicate.Chapter(sql.FieldNEQ(FieldHasFreePreview, v))
-}
-
-// HasFreePreviewIn applies the In predicate on the "has_free_preview" field.
-func HasFreePreviewIn(vs ...int) predicate.Chapter {
-	return predicate.Chapter(sql.FieldIn(FieldHasFreePreview, vs...))
-}
-
-// HasFreePreviewNotIn applies the NotIn predicate on the "has_free_preview" field.
-func HasFreePreviewNotIn(vs ...int) predicate.Chapter {
-	return predicate.Chapter(sql.FieldNotIn(FieldHasFreePreview, vs...))
-}
-
-// HasFreePreviewGT applies the GT predicate on the "has_free_preview" field.
-func HasFreePreviewGT(v int) predicate.Chapter {
-	return predicate.Chapter(sql.FieldGT(FieldHasFreePreview, v))
-}
-
-// HasFreePreviewGTE applies the GTE predicate on the "has_free_preview" field.
-func HasFreePreviewGTE(v int) predicate.Chapter {
-	return predicate.Chapter(sql.FieldGTE(FieldHasFreePreview, v))
-}
-
-// HasFreePreviewLT applies the LT predicate on the "has_free_preview" field.
-func HasFreePreviewLT(v int) predicate.Chapter {
-	return predicate.Chapter(sql.FieldLT(FieldHasFreePreview, v))
-}
-
-// HasFreePreviewLTE applies the LTE predicate on the "has_free_preview" field.
-func HasFreePreviewLTE(v int) predicate.Chapter {
-	return predicate.Chapter(sql.FieldLTE(FieldHasFreePreview, v))
 }
 
 // CourseIDEQ applies the EQ predicate on the "course_id" field.

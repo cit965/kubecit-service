@@ -61,27 +61,6 @@ func (cu *ChapterUpdate) AddSort(i int) *ChapterUpdate {
 	return cu
 }
 
-// SetHasFreePreview sets the "has_free_preview" field.
-func (cu *ChapterUpdate) SetHasFreePreview(i int) *ChapterUpdate {
-	cu.mutation.ResetHasFreePreview()
-	cu.mutation.SetHasFreePreview(i)
-	return cu
-}
-
-// SetNillableHasFreePreview sets the "has_free_preview" field if the given value is not nil.
-func (cu *ChapterUpdate) SetNillableHasFreePreview(i *int) *ChapterUpdate {
-	if i != nil {
-		cu.SetHasFreePreview(*i)
-	}
-	return cu
-}
-
-// AddHasFreePreview adds i to the "has_free_preview" field.
-func (cu *ChapterUpdate) AddHasFreePreview(i int) *ChapterUpdate {
-	cu.mutation.AddHasFreePreview(i)
-	return cu
-}
-
 // SetCourseID sets the "course_id" field.
 func (cu *ChapterUpdate) SetCourseID(i int) *ChapterUpdate {
 	cu.mutation.SetCourseID(i)
@@ -214,12 +193,6 @@ func (cu *ChapterUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.AddedSort(); ok {
 		_spec.AddField(chapter.FieldSort, field.TypeInt, value)
 	}
-	if value, ok := cu.mutation.HasFreePreview(); ok {
-		_spec.SetField(chapter.FieldHasFreePreview, field.TypeInt, value)
-	}
-	if value, ok := cu.mutation.AddedHasFreePreview(); ok {
-		_spec.AddField(chapter.FieldHasFreePreview, field.TypeInt, value)
-	}
 	if cu.mutation.LessonsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -342,27 +315,6 @@ func (cuo *ChapterUpdateOne) SetSort(i int) *ChapterUpdateOne {
 // AddSort adds i to the "sort" field.
 func (cuo *ChapterUpdateOne) AddSort(i int) *ChapterUpdateOne {
 	cuo.mutation.AddSort(i)
-	return cuo
-}
-
-// SetHasFreePreview sets the "has_free_preview" field.
-func (cuo *ChapterUpdateOne) SetHasFreePreview(i int) *ChapterUpdateOne {
-	cuo.mutation.ResetHasFreePreview()
-	cuo.mutation.SetHasFreePreview(i)
-	return cuo
-}
-
-// SetNillableHasFreePreview sets the "has_free_preview" field if the given value is not nil.
-func (cuo *ChapterUpdateOne) SetNillableHasFreePreview(i *int) *ChapterUpdateOne {
-	if i != nil {
-		cuo.SetHasFreePreview(*i)
-	}
-	return cuo
-}
-
-// AddHasFreePreview adds i to the "has_free_preview" field.
-func (cuo *ChapterUpdateOne) AddHasFreePreview(i int) *ChapterUpdateOne {
-	cuo.mutation.AddHasFreePreview(i)
 	return cuo
 }
 
@@ -527,12 +479,6 @@ func (cuo *ChapterUpdateOne) sqlSave(ctx context.Context) (_node *Chapter, err e
 	}
 	if value, ok := cuo.mutation.AddedSort(); ok {
 		_spec.AddField(chapter.FieldSort, field.TypeInt, value)
-	}
-	if value, ok := cuo.mutation.HasFreePreview(); ok {
-		_spec.SetField(chapter.FieldHasFreePreview, field.TypeInt, value)
-	}
-	if value, ok := cuo.mutation.AddedHasFreePreview(); ok {
-		_spec.AddField(chapter.FieldHasFreePreview, field.TypeInt, value)
 	}
 	if cuo.mutation.LessonsCleared() {
 		edge := &sqlgraph.EdgeSpec{

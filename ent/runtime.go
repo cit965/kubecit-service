@@ -49,10 +49,6 @@ func init() {
 	chapter.DefaultReleasedTime = chapterDescReleasedTime.Default.(func() time.Time)
 	// chapter.UpdateDefaultReleasedTime holds the default value on update for the released_time field.
 	chapter.UpdateDefaultReleasedTime = chapterDescReleasedTime.UpdateDefault.(func() time.Time)
-	// chapterDescHasFreePreview is the schema descriptor for has_free_preview field.
-	chapterDescHasFreePreview := chapterFields[4].Descriptor()
-	// chapter.DefaultHasFreePreview holds the default value on creation for the has_free_preview field.
-	chapter.DefaultHasFreePreview = chapterDescHasFreePreview.Default.(int)
 	courseFields := schema.Course{}.Fields()
 	_ = courseFields
 	// courseDescUpdatedAt is the schema descriptor for updated_at field.

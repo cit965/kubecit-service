@@ -1289,25 +1289,23 @@ func (m *CategoryMutation) ResetEdge(name string) error {
 // ChapterMutation represents an operation that mutates the Chapter nodes in the graph.
 type ChapterMutation struct {
 	config
-	op                  Op
-	typ                 string
-	id                  *int
-	name                *string
-	released_time       *time.Time
-	description         *string
-	sort                *int
-	addsort             *int
-	has_free_preview    *int
-	addhas_free_preview *int
-	clearedFields       map[string]struct{}
-	lessons             map[int]struct{}
-	removedlessons      map[int]struct{}
-	clearedlessons      bool
-	course              *int
-	clearedcourse       bool
-	done                bool
-	oldValue            func(context.Context) (*Chapter, error)
-	predicates          []predicate.Chapter
+	op             Op
+	typ            string
+	id             *int
+	name           *string
+	released_time  *time.Time
+	description    *string
+	sort           *int
+	addsort        *int
+	clearedFields  map[string]struct{}
+	lessons        map[int]struct{}
+	removedlessons map[int]struct{}
+	clearedlessons bool
+	course         *int
+	clearedcourse  bool
+	done           bool
+	oldValue       func(context.Context) (*Chapter, error)
+	predicates     []predicate.Chapter
 }
 
 var _ ent.Mutation = (*ChapterMutation)(nil)
@@ -1572,62 +1570,6 @@ func (m *ChapterMutation) ResetSort() {
 	m.addsort = nil
 }
 
-// SetHasFreePreview sets the "has_free_preview" field.
-func (m *ChapterMutation) SetHasFreePreview(i int) {
-	m.has_free_preview = &i
-	m.addhas_free_preview = nil
-}
-
-// HasFreePreview returns the value of the "has_free_preview" field in the mutation.
-func (m *ChapterMutation) HasFreePreview() (r int, exists bool) {
-	v := m.has_free_preview
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldHasFreePreview returns the old "has_free_preview" field's value of the Chapter entity.
-// If the Chapter object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ChapterMutation) OldHasFreePreview(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldHasFreePreview is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldHasFreePreview requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldHasFreePreview: %w", err)
-	}
-	return oldValue.HasFreePreview, nil
-}
-
-// AddHasFreePreview adds i to the "has_free_preview" field.
-func (m *ChapterMutation) AddHasFreePreview(i int) {
-	if m.addhas_free_preview != nil {
-		*m.addhas_free_preview += i
-	} else {
-		m.addhas_free_preview = &i
-	}
-}
-
-// AddedHasFreePreview returns the value that was added to the "has_free_preview" field in this mutation.
-func (m *ChapterMutation) AddedHasFreePreview() (r int, exists bool) {
-	v := m.addhas_free_preview
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetHasFreePreview resets all changes to the "has_free_preview" field.
-func (m *ChapterMutation) ResetHasFreePreview() {
-	m.has_free_preview = nil
-	m.addhas_free_preview = nil
-}
-
 // SetCourseID sets the "course_id" field.
 func (m *ChapterMutation) SetCourseID(i int) {
 	m.course = &i
@@ -1791,7 +1733,7 @@ func (m *ChapterMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ChapterMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 5)
 	if m.name != nil {
 		fields = append(fields, chapter.FieldName)
 	}
@@ -1803,9 +1745,6 @@ func (m *ChapterMutation) Fields() []string {
 	}
 	if m.sort != nil {
 		fields = append(fields, chapter.FieldSort)
-	}
-	if m.has_free_preview != nil {
-		fields = append(fields, chapter.FieldHasFreePreview)
 	}
 	if m.course != nil {
 		fields = append(fields, chapter.FieldCourseID)
@@ -1826,8 +1765,6 @@ func (m *ChapterMutation) Field(name string) (ent.Value, bool) {
 		return m.Description()
 	case chapter.FieldSort:
 		return m.Sort()
-	case chapter.FieldHasFreePreview:
-		return m.HasFreePreview()
 	case chapter.FieldCourseID:
 		return m.CourseID()
 	}
@@ -1847,8 +1784,6 @@ func (m *ChapterMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDescription(ctx)
 	case chapter.FieldSort:
 		return m.OldSort(ctx)
-	case chapter.FieldHasFreePreview:
-		return m.OldHasFreePreview(ctx)
 	case chapter.FieldCourseID:
 		return m.OldCourseID(ctx)
 	}
@@ -1888,13 +1823,6 @@ func (m *ChapterMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetSort(v)
 		return nil
-	case chapter.FieldHasFreePreview:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetHasFreePreview(v)
-		return nil
 	case chapter.FieldCourseID:
 		v, ok := value.(int)
 		if !ok {
@@ -1913,9 +1841,6 @@ func (m *ChapterMutation) AddedFields() []string {
 	if m.addsort != nil {
 		fields = append(fields, chapter.FieldSort)
 	}
-	if m.addhas_free_preview != nil {
-		fields = append(fields, chapter.FieldHasFreePreview)
-	}
 	return fields
 }
 
@@ -1926,8 +1851,6 @@ func (m *ChapterMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case chapter.FieldSort:
 		return m.AddedSort()
-	case chapter.FieldHasFreePreview:
-		return m.AddedHasFreePreview()
 	}
 	return nil, false
 }
@@ -1943,13 +1866,6 @@ func (m *ChapterMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSort(v)
-		return nil
-	case chapter.FieldHasFreePreview:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddHasFreePreview(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Chapter numeric field %s", name)
@@ -1998,9 +1914,6 @@ func (m *ChapterMutation) ResetField(name string) error {
 		return nil
 	case chapter.FieldSort:
 		m.ResetSort()
-		return nil
-	case chapter.FieldHasFreePreview:
-		m.ResetHasFreePreview()
 		return nil
 	case chapter.FieldCourseID:
 		m.ResetCourseID()
