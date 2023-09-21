@@ -39,13 +39,12 @@ type CourseChapterLessons struct {
 }
 
 type Chapter struct {
-	Id             int
-	Name           string
-	ReleasedTime   time.Time
-	Description    string
-	Sort           int
-	HasFreePreview int
-	CourseId       int
+	Id           int
+	Name         string
+	ReleasedTime time.Time
+	Description  string
+	Sort         int
+	CourseId     int
 }
 
 type Lesson struct {

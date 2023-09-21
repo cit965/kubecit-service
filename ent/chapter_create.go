@@ -54,20 +54,6 @@ func (cc *ChapterCreate) SetSort(i int) *ChapterCreate {
 	return cc
 }
 
-// SetHasFreePreview sets the "has_free_preview" field.
-func (cc *ChapterCreate) SetHasFreePreview(i int) *ChapterCreate {
-	cc.mutation.SetHasFreePreview(i)
-	return cc
-}
-
-// SetNillableHasFreePreview sets the "has_free_preview" field if the given value is not nil.
-func (cc *ChapterCreate) SetNillableHasFreePreview(i *int) *ChapterCreate {
-	if i != nil {
-		cc.SetHasFreePreview(*i)
-	}
-	return cc
-}
-
 // SetCourseID sets the "course_id" field.
 func (cc *ChapterCreate) SetCourseID(i int) *ChapterCreate {
 	cc.mutation.SetCourseID(i)
@@ -141,10 +127,6 @@ func (cc *ChapterCreate) defaults() {
 		v := chapter.DefaultReleasedTime()
 		cc.mutation.SetReleasedTime(v)
 	}
-	if _, ok := cc.mutation.HasFreePreview(); !ok {
-		v := chapter.DefaultHasFreePreview
-		cc.mutation.SetHasFreePreview(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -160,9 +142,6 @@ func (cc *ChapterCreate) check() error {
 	}
 	if _, ok := cc.mutation.Sort(); !ok {
 		return &ValidationError{Name: "sort", err: errors.New(`ent: missing required field "Chapter.sort"`)}
-	}
-	if _, ok := cc.mutation.HasFreePreview(); !ok {
-		return &ValidationError{Name: "has_free_preview", err: errors.New(`ent: missing required field "Chapter.has_free_preview"`)}
 	}
 	return nil
 }
@@ -205,10 +184,6 @@ func (cc *ChapterCreate) createSpec() (*Chapter, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.Sort(); ok {
 		_spec.SetField(chapter.FieldSort, field.TypeInt, value)
 		_node.Sort = value
-	}
-	if value, ok := cc.mutation.HasFreePreview(); ok {
-		_spec.SetField(chapter.FieldHasFreePreview, field.TypeInt, value)
-		_node.HasFreePreview = value
 	}
 	if nodes := cc.mutation.LessonsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

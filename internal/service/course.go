@@ -41,16 +41,6 @@ func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNe
 	return &pb.MostNewReply{List: result, Total: total}, nil
 }
 
-// TagsList 课程标签
-func (s *KubecitService) TagsList(ctx context.Context, req *pb.TagsListRequest) (*pb.TagsListReply, error) {
-	return &pb.TagsListReply{
-		Tags: []*pb.Tag{
-			{Name: "xxx"},
-			{Name: "yyy"},
-		},
-	}, nil
-}
-
 // SearchCourse 搜索课程
 func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseRequest) (*pb.CourseSearchReply, error) {
 
@@ -231,11 +221,10 @@ func (s *KubecitService) DeleteCourse(ctx context.Context, req *pb.DeleteCourseR
 
 func (s *KubecitService) CreateChapter(ctx context.Context, req *pb.CreateChapterRequest) (*pb.CreateChapterReply, error) {
 	ins := &biz.Chapter{
-		Name:           req.GetName(),
-		Description:    req.GetDescription(),
-		Sort:           int(req.GetSort()),
-		HasFreePreview: int(req.GetHasFreePreview()),
-		CourseId:       int(req.GetCourseId()),
+		Name:        req.GetName(),
+		Description: req.GetDescription(),
+		Sort:        int(req.GetSort()),
+		CourseId:    int(req.GetCourseId()),
 	}
 
 	res, err := s.cc.CreateChapter(ctx, ins)
@@ -243,13 +232,12 @@ func (s *KubecitService) CreateChapter(ctx context.Context, req *pb.CreateChapte
 		return nil, err
 	}
 	return &pb.CreateChapterReply{Data: &pb.ChapterInfo{
-		Id:             int32(res.Id),
-		Name:           res.Name,
-		ReleasedTime:   timestamppb.New(res.ReleasedTime),
-		Description:    res.Description,
-		Sort:           int32(res.Sort),
-		HasFreePreview: int32(res.HasFreePreview),
-		CourseId:       int32(res.CourseId),
+		Id:           int32(res.Id),
+		Name:         res.Name,
+		ReleasedTime: timestamppb.New(res.ReleasedTime),
+		Description:  res.Description,
+		Sort:         int32(res.Sort),
+		CourseId:     int32(res.CourseId),
 	}}, nil
 }
 
@@ -263,47 +251,25 @@ func (s *KubecitService) DeleteChapter(ctx context.Context, req *pb.DeleteChapte
 	}, nil
 }
 
-func (s *KubecitService) ListChapters(ctx context.Context, req *pb.ListChaptersRequest) (*pb.ListChaptersReply, error) {
-	res, err := s.cc.ListChapters(ctx, int(req.GetCourseId()))
-	if err != nil {
-		return nil, err
-	}
-	chapters := make([]*pb.ChapterInfo, 0, len(res))
-	for _, chapter := range res {
-		chapters = append(chapters, &pb.ChapterInfo{
-			Id:             int32(chapter.Id),
-			Name:           chapter.Name,
-			ReleasedTime:   timestamppb.New(chapter.ReleasedTime),
-			Description:    chapter.Description,
-			Sort:           int32(chapter.Sort),
-			HasFreePreview: int32(chapter.HasFreePreview),
-			CourseId:       int32(chapter.CourseId),
-		})
-	}
-	return &pb.ListChaptersReply{Data: chapters}, nil
-}
-
 func (s *KubecitService) UpdateChapter(ctx context.Context, req *pb.UpdateChapterRequest) (*pb.UpdateChapterReply, error) {
 	ins := &biz.Chapter{
-		Id:             int(req.GetId()),
-		Name:           req.GetName(),
-		Description:    req.GetDescription(),
-		Sort:           int(req.GetSort()),
-		HasFreePreview: int(req.GetHasFreePreview()),
-		CourseId:       int(req.GetCourseId()),
+		Id:          int(req.GetId()),
+		Name:        req.GetName(),
+		Description: req.GetDescription(),
+		Sort:        int(req.GetSort()),
+		CourseId:    int(req.GetCourseId()),
 	}
 	res, err := s.cc.UpdateChapter(ctx, int(req.Id), ins)
 	if err != nil {
 		return nil, err
 	}
 	return &pb.UpdateChapterReply{Data: &pb.ChapterInfo{
-		Id:             int32(res.Id),
-		Name:           res.Name,
-		ReleasedTime:   timestamppb.New(res.ReleasedTime),
-		Description:    res.Description,
-		Sort:           int32(res.Sort),
-		HasFreePreview: int32(res.HasFreePreview),
-		CourseId:       int32(res.CourseId),
+		Id:           int32(res.Id),
+		Name:         res.Name,
+		ReleasedTime: timestamppb.New(res.ReleasedTime),
+		Description:  res.Description,
+		Sort:         int32(res.Sort),
+		CourseId:     int32(res.CourseId),
 	}}, nil
 }
 
@@ -359,13 +325,12 @@ func (s *KubecitService) ListLessons(ctx context.Context, req *pb.ListChapterLes
 		}
 		data = append(data, &pb.ChapterLessonsInfo{
 			Chapter: &pb.ChapterInfo{
-				Id:             int32(chapterLesson.Id),
-				Name:           chapterLesson.Name,
-				ReleasedTime:   timestamppb.New(chapterLesson.ReleasedTime),
-				Description:    chapterLesson.Description,
-				Sort:           int32(chapterLesson.Sort),
-				HasFreePreview: int32(chapterLesson.HasFreePreview),
-				CourseId:       int32(chapterLesson.CourseId),
+				Id:           int32(chapterLesson.Id),
+				Name:         chapterLesson.Name,
+				ReleasedTime: timestamppb.New(chapterLesson.ReleasedTime),
+				Description:  chapterLesson.Description,
+				Sort:         int32(chapterLesson.Sort),
+				CourseId:     int32(chapterLesson.CourseId),
 			},
 			Lessons: lessonData,
 		})

@@ -179,20 +179,18 @@ func (c *courseRepo) DeleteCourse(ctx context.Context, id int) (int, error) {
 }
 
 func (c *courseRepo) CreateChapter(ctx context.Context, chapter *biz.Chapter) (*biz.Chapter, error) {
-	res, err := c.data.db.Chapter.Create().SetName(chapter.Name).SetDescription(chapter.Description).SetSort(chapter.Sort).
-		SetHasFreePreview(chapter.HasFreePreview).SetCourseID(chapter.CourseId).Save(ctx)
+	res, err := c.data.db.Chapter.Create().SetName(chapter.Name).SetDescription(chapter.Description).SetSort(chapter.Sort).SetCourseID(chapter.CourseId).Save(ctx)
 	if err != nil {
 		c.log.Errorf("chapter repo create error: %v\n", err)
 		return nil, err
 	}
 	return &biz.Chapter{
-		Id:             res.ID,
-		Name:           res.Name,
-		ReleasedTime:   res.ReleasedTime,
-		Description:    res.Description,
-		Sort:           res.Sort,
-		HasFreePreview: res.HasFreePreview,
-		CourseId:       res.CourseID,
+		Id:           res.ID,
+		Name:         res.Name,
+		ReleasedTime: res.ReleasedTime,
+		Description:  res.Description,
+		Sort:         res.Sort,
+		CourseId:     res.CourseID,
 	}, nil
 }
 
@@ -215,33 +213,30 @@ func (c *courseRepo) ListChapters(ctx context.Context, courseId int) ([]*biz.Cha
 	res := make([]*biz.Chapter, 0, len(chapters))
 	for _, ins := range chapters {
 		res = append(res, &biz.Chapter{
-			Id:             ins.ID,
-			Name:           ins.Name,
-			ReleasedTime:   ins.ReleasedTime,
-			Description:    ins.Description,
-			Sort:           ins.Sort,
-			HasFreePreview: ins.HasFreePreview,
-			CourseId:       ins.CourseID,
+			Id:           ins.ID,
+			Name:         ins.Name,
+			ReleasedTime: ins.ReleasedTime,
+			Description:  ins.Description,
+			Sort:         ins.Sort,
+			CourseId:     ins.CourseID,
 		})
 	}
 	return res, nil
 }
 
 func (c *courseRepo) UpdateChapter(ctx context.Context, id int, ins *biz.Chapter) (*biz.Chapter, error) {
-	res, err := c.data.db.Chapter.UpdateOneID(id).SetName(ins.Name).SetDescription(ins.Description).SetSort(ins.Sort).
-		SetHasFreePreview(ins.HasFreePreview).SetCourseID(ins.CourseId).Save(ctx)
+	res, err := c.data.db.Chapter.UpdateOneID(id).SetName(ins.Name).SetDescription(ins.Description).SetSort(ins.Sort).SetCourseID(ins.CourseId).Save(ctx)
 	if err != nil {
 		c.log.Errorf("chapter repo get error: %v\n", err)
 		return nil, err
 	}
 	return &biz.Chapter{
-		Id:             res.ID,
-		Name:           res.Name,
-		ReleasedTime:   res.ReleasedTime,
-		Description:    res.Description,
-		Sort:           res.Sort,
-		HasFreePreview: res.HasFreePreview,
-		CourseId:       res.CourseID,
+		Id:           res.ID,
+		Name:         res.Name,
+		ReleasedTime: res.ReleasedTime,
+		Description:  res.Description,
+		Sort:         res.Sort,
+		CourseId:     res.CourseID,
 	}, nil
 }
 

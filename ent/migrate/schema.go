@@ -57,7 +57,6 @@ var (
 		{Name: "released_time", Type: field.TypeTime},
 		{Name: "description", Type: field.TypeString},
 		{Name: "sort", Type: field.TypeInt},
-		{Name: "has_free_preview", Type: field.TypeInt, Default: 2},
 		{Name: "course_id", Type: field.TypeInt, Nullable: true},
 	}
 	// ChaptersTable holds the schema information for the "chapters" table.
@@ -68,7 +67,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "chapters_courses_chapters",
-				Columns:    []*schema.Column{ChaptersColumns[6]},
+				Columns:    []*schema.Column{ChaptersColumns[5]},
 				RefColumns: []*schema.Column{CoursesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

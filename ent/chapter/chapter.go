@@ -22,8 +22,6 @@ const (
 	FieldDescription = "description"
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
-	// FieldHasFreePreview holds the string denoting the has_free_preview field in the database.
-	FieldHasFreePreview = "has_free_preview"
 	// FieldCourseID holds the string denoting the course_id field in the database.
 	FieldCourseID = "course_id"
 	// EdgeLessons holds the string denoting the lessons edge name in mutations.
@@ -55,7 +53,6 @@ var Columns = []string{
 	FieldReleasedTime,
 	FieldDescription,
 	FieldSort,
-	FieldHasFreePreview,
 	FieldCourseID,
 }
 
@@ -74,8 +71,6 @@ var (
 	DefaultReleasedTime func() time.Time
 	// UpdateDefaultReleasedTime holds the default value on update for the "released_time" field.
 	UpdateDefaultReleasedTime func() time.Time
-	// DefaultHasFreePreview holds the default value on creation for the "has_free_preview" field.
-	DefaultHasFreePreview int
 )
 
 // OrderOption defines the ordering options for the Chapter queries.
@@ -104,11 +99,6 @@ func ByDescription(opts ...sql.OrderTermOption) OrderOption {
 // BySort orders the results by the sort field.
 func BySort(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSort, opts...).ToFunc()
-}
-
-// ByHasFreePreview orders the results by the has_free_preview field.
-func ByHasFreePreview(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldHasFreePreview, opts...).ToFunc()
 }
 
 // ByCourseID orders the results by the course_id field.
