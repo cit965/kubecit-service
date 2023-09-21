@@ -18,6 +18,7 @@ import (
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
+	"kubecit-service/ent/wallet"
 	"sync"
 	"time"
 
@@ -45,6 +46,7 @@ const (
 	TypeSlider     = "Slider"
 	TypeTeacher    = "Teacher"
 	TypeUser       = "User"
+	TypeWallet     = "Wallet"
 )
 
 // AccountMutation represents an operation that mutates the Account nodes in the graph.
@@ -8578,4 +8580,925 @@ func (m *UserMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *UserMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown User edge %s", name)
+}
+
+// WalletMutation represents an operation that mutates the Wallet nodes in the graph.
+type WalletMutation struct {
+	config
+	op                    Op
+	typ                   string
+	id                    *int
+	gold_leaf             *int32
+	addgold_leaf          *int32
+	silver_leaf           *int32
+	addsilver_leaf        *int32
+	frozen_gold_leaf      *int32
+	addfrozen_gold_leaf   *int32
+	frozen_silver_leaf    *int32
+	addfrozen_silver_leaf *int32
+	user_id               *int32
+	adduser_id            *int32
+	created_at            *time.Time
+	updated_at            *time.Time
+	clearedFields         map[string]struct{}
+	done                  bool
+	oldValue              func(context.Context) (*Wallet, error)
+	predicates            []predicate.Wallet
+}
+
+var _ ent.Mutation = (*WalletMutation)(nil)
+
+// walletOption allows management of the mutation configuration using functional options.
+type walletOption func(*WalletMutation)
+
+// newWalletMutation creates new mutation for the Wallet entity.
+func newWalletMutation(c config, op Op, opts ...walletOption) *WalletMutation {
+	m := &WalletMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeWallet,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withWalletID sets the ID field of the mutation.
+func withWalletID(id int) walletOption {
+	return func(m *WalletMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Wallet
+		)
+		m.oldValue = func(ctx context.Context) (*Wallet, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Wallet.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withWallet sets the old Wallet of the mutation.
+func withWallet(node *Wallet) walletOption {
+	return func(m *WalletMutation) {
+		m.oldValue = func(context.Context) (*Wallet, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m WalletMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m WalletMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *WalletMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *WalletMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Wallet.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetGoldLeaf sets the "gold_leaf" field.
+func (m *WalletMutation) SetGoldLeaf(i int32) {
+	m.gold_leaf = &i
+	m.addgold_leaf = nil
+}
+
+// GoldLeaf returns the value of the "gold_leaf" field in the mutation.
+func (m *WalletMutation) GoldLeaf() (r int32, exists bool) {
+	v := m.gold_leaf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGoldLeaf returns the old "gold_leaf" field's value of the Wallet entity.
+// If the Wallet object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletMutation) OldGoldLeaf(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGoldLeaf is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGoldLeaf requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGoldLeaf: %w", err)
+	}
+	return oldValue.GoldLeaf, nil
+}
+
+// AddGoldLeaf adds i to the "gold_leaf" field.
+func (m *WalletMutation) AddGoldLeaf(i int32) {
+	if m.addgold_leaf != nil {
+		*m.addgold_leaf += i
+	} else {
+		m.addgold_leaf = &i
+	}
+}
+
+// AddedGoldLeaf returns the value that was added to the "gold_leaf" field in this mutation.
+func (m *WalletMutation) AddedGoldLeaf() (r int32, exists bool) {
+	v := m.addgold_leaf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearGoldLeaf clears the value of the "gold_leaf" field.
+func (m *WalletMutation) ClearGoldLeaf() {
+	m.gold_leaf = nil
+	m.addgold_leaf = nil
+	m.clearedFields[wallet.FieldGoldLeaf] = struct{}{}
+}
+
+// GoldLeafCleared returns if the "gold_leaf" field was cleared in this mutation.
+func (m *WalletMutation) GoldLeafCleared() bool {
+	_, ok := m.clearedFields[wallet.FieldGoldLeaf]
+	return ok
+}
+
+// ResetGoldLeaf resets all changes to the "gold_leaf" field.
+func (m *WalletMutation) ResetGoldLeaf() {
+	m.gold_leaf = nil
+	m.addgold_leaf = nil
+	delete(m.clearedFields, wallet.FieldGoldLeaf)
+}
+
+// SetSilverLeaf sets the "silver_leaf" field.
+func (m *WalletMutation) SetSilverLeaf(i int32) {
+	m.silver_leaf = &i
+	m.addsilver_leaf = nil
+}
+
+// SilverLeaf returns the value of the "silver_leaf" field in the mutation.
+func (m *WalletMutation) SilverLeaf() (r int32, exists bool) {
+	v := m.silver_leaf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSilverLeaf returns the old "silver_leaf" field's value of the Wallet entity.
+// If the Wallet object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletMutation) OldSilverLeaf(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSilverLeaf is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSilverLeaf requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSilverLeaf: %w", err)
+	}
+	return oldValue.SilverLeaf, nil
+}
+
+// AddSilverLeaf adds i to the "silver_leaf" field.
+func (m *WalletMutation) AddSilverLeaf(i int32) {
+	if m.addsilver_leaf != nil {
+		*m.addsilver_leaf += i
+	} else {
+		m.addsilver_leaf = &i
+	}
+}
+
+// AddedSilverLeaf returns the value that was added to the "silver_leaf" field in this mutation.
+func (m *WalletMutation) AddedSilverLeaf() (r int32, exists bool) {
+	v := m.addsilver_leaf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearSilverLeaf clears the value of the "silver_leaf" field.
+func (m *WalletMutation) ClearSilverLeaf() {
+	m.silver_leaf = nil
+	m.addsilver_leaf = nil
+	m.clearedFields[wallet.FieldSilverLeaf] = struct{}{}
+}
+
+// SilverLeafCleared returns if the "silver_leaf" field was cleared in this mutation.
+func (m *WalletMutation) SilverLeafCleared() bool {
+	_, ok := m.clearedFields[wallet.FieldSilverLeaf]
+	return ok
+}
+
+// ResetSilverLeaf resets all changes to the "silver_leaf" field.
+func (m *WalletMutation) ResetSilverLeaf() {
+	m.silver_leaf = nil
+	m.addsilver_leaf = nil
+	delete(m.clearedFields, wallet.FieldSilverLeaf)
+}
+
+// SetFrozenGoldLeaf sets the "frozen_gold_leaf" field.
+func (m *WalletMutation) SetFrozenGoldLeaf(i int32) {
+	m.frozen_gold_leaf = &i
+	m.addfrozen_gold_leaf = nil
+}
+
+// FrozenGoldLeaf returns the value of the "frozen_gold_leaf" field in the mutation.
+func (m *WalletMutation) FrozenGoldLeaf() (r int32, exists bool) {
+	v := m.frozen_gold_leaf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFrozenGoldLeaf returns the old "frozen_gold_leaf" field's value of the Wallet entity.
+// If the Wallet object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletMutation) OldFrozenGoldLeaf(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFrozenGoldLeaf is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFrozenGoldLeaf requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFrozenGoldLeaf: %w", err)
+	}
+	return oldValue.FrozenGoldLeaf, nil
+}
+
+// AddFrozenGoldLeaf adds i to the "frozen_gold_leaf" field.
+func (m *WalletMutation) AddFrozenGoldLeaf(i int32) {
+	if m.addfrozen_gold_leaf != nil {
+		*m.addfrozen_gold_leaf += i
+	} else {
+		m.addfrozen_gold_leaf = &i
+	}
+}
+
+// AddedFrozenGoldLeaf returns the value that was added to the "frozen_gold_leaf" field in this mutation.
+func (m *WalletMutation) AddedFrozenGoldLeaf() (r int32, exists bool) {
+	v := m.addfrozen_gold_leaf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearFrozenGoldLeaf clears the value of the "frozen_gold_leaf" field.
+func (m *WalletMutation) ClearFrozenGoldLeaf() {
+	m.frozen_gold_leaf = nil
+	m.addfrozen_gold_leaf = nil
+	m.clearedFields[wallet.FieldFrozenGoldLeaf] = struct{}{}
+}
+
+// FrozenGoldLeafCleared returns if the "frozen_gold_leaf" field was cleared in this mutation.
+func (m *WalletMutation) FrozenGoldLeafCleared() bool {
+	_, ok := m.clearedFields[wallet.FieldFrozenGoldLeaf]
+	return ok
+}
+
+// ResetFrozenGoldLeaf resets all changes to the "frozen_gold_leaf" field.
+func (m *WalletMutation) ResetFrozenGoldLeaf() {
+	m.frozen_gold_leaf = nil
+	m.addfrozen_gold_leaf = nil
+	delete(m.clearedFields, wallet.FieldFrozenGoldLeaf)
+}
+
+// SetFrozenSilverLeaf sets the "frozen_silver_leaf" field.
+func (m *WalletMutation) SetFrozenSilverLeaf(i int32) {
+	m.frozen_silver_leaf = &i
+	m.addfrozen_silver_leaf = nil
+}
+
+// FrozenSilverLeaf returns the value of the "frozen_silver_leaf" field in the mutation.
+func (m *WalletMutation) FrozenSilverLeaf() (r int32, exists bool) {
+	v := m.frozen_silver_leaf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFrozenSilverLeaf returns the old "frozen_silver_leaf" field's value of the Wallet entity.
+// If the Wallet object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletMutation) OldFrozenSilverLeaf(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFrozenSilverLeaf is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFrozenSilverLeaf requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFrozenSilverLeaf: %w", err)
+	}
+	return oldValue.FrozenSilverLeaf, nil
+}
+
+// AddFrozenSilverLeaf adds i to the "frozen_silver_leaf" field.
+func (m *WalletMutation) AddFrozenSilverLeaf(i int32) {
+	if m.addfrozen_silver_leaf != nil {
+		*m.addfrozen_silver_leaf += i
+	} else {
+		m.addfrozen_silver_leaf = &i
+	}
+}
+
+// AddedFrozenSilverLeaf returns the value that was added to the "frozen_silver_leaf" field in this mutation.
+func (m *WalletMutation) AddedFrozenSilverLeaf() (r int32, exists bool) {
+	v := m.addfrozen_silver_leaf
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearFrozenSilverLeaf clears the value of the "frozen_silver_leaf" field.
+func (m *WalletMutation) ClearFrozenSilverLeaf() {
+	m.frozen_silver_leaf = nil
+	m.addfrozen_silver_leaf = nil
+	m.clearedFields[wallet.FieldFrozenSilverLeaf] = struct{}{}
+}
+
+// FrozenSilverLeafCleared returns if the "frozen_silver_leaf" field was cleared in this mutation.
+func (m *WalletMutation) FrozenSilverLeafCleared() bool {
+	_, ok := m.clearedFields[wallet.FieldFrozenSilverLeaf]
+	return ok
+}
+
+// ResetFrozenSilverLeaf resets all changes to the "frozen_silver_leaf" field.
+func (m *WalletMutation) ResetFrozenSilverLeaf() {
+	m.frozen_silver_leaf = nil
+	m.addfrozen_silver_leaf = nil
+	delete(m.clearedFields, wallet.FieldFrozenSilverLeaf)
+}
+
+// SetUserID sets the "user_id" field.
+func (m *WalletMutation) SetUserID(i int32) {
+	m.user_id = &i
+	m.adduser_id = nil
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *WalletMutation) UserID() (r int32, exists bool) {
+	v := m.user_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the Wallet entity.
+// If the Wallet object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletMutation) OldUserID(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// AddUserID adds i to the "user_id" field.
+func (m *WalletMutation) AddUserID(i int32) {
+	if m.adduser_id != nil {
+		*m.adduser_id += i
+	} else {
+		m.adduser_id = &i
+	}
+}
+
+// AddedUserID returns the value that was added to the "user_id" field in this mutation.
+func (m *WalletMutation) AddedUserID() (r int32, exists bool) {
+	v := m.adduser_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUserID clears the value of the "user_id" field.
+func (m *WalletMutation) ClearUserID() {
+	m.user_id = nil
+	m.adduser_id = nil
+	m.clearedFields[wallet.FieldUserID] = struct{}{}
+}
+
+// UserIDCleared returns if the "user_id" field was cleared in this mutation.
+func (m *WalletMutation) UserIDCleared() bool {
+	_, ok := m.clearedFields[wallet.FieldUserID]
+	return ok
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *WalletMutation) ResetUserID() {
+	m.user_id = nil
+	m.adduser_id = nil
+	delete(m.clearedFields, wallet.FieldUserID)
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *WalletMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *WalletMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the Wallet entity.
+// If the Wallet object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *WalletMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *WalletMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *WalletMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the Wallet entity.
+// If the Wallet object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *WalletMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// Where appends a list predicates to the WalletMutation builder.
+func (m *WalletMutation) Where(ps ...predicate.Wallet) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the WalletMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *WalletMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.Wallet, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *WalletMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *WalletMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (Wallet).
+func (m *WalletMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *WalletMutation) Fields() []string {
+	fields := make([]string, 0, 7)
+	if m.gold_leaf != nil {
+		fields = append(fields, wallet.FieldGoldLeaf)
+	}
+	if m.silver_leaf != nil {
+		fields = append(fields, wallet.FieldSilverLeaf)
+	}
+	if m.frozen_gold_leaf != nil {
+		fields = append(fields, wallet.FieldFrozenGoldLeaf)
+	}
+	if m.frozen_silver_leaf != nil {
+		fields = append(fields, wallet.FieldFrozenSilverLeaf)
+	}
+	if m.user_id != nil {
+		fields = append(fields, wallet.FieldUserID)
+	}
+	if m.created_at != nil {
+		fields = append(fields, wallet.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, wallet.FieldUpdatedAt)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *WalletMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case wallet.FieldGoldLeaf:
+		return m.GoldLeaf()
+	case wallet.FieldSilverLeaf:
+		return m.SilverLeaf()
+	case wallet.FieldFrozenGoldLeaf:
+		return m.FrozenGoldLeaf()
+	case wallet.FieldFrozenSilverLeaf:
+		return m.FrozenSilverLeaf()
+	case wallet.FieldUserID:
+		return m.UserID()
+	case wallet.FieldCreatedAt:
+		return m.CreatedAt()
+	case wallet.FieldUpdatedAt:
+		return m.UpdatedAt()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *WalletMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case wallet.FieldGoldLeaf:
+		return m.OldGoldLeaf(ctx)
+	case wallet.FieldSilverLeaf:
+		return m.OldSilverLeaf(ctx)
+	case wallet.FieldFrozenGoldLeaf:
+		return m.OldFrozenGoldLeaf(ctx)
+	case wallet.FieldFrozenSilverLeaf:
+		return m.OldFrozenSilverLeaf(ctx)
+	case wallet.FieldUserID:
+		return m.OldUserID(ctx)
+	case wallet.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case wallet.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	}
+	return nil, fmt.Errorf("unknown Wallet field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *WalletMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case wallet.FieldGoldLeaf:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGoldLeaf(v)
+		return nil
+	case wallet.FieldSilverLeaf:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSilverLeaf(v)
+		return nil
+	case wallet.FieldFrozenGoldLeaf:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFrozenGoldLeaf(v)
+		return nil
+	case wallet.FieldFrozenSilverLeaf:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFrozenSilverLeaf(v)
+		return nil
+	case wallet.FieldUserID:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
+	case wallet.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case wallet.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Wallet field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *WalletMutation) AddedFields() []string {
+	var fields []string
+	if m.addgold_leaf != nil {
+		fields = append(fields, wallet.FieldGoldLeaf)
+	}
+	if m.addsilver_leaf != nil {
+		fields = append(fields, wallet.FieldSilverLeaf)
+	}
+	if m.addfrozen_gold_leaf != nil {
+		fields = append(fields, wallet.FieldFrozenGoldLeaf)
+	}
+	if m.addfrozen_silver_leaf != nil {
+		fields = append(fields, wallet.FieldFrozenSilverLeaf)
+	}
+	if m.adduser_id != nil {
+		fields = append(fields, wallet.FieldUserID)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *WalletMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case wallet.FieldGoldLeaf:
+		return m.AddedGoldLeaf()
+	case wallet.FieldSilverLeaf:
+		return m.AddedSilverLeaf()
+	case wallet.FieldFrozenGoldLeaf:
+		return m.AddedFrozenGoldLeaf()
+	case wallet.FieldFrozenSilverLeaf:
+		return m.AddedFrozenSilverLeaf()
+	case wallet.FieldUserID:
+		return m.AddedUserID()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *WalletMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case wallet.FieldGoldLeaf:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddGoldLeaf(v)
+		return nil
+	case wallet.FieldSilverLeaf:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSilverLeaf(v)
+		return nil
+	case wallet.FieldFrozenGoldLeaf:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddFrozenGoldLeaf(v)
+		return nil
+	case wallet.FieldFrozenSilverLeaf:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddFrozenSilverLeaf(v)
+		return nil
+	case wallet.FieldUserID:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUserID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Wallet numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *WalletMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(wallet.FieldGoldLeaf) {
+		fields = append(fields, wallet.FieldGoldLeaf)
+	}
+	if m.FieldCleared(wallet.FieldSilverLeaf) {
+		fields = append(fields, wallet.FieldSilverLeaf)
+	}
+	if m.FieldCleared(wallet.FieldFrozenGoldLeaf) {
+		fields = append(fields, wallet.FieldFrozenGoldLeaf)
+	}
+	if m.FieldCleared(wallet.FieldFrozenSilverLeaf) {
+		fields = append(fields, wallet.FieldFrozenSilverLeaf)
+	}
+	if m.FieldCleared(wallet.FieldUserID) {
+		fields = append(fields, wallet.FieldUserID)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *WalletMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *WalletMutation) ClearField(name string) error {
+	switch name {
+	case wallet.FieldGoldLeaf:
+		m.ClearGoldLeaf()
+		return nil
+	case wallet.FieldSilverLeaf:
+		m.ClearSilverLeaf()
+		return nil
+	case wallet.FieldFrozenGoldLeaf:
+		m.ClearFrozenGoldLeaf()
+		return nil
+	case wallet.FieldFrozenSilverLeaf:
+		m.ClearFrozenSilverLeaf()
+		return nil
+	case wallet.FieldUserID:
+		m.ClearUserID()
+		return nil
+	}
+	return fmt.Errorf("unknown Wallet nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *WalletMutation) ResetField(name string) error {
+	switch name {
+	case wallet.FieldGoldLeaf:
+		m.ResetGoldLeaf()
+		return nil
+	case wallet.FieldSilverLeaf:
+		m.ResetSilverLeaf()
+		return nil
+	case wallet.FieldFrozenGoldLeaf:
+		m.ResetFrozenGoldLeaf()
+		return nil
+	case wallet.FieldFrozenSilverLeaf:
+		m.ResetFrozenSilverLeaf()
+		return nil
+	case wallet.FieldUserID:
+		m.ResetUserID()
+		return nil
+	case wallet.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case wallet.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	}
+	return fmt.Errorf("unknown Wallet field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *WalletMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *WalletMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *WalletMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *WalletMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *WalletMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *WalletMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *WalletMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Wallet unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *WalletMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Wallet edge %s", name)
 }

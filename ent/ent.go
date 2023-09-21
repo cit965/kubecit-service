@@ -17,6 +17,7 @@ import (
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
+	"kubecit-service/ent/wallet"
 	"reflect"
 	"sync"
 
@@ -94,6 +95,7 @@ func checkColumn(table, column string) error {
 			slider.Table:     slider.ValidColumn,
 			teacher.Table:    teacher.ValidColumn,
 			user.Table:       user.ValidColumn,
+			wallet.Table:     wallet.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

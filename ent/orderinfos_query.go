@@ -9,6 +9,7 @@ import (
 	"kubecit-service/ent/predicate"
 	"math"
 
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -21,6 +22,7 @@ type OrderInfosQuery struct {
 	order      []orderinfos.OrderOption
 	inters     []Interceptor
 	predicates []predicate.OrderInfos
+	modifiers  []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -342,6 +344,9 @@ func (oiq *OrderInfosQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
 	}
+	if len(oiq.modifiers) > 0 {
+		_spec.Modifiers = oiq.modifiers
+	}
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -356,6 +361,9 @@ func (oiq *OrderInfosQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*
 
 func (oiq *OrderInfosQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := oiq.querySpec()
+	if len(oiq.modifiers) > 0 {
+		_spec.Modifiers = oiq.modifiers
+	}
 	_spec.Node.Columns = oiq.ctx.Fields
 	if len(oiq.ctx.Fields) > 0 {
 		_spec.Unique = oiq.ctx.Unique != nil && *oiq.ctx.Unique
@@ -418,6 +426,9 @@ func (oiq *OrderInfosQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if oiq.ctx.Unique != nil && *oiq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range oiq.modifiers {
+		m(selector)
+	}
 	for _, p := range oiq.predicates {
 		p(selector)
 	}
@@ -433,6 +444,32 @@ func (oiq *OrderInfosQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// ForUpdate locks the selected rows against concurrent updates, and prevent them from being
+// updated, deleted or "selected ... for update" by other sessions, until the transaction is
+// either committed or rolled-back.
+func (oiq *OrderInfosQuery) ForUpdate(opts ...sql.LockOption) *OrderInfosQuery {
+	if oiq.driver.Dialect() == dialect.Postgres {
+		oiq.Unique(false)
+	}
+	oiq.modifiers = append(oiq.modifiers, func(s *sql.Selector) {
+		s.ForUpdate(opts...)
+	})
+	return oiq
+}
+
+// ForShare behaves similarly to ForUpdate, except that it acquires a shared mode lock
+// on any rows that are read. Other sessions can read the rows, but cannot modify them
+// until your transaction commits.
+func (oiq *OrderInfosQuery) ForShare(opts ...sql.LockOption) *OrderInfosQuery {
+	if oiq.driver.Dialect() == dialect.Postgres {
+		oiq.Unique(false)
+	}
+	oiq.modifiers = append(oiq.modifiers, func(s *sql.Selector) {
+		s.ForShare(opts...)
+	})
+	return oiq
 }
 
 // OrderInfosGroupBy is the group-by builder for OrderInfos entities.

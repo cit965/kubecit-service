@@ -34,6 +34,8 @@ type Tx struct {
 	Teacher *TeacherClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
+	// Wallet is the client for interacting with the Wallet builders.
+	Wallet *WalletClient
 
 	// lazily loaded.
 	client     *Client
@@ -176,6 +178,7 @@ func (tx *Tx) init() {
 	tx.Slider = NewSliderClient(tx.config)
 	tx.Teacher = NewTeacherClient(tx.config)
 	tx.User = NewUserClient(tx.config)
+	tx.Wallet = NewWalletClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.
