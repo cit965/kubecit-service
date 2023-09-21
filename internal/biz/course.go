@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
+	pb "kubecit-service/api/helloworld/v1"
 )
 
 // Category is a Category model.
@@ -77,7 +78,7 @@ type CategoryRepo interface {
 
 // CourseRepo is a Course repo.
 type CourseRepo interface {
-	SearchCourse(ctx context.Context, pageNum, pageSize *int32, categoryIds []int, level *int32, order *int32) ([]*Course, int32, error)
+	SearchCourse(ctx context.Context, pageNum, pageSize *int32, categoryIds []int, level pb.CourseLevel, order *int32) ([]*Course, int32, error)
 	UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error)
 	ReviewCourse(ctx context.Context, id int, status int32) (*Course, error)
 	CreateCourse(ctx context.Context, course *Course) (*Course, error)
@@ -149,7 +150,7 @@ type SearchFilterParam struct {
 	PageSize         *int32
 	SecondCategoryId *int32
 	FirstCategoryId  *int32
-	Level            *int32
+	Level            pb.CourseLevel
 	Order            *int32
 }
 

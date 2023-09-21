@@ -47,7 +47,7 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 	courses, total, err := s.cc.SearchCourse(ctx, &biz.SearchFilterParam{
 		SecondCategoryId: req.SecondCategory,
 		FirstCategoryId:  req.FirstCategory,
-		Level:            (*int32)(req.GetLevel().Enum()),
+		Level:            req.GetLevel(),
 		Order:            req.Order,
 		PageNum:          req.PageNum,
 		PageSize:         req.PageSize,

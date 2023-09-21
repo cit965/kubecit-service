@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
+	pb "kubecit-service/api/helloworld/v1"
 	"kubecit-service/ent"
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
@@ -23,14 +24,14 @@ func NewCourseRepo(data *Data, logger log.Logger) biz.CourseRepo {
 	}
 }
 
-func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32, categories []int, level *int32, order *int32) ([]*biz.Course, int32, error) {
+func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32, categories []int, level pb.CourseLevel, order *int32) ([]*biz.Course, int32, error) {
 	cq := c.data.db.Course.Query()
 	if len(categories) != 0 {
 		cq.Where(course.CategoryIDIn(categories...))
 	}
 
-	if level != nil {
-		cq.Where(course.LevelEQ(*level))
+	if level != pb.CourseLevel_LEVEL_UNKNOWN {
+		cq.Where(course.LevelEQ(int32(level)))
 	}
 	if order != nil {
 		if *order == 1 {
