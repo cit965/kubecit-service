@@ -7,10 +7,8 @@ server:
     timeout: 1s
 data:
   database:
-#    driver: sqlite3
-#    source: ./test.db?_fk=1
-    driver: mysql
-    source: root:gmQoO6jO9DNRqgPvT2X5wLS@tcp(123.56.51.60:30002)/kubecit?charset=utf8&parseTime=True&loc=Local
+    driver: sqlite3
+    source: ./test.db?_fk=1
   redis:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
