@@ -814,8 +814,6 @@ func (m *WalletInfo) validate(all bool) error {
 
 	// no validation rules for UserId
 
-	// no validation rules for UserName
-
 	if all {
 		switch v := interface{}(m.GetCreatedAt()).(type) {
 		case interface{ ValidateAll() error }:

@@ -1435,8 +1435,6 @@ components:
                 userId:
                     type: integer
                     format: int32
-                userName:
-                    type: string
                 createdAt:
                     type: string
                     format: date-time

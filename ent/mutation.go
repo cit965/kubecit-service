@@ -8598,7 +8598,6 @@ type WalletMutation struct {
 	addfrozen_silver_leaf *int32
 	user_id               *int32
 	adduser_id            *int32
-	username              *string
 	created_at            *time.Time
 	updated_at            *time.Time
 	clearedFields         map[string]struct{}
@@ -9055,55 +9054,6 @@ func (m *WalletMutation) ResetUserID() {
 	delete(m.clearedFields, wallet.FieldUserID)
 }
 
-// SetUsername sets the "username" field.
-func (m *WalletMutation) SetUsername(s string) {
-	m.username = &s
-}
-
-// Username returns the value of the "username" field in the mutation.
-func (m *WalletMutation) Username() (r string, exists bool) {
-	v := m.username
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUsername returns the old "username" field's value of the Wallet entity.
-// If the Wallet object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WalletMutation) OldUsername(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUsername is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUsername requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUsername: %w", err)
-	}
-	return oldValue.Username, nil
-}
-
-// ClearUsername clears the value of the "username" field.
-func (m *WalletMutation) ClearUsername() {
-	m.username = nil
-	m.clearedFields[wallet.FieldUsername] = struct{}{}
-}
-
-// UsernameCleared returns if the "username" field was cleared in this mutation.
-func (m *WalletMutation) UsernameCleared() bool {
-	_, ok := m.clearedFields[wallet.FieldUsername]
-	return ok
-}
-
-// ResetUsername resets all changes to the "username" field.
-func (m *WalletMutation) ResetUsername() {
-	m.username = nil
-	delete(m.clearedFields, wallet.FieldUsername)
-}
-
 // SetCreatedAt sets the "created_at" field.
 func (m *WalletMutation) SetCreatedAt(t time.Time) {
 	m.created_at = &t
@@ -9210,7 +9160,7 @@ func (m *WalletMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *WalletMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 7)
 	if m.gold_leaf != nil {
 		fields = append(fields, wallet.FieldGoldLeaf)
 	}
@@ -9225,9 +9175,6 @@ func (m *WalletMutation) Fields() []string {
 	}
 	if m.user_id != nil {
 		fields = append(fields, wallet.FieldUserID)
-	}
-	if m.username != nil {
-		fields = append(fields, wallet.FieldUsername)
 	}
 	if m.created_at != nil {
 		fields = append(fields, wallet.FieldCreatedAt)
@@ -9253,8 +9200,6 @@ func (m *WalletMutation) Field(name string) (ent.Value, bool) {
 		return m.FrozenSilverLeaf()
 	case wallet.FieldUserID:
 		return m.UserID()
-	case wallet.FieldUsername:
-		return m.Username()
 	case wallet.FieldCreatedAt:
 		return m.CreatedAt()
 	case wallet.FieldUpdatedAt:
@@ -9278,8 +9223,6 @@ func (m *WalletMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldFrozenSilverLeaf(ctx)
 	case wallet.FieldUserID:
 		return m.OldUserID(ctx)
-	case wallet.FieldUsername:
-		return m.OldUsername(ctx)
 	case wallet.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
 	case wallet.FieldUpdatedAt:
@@ -9327,13 +9270,6 @@ func (m *WalletMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUserID(v)
-		return nil
-	case wallet.FieldUsername:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUsername(v)
 		return nil
 	case wallet.FieldCreatedAt:
 		v, ok := value.(time.Time)
@@ -9457,9 +9393,6 @@ func (m *WalletMutation) ClearedFields() []string {
 	if m.FieldCleared(wallet.FieldUserID) {
 		fields = append(fields, wallet.FieldUserID)
 	}
-	if m.FieldCleared(wallet.FieldUsername) {
-		fields = append(fields, wallet.FieldUsername)
-	}
 	return fields
 }
 
@@ -9489,9 +9422,6 @@ func (m *WalletMutation) ClearField(name string) error {
 	case wallet.FieldUserID:
 		m.ClearUserID()
 		return nil
-	case wallet.FieldUsername:
-		m.ClearUsername()
-		return nil
 	}
 	return fmt.Errorf("unknown Wallet nullable field %s", name)
 }
@@ -9514,9 +9444,6 @@ func (m *WalletMutation) ResetField(name string) error {
 		return nil
 	case wallet.FieldUserID:
 		m.ResetUserID()
-		return nil
-	case wallet.FieldUsername:
-		m.ResetUsername()
 		return nil
 	case wallet.FieldCreatedAt:
 		m.ResetCreatedAt()

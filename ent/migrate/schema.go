@@ -238,7 +238,6 @@ var (
 		{Name: "frozen_gold_leaf", Type: field.TypeInt32, Nullable: true, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
 		{Name: "frozen_silver_leaf", Type: field.TypeInt32, Nullable: true, Default: 0, SchemaType: map[string]string{"mysql": "int"}},
 		{Name: "user_id", Type: field.TypeInt32, Nullable: true, SchemaType: map[string]string{"mysql": "int"}},
-		{Name: "username", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(16)"}},
 		{Name: "created_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "updated_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
 	}

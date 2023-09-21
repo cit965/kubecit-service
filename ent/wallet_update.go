@@ -163,26 +163,6 @@ func (wu *WalletUpdate) ClearUserID() *WalletUpdate {
 	return wu
 }
 
-// SetUsername sets the "username" field.
-func (wu *WalletUpdate) SetUsername(s string) *WalletUpdate {
-	wu.mutation.SetUsername(s)
-	return wu
-}
-
-// SetNillableUsername sets the "username" field if the given value is not nil.
-func (wu *WalletUpdate) SetNillableUsername(s *string) *WalletUpdate {
-	if s != nil {
-		wu.SetUsername(*s)
-	}
-	return wu
-}
-
-// ClearUsername clears the value of the "username" field.
-func (wu *WalletUpdate) ClearUsername() *WalletUpdate {
-	wu.mutation.ClearUsername()
-	return wu
-}
-
 // SetCreatedAt sets the "created_at" field.
 func (wu *WalletUpdate) SetCreatedAt(t time.Time) *WalletUpdate {
 	wu.mutation.SetCreatedAt(t)
@@ -297,12 +277,6 @@ func (wu *WalletUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if wu.mutation.UserIDCleared() {
 		_spec.ClearField(wallet.FieldUserID, field.TypeInt32)
-	}
-	if value, ok := wu.mutation.Username(); ok {
-		_spec.SetField(wallet.FieldUsername, field.TypeString, value)
-	}
-	if wu.mutation.UsernameCleared() {
-		_spec.ClearField(wallet.FieldUsername, field.TypeString)
 	}
 	if value, ok := wu.mutation.CreatedAt(); ok {
 		_spec.SetField(wallet.FieldCreatedAt, field.TypeTime, value)
@@ -465,26 +439,6 @@ func (wuo *WalletUpdateOne) ClearUserID() *WalletUpdateOne {
 	return wuo
 }
 
-// SetUsername sets the "username" field.
-func (wuo *WalletUpdateOne) SetUsername(s string) *WalletUpdateOne {
-	wuo.mutation.SetUsername(s)
-	return wuo
-}
-
-// SetNillableUsername sets the "username" field if the given value is not nil.
-func (wuo *WalletUpdateOne) SetNillableUsername(s *string) *WalletUpdateOne {
-	if s != nil {
-		wuo.SetUsername(*s)
-	}
-	return wuo
-}
-
-// ClearUsername clears the value of the "username" field.
-func (wuo *WalletUpdateOne) ClearUsername() *WalletUpdateOne {
-	wuo.mutation.ClearUsername()
-	return wuo
-}
-
 // SetCreatedAt sets the "created_at" field.
 func (wuo *WalletUpdateOne) SetCreatedAt(t time.Time) *WalletUpdateOne {
 	wuo.mutation.SetCreatedAt(t)
@@ -629,12 +583,6 @@ func (wuo *WalletUpdateOne) sqlSave(ctx context.Context) (_node *Wallet, err err
 	}
 	if wuo.mutation.UserIDCleared() {
 		_spec.ClearField(wallet.FieldUserID, field.TypeInt32)
-	}
-	if value, ok := wuo.mutation.Username(); ok {
-		_spec.SetField(wallet.FieldUsername, field.TypeString, value)
-	}
-	if wuo.mutation.UsernameCleared() {
-		_spec.ClearField(wallet.FieldUsername, field.TypeString)
 	}
 	if value, ok := wuo.mutation.CreatedAt(); ok {
 		_spec.SetField(wallet.FieldCreatedAt, field.TypeTime, value)

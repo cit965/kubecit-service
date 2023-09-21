@@ -90,20 +90,6 @@ func (wc *WalletCreate) SetNillableUserID(i *int32) *WalletCreate {
 	return wc
 }
 
-// SetUsername sets the "username" field.
-func (wc *WalletCreate) SetUsername(s string) *WalletCreate {
-	wc.mutation.SetUsername(s)
-	return wc
-}
-
-// SetNillableUsername sets the "username" field if the given value is not nil.
-func (wc *WalletCreate) SetNillableUsername(s *string) *WalletCreate {
-	if s != nil {
-		wc.SetUsername(*s)
-	}
-	return wc
-}
-
 // SetCreatedAt sets the "created_at" field.
 func (wc *WalletCreate) SetCreatedAt(t time.Time) *WalletCreate {
 	wc.mutation.SetCreatedAt(t)
@@ -246,10 +232,6 @@ func (wc *WalletCreate) createSpec() (*Wallet, *sqlgraph.CreateSpec) {
 	if value, ok := wc.mutation.UserID(); ok {
 		_spec.SetField(wallet.FieldUserID, field.TypeInt32, value)
 		_node.UserID = value
-	}
-	if value, ok := wc.mutation.Username(); ok {
-		_spec.SetField(wallet.FieldUsername, field.TypeString, value)
-		_node.Username = value
 	}
 	if value, ok := wc.mutation.CreatedAt(); ok {
 		_spec.SetField(wallet.FieldCreatedAt, field.TypeTime, value)

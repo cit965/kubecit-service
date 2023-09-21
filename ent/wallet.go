@@ -27,8 +27,6 @@ type Wallet struct {
 	FrozenSilverLeaf int32 `json:"frozen_silver_leaf,omitempty"`
 	// 用户ID
 	UserID int32 `json:"user_id,omitempty"`
-	// 用户名
-	Username string `json:"username,omitempty"`
 	// 创建时间
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// 更新时间
@@ -43,8 +41,6 @@ func (*Wallet) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case wallet.FieldID, wallet.FieldGoldLeaf, wallet.FieldSilverLeaf, wallet.FieldFrozenGoldLeaf, wallet.FieldFrozenSilverLeaf, wallet.FieldUserID:
 			values[i] = new(sql.NullInt64)
-		case wallet.FieldUsername:
-			values[i] = new(sql.NullString)
 		case wallet.FieldCreatedAt, wallet.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
@@ -97,12 +93,6 @@ func (w *Wallet) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
 				w.UserID = int32(value.Int64)
-			}
-		case wallet.FieldUsername:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field username", values[i])
-			} else if value.Valid {
-				w.Username = value.String
 			}
 		case wallet.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -166,9 +156,6 @@ func (w *Wallet) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", w.UserID))
-	builder.WriteString(", ")
-	builder.WriteString("username=")
-	builder.WriteString(w.Username)
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
 	builder.WriteString(w.CreatedAt.Format(time.ANSIC))

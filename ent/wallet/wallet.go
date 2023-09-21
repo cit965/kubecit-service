@@ -23,8 +23,6 @@ const (
 	FieldFrozenSilverLeaf = "frozen_silver_leaf"
 	// FieldUserID holds the string denoting the user_id field in the database.
 	FieldUserID = "user_id"
-	// FieldUsername holds the string denoting the username field in the database.
-	FieldUsername = "username"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
@@ -41,7 +39,6 @@ var Columns = []string{
 	FieldFrozenGoldLeaf,
 	FieldFrozenSilverLeaf,
 	FieldUserID,
-	FieldUsername,
 	FieldCreatedAt,
 	FieldUpdatedAt,
 }
@@ -104,11 +101,6 @@ func ByFrozenSilverLeaf(opts ...sql.OrderTermOption) OrderOption {
 // ByUserID orders the results by the user_id field.
 func ByUserID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUserID, opts...).ToFunc()
-}
-
-// ByUsername orders the results by the username field.
-func ByUsername(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUsername, opts...).ToFunc()
 }
 
 // ByCreatedAt orders the results by the created_at field.

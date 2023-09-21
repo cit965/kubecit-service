@@ -13,7 +13,6 @@ type Wallet struct {
 	FrozenGoldLeaf   int32
 	FrozenSilverLeaf int32
 	UserId           int32
-	UserName         string
 	CreateAt         time.Time
 	UpdateAt         time.Time
 }

@@ -39,11 +39,11 @@ func (w walletRepo) QueryAndLock(ctx context.Context, client *ent.Client, userId
 		if err := tx.Commit(); err != nil {
 			return nil, err
 		}
-		u, err := w.data.db.User.Query().Where(user.IDEQ(int(userId))).First(ctx)
+		_, err := w.data.db.User.Query().Where(user.IDEQ(int(userId))).First(ctx)
 		if err != nil {
 			return nil, err
 		}
-		wl, err = w.data.db.Wallet.Create().SetUserID(userId).SetGoldLeaf(goldLeafAmount).SetUsername(u.Username).Save(ctx)
+		wl, err = w.data.db.Wallet.Create().SetUserID(userId).SetGoldLeaf(goldLeafAmount).Save(ctx)
 		if err != nil {
 			return nil, err
 		}
@@ -73,7 +73,6 @@ func (w walletRepo) RechargeGoldLeaf(ctx context.Context, userId, goldLeafAmount
 		FrozenGoldLeaf:   wl.FrozenGoldLeaf,
 		FrozenSilverLeaf: wl.FrozenSilverLeaf,
 		UserId:           wl.UserID,
-		UserName:         wl.Username,
 		CreateAt:         wl.CreatedAt,
 		UpdateAt:         wl.UpdatedAt,
 	}, nil
@@ -91,7 +90,6 @@ func (w walletRepo) Balance(ctx context.Context, userId int32) (*biz.Wallet, err
 		FrozenGoldLeaf:   walletObj.FrozenGoldLeaf,
 		FrozenSilverLeaf: walletObj.FrozenSilverLeaf,
 		UserId:           walletObj.UserID,
-		UserName:         walletObj.Username,
 		CreateAt:         walletObj.CreatedAt,
 		UpdateAt:         walletObj.UpdatedAt,
 	}, nil

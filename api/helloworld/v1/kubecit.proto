@@ -511,10 +511,7 @@ message WalletInfo {
     title: "用户ID",
     description: "用户ID"
   }];
-  string user_name = 7[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    title: "用户名",
-    description: "用户名"
-  }];
+
   google.protobuf.Timestamp createdAt = 8;
   google.protobuf.Timestamp updatedAt = 9;
 }
