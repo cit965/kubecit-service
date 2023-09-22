@@ -387,6 +387,29 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.UserInfoReply'
+    /api/my_order:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_MyOrderList
+            parameters:
+                - name: pageNum
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.OrderListReply'
     /api/order:
         post:
             tags:
@@ -1066,6 +1089,13 @@ components:
                     format: int32
                 productDescription:
                     type: string
+        helloworld.v1.OrderListReply:
+            type: object
+            properties:
+                orderList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.CreateOrderReply'
         helloworld.v1.RechargeWalletRequest:
             required:
                 - goldLeafAmount

@@ -334,6 +334,18 @@ service Kubecit {
       tags: "order"
     };
   }
+
+    rpc MyOrderList (MyOrderRequest) returns (OrderListReply) {
+    option (google.api.http) = {
+      get: "/api/my_order",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "我的订单"
+      tags: "order"
+    };
+  }
+
   //=============================讲师相关================================================
   rpc ListAllTeacher (ListAllTeacherRequest) returns (ListAllTeacherReply) {
     option (google.api.http) = {
@@ -1364,13 +1376,14 @@ message OrderDetail{
   string productDescription = 5;
 }
 
+
 // 支付类型
 enum PayType {
   NO_PAY = 0 ; // 还未支付
   ALIPAY = 1; // 支付宝
   WECHAT = 2; // 微信支付
-  TRANSFER = 3;  // 转账
-  INTERNAL = 4;  //内部币
+  GOLDEN_LEAF = 3;  // 金叶子
+  SILVER_LEAF = 4;  //银叶子
 }
 
 //支付状态
@@ -1397,4 +1410,12 @@ message CreateOrderReply {
   google.protobuf.Timestamp createTime = 8;
   google.protobuf.Timestamp updateTime = 9;
   repeated OrderDetail details = 10;
+}
+
+message OrderListReply {
+  repeated CreateOrderReply orderList = 1;
+}
+message MyOrderRequest {
+  optional int32 pageNum = 1;
+  optional int32 pageSize = 2;
 }

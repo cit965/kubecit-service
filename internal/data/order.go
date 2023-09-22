@@ -7,6 +7,8 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"kubecit-service/ent"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/orderinfos"
+	"kubecit-service/ent/orders"
 	"kubecit-service/internal/biz"
 	"math/rand"
 	"time"
@@ -75,7 +77,7 @@ func (or *orderRepo) createOrderTx(ctx context.Context, courseIds []int32) (*biz
 			Id:              info.ID,
 			ProductName:     info.ProductName,
 			ProductDescribe: info.ProductDescribe,
-			ProductPrice:    int32(c.Price),
+			ProductPrice:    c.Price,
 			CreateTime:      info.CreateTime,
 			UpdateTime:      info.UpdateTime,
 			OrderId:         int32(orderObj.ID),
@@ -103,4 +105,77 @@ func GenerateOrderSn(userId int32) string {
 	rand.Seed(time.Now().UnixNano())
 	orderSn := fmt.Sprintf("%d%d%d%d%d%d%d%d", now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Nanosecond(), userId, rand.Intn(90)+10)
 	return orderSn
+}
+
+func GetUserFromCtx(ctx context.Context) (userID int32, err error) {
+	userID, ok := ctx.Value("user_id").(int32)
+	if !ok {
+		return 0, errors.New(400, "用户ID不存在", "从token中解析不出用户ID")
+	}
+	return userID, nil
+
+}
+
+func (or *orderRepo) MyOrder(ctx context.Context, pageNum, pageSize *int32) ([]*biz.Order, error) {
+	userID, err := GetUserFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
+	//userID := int32(1)
+	qr := or.data.db.Orders.Query().Where(
+		orders.UserIDEQ(userID),
+	).Order(ent.Desc(orders.FieldCreateTime))
+	if pageNum != nil {
+		*pageNum--
+		qr.Offset(int(*pageNum))
+	} else {
+		qr.Offset(0)
+	}
+	if pageSize != nil {
+		qr.Limit(int(*pageSize))
+	} else {
+		qr.Limit(20)
+	}
+	orderAll, err := qr.All(ctx)
+
+	if err != nil {
+		return nil, errors.BadRequest(err.Error(), "获取订单列表失败！")
+	}
+	ordersResult := make([]*biz.Order, 0)
+	for _, order := range orderAll {
+		orderInfos, err := or.data.db.OrderInfos.Query().Where(
+			orderinfos.OrderIDEQ(int32(order.ID)),
+		).All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		orderDetails := make([]*biz.OrderInfo, 0)
+
+		for _, orderInfo := range orderInfos {
+			orderDetails = append(orderDetails, &biz.OrderInfo{
+				Id:              orderInfo.ID,
+				ProductName:     orderInfo.ProductName,
+				ProductDescribe: orderInfo.ProductDescribe,
+				ProductPrice:    orderInfo.ProductPrice,
+				CreateTime:      orderInfo.CreateTime,
+				UpdateTime:      orderInfo.UpdateTime,
+				OrderId:         int32(order.ID),
+				ProductId:       orderInfo.ProductID,
+			})
+		}
+		ordersResult = append(ordersResult, &biz.Order{
+			Id:         order.ID,
+			UserId:     order.UserID,
+			OrderSn:    order.OrderSn,
+			PayType:    order.PayType,
+			PayStatus:  order.PayStatus,
+			TradePrice: order.TradePrice,
+			TradeNo:    order.TradeNo,
+			PayTime:    order.PayTime,
+			CreateTime: order.CreateTime,
+			UpdateTime: order.UpdateTime,
+			Info:       orderDetails,
+		})
+	}
+	return ordersResult, nil
 }
