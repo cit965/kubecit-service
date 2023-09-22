@@ -1369,44 +1369,94 @@ message CreateOrderRequest {
 }
 
 message OrderDetail{
-  int32 orderId = 1;
-  int32 productId = 2;
-  string productName = 3;
-  int32 productPrice = 4;
-  string productDescription = 5;
+  int32 orderId = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "订单id",
+      description: "订单id"
+    }];
+  int32 productId = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "商品id",
+      description: "商品id"
+    }];
+  string productName = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "商品名称",
+      description: "商品名称"
+    }];
+  int32 productPrice = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "商品价格 (单位:分)",
+      description: "商品价格 (单位:分)"
+    }];
+  string productDescription = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "商品描述",
+      description: "商品描述"
+    }];
 }
 
 
 // 支付类型
 enum PayType {
-  NO_PAY = 0 ; // 还未支付
-  ALIPAY = 1; // 支付宝
-  WECHAT = 2; // 微信支付
-  GOLDEN_LEAF = 3;  // 金叶子
-  SILVER_LEAF = 4;  //银叶子
+  PAY_TYPE_UNKNOWN = 0;
+  NO_PAY = 1 ; // 还未支付
+  ALIPAY = 2; // 支付宝
+  WECHAT = 3; // 微信支付
+  GOLDEN_LEAF = 4;  // 金叶子
+  SILVER_LEAF = 5;  //银叶子
 }
 
 //支付状态
 enum PayStatus {
-  UNPAID = 0; // 未支付
-  PAID = 1; // 已支付
-  FAILED = 2; //支付失败
-  CLOSED = 3; //关闭
-  CANCELED = 4; //取消
-  REFUNDING = 5; //退款中
-  REFUNDED = 6; //退款成功
-  REFUND_FAILED = 7;//退款失败
+  PAY_STATUS_UNKNOWN = 0;
+  UNPAID = 1; // 未支付
+  PAID = 2; // 已支付
+  FAILED = 3; //支付失败
+  CLOSED = 4; //关闭
+  CANCELED = 5; //取消
+  REFUNDING = 6; //退款中
+  REFUNDED = 7; //退款成功
+  REFUND_FAILED = 8;//退款失败
 }
 
 
 message CreateOrderReply {
-  int32 userId = 1;
-  string orderSn = 2;
-  PayType payType = 3;
-  PayStatus payStatus = 4;
-  int32 tradePrice = 5;
-  string tradeNo = 6;
-  google.protobuf.Timestamp payTime = 7;
+  int32 userId = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "用户id",
+      description: "用户id"
+    }];
+  string orderSn = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "系统内订单号",
+      description: "系统内订单号"
+    }];
+  PayType payType = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "支付方式",
+      description: "NO_PAY = 1 ; // 还未支付 ALIPAY = 2; // 支付宝 WECHAT = 3; // 微信支付 GOLDEN_LEAF = 4;  // 金叶子 SILVER_LEAF = 5;  //银叶子"
+    }];
+  PayStatus payStatus = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "支付状态",
+      description: "  UNPAID = 1; // 未支付 PAID = 2; // 已支付 FAILED = 3; //支付失败 CLOSED = 4; //关闭 CANCELED = 5; //取消 REFUNDING = 6; //退款中 REFUNDED = 7; //退款成功 REFUND_FAILED = 8;//退款失败"
+    }];
+  int32 tradePrice = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "订单价格 单位分",
+      description: "订单价格"
+    }];
+  string tradeNo = 6 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "支付宝  微信 交易订单号",
+      description: "支付宝  微信 交易订单号"
+    }];
+  google.protobuf.Timestamp payTime = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "支付时间",
+      description: "支付时间"
+    }];
   google.protobuf.Timestamp createTime = 8;
   google.protobuf.Timestamp updateTime = 9;
   repeated OrderDetail details = 10;
