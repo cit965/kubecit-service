@@ -427,7 +427,7 @@ message CreateTeacherRequest {
     title: "姓名",
     description: "姓名"
   }, (google.api.field_behavior) = REQUIRED];
-  int32 level = 17[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  TeacherLevel level = 17[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     title: "等级",
     description: "ENTRY = 1; // 入门 PRIMARY = 2; //初级 INTERMEDIATE = 3; //中级 SENIOR = 4;//高级 MASTER = 5;//大师"
   }, (google.api.field_behavior) = REQUIRED];
@@ -575,7 +575,7 @@ message CourseInfo {
       description: "课程id"
     }
   ];
-  int32 level = 2[
+  CourseLevel level = 2[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程级别",
       description: "课程级别 1 入门，2初级，3中级 4高级 5大师"
@@ -611,7 +611,7 @@ message CourseInfo {
       description: "课程标签"
     }
   ];
-  int32 status = 8[
+  CourseStatus status = 8[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程状态",
       description: "NOT_REVIEWED = 1; // 未审核 REVIEWED = 2; // 已审核 SHELVED = 3; // 已上架 OFF_SHELVED = 4; // 已下架"
@@ -1179,7 +1179,7 @@ message LessonInfo {
       title: "小节排序",
       description: "小节排序"
     }];
-  int32 type = 3[
+  LessonType type = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "小节类型",
       description: "1 视频 2 音频"
@@ -1199,7 +1199,7 @@ message LessonInfo {
       title: "课件地址",
       description: "课件地址"
     }];
-  int32 isFreePreview = 7[
+  FreePreview isFreePreview = 7[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "是否免费预览",
       description: "1 是 2 否"
@@ -1245,7 +1245,7 @@ enum LessonType {
 }
 
 enum  FreePreview {
-  UNKNOWN = 0;
+  FreePreview_UNKNOWN = 0;
   TRUE = 1; // 是
   FALSE = 2; // 否
 }

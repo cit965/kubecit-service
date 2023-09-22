@@ -65,7 +65,7 @@ func (s *KubecitService) CreateTeacher(ctx context.Context, req *pb.CreateTeache
 		Skills:          req.Skills,
 		Avator:          req.Avator,
 		Name:            req.Name,
-		Level:           req.Level,
+		Level:           int32(req.GetLevel()),
 	})
 	if err != nil {
 		return nil, err
