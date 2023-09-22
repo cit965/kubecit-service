@@ -42,4 +42,5 @@ bin/
 
 test.db
 *.pb.go
+*.pb.validate.go
 openapi.yaml
