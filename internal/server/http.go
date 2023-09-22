@@ -2,6 +2,8 @@ package server
 
 import (
 	"fmt"
+	"github.com/go-kratos/kratos/v2/encoding/json"
+	"google.golang.org/protobuf/encoding/protojson"
 
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 
@@ -52,4 +54,10 @@ func NewHTTPServer(c *conf.Server, greeter *service.KubecitService, logger log.L
 		return nil
 	})
 	return srv
+}
+
+func init() {
+	json.MarshalOptions = protojson.MarshalOptions{
+		UseEnumNumbers: true,
+	}
 }
