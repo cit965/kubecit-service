@@ -387,7 +387,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.UserInfoReply'
-    /api/my_order:
+    /api/myOrder:
         get:
             tags:
                 - Kubecit
