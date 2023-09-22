@@ -694,7 +694,7 @@ components:
                     format: int32
                 level:
                     type: integer
-                    format: int32
+                    format: enum
                 name:
                     type: string
                 detail:
@@ -710,7 +710,7 @@ components:
                         type: string
                 status:
                     type: integer
-                    format: int32
+                    format: enum
                 categoryId:
                     type: integer
                     format: int32
@@ -913,7 +913,7 @@ components:
                     type: string
                 level:
                     type: integer
-                    format: int32
+                    format: enum
         helloworld.v1.DeleteChapterReply:
             type: object
             properties:
@@ -961,7 +961,7 @@ components:
                     format: int32
                 type:
                     type: integer
-                    format: int32
+                    format: enum
                 storagePath:
                     type: string
                 source:
@@ -970,7 +970,7 @@ components:
                     type: string
                 isFreePreview:
                     type: integer
-                    format: int32
+                    format: enum
                 chapterId:
                     type: integer
                     format: int32
