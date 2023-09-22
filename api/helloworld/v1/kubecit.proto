@@ -337,7 +337,7 @@ service Kubecit {
 
     rpc MyOrderList (MyOrderRequest) returns (OrderListReply) {
     option (google.api.http) = {
-      get: "/api/my_order",
+      get: "/api/myOrder",
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
