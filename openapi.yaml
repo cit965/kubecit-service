@@ -607,6 +607,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.RegisterUsernameReply'
+    /api/u/sendEmailVerificationCode:
+        post:
+            tags:
+                - Kubecit
+            operationId: Kubecit_SendEmailVerificationCode
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.SendEmailVerificationCodeRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.SendEmailVerificationCodeReply'
     /api/wallet/balance:
         get:
             tags:
@@ -1092,6 +1110,10 @@ components:
                     type: string
                 password:
                     type: string
+                email:
+                    type: string
+                emailVerificationCode:
+                    type: string
         helloworld.v1.ReviewCourseReply:
             type: object
             properties:
@@ -1130,6 +1152,16 @@ components:
                 order:
                     type: integer
                     format: int32
+        helloworld.v1.SendEmailVerificationCodeReply:
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/helloworld.v1.Metadata'
+        helloworld.v1.SendEmailVerificationCodeRequest:
+            type: object
+            properties:
+                email:
+                    type: string
         helloworld.v1.SliderInfo:
             type: object
             properties:

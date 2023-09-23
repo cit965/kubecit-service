@@ -16,3 +16,7 @@ func (s *KubecitService) RegisterUsername(ctx context.Context, req *pb.RegisterU
 func (s *KubecitService) GetInfo(ctx context.Context, req *pb.GetInfoRequest) (*pb.UserInfoReply, error) {
 	return s.userUseCase.CurrentUserInfo(ctx)
 }
+
+func (s *KubecitService) SendEmailVerificationCode(ctx context.Context, req *pb.SendEmailVerificationCodeRequest) (*pb.SendEmailVerificationCodeReply, error) {
+	return s.userUseCase.SendEmailVerificationCode(ctx, req)
+}

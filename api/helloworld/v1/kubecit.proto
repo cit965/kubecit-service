@@ -254,7 +254,17 @@ service Kubecit {
     };
   }
 
+  rpc SendEmailVerificationCode (SendEmailVerificationCodeRequest) returns (SendEmailVerificationCodeReply) {
+        option (google.api.http) = {
+            post: "/api/u/sendEmailVerificationCode",
+            body: "*"
+        };
 
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "发送邮箱验证码"
+            tags: "user"
+        };
+    }
   // ========================== 系统设置相关接口 ===================================
   rpc CreateSlider (CreateSliderRequest) returns (CreateSliderReply) {
     option (google.api.http) = {
@@ -1323,6 +1333,8 @@ message LoginByJsonReply {
 message RegisterUsernameRequest {
   string username = 1 [(validate.rules).string.pattern = "^[a-zA-Z0-9]+$"];
   string password = 2 [(validate.rules).string.min_len = 6];
+  string email = 3 [(validate.rules).string.email = true];
+  string email_verification_code = 4;
 }
 
 
@@ -1397,4 +1409,13 @@ message CreateOrderReply {
   google.protobuf.Timestamp createTime = 8;
   google.protobuf.Timestamp updateTime = 9;
   repeated OrderDetail details = 10;
+}
+
+message SendEmailVerificationCodeRequest {
+    string email = 1 [(validate.rules).string.email = true];
+}
+
+message SendEmailVerificationCodeReply {
+    Metadata meta = 1;
+    // 可以添加其他响应字段，根据需要
 }
