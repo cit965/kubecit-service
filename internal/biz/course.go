@@ -90,6 +90,7 @@ type CourseRepo interface {
 	ListChapters(ctx context.Context, courseId int) ([]*Chapter, error)
 	UpdateChapter(ctx context.Context, id int, chapter *Chapter) (*Chapter, error)
 
+	GetLesson(ctx context.Context, id int) (*Lesson, error)
 	CreateLesson(ctx context.Context, lesson *Lesson) (*Lesson, error)
 	DeleteLesson(ctx context.Context, id int) (int, error)
 	ListLessons(ctx context.Context, chapterId int) ([]*Lesson, error)

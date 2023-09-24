@@ -387,6 +387,17 @@ service Kubecit {
       tags: "wallet"
     };
   }
+  //=============================视频播放相关接口=================================================
+  rpc VideoPlayerGetPlayerParam (VideoPlayerGetParamReq) returns (VideoPlayerGetParamReply)  {
+    option (google.api.http) = {
+      get: "/api/video/player/get_player_param",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "获取播放参数"
+      tags: "video"
+    };
+  }
 
 
 }
@@ -1397,4 +1408,38 @@ message CreateOrderReply {
   google.protobuf.Timestamp createTime = 8;
   google.protobuf.Timestamp updateTime = 9;
   repeated OrderDetail details = 10;
+}
+
+message VideoPlayerGetParamReq {
+
+  int32 lessonId = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "小节ID",
+      description: "小节ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+message VideoPlayerGetParamReply {
+  uint64 appid = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "APPID",
+      description: "腾讯云点播APPID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string fieldID = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "视频ID",
+      description: "腾讯云点播服务的视频ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string pSign = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "播放签名",
+      description: "腾讯云点播的播放签名"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }

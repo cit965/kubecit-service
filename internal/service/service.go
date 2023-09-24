@@ -13,15 +13,16 @@ var ProviderSet = wire.NewSet(NewKubecitService)
 type KubecitService struct {
 	v1.UnimplementedKubecitServer
 
-	cc          *biz.CourseUsecase
-	su          *biz.SystemUsecase
-	userUseCase *biz.UserUsecase
-	orderCase   *biz.OrderUseCase
-	walletCase  *biz.WalletUseCase
-	teacherCase *biz.TeacherCase
+	cc                 *biz.CourseUsecase
+	su                 *biz.SystemUsecase
+	userUseCase        *biz.UserUsecase
+	orderCase          *biz.OrderUseCase
+	walletCase         *biz.WalletUseCase
+	teacherCase        *biz.TeacherCase
+	videoPlayerUseCase *biz.VideoPlayerUsecase
 }
 
 // NewGreeterService new a greeter service.
-func NewKubecitService(cc *biz.CourseUsecase, su *biz.SystemUsecase, userUseCase *biz.UserUsecase, orderCase *biz.OrderUseCase, teacherCase *biz.TeacherCase,walletCase *biz.WalletUseCase) *KubecitService {
-	return &KubecitService{cc: cc, su: su, userUseCase: userUseCase, orderCase: orderCase, teacherCase: teacherCase,walletCase: walletCase}
+func NewKubecitService(cc *biz.CourseUsecase, su *biz.SystemUsecase, userUseCase *biz.UserUsecase, orderCase *biz.OrderUseCase, teacherCase *biz.TeacherCase, walletCase *biz.WalletUseCase, videoPlayerUseCase *biz.VideoPlayerUsecase) *KubecitService {
+	return &KubecitService{cc: cc, su: su, userUseCase: userUseCase, orderCase: orderCase, teacherCase: teacherCase, walletCase: walletCase, videoPlayerUseCase: videoPlayerUseCase}
 }

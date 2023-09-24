@@ -9,12 +9,20 @@ message Bootstrap {
   Server server = 1;
   Data data = 2;
   Wechat wechat = 3;
+  TencentCloudVideoPlayer  tencent_cloud_video_player = 4;
 }
 
 message Wechat {
   string token = 1;
   string appid = 2;
   string app_secret = 3;
+}
+
+message TencentCloudVideoPlayer {
+  int64 appid = 1;
+  string app_secret = 2;
+  string scheme = 3;
+  string domain = 4;
 }
 
 message Server {
@@ -43,6 +51,7 @@ message Data {
     google.protobuf.Duration read_timeout = 3;
     google.protobuf.Duration write_timeout = 4;
   }
+
   Database database = 1;
   Redis redis = 2;
 }

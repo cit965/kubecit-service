@@ -17,3 +17,8 @@ wechat:
   token: '111'
   appid: wx4edbdc4895597796
   app_secret: cea927f6ae8a5974a0ce3e266a4cad0b
+tencent_cloud_video_player:
+  appid: 1318517483
+  app_secret: y3O31sTJnmC4BGhUrIrO
+  domain: tcplayer.vcube.tencent.com # 视频防盗链设置的域名
+  scheme: https # 视频防盗链设置的协议类型 http/https
