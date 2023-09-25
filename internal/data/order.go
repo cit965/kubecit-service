@@ -127,7 +127,7 @@ func (or *orderRepo) MyOrder(ctx context.Context, pageNum, pageSize *int32) ([]*
 	).Order(ent.Desc(orders.FieldCreateTime))
 	if pageNum != nil {
 		*pageNum--
-		qr.Offset(int(*pageNum))
+		qr.Offset(int(*pageNum) * int(*pageSize))
 	} else {
 		qr.Offset(0)
 	}
