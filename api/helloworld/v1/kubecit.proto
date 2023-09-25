@@ -692,6 +692,13 @@ message SearchCourseRequest {
     },
     (google.api.field_behavior) = OPTIONAL
   ];
+  optional string name = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程名称",
+      description: "根据课程名称模糊搜索"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
 }
 
 message UpdateCourseRequest {
