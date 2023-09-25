@@ -19,6 +19,23 @@ type Teacher struct {
 	UpdateAt        time.Time
 }
 
+type RecommendedLecturer struct {
+	Id          int
+	Name        string
+	Avatar      string
+	Level       string
+	Title       string
+	Brief       string
+	Achievement *Achievement
+}
+
+type Achievement struct {
+	Students   int32
+	Fans       int32
+	ClassHours int32
+	Praises    int32
+}
+
 type TeacherRepo interface {
 	ListAll(ctx context.Context, pageNum, pageSize *int32) ([]*Teacher, error)
 	GetById(ctx context.Context, id int) (*Teacher, error)
