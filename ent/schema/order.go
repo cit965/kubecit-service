@@ -26,11 +26,11 @@ func (Orders) Fields() []ent.Field {
 
 		field.Int32("pay_type").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Default(0).Comment("支付类型 0(没支付) 1(支付宝)， 2(微信)， 3(转账)"),
+		}).Default(1).Comment("支付类型 NO_PAY = 1 ; // 还未支付 ALIPAY = 2; // 支付宝 WECHAT = 3; // 微信支付 GOLDEN_LEAF = 4;  // 金叶子 SILVER_LEAF = 5;  //银叶子"),
 
 		field.Int32("pay_status").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.
-		}).Optional().Default(0).Comment("支付状态 0(待支付), 1(成功)， 2(失败)，3（关闭）4(订单取消) 5(退款中)6（退款成功）7（退款失败）"),
+		}).Optional().Default(1).Comment("支付状态 UNPAID = 1; // 未支付 PAID = 2; // 已支付 FAILED = 3; //支付失败 CLOSED = 4; //关闭 CANCELED = 5; //取消 REFUNDING = 6; //退款中 REFUNDED = 7; //退款成功 REFUND_FAILED = 8;//退款失败 "),
 
 		field.Int32("trade_price").SchemaType(map[string]string{
 			dialect.MySQL: "int", // Override MySQL.

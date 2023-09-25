@@ -387,6 +387,29 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.UserInfoReply'
+    /api/myOrder:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_MyOrderList
+            parameters:
+                - name: pageNum
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.OrderListReply'
     /api/order:
         post:
             tags:
@@ -406,6 +429,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.CreateOrderReply'
+    /api/recommendedLecturer:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_ListRecommendedLecturer
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.ListRecommendedLecturerReply'
     /api/slider:
         post:
             tags:
@@ -640,6 +675,21 @@ paths:
                                 $ref: '#/components/schemas/helloworld.v1.WalletInfo'
 components:
     schemas:
+        helloworld.v1.Achievement:
+            type: object
+            properties:
+                students:
+                    type: integer
+                    format: int32
+                fans:
+                    type: integer
+                    format: int32
+                classHours:
+                    type: integer
+                    format: int32
+                praises:
+                    type: integer
+                    format: int32
         helloworld.v1.CategoryInfo:
             type: object
             properties:
@@ -1001,6 +1051,13 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/helloworld.v1.ChapterLessonsInfo'
+        helloworld.v1.ListRecommendedLecturerReply:
+            type: object
+            properties:
+                recommendedLecturers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.RecommendedLecturer'
         helloworld.v1.ListSlidersByPriorityReply:
             type: object
             properties:
@@ -1066,6 +1123,13 @@ components:
                     format: int32
                 productDescription:
                     type: string
+        helloworld.v1.OrderListReply:
+            type: object
+            properties:
+                orderList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.CreateOrderReply'
         helloworld.v1.RechargeWalletRequest:
             required:
                 - goldLeafAmount
@@ -1078,6 +1142,24 @@ components:
                 userId:
                     type: integer
                     format: int32
+        helloworld.v1.RecommendedLecturer:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                name:
+                    type: string
+                avatar:
+                    type: string
+                level:
+                    type: string
+                title:
+                    type: string
+                brief:
+                    type: string
+                achievement:
+                    $ref: '#/components/schemas/helloworld.v1.Achievement'
         helloworld.v1.RegisterUsernameReply:
             type: object
             properties:
