@@ -377,6 +377,19 @@ service Kubecit {
       tags: "teacher"
     };
   }
+
+  rpc ListRecommendedLecturer(Empty) returns (ListRecommendedLecturerReply) {
+    option (google.api.http) = {
+      get: "/api/recommendedLecturer",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "推荐讲师"
+      tags: "teacher"
+    };
+  }
+
+
   //=============================用户钱包相关接口=================================================
   rpc RechargeWallet (RechargeWalletRequest) returns (WalletInfo)  {
     option (google.api.http) = {
@@ -469,6 +482,27 @@ message TeacherInfo {
 
 }
 
+
+message RecommendedLecturer {
+  int32 id = 1;
+  string name = 2;
+  string avatar = 3;
+  string level = 4;
+  string title = 5;
+  string brief = 6;
+  Achievement achievement = 7;
+}
+
+message Achievement {
+  int32 students = 1;
+  int32 fans = 2;
+  int32 classHours = 3;
+  int32 praises = 4;
+}
+
+message ListRecommendedLecturerReply{
+  repeated RecommendedLecturer recommendedLecturers = 1;
+}
 message RechargeWalletRequest{
   int32 gold_leaf_amount = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     title: "充值的金叶子数",
