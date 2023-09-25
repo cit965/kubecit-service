@@ -9,6 +9,7 @@ import (
 	"kubecit-service/ent/teacher"
 	"math"
 
+
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -22,7 +23,9 @@ type TeacherQuery struct {
 	order      []teacher.OrderOption
 	inters     []Interceptor
 	predicates []predicate.Teacher
+
 	modifiers  []func(*sql.Selector)
+
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -344,9 +347,11 @@ func (tq *TeacherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Teac
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
 	}
+
 	if len(tq.modifiers) > 0 {
 		_spec.Modifiers = tq.modifiers
 	}
+
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -361,9 +366,11 @@ func (tq *TeacherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Teac
 
 func (tq *TeacherQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := tq.querySpec()
+
 	if len(tq.modifiers) > 0 {
 		_spec.Modifiers = tq.modifiers
 	}
+
 	_spec.Node.Columns = tq.ctx.Fields
 	if len(tq.ctx.Fields) > 0 {
 		_spec.Unique = tq.ctx.Unique != nil && *tq.ctx.Unique
@@ -426,9 +433,11 @@ func (tq *TeacherQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if tq.ctx.Unique != nil && *tq.ctx.Unique {
 		selector.Distinct()
 	}
+
 	for _, m := range tq.modifiers {
 		m(selector)
 	}
+
 	for _, p := range tq.predicates {
 		p(selector)
 	}
@@ -445,6 +454,7 @@ func (tq *TeacherQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	}
 	return selector
 }
+
 
 // ForUpdate locks the selected rows against concurrent updates, and prevent them from being
 // updated, deleted or "selected ... for update" by other sessions, until the transaction is
@@ -471,6 +481,7 @@ func (tq *TeacherQuery) ForShare(opts ...sql.LockOption) *TeacherQuery {
 	})
 	return tq
 }
+
 
 // TeacherGroupBy is the group-by builder for Teacher entities.
 type TeacherGroupBy struct {
