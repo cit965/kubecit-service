@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
-	"github.com/go-kratos/kratos/v2/errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "kubecit-service/api/helloworld/v1"
+	"kubecit-service/internal/pkg/common"
 )
 
 func (s *KubecitService) RechargeWallet(ctx context.Context, req *pb.RechargeWalletRequest) (*pb.WalletInfo, error) {
@@ -25,13 +25,12 @@ func (s *KubecitService) RechargeWallet(ctx context.Context, req *pb.RechargeWal
 }
 
 func (s KubecitService) WalletBalance(ctx context.Context, req *pb.Empty) (*pb.WalletInfo, error) {
-	userRow := ctx.Value("user_id")
-	userId, ok := userRow.(int32)
-	if !ok {
-		return nil, errors.BadRequest("解析不出用户ID", "用户未登录")
+	userId, err := common.GetUserFromCtx(ctx)
+	if err != nil {
+		return nil, err
 	}
 	//userId := int32(1)
-	wallet, err := s.walletCase.Balances(ctx, userId)
+	wallet, err := s.walletCase.Balances(ctx, int32(userId))
 	if err != nil {
 		return nil, err
 	}

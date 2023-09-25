@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/md5"
 	"fmt"
+	"kubecit-service/internal/pkg/common"
 	"strconv"
 	"time"
 
@@ -203,7 +204,11 @@ func (usecase *UserUsecase) errorMeta(msg string, code int) *pb.Metadata {
 }
 
 func (usecase *UserUsecase) CurrentUserInfo(ctx context.Context) (*pb.UserInfoReply, error) {
-	UserId := ctx.Value("user_id").(uint64)
+
+	UserId, err := common.GetUserFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	userPO, err := usecase.userRepo.FindById(ctx, UserId)
 	if err != nil {
 		return &pb.UserInfoReply{}, err

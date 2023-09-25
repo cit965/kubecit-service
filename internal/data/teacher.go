@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/copier"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/internal/biz"
+	"kubecit-service/internal/pkg/common"
 )
 
 type teacherRepo struct {
@@ -20,19 +21,8 @@ func NewTeacherRepo(data *Data, logger log.Logger) biz.TeacherRepo {
 
 func (t *teacherRepo) ListAll(ctx context.Context, pageNum, pageSize *int32) ([]*biz.Teacher, error) {
 	cq := t.data.db.Teacher.Query()
-	if pageNum != nil {
-		*pageNum--
-		cq.Offset(int(*pageNum) * int(*pageSize))
-	} else {
-		cq.Offset(0)
-	}
-	if pageSize != nil {
-		cq.Limit(int(*pageSize))
-	} else {
-		cq.Limit(20)
-	}
-
-	teachers, err := cq.All(ctx)
+	limit, offset := common.ConvertPageSize(pageNum, pageSize)
+	teachers, err := cq.Limit(limit).Offset(offset).All(ctx)
 
 	if err != nil {
 		return nil, errors.BadRequest(err.Error(), "获取讲师列表失败！")
