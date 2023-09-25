@@ -800,7 +800,6 @@ message CreateCourseRequest {
   repeated string tags = 7[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "课程标签",
-      description: "NOT_REVIEWED = 0; // 未审核 REVIEWED = 1; // 已审核 SHELVED = 2; // 已上架 OFF_SHELVED = 3; // 已下架"
     },
     (google.api.field_behavior) = OPTIONAL
   ];
