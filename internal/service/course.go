@@ -51,6 +51,7 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 		Order:            req.Order,
 		PageNum:          req.PageNum,
 		PageSize:         req.PageSize,
+		Name:             req.Name,
 	})
 	if err != nil {
 		return nil, err
