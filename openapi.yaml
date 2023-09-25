@@ -1212,6 +1212,8 @@ components:
                 order:
                     type: integer
                     format: int32
+                name:
+                    type: string
         helloworld.v1.SliderInfo:
             type: object
             properties:

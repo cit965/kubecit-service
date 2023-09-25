@@ -78,7 +78,7 @@ type CategoryRepo interface {
 
 // CourseRepo is a Course repo.
 type CourseRepo interface {
-	SearchCourse(ctx context.Context, pageNum, pageSize *int32, categoryIds []int, level pb.CourseLevel, order *int32) ([]*Course, int32, error)
+	SearchCourse(ctx context.Context, pageNum, pageSize *int32, categoryIds []int, level pb.CourseLevel, order *int32, name *string) ([]*Course, int32, error)
 	UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error)
 	ReviewCourse(ctx context.Context, id int, status int32) (*Course, error)
 	CreateCourse(ctx context.Context, course *Course) (*Course, error)
@@ -152,6 +152,7 @@ type SearchFilterParam struct {
 	FirstCategoryId  *int32
 	Level            pb.CourseLevel
 	Order            *int32
+	Name             *string
 }
 
 func (uc *CourseUsecase) SearchCourse(ctx context.Context, filter *SearchFilterParam) ([]*Course, int32, error) {
@@ -172,7 +173,7 @@ func (uc *CourseUsecase) SearchCourse(ctx context.Context, filter *SearchFilterP
 		categoryIds = append(categoryIds, int(*filter.SecondCategoryId))
 	}
 
-	return uc.courseRepo.SearchCourse(ctx, filter.PageNum, filter.PageSize, categoryIds, filter.Level, filter.Order)
+	return uc.courseRepo.SearchCourse(ctx, filter.PageNum, filter.PageSize, categoryIds, filter.Level, filter.Order, filter.Name)
 }
 
 func (uc *CourseUsecase) UpdateCourse(ctx context.Context, id int, course *Course) (*Course, error) {
