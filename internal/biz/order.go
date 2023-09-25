@@ -33,6 +33,7 @@ type OrderInfo struct {
 
 type OrderRepo interface {
 	Create(ctx context.Context, courseIds []int32) (*Order, error)
+	MyOrder(ctx context.Context, pageNum, pageSize *int32) ([]*Order, error)
 }
 
 type OrderUseCase struct {
@@ -49,4 +50,8 @@ func NewOrderUseCase(orderRepo OrderRepo, logger log.Logger) *OrderUseCase {
 
 func (oc *OrderUseCase) Create(ctx context.Context, courseIds []int32) (*Order, error) {
 	return oc.orderRepo.Create(ctx, courseIds)
+}
+
+func (oc *OrderUseCase) MyOrder(ctx context.Context, pageNum, pageSize *int32) ([]*Order, error) {
+	return oc.orderRepo.MyOrder(ctx, pageNum, pageSize)
 }
