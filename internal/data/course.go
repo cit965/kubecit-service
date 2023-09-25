@@ -46,17 +46,20 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 	if err != nil {
 		return nil, 0, err
 	}
-	if pageNum != nil {
-		*pageNum--
-		cq.Offset(int(*pageNum))
-	} else {
-		cq.Offset(0)
-	}
-	if pageSize != nil {
-		cq.Limit(int(*pageSize))
-	} else {
-		cq.Limit(20)
-	}
+	*pageNum--
+	cq.Offset(int(*pageNum) * int(*pageSize))
+	cq.Limit(int(*pageSize))
+	//if pageNum != nil {
+	//	*pageNum--
+	//	cq.Offset(int(*pageNum))
+	//} else {
+	//	cq.Offset(0)
+	//}
+	//if pageSize != nil {
+	//	cq.Limit(int(*pageSize))
+	//} else {
+	//	cq.Limit(20)
+	//}
 
 	result, err := cq.All(ctx)
 	if err != nil {
