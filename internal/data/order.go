@@ -10,6 +10,7 @@ import (
 	"kubecit-service/ent/orderinfos"
 	"kubecit-service/ent/orders"
 	"kubecit-service/internal/biz"
+	"kubecit-service/internal/pkg/common"
 	"math/rand"
 	"time"
 )
@@ -52,12 +53,12 @@ func (or *orderRepo) createOrderTx(ctx context.Context, courseIds []int32) (*biz
 	if err != nil {
 		return nil, errors.BadRequest("", err.Error())
 	}
-	userIdRaw := ctx.Value("user_id")
-	userId, ok := userIdRaw.(int32)
-	if !ok {
-		return nil, errors.New(400, "用户ID不存在", "从token中解析不出用户ID")
+
+	userId, err := common.GetUserFromCtx(ctx)
+	if err != nil {
+		return nil, err
 	}
-	orderObj, err := or.data.db.Orders.Create().SetOrderSn(GenerateOrderSn(userId)).SetTradePrice(int32(coursePrice)).SetUserID(userId).Save(ctx)
+	orderObj, err := or.data.db.Orders.Create().SetOrderSn(GenerateOrderSn(int32(userId))).SetTradePrice(int32(coursePrice)).SetUserID(int32(userId)).Save(ctx)
 	if err != nil {
 		return nil, errors.BadRequest("创建订单失败", err.Error())
 	}
@@ -86,7 +87,7 @@ func (or *orderRepo) createOrderTx(ctx context.Context, courseIds []int32) (*biz
 	}
 	order := &biz.Order{
 		Id:         orderObj.ID,
-		UserId:     userId,
+		UserId:     int32(userId),
 		OrderSn:    orderObj.OrderSn,
 		PayType:    orderObj.PayType,
 		PayStatus:  orderObj.PayStatus,
@@ -107,36 +108,18 @@ func GenerateOrderSn(userId int32) string {
 	return orderSn
 }
 
-func GetUserFromCtx(ctx context.Context) (userID int32, err error) {
-	userID, ok := ctx.Value("user_id").(int32)
-	if !ok {
-		return 0, errors.New(400, "用户ID不存在", "从token中解析不出用户ID")
-	}
-	return userID, nil
-
-}
-
 func (or *orderRepo) MyOrder(ctx context.Context, pageNum, pageSize *int32) ([]*biz.Order, error) {
-	userID, err := GetUserFromCtx(ctx)
+	userID, err := common.GetUserFromCtx(ctx)
 	if err != nil {
 		return nil, err
 	}
 	//userID := int32(1)
 	qr := or.data.db.Orders.Query().Where(
-		orders.UserIDEQ(userID),
+		orders.UserIDEQ(int32(userID)),
 	).Order(ent.Desc(orders.FieldCreateTime))
-	if pageNum != nil {
-		*pageNum--
-		qr.Offset(int(*pageNum))
-	} else {
-		qr.Offset(0)
-	}
-	if pageSize != nil {
-		qr.Limit(int(*pageSize))
-	} else {
-		qr.Limit(20)
-	}
-	orderAll, err := qr.All(ctx)
+
+	limit, offset := common.ConvertPageSize(pageNum, pageSize)
+	orderAll, err := qr.Limit(limit).Offset(offset).All(ctx)
 
 	if err != nil {
 		return nil, errors.BadRequest(err.Error(), "获取订单列表失败！")
