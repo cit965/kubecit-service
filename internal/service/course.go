@@ -86,7 +86,7 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 	user, err := s.userUseCase.CurrentUserInfo(ctx)
 	if err != nil {
 		return nil, err
-	} else if uint8(user.RoleId) < biz.UserRoleLecturer {
+	} else if uint8(user.RoleId) < biz.UserRoleSuperAdmin {
 		return nil, errors.New("not enough privileges")
 	}
 	course := &biz.Course{
