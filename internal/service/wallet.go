@@ -13,14 +13,14 @@ func (s *KubecitService) RechargeWallet(ctx context.Context, req *pb.RechargeWal
 		return nil, err
 	}
 	return &pb.WalletInfo{
-		GoldLeaf:         wallet.GoldLeaf,
-		SilverLeaf:       wallet.SilverLeaf,
-		FrozenGoldLeaf:   wallet.FrozenGoldLeaf,
-		FrozenSilverLeaf: wallet.FrozenSilverLeaf,
-		UserId:           wallet.UserId,
+		GoldLeaf:         &wallet.GoldLeaf,
+		SilverLeaf:       &wallet.SilverLeaf,
+		FrozenGoldLeaf:   &wallet.FrozenGoldLeaf,
+		FrozenSilverLeaf: &wallet.FrozenSilverLeaf,
+		UserId:           &wallet.UserId,
 		CreatedAt:        timestamppb.New(wallet.CreateAt),
 		UpdatedAt:        timestamppb.New(wallet.UpdateAt),
-		Id:               wallet.Id,
+		Id:               &wallet.Id,
 	}, nil
 }
 
@@ -29,20 +29,20 @@ func (s KubecitService) WalletBalance(ctx context.Context, req *pb.Empty) (*pb.W
 	if err != nil {
 		return nil, err
 	}
-	//userId := int32(1)
+	//userId := int32(100)
 	wallet, err := s.walletCase.Balances(ctx, int32(userId))
 	if err != nil {
 		return nil, err
 	}
+
 	return &pb.WalletInfo{
-		GoldLeaf:         wallet.GoldLeaf,
-		SilverLeaf:       wallet.SilverLeaf,
-		FrozenGoldLeaf:   wallet.FrozenGoldLeaf,
-		FrozenSilverLeaf: wallet.FrozenSilverLeaf,
-		UserId:           wallet.UserId,
+		GoldLeaf:         &wallet.GoldLeaf,
+		SilverLeaf:       &wallet.SilverLeaf,
+		FrozenGoldLeaf:   &wallet.FrozenGoldLeaf,
+		FrozenSilverLeaf: &wallet.FrozenSilverLeaf,
+		UserId:           &wallet.UserId,
 		CreatedAt:        timestamppb.New(wallet.CreateAt),
 		UpdatedAt:        timestamppb.New(wallet.UpdateAt),
-		Id:               wallet.Id,
+		Id:               &wallet.Id,
 	}, nil
-
 }

@@ -81,8 +81,8 @@ func (w walletRepo) RechargeGoldLeaf(ctx context.Context, userId, goldLeafAmount
 
 func (w walletRepo) Balance(ctx context.Context, userId int32) (*biz.Wallet, error) {
 	walletObj, err := w.data.db.Wallet.Query().Where(wallet.UserID(userId)).First(ctx)
-	if err != nil {
-		return nil, err
+	if ent.IsNotFound(err) {
+		return &biz.Wallet{}, nil
 	}
 	return &biz.Wallet{
 		Id:               int32(walletObj.ID),
