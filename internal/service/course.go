@@ -49,8 +49,21 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 		FirstCategoryId:  req.FirstCategory,
 		Level:            req.GetLevel(),
 		Order:            req.Order,
-		PageNum:          req.PageNum,
-		PageSize:         req.PageSize,
+		PageNum: func() *int32 {
+			if req.PageNum == nil {
+				return GetInt32Ptr(int32(1))
+			} else {
+				return req.PageNum
+			}
+		}(),
+		PageSize: func() *int32 {
+			if req.PageSize == nil {
+				return GetInt32Ptr(int32(20))
+			} else {
+				return req.PageSize
+			}
+		}(),
+		Name: req.Name,
 	})
 	if err != nil {
 		return nil, err
@@ -374,4 +387,8 @@ func (s *KubecitService) DeleteLesson(ctx context.Context, req *pb.DeleteLessonR
 		return nil, err
 	}
 	return &pb.DeleteLessonReply{Count: int32(count)}, nil
+}
+
+func GetInt32Ptr(src int32) *int32 {
+	return &src
 }

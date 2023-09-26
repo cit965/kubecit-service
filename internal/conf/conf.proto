@@ -8,8 +8,14 @@ import "google/protobuf/duration.proto";
 message Bootstrap {
   Server server = 1;
   Data data = 2;
-  Wechat wechat = 3;
+  Gin gin = 3;
   TencentCloudVideoPlayer  tencent_cloud_video_player = 4;
+
+ 
+}
+
+message Gin {
+  Wechat wechat =1;
 }
 
 message Wechat {

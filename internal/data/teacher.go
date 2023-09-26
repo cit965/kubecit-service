@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/copier"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/internal/biz"
+	"kubecit-service/internal/pkg/common"
 )
 
 type teacherRepo struct {
@@ -20,19 +21,8 @@ func NewTeacherRepo(data *Data, logger log.Logger) biz.TeacherRepo {
 
 func (t *teacherRepo) ListAll(ctx context.Context, pageNum, pageSize *int32) ([]*biz.Teacher, error) {
 	cq := t.data.db.Teacher.Query()
-	if pageNum != nil {
-		*pageNum--
-		cq.Offset(int(*pageNum))
-	} else {
-		cq.Offset(0)
-	}
-	if pageSize != nil {
-		cq.Limit(int(*pageSize))
-	} else {
-		cq.Limit(20)
-	}
-
-	teachers, err := cq.All(ctx)
+	limit, offset := common.ConvertPageSize(pageNum, pageSize)
+	teachers, err := cq.Limit(limit).Offset(offset).All(ctx)
 
 	if err != nil {
 		return nil, errors.BadRequest(err.Error(), "获取讲师列表失败！")
@@ -47,21 +37,21 @@ func (t *teacherRepo) ListAll(ctx context.Context, pageNum, pageSize *int32) ([]
 }
 
 func (t *teacherRepo) GetById(ctx context.Context, id int) (*biz.Teacher, error) {
-	teacher, err := t.data.db.Teacher.Query().Where(teacher.IDEQ(id)).First(ctx)
+	teacherObj, err := t.data.db.Teacher.Query().Where(teacher.IDEQ(id)).First(ctx)
 	if err != nil {
 		return nil, errors.NotFound(err.Error(), "未找到讲师")
 	}
 	return &biz.Teacher{
-		Id:              teacher.ID,
-		Detail:          teacher.Detail,
-		CurriculumVitae: teacher.CurriculumVitae,
-		Works:           teacher.Works,
-		Skills:          teacher.Skills,
-		Avator:          teacher.Avator,
-		Name:            teacher.Name,
-		Level:           int32(teacher.Level),
-		CreateAt:        teacher.CreateAt,
-		UpdateAt:        teacher.UpdateAt,
+		Id:              teacherObj.ID,
+		Detail:          teacherObj.Detail,
+		CurriculumVitae: teacherObj.CurriculumVitae,
+		Works:           teacherObj.Works,
+		Skills:          teacherObj.Skills,
+		Avator:          teacherObj.Avator,
+		Name:            teacherObj.Name,
+		Level:           int32(teacherObj.Level),
+		CreateAt:        teacherObj.CreateAt,
+		UpdateAt:        teacherObj.UpdateAt,
 	}, nil
 }
 

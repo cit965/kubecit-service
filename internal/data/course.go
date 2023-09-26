@@ -24,7 +24,7 @@ func NewCourseRepo(data *Data, logger log.Logger) biz.CourseRepo {
 	}
 }
 
-func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32, categories []int, level pb.CourseLevel, order *int32) ([]*biz.Course, int32, error) {
+func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32, categories []int, level pb.CourseLevel, order *int32, name *string) ([]*biz.Course, int32, error) {
 	cq := c.data.db.Course.Query()
 	if len(categories) != 0 {
 		cq.Where(course.CategoryIDIn(categories...))
@@ -32,6 +32,10 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 
 	if level != pb.CourseLevel_LEVEL_UNKNOWN {
 		cq.Where(course.LevelEQ(int32(level)))
+	}
+
+	if name != nil {
+		cq.Where(course.NameContains(*name))
 	}
 	if order != nil {
 		if *order == 1 {
@@ -46,17 +50,9 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 	if err != nil {
 		return nil, 0, err
 	}
-	if pageNum != nil {
-		*pageNum--
-		cq.Offset(int(*pageNum))
-	} else {
-		cq.Offset(0)
-	}
-	if pageSize != nil {
-		cq.Limit(int(*pageSize))
-	} else {
-		cq.Limit(20)
-	}
+	*pageNum--
+	cq.Offset(int(*pageNum) * int(*pageSize))
+	cq.Limit(int(*pageSize))
 
 	result, err := cq.All(ctx)
 	if err != nil {

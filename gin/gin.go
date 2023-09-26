@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/go-kratos/kratos/v2/config"
-	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/skip2/go-qrcode"
 	"kubecit-service/ent"
 	"kubecit-service/ent/account"
@@ -27,40 +25,36 @@ type GinService struct {
 	*gin.Engine
 }
 
+type WxConfig struct {
+	Token     string
+	AppId     string
+	AppSecret string
+}
+
+type Datastore struct {
+	Driver string
+	Source string
+}
+
+func initConfig(g *conf.Gin, d *conf.Data) (*WxConfig, *Datastore) {
+	return &WxConfig{
+			Token:     g.Wechat.Token,
+			AppId:     g.Wechat.Appid,
+			AppSecret: g.Wechat.AppSecret,
+		}, &Datastore{
+			Driver: d.Database.Driver,
+			Source: d.Database.Source,
+		}
+
+}
+
 var (
-	TOKEN     = ""
-	AppId     = ""
-	AppSecret = ""
-	Driver    = ""
-	Source    = ""
+	WX *WxConfig
+	DB *Datastore
 )
 
-func init() {
-	initConfig()
-}
-
-func initConfig() {
-	c := config.New(
-		config.WithSource(
-			file.NewSource("./configs/qa_config.yaml"),
-		),
-	)
-	defer c.Close()
-	if err := c.Load(); err != nil {
-		panic(err)
-	}
-	var bc conf.Bootstrap
-	if err := c.Scan(&bc); err != nil {
-		panic(err)
-	}
-	TOKEN = bc.Wechat.Token
-	AppId = bc.Wechat.Appid
-	AppSecret = bc.Wechat.AppSecret
-	Driver = bc.Data.Database.Driver
-	Source = bc.Data.Database.Source
-}
-
-func NewGinService() *GinService {
+func NewGinService(g *conf.Gin, d *conf.Data) *GinService {
+	WX, DB = initConfig(g, d)
 	r := gin.Default()
 	r.Use(Cors())
 	// static files
@@ -77,8 +71,8 @@ func NewGinService() *GinService {
 }
 
 func CheckSignature(c *gin.Context) {
-	s := fmt.Sprintf("token:%s, appid:%s, app_secret:%s", TOKEN, AppId, AppSecret)
-	sprintf := fmt.Sprintf("driver:%s, source:%s", Driver, Source)
+	s := fmt.Sprintf("token:%s, appid:%s, app_secret:%s", WX.Token, WX.AppId, WX.AppSecret)
+	sprintf := fmt.Sprintf("driver:%s, source:%s", DB.Driver, DB.Source)
 	fmt.Println(s, sprintf)
 
 	// 获取查询参数中的签名、时间戳和随机数
@@ -88,7 +82,7 @@ func CheckSignature(c *gin.Context) {
 	echostr := c.Query("echostr")
 
 	// 创建包含令牌、时间戳和随机数的字符串切片
-	tmpArr := []string{TOKEN, timestamp, nonce}
+	tmpArr := []string{WX.Token, timestamp, nonce}
 	// 对切片进行字典排序
 	sort.Strings(tmpArr)
 	// 将排序后的元素拼接成单个字符串
@@ -113,7 +107,7 @@ func Redirect(c *gin.Context) {
 	path := c.Query("path")
 	state := GetRandomString(5)                                               //防止跨站请求伪造攻击 增加安全性
 	redirectURL := url.QueryEscape("http://" + path + "/web/wechat/callback") //userinfo,
-	wechatLoginURL := fmt.Sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&state=%s&scope=snsapi_userinfo#wechat_redirect", AppId, redirectURL, state)
+	wechatLoginURL := fmt.Sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&state=%s&scope=snsapi_userinfo#wechat_redirect", WX.AppId, redirectURL, state)
 	wechatLoginURL, _ = url.QueryUnescape(wechatLoginURL)
 	// 生成二维码
 	qrCode, err := qrcode.Encode(wechatLoginURL, qrcode.Medium, 256)
@@ -131,7 +125,7 @@ func Callback(ctx *gin.Context) {
 	// 获取微信返回的授权码
 	code := ctx.Query("code")
 	// 向微信服务器发送请求，获取access_token和openid
-	tokenResp, err := http.Get(fmt.Sprintf("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", AppId, AppSecret, code))
+	tokenResp, err := http.Get(fmt.Sprintf("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", WX.AppId, WX.AppSecret, code))
 	if err != nil {
 		FailWithMessage("获取token失败", ctx)
 		return
@@ -163,7 +157,7 @@ func Callback(ctx *gin.Context) {
 		FailWithMessage("解析微信用户信息失败", ctx)
 		return
 	}
-	entClient, err := ent.Open(Driver, Source)
+	entClient, err := ent.Open(DB.Driver, DB.Source)
 	if err != nil {
 		FailWithMessage("连接数据库失败", ctx)
 		return
