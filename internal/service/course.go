@@ -63,6 +63,9 @@ func (s *KubecitService) SearchCourse(ctx context.Context, req *pb.SearchCourseR
 				return req.PageSize
 			}
 		}(),
+		PageNum:          req.PageNum,
+		PageSize:         req.PageSize,
+		Name:             req.Name,
 	})
 	if err != nil {
 		return nil, err
