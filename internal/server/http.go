@@ -29,6 +29,7 @@ func NewHTTPServer(c *conf.Server, g *conf.Gin, d *conf.Data, greeter *service.K
 			Auth(),
 			logging.Server(logger),
 			validate.Validator(),
+			Privilege(),
 		),
 	}
 
