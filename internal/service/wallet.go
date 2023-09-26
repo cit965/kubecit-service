@@ -8,7 +8,7 @@ import (
 )
 
 func (s *KubecitService) RechargeWallet(ctx context.Context, req *pb.RechargeWalletRequest) (*pb.WalletInfo, error) {
-	wallet, err := s.walletCase.RechargeGoldLeafs(ctx, req.UserId, req.GoldLeafAmount)
+	wallet, err := s.walletCase.RechargeGoldLeafs(ctx, req.UserId, req.GoldLeafAmount, req.SilverLeafAmount)
 	if err != nil {
 		return nil, err
 	}

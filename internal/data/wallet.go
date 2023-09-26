@@ -23,7 +23,8 @@ func NewWalletRepo(data *Data, logger log.Logger) biz.WalletRepo {
 }
 
 // 定义一个查询并锁定的函数
-func (w walletRepo) QueryAndLock(ctx context.Context, client *ent.Client, userId, goldLeafAmount int32) (*ent.Wallet, error) {
+func (w walletRepo) QueryAndLock(ctx context.Context, client *ent.Client, userId, goldLeafAmount, silverLeafAmount int32) (*ent.Wallet, error) {
+	fmt.Println(goldLeafAmount, silverLeafAmount, userId)
 	tx, err := client.Tx(ctx)
 	if err != nil {
 		return nil, err
@@ -32,7 +33,6 @@ func (w walletRepo) QueryAndLock(ctx context.Context, client *ent.Client, userId
 
 	// 使用 `ForUpdate()` 锁定查询操作
 	walletObj, err := tx.Wallet.Query().Where(wallet.UserID(userId)).ForUpdate().First(ctx)
-	//fmt.Println(err)
 	// 执行业务逻辑操作...
 	var wl *ent.Wallet
 	if ent.IsNotFound(err) {
@@ -43,13 +43,14 @@ func (w walletRepo) QueryAndLock(ctx context.Context, client *ent.Client, userId
 		if err != nil {
 			return nil, err
 		}
-		wl, err = w.data.db.Wallet.Create().SetUserID(userId).SetGoldLeaf(goldLeafAmount).Save(ctx)
+		wl, err = w.data.db.Wallet.Create().SetUserID(userId).SetGoldLeaf(goldLeafAmount).SetSilverLeaf(silverLeafAmount).Save(ctx)
 		if err != nil {
 			return nil, err
 		}
 	} else {
-		amount := walletObj.GoldLeaf + goldLeafAmount
-		wl = walletObj.Update().SetGoldLeaf(amount).SaveX(ctx)
+		goldLeafAmount += walletObj.GoldLeaf
+		silverLeafAmount += walletObj.SilverLeaf
+		wl = walletObj.Update().SetGoldLeaf(goldLeafAmount).SetSilverLeaf(silverLeafAmount).SaveX(ctx)
 		// 提交事务
 		if err := tx.Commit(); err != nil {
 			return nil, err
@@ -59,8 +60,8 @@ func (w walletRepo) QueryAndLock(ctx context.Context, client *ent.Client, userId
 	return wl, nil
 }
 
-func (w walletRepo) RechargeGoldLeaf(ctx context.Context, userId, goldLeafAmount int32) (*biz.Wallet, error) {
-	wl, err := w.QueryAndLock(ctx, w.data.db, userId, goldLeafAmount)
+func (w walletRepo) RechargeGoldLeaf(ctx context.Context, userId, goldLeafAmount, silverLeafAmount int32) (*biz.Wallet, error) {
+	wl, err := w.QueryAndLock(ctx, w.data.db, userId, goldLeafAmount, silverLeafAmount)
 	fmt.Println(wl)
 	if err != nil {
 		return nil, err

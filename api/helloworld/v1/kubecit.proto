@@ -398,7 +398,7 @@ service Kubecit {
     };
 
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "为用户充值金叶子. 充值的金叶子数*100:gold_leaf_amount, 用户ID:user_id"
+      description: "为用户充值金叶子. 充值的金叶子数*100:gold_leaf_amount, 充值的银叶子数*100:gold_leaf_amount,用户ID:user_id"
       tags: "wallet"
     };
   }
@@ -507,8 +507,12 @@ message RechargeWalletRequest{
   int32 gold_leaf_amount = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     title: "充值的金叶子数",
     description: "充值的金叶子数"
-  }, (google.api.field_behavior) = REQUIRED];
-  int32 user_id = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  }];
+  int32 silver_leaf_amount = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "充值的银叶子数",
+    description: "充值的银叶子数"
+  }];
+  int32 user_id = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     title: "用户ID",
     description: "用户ID"
   }, (google.api.field_behavior) = REQUIRED];
