@@ -1151,11 +1151,13 @@ components:
                         $ref: '#/components/schemas/helloworld.v1.CreateOrderReply'
         helloworld.v1.RechargeWalletRequest:
             required:
-                - goldLeafAmount
                 - userId
             type: object
             properties:
                 goldLeafAmount:
+                    type: integer
+                    format: int32
+                silverLeafAmount:
                     type: integer
                     format: int32
                 userId:
