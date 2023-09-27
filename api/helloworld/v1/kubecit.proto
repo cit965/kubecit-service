@@ -336,7 +336,7 @@ service Kubecit {
     };
   }
 
-    rpc MyOrderList (MyOrderRequest) returns (OrderListReply) {
+  rpc MyOrderList (MyOrderRequest) returns (OrderListReply) {
     option (google.api.http) = {
       get: "/api/myOrder",
     };
@@ -347,6 +347,16 @@ service Kubecit {
     };
   }
 
+  rpc OrderPay (OrderPayRequest) returns (CreateOrderReply) {
+    option (google.api.http) = {
+      get: "/api/orderPay",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "支付订单"
+      tags: "order"
+    };
+  }
   //=============================讲师相关================================================
   rpc ListAllTeacher (ListAllTeacherRequest) returns (ListAllTeacherReply) {
     option (google.api.http) = {
@@ -1124,13 +1134,13 @@ message CreateLessonReply {
 }
 
 message ListChapterLessonsWithCourIdRequest {
-   int32 courseId = 1[
-     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-       title: "课程ID",
-       description: "课程ID"
-     },
-     (google.api.field_behavior) = REQUIRED
-   ];
+  int32 courseId = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "课程ID",
+      description: "课程ID"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message ListChapterLessonsWithCourIdReply {
@@ -1561,3 +1571,17 @@ message MyOrderRequest {
   optional int32 pageSize = 2;
 }
 
+message OrderPayRequest {
+  int32 orderId = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "订单id",
+      description: "订单id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  PayType payType = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "支付方式",
+      description: "NO_PAY = 1 ; // 还未支付 ALIPAY = 2; // 支付宝 WECHAT = 3; // 微信支付 GOLDEN_LEAF = 4;  // 金叶子 SILVER_LEAF = 5;  //银叶子"
+    }, (google.api.field_behavior) = REQUIRED];
+}
