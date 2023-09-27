@@ -268,6 +268,25 @@ func (c *courseRepo) DeleteLesson(ctx context.Context, id int) (int, error) {
 	return count, nil
 }
 
+func (c *courseRepo) GetLesson(ctx context.Context, id int) (*biz.Lesson, error) {
+	lesson, err := c.data.db.Lesson.Query().Where(lesson.IDEQ(id)).First(ctx)
+	if err != nil {
+		c.log.Errorf("lesson repo get error: %v\n", err)
+		return nil, err
+	}
+	return &biz.Lesson{
+		Id:            lesson.ID,
+		Name:          lesson.Name,
+		ReleasedTime:  lesson.ReleasedTime,
+		Sort:          lesson.Sort,
+		Type:          lesson.Type,
+		StoragePath:   lesson.StoragePath,
+		Source:        lesson.Source,
+		Courseware:    lesson.Courseware,
+		IsFreePreview: lesson.IsFreePreview,
+		ChapterId:     lesson.ChapterID,
+	}, nil
+}
 func (c *courseRepo) ListLessons(ctx context.Context, chapterId int) ([]*biz.Lesson, error) {
 	lessons, err := c.data.db.Lesson.Query().Where(lesson.ChapterIDEQ(chapterId)).All(ctx)
 	if err != nil {

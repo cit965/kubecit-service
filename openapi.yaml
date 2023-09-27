@@ -642,6 +642,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.RegisterUsernameReply'
+    /api/video/player/get_player_param:
+        get:
+            tags:
+                - Kubecit
+            description: =============================视频播放相关接口=================================================
+            operationId: Kubecit_VideoPlayerGetPlayerParam
+            parameters:
+                - name: lessonId
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.VideoPlayerGetParamReply'
     /api/wallet/balance:
         get:
             tags:
@@ -1423,6 +1442,19 @@ components:
                     type: integer
                     format: uint32
                 channel:
+                    type: string
+        helloworld.v1.VideoPlayerGetParamReply:
+            required:
+                - appid
+                - fieldID
+                - pSign
+            type: object
+            properties:
+                appid:
+                    type: string
+                fieldID:
+                    type: string
+                pSign:
                     type: string
         helloworld.v1.WalletInfo:
             type: object

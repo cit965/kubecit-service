@@ -74,7 +74,9 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Gin, logger)
+
+	app, cleanup, err := wireApp(bc.Server, bc.TencentCloudVideoPlayer, bc.Data, bc.Gin, logger)
+
 	if err != nil {
 		panic(err)
 	}
