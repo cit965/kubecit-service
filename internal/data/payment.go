@@ -38,6 +38,13 @@ func (g *Strategy) Pay(ctx context.Context, orderId, payType int32) (*biz.Order,
 			if err != nil {
 				return nil, err
 			}
+		} else if payType == int32(pb.PayType_SILVER_LEAF) {
+			orderTx, err = g.SilverLeafDeductionTX(ctx, orderId)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, errors.New("目前仅支持金叶子和银叶子支付")
 		}
 		return orderTx, nil
 	})
