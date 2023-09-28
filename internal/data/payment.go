@@ -29,7 +29,6 @@ func NewStrategy(data *Data, logger log.Logger) biz.PaymentStrategy {
 
 func (g *Strategy) Pay(ctx context.Context, orderId, payType int32) (*biz.Order, error) {
 	// 实现金叶子支付逻辑
-	fmt.Println("@@@@@")
 	result, err := g.data.WithResultTx(ctx, func(tx *ent.Tx) (interface{}, error) {
 		var orderTx *biz.Order
 		var err error
@@ -59,11 +58,11 @@ func (g *Strategy) Pay(ctx context.Context, orderId, payType int32) (*biz.Order,
 }
 
 func (g *Strategy) GoldLeafDeductionTX(ctx context.Context, orderId int32) (*biz.Order, error) {
-	//userId, err := common.GetUserFromCtx(ctx)
-	//if err != nil {
-	//	return nil, err
-	//}
-	userId := int32(1)
+	userId, err := common.GetUserFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
+	//userId := int32(1)
 	order, err := g.data.db.Orders.Query().Where(orders.IDEQ(int(orderId))).First(ctx)
 	if ent.IsNotFound(err) {
 		return nil, errs.OrderNotFound(err)
