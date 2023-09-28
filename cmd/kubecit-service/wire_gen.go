@@ -23,9 +23,7 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-
 func wireApp(confServer *conf.Server, tencentCloudVideoPlayer *conf.TencentCloudVideoPlayer, confData *conf.Data, gin *conf.Gin, logger log.Logger) (*kratos.App, func(), error) {
-
 	dataData, cleanup, err := data.NewData(confData, logger)
 	if err != nil {
 		return nil, nil, err
