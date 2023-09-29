@@ -24,7 +24,7 @@ func NewWalletRepo(data *Data, logger log.Logger) biz.WalletRepo {
 
 // 定义一个查询并锁定的函数
 func (w walletRepo) QueryAndLock(ctx context.Context, client *ent.Client, userId, goldLeafAmount, silverLeafAmount int32) (*ent.Wallet, error) {
-	fmt.Println(goldLeafAmount, silverLeafAmount, userId)
+
 	tx, err := client.Tx(ctx)
 	if err != nil {
 		return nil, err

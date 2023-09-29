@@ -429,6 +429,29 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.CreateOrderReply'
+    /api/orderPay:
+        get:
+            tags:
+                - Kubecit
+            operationId: Kubecit_OrderPay
+            parameters:
+                - name: orderId
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: payType
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.CreateOrderReply'
     /api/recommendedLecturer:
         get:
             tags:
@@ -1453,7 +1476,8 @@ components:
             type: object
             properties:
                 appid:
-                    type: string
+                    type: integer
+                    format: uint64
                 fieldID:
                     type: string
                 pSign:

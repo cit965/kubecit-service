@@ -23,9 +23,7 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-
 func wireApp(confServer *conf.Server, tencentCloudVideoPlayer *conf.TencentCloudVideoPlayer, confData *conf.Data, gin *conf.Gin, logger log.Logger) (*kratos.App, func(), error) {
-
 	dataData, cleanup, err := data.NewData(confData, logger)
 	if err != nil {
 		return nil, nil, err
@@ -45,7 +43,9 @@ func wireApp(confServer *conf.Server, tencentCloudVideoPlayer *conf.TencentCloud
 	walletRepo := data.NewWalletRepo(dataData, logger)
 	walletUseCase := biz.NewWalletUseCase(walletRepo, logger)
 	videoPlayerUsecase := biz.NewVideoPlayerUsecase(tencentCloudVideoPlayer, courseRepo, logger)
-	kubecitService := service.NewKubecitService(courseUsecase, systemUsecase, userUsecase, orderUseCase, teacherCase, walletUseCase, videoPlayerUsecase)
+	paymentStrategy := data.NewStrategy(dataData, logger)
+	paymentStrategyUseCase := biz.NewPaymentStrategyCase(paymentStrategy, logger)
+	kubecitService := service.NewKubecitService(courseUsecase, systemUsecase, userUsecase, orderUseCase, teacherCase, walletUseCase, videoPlayerUsecase, paymentStrategyUseCase)
 	grpcServer := server.NewGRPCServer(confServer, kubecitService, logger)
 	httpServer := server.NewHTTPServer(confServer, gin, confData, kubecitService, logger)
 	app := newApp(logger, grpcServer, httpServer)
