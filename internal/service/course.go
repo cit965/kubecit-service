@@ -13,7 +13,10 @@ import (
 // MostNew 最新好课
 func (s *KubecitService) MostNew(ctx context.Context, req *pb.Empty) (*pb.MostNewReply, error) {
 
-	courses, total, err := s.cc.SearchCourse(ctx, &biz.SearchFilterParam{})
+	courses, total, err := s.cc.SearchCourse(ctx, &biz.SearchFilterParam{
+		PageNum:  GetInt32Ptr(1),
+		PageSize: GetInt32Ptr(20),
+	})
 	if err != nil {
 		return nil, err
 	}
