@@ -35,6 +35,7 @@ type Course struct {
 	TeacherId     int
 	TeacherAvatar string
 	TeacherLevel  int32
+	TeacherName   string
 }
 
 type CourseChapterLessons struct {

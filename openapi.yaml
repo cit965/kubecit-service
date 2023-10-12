@@ -829,6 +829,8 @@ components:
                 teacherLevel:
                     type: integer
                     format: int32
+                teacherName:
+                    type: string
         helloworld.v1.CourseSearchReply:
             type: object
             properties:

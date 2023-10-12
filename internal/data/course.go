@@ -110,6 +110,7 @@ func (c *courseRepo) GetCourse(ctx context.Context, id int) (*biz.Course, error)
 		TeacherId:     teacher.ID,
 		TeacherAvatar: teacher.Avator,
 		TeacherLevel:  int32(teacher.Level),
+		TeacherName:   teacher.Name,
 	}, nil
 }
 

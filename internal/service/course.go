@@ -226,6 +226,7 @@ func (s *KubecitService) GetCourse(ctx context.Context, req *pb.GetCourseRequest
 			TeacherId:     int32(res.TeacherId),
 			TeacherAvatar: res.TeacherAvatar,
 			TeacherLevel:  res.TeacherLevel,
+			TeacherName:   res.TeacherName,
 		}}, nil
 }
 
