@@ -721,6 +721,12 @@ message CourseInfo {
       description: "讲师等级"
     }
   ];
+  string teacher_name = 18[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "讲师名称",
+      description: "讲师名称"
+    }
+  ];
 }
 
 
