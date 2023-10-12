@@ -4,7 +4,9 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
+	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/teacher"
 	"math"
@@ -18,11 +20,12 @@ import (
 // TeacherQuery is the builder for querying Teacher entities.
 type TeacherQuery struct {
 	config
-	ctx        *QueryContext
-	order      []teacher.OrderOption
-	inters     []Interceptor
-	predicates []predicate.Teacher
-	modifiers  []func(*sql.Selector)
+	ctx         *QueryContext
+	order       []teacher.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.Teacher
+	withCourses *CourseQuery
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +60,28 @@ func (tq *TeacherQuery) Unique(unique bool) *TeacherQuery {
 func (tq *TeacherQuery) Order(o ...teacher.OrderOption) *TeacherQuery {
 	tq.order = append(tq.order, o...)
 	return tq
+}
+
+// QueryCourses chains the current query on the "courses" edge.
+func (tq *TeacherQuery) QueryCourses() *CourseQuery {
+	query := (&CourseClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(teacher.Table, teacher.FieldID, selector),
+			sqlgraph.To(course.Table, course.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, teacher.CoursesTable, teacher.CoursesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first Teacher entity from the query.
@@ -246,15 +271,27 @@ func (tq *TeacherQuery) Clone() *TeacherQuery {
 		return nil
 	}
 	return &TeacherQuery{
-		config:     tq.config,
-		ctx:        tq.ctx.Clone(),
-		order:      append([]teacher.OrderOption{}, tq.order...),
-		inters:     append([]Interceptor{}, tq.inters...),
-		predicates: append([]predicate.Teacher{}, tq.predicates...),
+		config:      tq.config,
+		ctx:         tq.ctx.Clone(),
+		order:       append([]teacher.OrderOption{}, tq.order...),
+		inters:      append([]Interceptor{}, tq.inters...),
+		predicates:  append([]predicate.Teacher{}, tq.predicates...),
+		withCourses: tq.withCourses.Clone(),
 		// clone intermediate query.
 		sql:  tq.sql.Clone(),
 		path: tq.path,
 	}
+}
+
+// WithCourses tells the query-builder to eager-load the nodes that are connected to
+// the "courses" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TeacherQuery) WithCourses(opts ...func(*CourseQuery)) *TeacherQuery {
+	query := (&CourseClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withCourses = query
+	return tq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -333,8 +370,11 @@ func (tq *TeacherQuery) prepareQuery(ctx context.Context) error {
 
 func (tq *TeacherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Teacher, error) {
 	var (
-		nodes = []*Teacher{}
-		_spec = tq.querySpec()
+		nodes       = []*Teacher{}
+		_spec       = tq.querySpec()
+		loadedTypes = [1]bool{
+			tq.withCourses != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Teacher).scanValues(nil, columns)
@@ -342,6 +382,7 @@ func (tq *TeacherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Teac
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &Teacher{config: tq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if len(tq.modifiers) > 0 {
@@ -356,7 +397,46 @@ func (tq *TeacherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Teac
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := tq.withCourses; query != nil {
+		if err := tq.loadCourses(ctx, query, nodes,
+			func(n *Teacher) { n.Edges.Courses = []*Course{} },
+			func(n *Teacher, e *Course) { n.Edges.Courses = append(n.Edges.Courses, e) }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (tq *TeacherQuery) loadCourses(ctx context.Context, query *CourseQuery, nodes []*Teacher, init func(*Teacher), assign func(*Teacher, *Course)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Teacher)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Course(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(teacher.CoursesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.teacher_courses
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "teacher_courses" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "teacher_courses" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
 }
 
 func (tq *TeacherQuery) sqlCount(ctx context.Context) (int, error) {

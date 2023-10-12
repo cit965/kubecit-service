@@ -208,20 +208,23 @@ func (s *KubecitService) GetCourse(ctx context.Context, req *pb.GetCourseRequest
 	}
 	return &pb.GetCourseReply{
 		Data: &pb.CourseInfo{
-			Id:         int32(res.Id),
-			Level:      pb.CourseLevel(res.Level),
-			Name:       res.Name,
-			Detail:     res.Detail,
-			Cover:      res.Cover,
-			Price:      res.Price,
-			Tags:       strings.Split(res.Tags, ","),
-			Status:     pb.CourseStatus(res.Status),
-			CategoryId: int32(res.CategoryId),
-			CreatedAt:  timestamppb.New(res.CreatedAt),
-			UpdatedAt:  timestamppb.New(res.UpdatedAt),
-			People:     102,
-			Score:      99,
-			Duration:   40,
+			Id:            int32(res.Id),
+			Level:         pb.CourseLevel(res.Level),
+			Name:          res.Name,
+			Detail:        res.Detail,
+			Cover:         res.Cover,
+			Price:         res.Price,
+			Tags:          strings.Split(res.Tags, ","),
+			Status:        pb.CourseStatus(res.Status),
+			CategoryId:    int32(res.CategoryId),
+			CreatedAt:     timestamppb.New(res.CreatedAt),
+			UpdatedAt:     timestamppb.New(res.UpdatedAt),
+			People:        102,
+			Score:         99,
+			Duration:      40,
+			TeacherId:     int32(res.TeacherId),
+			TeacherAvatar: res.TeacherAvatar,
+			TeacherLevel:  res.TeacherLevel,
 		}}, nil
 }
 

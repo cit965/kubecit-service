@@ -18,20 +18,23 @@ type Category struct {
 }
 
 type Course struct {
-	Id         int
-	Level      int32
-	Name       string
-	Detail     string
-	Cover      string
-	Price      int32
-	Tags       string
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	Status     int32
-	CategoryId int
-	People     int32
-	Duration   int32
-	Score      int32
+	Id            int
+	Level         int32
+	Name          string
+	Detail        string
+	Cover         string
+	Price         int32
+	Tags          string
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+	Status        int32
+	CategoryId    int
+	People        int32
+	Duration      int32
+	Score         int32
+	TeacherId     int
+	TeacherAvatar string
+	TeacherLevel  int32
 }
 
 type CourseChapterLessons struct {

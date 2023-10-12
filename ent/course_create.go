@@ -9,6 +9,7 @@ import (
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/teacher"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -180,6 +181,25 @@ func (cc *CourseCreate) AddChapters(c ...*Chapter) *CourseCreate {
 		ids[i] = c[i].ID
 	}
 	return cc.AddChapterIDs(ids...)
+}
+
+// SetTeacherID sets the "teacher" edge to the Teacher entity by ID.
+func (cc *CourseCreate) SetTeacherID(id int) *CourseCreate {
+	cc.mutation.SetTeacherID(id)
+	return cc
+}
+
+// SetNillableTeacherID sets the "teacher" edge to the Teacher entity by ID if the given value is not nil.
+func (cc *CourseCreate) SetNillableTeacherID(id *int) *CourseCreate {
+	if id != nil {
+		cc = cc.SetTeacherID(*id)
+	}
+	return cc
+}
+
+// SetTeacher sets the "teacher" edge to the Teacher entity.
+func (cc *CourseCreate) SetTeacher(t *Teacher) *CourseCreate {
+	return cc.SetTeacherID(t.ID)
 }
 
 // Mutation returns the CourseMutation object of the builder.
@@ -382,6 +402,23 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.TeacherIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   course.TeacherTable,
+			Columns: []string{course.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.teacher_courses = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

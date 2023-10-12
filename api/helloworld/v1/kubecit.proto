@@ -703,6 +703,24 @@ message CourseInfo {
       description: "课程评分"
     }
   ];
+  int32 teacher_id = 15[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "讲师id",
+      description: "讲师id"
+    }
+  ];
+  string teacher_avatar = 16[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "讲师头像",
+      description: "讲师头像"
+    }
+  ];
+  int32 teacher_level = 17[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "讲师等级",
+      description: "讲师等级"
+    }
+  ];
 }
 
 

@@ -89,6 +89,7 @@ var (
 		{Name: "duration", Type: field.TypeInt32, Default: 0},
 		{Name: "people", Type: field.TypeInt32, Default: 0},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
+		{Name: "teacher_courses", Type: field.TypeInt, Nullable: true},
 	}
 	// CoursesTable holds the schema information for the "courses" table.
 	CoursesTable = &schema.Table{
@@ -100,6 +101,12 @@ var (
 				Symbol:     "courses_categories_courses",
 				Columns:    []*schema.Column{CoursesColumns[13]},
 				RefColumns: []*schema.Column{CategoriesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "courses_teachers_courses",
+				Columns:    []*schema.Column{CoursesColumns[14]},
+				RefColumns: []*schema.Column{TeachersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -267,5 +274,6 @@ func init() {
 	CategoriesTable.ForeignKeys[0].RefTable = CategoriesTable
 	ChaptersTable.ForeignKeys[0].RefTable = CoursesTable
 	CoursesTable.ForeignKeys[0].RefTable = CategoriesTable
+	CoursesTable.ForeignKeys[1].RefTable = TeachersTable
 	LessonsTable.ForeignKeys[0].RefTable = ChaptersTable
 }

@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"kubecit-service/ent/course"
 	"kubecit-service/ent/teacher"
 	"time"
 
@@ -130,6 +131,21 @@ func (tc *TeacherCreate) SetNillableUpdateAt(t *time.Time) *TeacherCreate {
 	return tc
 }
 
+// AddCourseIDs adds the "courses" edge to the Course entity by IDs.
+func (tc *TeacherCreate) AddCourseIDs(ids ...int) *TeacherCreate {
+	tc.mutation.AddCourseIDs(ids...)
+	return tc
+}
+
+// AddCourses adds the "courses" edges to the Course entity.
+func (tc *TeacherCreate) AddCourses(c ...*Course) *TeacherCreate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return tc.AddCourseIDs(ids...)
+}
+
 // Mutation returns the TeacherMutation object of the builder.
 func (tc *TeacherCreate) Mutation() *TeacherMutation {
 	return tc.mutation
@@ -250,6 +266,22 @@ func (tc *TeacherCreate) createSpec() (*Teacher, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.UpdateAt(); ok {
 		_spec.SetField(teacher.FieldUpdateAt, field.TypeTime, value)
 		_node.UpdateAt = value
+	}
+	if nodes := tc.mutation.CoursesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   teacher.CoursesTable,
+			Columns: []string{teacher.CoursesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

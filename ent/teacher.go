@@ -34,8 +34,29 @@ type Teacher struct {
 	// 创建时间
 	CreateAt time.Time `json:"create_at,omitempty"`
 	// 更新时间
-	UpdateAt     time.Time `json:"update_at,omitempty"`
+	UpdateAt time.Time `json:"update_at,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the TeacherQuery when eager-loading is set.
+	Edges        TeacherEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// TeacherEdges holds the relations/edges for other nodes in the graph.
+type TeacherEdges struct {
+	// Courses holds the value of the courses edge.
+	Courses []*Course `json:"courses,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// CoursesOrErr returns the Courses value or an error if the edge
+// was not loaded in eager-loading.
+func (e TeacherEdges) CoursesOrErr() ([]*Course, error) {
+	if e.loadedTypes[0] {
+		return e.Courses, nil
+	}
+	return nil, &NotLoadedError{edge: "courses"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -135,6 +156,11 @@ func (t *Teacher) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (t *Teacher) Value(name string) (ent.Value, error) {
 	return t.selectValues.Get(name)
+}
+
+// QueryCourses queries the "courses" edge of the Teacher entity.
+func (t *Teacher) QueryCourses() *CourseQuery {
+	return NewTeacherClient(t.config).QueryCourses(t)
 }
 
 // Update returns a builder for updating this Teacher.
