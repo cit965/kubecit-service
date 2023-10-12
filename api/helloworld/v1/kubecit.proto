@@ -759,6 +759,13 @@ message SearchCourseRequest {
     },
     (google.api.field_behavior) = OPTIONAL
   ];
+  optional int32 teacherId = 8[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "讲师ID",
+      description: "按照讲师ID搜索"
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
 }
 
 message UpdateCourseRequest {

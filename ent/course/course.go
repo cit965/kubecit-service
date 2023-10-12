@@ -40,10 +40,14 @@ const (
 	FieldDuration = "duration"
 	// FieldPeople holds the string denoting the people field in the database.
 	FieldPeople = "people"
+	// FieldTeacherID holds the string denoting the teacher_id field in the database.
+	FieldTeacherID = "teacher_id"
 	// EdgeOwner holds the string denoting the owner edge name in mutations.
 	EdgeOwner = "owner"
 	// EdgeChapters holds the string denoting the chapters edge name in mutations.
 	EdgeChapters = "chapters"
+	// EdgeTeacher holds the string denoting the teacher edge name in mutations.
+	EdgeTeacher = "teacher"
 	// Table holds the table name of the course in the database.
 	Table = "courses"
 	// OwnerTable is the table that holds the owner relation/edge.
@@ -60,6 +64,13 @@ const (
 	ChaptersInverseTable = "chapters"
 	// ChaptersColumn is the table column denoting the chapters relation/edge.
 	ChaptersColumn = "course_id"
+	// TeacherTable is the table that holds the teacher relation/edge.
+	TeacherTable = "courses"
+	// TeacherInverseTable is the table name for the Teacher entity.
+	// It exists in this package in order to avoid circular dependency with the "teacher" package.
+	TeacherInverseTable = "teachers"
+	// TeacherColumn is the table column denoting the teacher relation/edge.
+	TeacherColumn = "teacher_id"
 )
 
 // Columns holds all SQL columns for course fields.
@@ -78,6 +89,7 @@ var Columns = []string{
 	FieldScore,
 	FieldDuration,
 	FieldPeople,
+	FieldTeacherID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -178,6 +190,11 @@ func ByPeople(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPeople, opts...).ToFunc()
 }
 
+// ByTeacherID orders the results by the teacher_id field.
+func ByTeacherID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTeacherID, opts...).ToFunc()
+}
+
 // ByOwnerField orders the results by owner field.
 func ByOwnerField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -198,6 +215,13 @@ func ByChapters(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newChaptersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByTeacherField orders the results by teacher field.
+func ByTeacherField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newTeacherStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newOwnerStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -210,5 +234,12 @@ func newChaptersStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ChaptersInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, ChaptersTable, ChaptersColumn),
+	)
+}
+func newTeacherStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(TeacherInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, TeacherTable, TeacherColumn),
 	)
 }

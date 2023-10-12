@@ -24,7 +24,7 @@ func NewCourseRepo(data *Data, logger log.Logger) biz.CourseRepo {
 	}
 }
 
-func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32, categories []int, level pb.CourseLevel, order *int32, name *string) ([]*biz.Course, int32, error) {
+func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32, categories []int, level pb.CourseLevel, order *int32, name *string, teacherId *int32) ([]*biz.Course, int32, error) {
 	cq := c.data.db.Course.Query()
 	if len(categories) != 0 {
 		cq.Where(course.CategoryIDIn(categories...))
@@ -45,6 +45,9 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 			// 综合排序
 			cq.Order(ent.Desc(course.FieldCreatedAt))
 		}
+	}
+	if teacherId != nil {
+		cq.Where(course.TeacherIDEQ(int(*teacherId)))
 	}
 	total, err := cq.Count(ctx)
 	if err != nil {

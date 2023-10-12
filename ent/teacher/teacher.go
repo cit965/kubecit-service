@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -31,8 +32,17 @@ const (
 	FieldCreateAt = "create_at"
 	// FieldUpdateAt holds the string denoting the update_at field in the database.
 	FieldUpdateAt = "update_at"
+	// EdgeCourses holds the string denoting the courses edge name in mutations.
+	EdgeCourses = "courses"
 	// Table holds the table name of the teacher in the database.
 	Table = "teachers"
+	// CoursesTable is the table that holds the courses relation/edge.
+	CoursesTable = "courses"
+	// CoursesInverseTable is the table name for the Course entity.
+	// It exists in this package in order to avoid circular dependency with the "course" package.
+	CoursesInverseTable = "courses"
+	// CoursesColumn is the table column denoting the courses relation/edge.
+	CoursesColumn = "teacher_id"
 )
 
 // Columns holds all SQL columns for teacher fields.
@@ -119,4 +129,25 @@ func ByCreateAt(opts ...sql.OrderTermOption) OrderOption {
 // ByUpdateAt orders the results by the update_at field.
 func ByUpdateAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdateAt, opts...).ToFunc()
+}
+
+// ByCoursesCount orders the results by courses count.
+func ByCoursesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCoursesStep(), opts...)
+	}
+}
+
+// ByCourses orders the results by courses terms.
+func ByCourses(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCoursesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newCoursesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CoursesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, CoursesTable, CoursesColumn),
+	)
 }

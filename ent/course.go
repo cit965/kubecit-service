@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/course"
+	"kubecit-service/ent/teacher"
 	"strings"
 	"time"
 
@@ -44,6 +45,8 @@ type Course struct {
 	Duration int32 `json:"duration,omitempty"`
 	// People holds the value of the "people" field.
 	People int32 `json:"people,omitempty"`
+	// TeacherID holds the value of the "teacher_id" field.
+	TeacherID int `json:"teacher_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CourseQuery when eager-loading is set.
 	Edges        CourseEdges `json:"edges"`
@@ -56,9 +59,11 @@ type CourseEdges struct {
 	Owner *Category `json:"owner,omitempty"`
 	// Chapters holds the value of the chapters edge.
 	Chapters []*Chapter `json:"chapters,omitempty"`
+	// Teacher holds the value of the teacher edge.
+	Teacher *Teacher `json:"teacher,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 }
 
 // OwnerOrErr returns the Owner value or an error if the edge
@@ -83,12 +88,25 @@ func (e CourseEdges) ChaptersOrErr() ([]*Chapter, error) {
 	return nil, &NotLoadedError{edge: "chapters"}
 }
 
+// TeacherOrErr returns the Teacher value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CourseEdges) TeacherOrErr() (*Teacher, error) {
+	if e.loadedTypes[2] {
+		if e.Teacher == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: teacher.Label}
+		}
+		return e.Teacher, nil
+	}
+	return nil, &NotLoadedError{edge: "teacher"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Course) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case course.FieldID, course.FieldLevel, course.FieldPrice, course.FieldStatus, course.FieldCategoryID, course.FieldScore, course.FieldDuration, course.FieldPeople:
+		case course.FieldID, course.FieldLevel, course.FieldPrice, course.FieldStatus, course.FieldCategoryID, course.FieldScore, course.FieldDuration, course.FieldPeople, course.FieldTeacherID:
 			values[i] = new(sql.NullInt64)
 		case course.FieldName, course.FieldDetail, course.FieldCover, course.FieldTags:
 			values[i] = new(sql.NullString)
@@ -193,6 +211,12 @@ func (c *Course) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.People = int32(value.Int64)
 			}
+		case course.FieldTeacherID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field teacher_id", values[i])
+			} else if value.Valid {
+				c.TeacherID = int(value.Int64)
+			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
 		}
@@ -214,6 +238,11 @@ func (c *Course) QueryOwner() *CategoryQuery {
 // QueryChapters queries the "chapters" edge of the Course entity.
 func (c *Course) QueryChapters() *ChapterQuery {
 	return NewCourseClient(c.config).QueryChapters(c)
+}
+
+// QueryTeacher queries the "teacher" edge of the Course entity.
+func (c *Course) QueryTeacher() *TeacherQuery {
+	return NewCourseClient(c.config).QueryTeacher(c)
 }
 
 // Update returns a builder for updating this Course.
@@ -277,6 +306,9 @@ func (c *Course) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("people=")
 	builder.WriteString(fmt.Sprintf("%v", c.People))
+	builder.WriteString(", ")
+	builder.WriteString("teacher_id=")
+	builder.WriteString(fmt.Sprintf("%v", c.TeacherID))
 	builder.WriteByte(')')
 	return builder.String()
 }
