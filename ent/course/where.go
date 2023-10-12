@@ -120,6 +120,11 @@ func People(v int32) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldPeople, v))
 }
 
+// TeacherID applies equality check predicate on the "teacher_id" field. It's identical to TeacherIDEQ.
+func TeacherID(v int) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldTeacherID, v))
+}
+
 // LevelEQ applies the EQ predicate on the "level" field.
 func LevelEQ(v int32) predicate.Course {
 	return predicate.Course(sql.FieldEQ(FieldLevel, v))
@@ -728,6 +733,36 @@ func PeopleLT(v int32) predicate.Course {
 // PeopleLTE applies the LTE predicate on the "people" field.
 func PeopleLTE(v int32) predicate.Course {
 	return predicate.Course(sql.FieldLTE(FieldPeople, v))
+}
+
+// TeacherIDEQ applies the EQ predicate on the "teacher_id" field.
+func TeacherIDEQ(v int) predicate.Course {
+	return predicate.Course(sql.FieldEQ(FieldTeacherID, v))
+}
+
+// TeacherIDNEQ applies the NEQ predicate on the "teacher_id" field.
+func TeacherIDNEQ(v int) predicate.Course {
+	return predicate.Course(sql.FieldNEQ(FieldTeacherID, v))
+}
+
+// TeacherIDIn applies the In predicate on the "teacher_id" field.
+func TeacherIDIn(vs ...int) predicate.Course {
+	return predicate.Course(sql.FieldIn(FieldTeacherID, vs...))
+}
+
+// TeacherIDNotIn applies the NotIn predicate on the "teacher_id" field.
+func TeacherIDNotIn(vs ...int) predicate.Course {
+	return predicate.Course(sql.FieldNotIn(FieldTeacherID, vs...))
+}
+
+// TeacherIDIsNil applies the IsNil predicate on the "teacher_id" field.
+func TeacherIDIsNil() predicate.Course {
+	return predicate.Course(sql.FieldIsNull(FieldTeacherID))
+}
+
+// TeacherIDNotNil applies the NotNil predicate on the "teacher_id" field.
+func TeacherIDNotNil() predicate.Course {
+	return predicate.Course(sql.FieldNotNull(FieldTeacherID))
 }
 
 // HasOwner applies the HasEdge predicate on the "owner" edge.

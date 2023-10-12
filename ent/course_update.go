@@ -197,6 +197,26 @@ func (cu *CourseUpdate) AddPeople(i int32) *CourseUpdate {
 	return cu
 }
 
+// SetTeacherID sets the "teacher_id" field.
+func (cu *CourseUpdate) SetTeacherID(i int) *CourseUpdate {
+	cu.mutation.SetTeacherID(i)
+	return cu
+}
+
+// SetNillableTeacherID sets the "teacher_id" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillableTeacherID(i *int) *CourseUpdate {
+	if i != nil {
+		cu.SetTeacherID(*i)
+	}
+	return cu
+}
+
+// ClearTeacherID clears the value of the "teacher_id" field.
+func (cu *CourseUpdate) ClearTeacherID() *CourseUpdate {
+	cu.mutation.ClearTeacherID()
+	return cu
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by ID.
 func (cu *CourseUpdate) SetOwnerID(id int) *CourseUpdate {
 	cu.mutation.SetOwnerID(id)
@@ -229,20 +249,6 @@ func (cu *CourseUpdate) AddChapters(c ...*Chapter) *CourseUpdate {
 		ids[i] = c[i].ID
 	}
 	return cu.AddChapterIDs(ids...)
-}
-
-// SetTeacherID sets the "teacher" edge to the Teacher entity by ID.
-func (cu *CourseUpdate) SetTeacherID(id int) *CourseUpdate {
-	cu.mutation.SetTeacherID(id)
-	return cu
-}
-
-// SetNillableTeacherID sets the "teacher" edge to the Teacher entity by ID if the given value is not nil.
-func (cu *CourseUpdate) SetNillableTeacherID(id *int) *CourseUpdate {
-	if id != nil {
-		cu = cu.SetTeacherID(*id)
-	}
-	return cu
 }
 
 // SetTeacher sets the "teacher" edge to the Teacher entity.
@@ -676,6 +682,26 @@ func (cuo *CourseUpdateOne) AddPeople(i int32) *CourseUpdateOne {
 	return cuo
 }
 
+// SetTeacherID sets the "teacher_id" field.
+func (cuo *CourseUpdateOne) SetTeacherID(i int) *CourseUpdateOne {
+	cuo.mutation.SetTeacherID(i)
+	return cuo
+}
+
+// SetNillableTeacherID sets the "teacher_id" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillableTeacherID(i *int) *CourseUpdateOne {
+	if i != nil {
+		cuo.SetTeacherID(*i)
+	}
+	return cuo
+}
+
+// ClearTeacherID clears the value of the "teacher_id" field.
+func (cuo *CourseUpdateOne) ClearTeacherID() *CourseUpdateOne {
+	cuo.mutation.ClearTeacherID()
+	return cuo
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by ID.
 func (cuo *CourseUpdateOne) SetOwnerID(id int) *CourseUpdateOne {
 	cuo.mutation.SetOwnerID(id)
@@ -708,20 +734,6 @@ func (cuo *CourseUpdateOne) AddChapters(c ...*Chapter) *CourseUpdateOne {
 		ids[i] = c[i].ID
 	}
 	return cuo.AddChapterIDs(ids...)
-}
-
-// SetTeacherID sets the "teacher" edge to the Teacher entity by ID.
-func (cuo *CourseUpdateOne) SetTeacherID(id int) *CourseUpdateOne {
-	cuo.mutation.SetTeacherID(id)
-	return cuo
-}
-
-// SetNillableTeacherID sets the "teacher" edge to the Teacher entity by ID if the given value is not nil.
-func (cuo *CourseUpdateOne) SetNillableTeacherID(id *int) *CourseUpdateOne {
-	if id != nil {
-		cuo = cuo.SetTeacherID(*id)
-	}
-	return cuo
 }
 
 // SetTeacher sets the "teacher" edge to the Teacher entity.

@@ -89,7 +89,7 @@ var (
 		{Name: "duration", Type: field.TypeInt32, Default: 0},
 		{Name: "people", Type: field.TypeInt32, Default: 0},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
-		{Name: "teacher_courses", Type: field.TypeInt, Nullable: true},
+		{Name: "teacher_id", Type: field.TypeInt, Nullable: true},
 	}
 	// CoursesTable holds the schema information for the "courses" table.
 	CoursesTable = &schema.Table{

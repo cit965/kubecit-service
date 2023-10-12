@@ -28,6 +28,7 @@ func (Course) Fields() []ent.Field {
 		field.Int32("score").Default(0),
 		field.Int32("duration").Default(0),
 		field.Int32("people").Default(0),
+		field.Int("teacher_id").Optional(),
 	}
 }
 
@@ -39,6 +40,6 @@ func (Course) Edges() []ent.Edge {
 			Unique().
 			Field("category_id"),
 		edge.To("chapters", Chapter.Type),
-		edge.From("teacher", Teacher.Type).Ref("courses").Unique(),
+		edge.From("teacher", Teacher.Type).Ref("courses").Unique().Field("teacher_id"),
 	}
 }

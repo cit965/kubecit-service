@@ -2760,6 +2760,55 @@ func (m *CourseMutation) ResetPeople() {
 	m.addpeople = nil
 }
 
+// SetTeacherID sets the "teacher_id" field.
+func (m *CourseMutation) SetTeacherID(i int) {
+	m.teacher = &i
+}
+
+// TeacherID returns the value of the "teacher_id" field in the mutation.
+func (m *CourseMutation) TeacherID() (r int, exists bool) {
+	v := m.teacher
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTeacherID returns the old "teacher_id" field's value of the Course entity.
+// If the Course object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CourseMutation) OldTeacherID(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTeacherID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTeacherID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTeacherID: %w", err)
+	}
+	return oldValue.TeacherID, nil
+}
+
+// ClearTeacherID clears the value of the "teacher_id" field.
+func (m *CourseMutation) ClearTeacherID() {
+	m.teacher = nil
+	m.clearedFields[course.FieldTeacherID] = struct{}{}
+}
+
+// TeacherIDCleared returns if the "teacher_id" field was cleared in this mutation.
+func (m *CourseMutation) TeacherIDCleared() bool {
+	_, ok := m.clearedFields[course.FieldTeacherID]
+	return ok
+}
+
+// ResetTeacherID resets all changes to the "teacher_id" field.
+func (m *CourseMutation) ResetTeacherID() {
+	m.teacher = nil
+	delete(m.clearedFields, course.FieldTeacherID)
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by id.
 func (m *CourseMutation) SetOwnerID(id int) {
 	m.owner = &id
@@ -2853,11 +2902,6 @@ func (m *CourseMutation) ResetChapters() {
 	m.removedchapters = nil
 }
 
-// SetTeacherID sets the "teacher" edge to the Teacher entity by id.
-func (m *CourseMutation) SetTeacherID(id int) {
-	m.teacher = &id
-}
-
 // ClearTeacher clears the "teacher" edge to the Teacher entity.
 func (m *CourseMutation) ClearTeacher() {
 	m.clearedteacher = true
@@ -2865,15 +2909,7 @@ func (m *CourseMutation) ClearTeacher() {
 
 // TeacherCleared reports if the "teacher" edge to the Teacher entity was cleared.
 func (m *CourseMutation) TeacherCleared() bool {
-	return m.clearedteacher
-}
-
-// TeacherID returns the "teacher" edge ID in the mutation.
-func (m *CourseMutation) TeacherID() (id int, exists bool) {
-	if m.teacher != nil {
-		return *m.teacher, true
-	}
-	return
+	return m.TeacherIDCleared() || m.clearedteacher
 }
 
 // TeacherIDs returns the "teacher" edge IDs in the mutation.
@@ -2926,7 +2962,7 @@ func (m *CourseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CourseMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 14)
 	if m.level != nil {
 		fields = append(fields, course.FieldLevel)
 	}
@@ -2966,6 +3002,9 @@ func (m *CourseMutation) Fields() []string {
 	if m.people != nil {
 		fields = append(fields, course.FieldPeople)
 	}
+	if m.teacher != nil {
+		fields = append(fields, course.FieldTeacherID)
+	}
 	return fields
 }
 
@@ -3000,6 +3039,8 @@ func (m *CourseMutation) Field(name string) (ent.Value, bool) {
 		return m.Duration()
 	case course.FieldPeople:
 		return m.People()
+	case course.FieldTeacherID:
+		return m.TeacherID()
 	}
 	return nil, false
 }
@@ -3035,6 +3076,8 @@ func (m *CourseMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldDuration(ctx)
 	case course.FieldPeople:
 		return m.OldPeople(ctx)
+	case course.FieldTeacherID:
+		return m.OldTeacherID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Course field %s", name)
 }
@@ -3134,6 +3177,13 @@ func (m *CourseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetPeople(v)
+		return nil
+	case course.FieldTeacherID:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTeacherID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Course field %s", name)
@@ -3243,6 +3293,9 @@ func (m *CourseMutation) ClearedFields() []string {
 	if m.FieldCleared(course.FieldCategoryID) {
 		fields = append(fields, course.FieldCategoryID)
 	}
+	if m.FieldCleared(course.FieldTeacherID) {
+		fields = append(fields, course.FieldTeacherID)
+	}
 	return fields
 }
 
@@ -3259,6 +3312,9 @@ func (m *CourseMutation) ClearField(name string) error {
 	switch name {
 	case course.FieldCategoryID:
 		m.ClearCategoryID()
+		return nil
+	case course.FieldTeacherID:
+		m.ClearTeacherID()
 		return nil
 	}
 	return fmt.Errorf("unknown Course nullable field %s", name)
@@ -3306,6 +3362,9 @@ func (m *CourseMutation) ResetField(name string) error {
 		return nil
 	case course.FieldPeople:
 		m.ResetPeople()
+		return nil
+	case course.FieldTeacherID:
+		m.ResetTeacherID()
 		return nil
 	}
 	return fmt.Errorf("unknown Course field %s", name)

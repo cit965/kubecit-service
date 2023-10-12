@@ -40,6 +40,8 @@ const (
 	FieldDuration = "duration"
 	// FieldPeople holds the string denoting the people field in the database.
 	FieldPeople = "people"
+	// FieldTeacherID holds the string denoting the teacher_id field in the database.
+	FieldTeacherID = "teacher_id"
 	// EdgeOwner holds the string denoting the owner edge name in mutations.
 	EdgeOwner = "owner"
 	// EdgeChapters holds the string denoting the chapters edge name in mutations.
@@ -68,7 +70,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "teacher" package.
 	TeacherInverseTable = "teachers"
 	// TeacherColumn is the table column denoting the teacher relation/edge.
-	TeacherColumn = "teacher_courses"
+	TeacherColumn = "teacher_id"
 )
 
 // Columns holds all SQL columns for course fields.
@@ -87,23 +89,13 @@ var Columns = []string{
 	FieldScore,
 	FieldDuration,
 	FieldPeople,
-}
-
-// ForeignKeys holds the SQL foreign-keys that are owned by the "courses"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"teacher_courses",
+	FieldTeacherID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
-			return true
-		}
-	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -196,6 +188,11 @@ func ByDuration(opts ...sql.OrderTermOption) OrderOption {
 // ByPeople orders the results by the people field.
 func ByPeople(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPeople, opts...).ToFunc()
+}
+
+// ByTeacherID orders the results by the teacher_id field.
+func ByTeacherID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTeacherID, opts...).ToFunc()
 }
 
 // ByOwnerField orders the results by owner field.

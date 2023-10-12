@@ -149,6 +149,20 @@ func (cc *CourseCreate) SetNillablePeople(i *int32) *CourseCreate {
 	return cc
 }
 
+// SetTeacherID sets the "teacher_id" field.
+func (cc *CourseCreate) SetTeacherID(i int) *CourseCreate {
+	cc.mutation.SetTeacherID(i)
+	return cc
+}
+
+// SetNillableTeacherID sets the "teacher_id" field if the given value is not nil.
+func (cc *CourseCreate) SetNillableTeacherID(i *int) *CourseCreate {
+	if i != nil {
+		cc.SetTeacherID(*i)
+	}
+	return cc
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by ID.
 func (cc *CourseCreate) SetOwnerID(id int) *CourseCreate {
 	cc.mutation.SetOwnerID(id)
@@ -181,20 +195,6 @@ func (cc *CourseCreate) AddChapters(c ...*Chapter) *CourseCreate {
 		ids[i] = c[i].ID
 	}
 	return cc.AddChapterIDs(ids...)
-}
-
-// SetTeacherID sets the "teacher" edge to the Teacher entity by ID.
-func (cc *CourseCreate) SetTeacherID(id int) *CourseCreate {
-	cc.mutation.SetTeacherID(id)
-	return cc
-}
-
-// SetNillableTeacherID sets the "teacher" edge to the Teacher entity by ID if the given value is not nil.
-func (cc *CourseCreate) SetNillableTeacherID(id *int) *CourseCreate {
-	if id != nil {
-		cc = cc.SetTeacherID(*id)
-	}
-	return cc
 }
 
 // SetTeacher sets the "teacher" edge to the Teacher entity.
@@ -418,7 +418,7 @@ func (cc *CourseCreate) createSpec() (*Course, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.teacher_courses = &nodes[0]
+		_node.TeacherID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

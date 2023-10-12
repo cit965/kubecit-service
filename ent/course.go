@@ -45,11 +45,12 @@ type Course struct {
 	Duration int32 `json:"duration,omitempty"`
 	// People holds the value of the "people" field.
 	People int32 `json:"people,omitempty"`
+	// TeacherID holds the value of the "teacher_id" field.
+	TeacherID int `json:"teacher_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CourseQuery when eager-loading is set.
-	Edges           CourseEdges `json:"edges"`
-	teacher_courses *int
-	selectValues    sql.SelectValues
+	Edges        CourseEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // CourseEdges holds the relations/edges for other nodes in the graph.
@@ -105,14 +106,12 @@ func (*Course) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case course.FieldID, course.FieldLevel, course.FieldPrice, course.FieldStatus, course.FieldCategoryID, course.FieldScore, course.FieldDuration, course.FieldPeople:
+		case course.FieldID, course.FieldLevel, course.FieldPrice, course.FieldStatus, course.FieldCategoryID, course.FieldScore, course.FieldDuration, course.FieldPeople, course.FieldTeacherID:
 			values[i] = new(sql.NullInt64)
 		case course.FieldName, course.FieldDetail, course.FieldCover, course.FieldTags:
 			values[i] = new(sql.NullString)
 		case course.FieldUpdatedAt, course.FieldCreatedAt:
 			values[i] = new(sql.NullTime)
-		case course.ForeignKeys[0]: // teacher_courses
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -212,12 +211,11 @@ func (c *Course) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.People = int32(value.Int64)
 			}
-		case course.ForeignKeys[0]:
+		case course.FieldTeacherID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field teacher_courses", value)
+				return fmt.Errorf("unexpected type %T for field teacher_id", values[i])
 			} else if value.Valid {
-				c.teacher_courses = new(int)
-				*c.teacher_courses = int(value.Int64)
+				c.TeacherID = int(value.Int64)
 			}
 		default:
 			c.selectValues.Set(columns[i], values[i])
@@ -308,6 +306,9 @@ func (c *Course) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("people=")
 	builder.WriteString(fmt.Sprintf("%v", c.People))
+	builder.WriteString(", ")
+	builder.WriteString("teacher_id=")
+	builder.WriteString(fmt.Sprintf("%v", c.TeacherID))
 	builder.WriteByte(')')
 	return builder.String()
 }

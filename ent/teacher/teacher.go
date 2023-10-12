@@ -42,7 +42,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "course" package.
 	CoursesInverseTable = "courses"
 	// CoursesColumn is the table column denoting the courses relation/edge.
-	CoursesColumn = "teacher_courses"
+	CoursesColumn = "teacher_id"
 )
 
 // Columns holds all SQL columns for teacher fields.
