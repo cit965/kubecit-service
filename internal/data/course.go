@@ -89,18 +89,27 @@ func (c *courseRepo) GetCourse(ctx context.Context, id int) (*biz.Course, error)
 		return nil, err
 	}
 
+	teacher, err := res.QueryTeacher().Only(ctx)
+	if err != nil {
+		c.log.Errorf("course repo get teacher error: %v\n", err)
+		return nil, err
+	}
+
 	return &biz.Course{
-		Id:         res.ID,
-		Level:      res.Level,
-		Name:       res.Name,
-		Detail:     res.Detail,
-		Cover:      res.Cover,
-		Price:      res.Price,
-		Tags:       res.Tags,
-		CreatedAt:  res.CreatedAt,
-		UpdatedAt:  res.UpdatedAt,
-		Status:     res.Status,
-		CategoryId: res.CategoryID,
+		Id:            res.ID,
+		Level:         res.Level,
+		Name:          res.Name,
+		Detail:        res.Detail,
+		Cover:         res.Cover,
+		Price:         res.Price,
+		Tags:          res.Tags,
+		CreatedAt:     res.CreatedAt,
+		UpdatedAt:     res.UpdatedAt,
+		Status:        res.Status,
+		CategoryId:    res.CategoryID,
+		TeacherId:     teacher.ID,
+		TeacherAvatar: teacher.Avator,
+		TeacherLevel:  int32(teacher.Level),
 	}, nil
 }
 

@@ -821,6 +821,14 @@ components:
                 score:
                     type: integer
                     format: int32
+                teacherId:
+                    type: integer
+                    format: int32
+                teacherAvatar:
+                    type: string
+                teacherLevel:
+                    type: integer
+                    format: int32
         helloworld.v1.CourseSearchReply:
             type: object
             properties:
