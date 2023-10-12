@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/teacher"
 	"time"
@@ -167,9 +168,45 @@ func (tu *TeacherUpdate) SetUpdateAt(t time.Time) *TeacherUpdate {
 	return tu
 }
 
+// AddCourseIDs adds the "courses" edge to the Course entity by IDs.
+func (tu *TeacherUpdate) AddCourseIDs(ids ...int) *TeacherUpdate {
+	tu.mutation.AddCourseIDs(ids...)
+	return tu
+}
+
+// AddCourses adds the "courses" edges to the Course entity.
+func (tu *TeacherUpdate) AddCourses(c ...*Course) *TeacherUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return tu.AddCourseIDs(ids...)
+}
+
 // Mutation returns the TeacherMutation object of the builder.
 func (tu *TeacherUpdate) Mutation() *TeacherMutation {
 	return tu.mutation
+}
+
+// ClearCourses clears all "courses" edges to the Course entity.
+func (tu *TeacherUpdate) ClearCourses() *TeacherUpdate {
+	tu.mutation.ClearCourses()
+	return tu
+}
+
+// RemoveCourseIDs removes the "courses" edge to Course entities by IDs.
+func (tu *TeacherUpdate) RemoveCourseIDs(ids ...int) *TeacherUpdate {
+	tu.mutation.RemoveCourseIDs(ids...)
+	return tu
+}
+
+// RemoveCourses removes "courses" edges to Course entities.
+func (tu *TeacherUpdate) RemoveCourses(c ...*Course) *TeacherUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return tu.RemoveCourseIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -261,6 +298,51 @@ func (tu *TeacherUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := tu.mutation.UpdateAt(); ok {
 		_spec.SetField(teacher.FieldUpdateAt, field.TypeTime, value)
+	}
+	if tu.mutation.CoursesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   teacher.CoursesTable,
+			Columns: []string{teacher.CoursesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedCoursesIDs(); len(nodes) > 0 && !tu.mutation.CoursesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   teacher.CoursesTable,
+			Columns: []string{teacher.CoursesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.CoursesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   teacher.CoursesTable,
+			Columns: []string{teacher.CoursesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -421,9 +503,45 @@ func (tuo *TeacherUpdateOne) SetUpdateAt(t time.Time) *TeacherUpdateOne {
 	return tuo
 }
 
+// AddCourseIDs adds the "courses" edge to the Course entity by IDs.
+func (tuo *TeacherUpdateOne) AddCourseIDs(ids ...int) *TeacherUpdateOne {
+	tuo.mutation.AddCourseIDs(ids...)
+	return tuo
+}
+
+// AddCourses adds the "courses" edges to the Course entity.
+func (tuo *TeacherUpdateOne) AddCourses(c ...*Course) *TeacherUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return tuo.AddCourseIDs(ids...)
+}
+
 // Mutation returns the TeacherMutation object of the builder.
 func (tuo *TeacherUpdateOne) Mutation() *TeacherMutation {
 	return tuo.mutation
+}
+
+// ClearCourses clears all "courses" edges to the Course entity.
+func (tuo *TeacherUpdateOne) ClearCourses() *TeacherUpdateOne {
+	tuo.mutation.ClearCourses()
+	return tuo
+}
+
+// RemoveCourseIDs removes the "courses" edge to Course entities by IDs.
+func (tuo *TeacherUpdateOne) RemoveCourseIDs(ids ...int) *TeacherUpdateOne {
+	tuo.mutation.RemoveCourseIDs(ids...)
+	return tuo
+}
+
+// RemoveCourses removes "courses" edges to Course entities.
+func (tuo *TeacherUpdateOne) RemoveCourses(c ...*Course) *TeacherUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return tuo.RemoveCourseIDs(ids...)
 }
 
 // Where appends a list predicates to the TeacherUpdate builder.
@@ -545,6 +663,51 @@ func (tuo *TeacherUpdateOne) sqlSave(ctx context.Context) (_node *Teacher, err e
 	}
 	if value, ok := tuo.mutation.UpdateAt(); ok {
 		_spec.SetField(teacher.FieldUpdateAt, field.TypeTime, value)
+	}
+	if tuo.mutation.CoursesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   teacher.CoursesTable,
+			Columns: []string{teacher.CoursesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedCoursesIDs(); len(nodes) > 0 && !tuo.mutation.CoursesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   teacher.CoursesTable,
+			Columns: []string{teacher.CoursesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.CoursesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   teacher.CoursesTable,
+			Columns: []string{teacher.CoursesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(course.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Teacher{config: tuo.config}
 	_spec.Assign = _node.assignValues

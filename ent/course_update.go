@@ -10,6 +10,7 @@ import (
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
+	"kubecit-service/ent/teacher"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -196,6 +197,26 @@ func (cu *CourseUpdate) AddPeople(i int32) *CourseUpdate {
 	return cu
 }
 
+// SetTeacherID sets the "teacher_id" field.
+func (cu *CourseUpdate) SetTeacherID(i int) *CourseUpdate {
+	cu.mutation.SetTeacherID(i)
+	return cu
+}
+
+// SetNillableTeacherID sets the "teacher_id" field if the given value is not nil.
+func (cu *CourseUpdate) SetNillableTeacherID(i *int) *CourseUpdate {
+	if i != nil {
+		cu.SetTeacherID(*i)
+	}
+	return cu
+}
+
+// ClearTeacherID clears the value of the "teacher_id" field.
+func (cu *CourseUpdate) ClearTeacherID() *CourseUpdate {
+	cu.mutation.ClearTeacherID()
+	return cu
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by ID.
 func (cu *CourseUpdate) SetOwnerID(id int) *CourseUpdate {
 	cu.mutation.SetOwnerID(id)
@@ -230,6 +251,11 @@ func (cu *CourseUpdate) AddChapters(c ...*Chapter) *CourseUpdate {
 	return cu.AddChapterIDs(ids...)
 }
 
+// SetTeacher sets the "teacher" edge to the Teacher entity.
+func (cu *CourseUpdate) SetTeacher(t *Teacher) *CourseUpdate {
+	return cu.SetTeacherID(t.ID)
+}
+
 // Mutation returns the CourseMutation object of the builder.
 func (cu *CourseUpdate) Mutation() *CourseMutation {
 	return cu.mutation
@@ -260,6 +286,12 @@ func (cu *CourseUpdate) RemoveChapters(c ...*Chapter) *CourseUpdate {
 		ids[i] = c[i].ID
 	}
 	return cu.RemoveChapterIDs(ids...)
+}
+
+// ClearTeacher clears the "teacher" edge to the Teacher entity.
+func (cu *CourseUpdate) ClearTeacher() *CourseUpdate {
+	cu.mutation.ClearTeacher()
+	return cu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -428,6 +460,35 @@ func (cu *CourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.TeacherCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   course.TeacherTable,
+			Columns: []string{course.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.TeacherIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   course.TeacherTable,
+			Columns: []string{course.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -621,6 +682,26 @@ func (cuo *CourseUpdateOne) AddPeople(i int32) *CourseUpdateOne {
 	return cuo
 }
 
+// SetTeacherID sets the "teacher_id" field.
+func (cuo *CourseUpdateOne) SetTeacherID(i int) *CourseUpdateOne {
+	cuo.mutation.SetTeacherID(i)
+	return cuo
+}
+
+// SetNillableTeacherID sets the "teacher_id" field if the given value is not nil.
+func (cuo *CourseUpdateOne) SetNillableTeacherID(i *int) *CourseUpdateOne {
+	if i != nil {
+		cuo.SetTeacherID(*i)
+	}
+	return cuo
+}
+
+// ClearTeacherID clears the value of the "teacher_id" field.
+func (cuo *CourseUpdateOne) ClearTeacherID() *CourseUpdateOne {
+	cuo.mutation.ClearTeacherID()
+	return cuo
+}
+
 // SetOwnerID sets the "owner" edge to the Category entity by ID.
 func (cuo *CourseUpdateOne) SetOwnerID(id int) *CourseUpdateOne {
 	cuo.mutation.SetOwnerID(id)
@@ -655,6 +736,11 @@ func (cuo *CourseUpdateOne) AddChapters(c ...*Chapter) *CourseUpdateOne {
 	return cuo.AddChapterIDs(ids...)
 }
 
+// SetTeacher sets the "teacher" edge to the Teacher entity.
+func (cuo *CourseUpdateOne) SetTeacher(t *Teacher) *CourseUpdateOne {
+	return cuo.SetTeacherID(t.ID)
+}
+
 // Mutation returns the CourseMutation object of the builder.
 func (cuo *CourseUpdateOne) Mutation() *CourseMutation {
 	return cuo.mutation
@@ -685,6 +771,12 @@ func (cuo *CourseUpdateOne) RemoveChapters(c ...*Chapter) *CourseUpdateOne {
 		ids[i] = c[i].ID
 	}
 	return cuo.RemoveChapterIDs(ids...)
+}
+
+// ClearTeacher clears the "teacher" edge to the Teacher entity.
+func (cuo *CourseUpdateOne) ClearTeacher() *CourseUpdateOne {
+	cuo.mutation.ClearTeacher()
+	return cuo
 }
 
 // Where appends a list predicates to the CourseUpdate builder.
@@ -883,6 +975,35 @@ func (cuo *CourseUpdateOne) sqlSave(ctx context.Context) (_node *Course, err err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(chapter.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.TeacherCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   course.TeacherTable,
+			Columns: []string{course.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.TeacherIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   course.TeacherTable,
+			Columns: []string{course.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
