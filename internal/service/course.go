@@ -114,6 +114,7 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 		Price:      req.GetPrice(),
 		Tags:       strings.Join(req.Tags, ","),
 		CategoryId: int(req.GetCategoryId()),
+		TeacherId:  int(req.TeacherId),
 	}
 	res, err := s.cc.UpdateCourse(ctx, int(req.Id), course)
 	if err != nil {
@@ -135,6 +136,7 @@ func (s *KubecitService) UpdateCourse(ctx context.Context, req *pb.UpdateCourseR
 			People:     102,
 			Score:      99,
 			Duration:   40,
+			TeacherId:  int32(res.TeacherId),
 		}}, nil
 }
 
