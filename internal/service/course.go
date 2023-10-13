@@ -179,6 +179,7 @@ func (s *KubecitService) CreateCourse(ctx context.Context, req *pb.CreateCourseR
 		Price:      req.GetPrice(),
 		Tags:       strings.Join(req.GetTags(), ","),
 		CategoryId: int(req.GetCategoryId()),
+		TeacherId:  int(req.TeacherId),
 	}
 	res, err := s.cc.CreateCourse(ctx, ins)
 	if err != nil {

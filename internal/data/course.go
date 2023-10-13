@@ -158,8 +158,8 @@ func (c *courseRepo) ReviewCourse(ctx context.Context, id int, status int32) (*b
 }
 
 func (c *courseRepo) CreateCourse(ctx context.Context, course *biz.Course) (*biz.Course, error) {
-	res, err := c.data.db.Course.Create().SetLevel(course.Level).SetName(course.Name).SetDetail(course.Detail).SetCover(course.Cover).
-		SetPrice(course.Price).SetTags(course.Tags).SetStatus(course.Status).SetCategoryID(course.CategoryId).Save(ctx)
+	res, err := c.data.db.Debug().Course.Create().SetLevel(course.Level).SetName(course.Name).SetDetail(course.Detail).SetCover(course.Cover).
+		SetPrice(course.Price).SetTags(course.Tags).SetStatus(course.Status).SetCategoryID(course.CategoryId).SetTeacherID(course.TeacherId).Save(ctx)
 	if err != nil {
 		c.log.Errorf("course repo create error: %v\n", err)
 		return nil, err
