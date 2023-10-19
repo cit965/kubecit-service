@@ -100,6 +100,11 @@ func UpdateAt(v time.Time) predicate.Teacher {
 	return predicate.Teacher(sql.FieldEQ(FieldUpdateAt, v))
 }
 
+// UserID applies equality check predicate on the "user_id" field. It's identical to UserIDEQ.
+func UserID(v int) predicate.Teacher {
+	return predicate.Teacher(sql.FieldEQ(FieldUserID, v))
+}
+
 // DetailEQ applies the EQ predicate on the "detail" field.
 func DetailEQ(v string) predicate.Teacher {
 	return predicate.Teacher(sql.FieldEQ(FieldDetail, v))
@@ -660,6 +665,36 @@ func UpdateAtLTE(v time.Time) predicate.Teacher {
 	return predicate.Teacher(sql.FieldLTE(FieldUpdateAt, v))
 }
 
+// UserIDEQ applies the EQ predicate on the "user_id" field.
+func UserIDEQ(v int) predicate.Teacher {
+	return predicate.Teacher(sql.FieldEQ(FieldUserID, v))
+}
+
+// UserIDNEQ applies the NEQ predicate on the "user_id" field.
+func UserIDNEQ(v int) predicate.Teacher {
+	return predicate.Teacher(sql.FieldNEQ(FieldUserID, v))
+}
+
+// UserIDIn applies the In predicate on the "user_id" field.
+func UserIDIn(vs ...int) predicate.Teacher {
+	return predicate.Teacher(sql.FieldIn(FieldUserID, vs...))
+}
+
+// UserIDNotIn applies the NotIn predicate on the "user_id" field.
+func UserIDNotIn(vs ...int) predicate.Teacher {
+	return predicate.Teacher(sql.FieldNotIn(FieldUserID, vs...))
+}
+
+// UserIDIsNil applies the IsNil predicate on the "user_id" field.
+func UserIDIsNil() predicate.Teacher {
+	return predicate.Teacher(sql.FieldIsNull(FieldUserID))
+}
+
+// UserIDNotNil applies the NotNil predicate on the "user_id" field.
+func UserIDNotNil() predicate.Teacher {
+	return predicate.Teacher(sql.FieldNotNull(FieldUserID))
+}
+
 // HasCourses applies the HasEdge predicate on the "courses" edge.
 func HasCourses() predicate.Teacher {
 	return predicate.Teacher(func(s *sql.Selector) {
@@ -675,6 +710,29 @@ func HasCourses() predicate.Teacher {
 func HasCoursesWith(preds ...predicate.Course) predicate.Teacher {
 	return predicate.Teacher(func(s *sql.Selector) {
 		step := newCoursesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasUser applies the HasEdge predicate on the "user" edge.
+func HasUser() predicate.Teacher {
+	return predicate.Teacher(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, UserTable, UserColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasUserWith applies the HasEdge predicate on the "user" edge with a given conditions (other predicates).
+func HasUserWith(preds ...predicate.User) predicate.Teacher {
+	return predicate.Teacher(func(s *sql.Selector) {
+		step := newUserStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

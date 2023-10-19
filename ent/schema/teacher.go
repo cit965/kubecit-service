@@ -53,6 +53,8 @@ func (Teacher) Fields() []ent.Field {
 		field.Time("update_at").SchemaType(map[string]string{
 			dialect.MySQL: "datetime", // Override MySQL.
 		}).Default(time.Now).UpdateDefault(time.Now).Comment("更新时间"),
+
+		field.Int("user_id").Optional(),
 	}
 
 }
@@ -61,5 +63,6 @@ func (Teacher) Fields() []ent.Field {
 func (Teacher) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("courses", Course.Type),
+		edge.From("user", User.Type).Ref("teacher").Unique().Field("user_id"),
 	}
 }

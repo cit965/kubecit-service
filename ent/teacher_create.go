@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/teacher"
+	"kubecit-service/ent/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -131,6 +132,20 @@ func (tc *TeacherCreate) SetNillableUpdateAt(t *time.Time) *TeacherCreate {
 	return tc
 }
 
+// SetUserID sets the "user_id" field.
+func (tc *TeacherCreate) SetUserID(i int) *TeacherCreate {
+	tc.mutation.SetUserID(i)
+	return tc
+}
+
+// SetNillableUserID sets the "user_id" field if the given value is not nil.
+func (tc *TeacherCreate) SetNillableUserID(i *int) *TeacherCreate {
+	if i != nil {
+		tc.SetUserID(*i)
+	}
+	return tc
+}
+
 // AddCourseIDs adds the "courses" edge to the Course entity by IDs.
 func (tc *TeacherCreate) AddCourseIDs(ids ...int) *TeacherCreate {
 	tc.mutation.AddCourseIDs(ids...)
@@ -144,6 +159,11 @@ func (tc *TeacherCreate) AddCourses(c ...*Course) *TeacherCreate {
 		ids[i] = c[i].ID
 	}
 	return tc.AddCourseIDs(ids...)
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (tc *TeacherCreate) SetUser(u *User) *TeacherCreate {
+	return tc.SetUserID(u.ID)
 }
 
 // Mutation returns the TeacherMutation object of the builder.
@@ -281,6 +301,23 @@ func (tc *TeacherCreate) createSpec() (*Teacher, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := tc.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   teacher.UserTable,
+			Columns: []string{teacher.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.UserID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

@@ -216,12 +216,21 @@ var (
 		{Name: "avator", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "varchar(255)"}},
 		{Name: "create_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "update_at", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "user_id", Type: field.TypeInt, Unique: true, Nullable: true},
 	}
 	// TeachersTable holds the schema information for the "teachers" table.
 	TeachersTable = &schema.Table{
 		Name:       "teachers",
 		Columns:    TeachersColumns,
 		PrimaryKey: []*schema.Column{TeachersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "teachers_users_teacher",
+				Columns:    []*schema.Column{TeachersColumns[10]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
@@ -276,4 +285,5 @@ func init() {
 	CoursesTable.ForeignKeys[0].RefTable = CategoriesTable
 	CoursesTable.ForeignKeys[1].RefTable = TeachersTable
 	LessonsTable.ForeignKeys[0].RefTable = ChaptersTable
+	TeachersTable.ForeignKeys[0].RefTable = UsersTable
 }

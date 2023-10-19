@@ -4,6 +4,7 @@ package user
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -17,8 +18,17 @@ const (
 	FieldChannel = "channel"
 	// FieldRoleID holds the string denoting the role_id field in the database.
 	FieldRoleID = "role_id"
+	// EdgeTeacher holds the string denoting the teacher edge name in mutations.
+	EdgeTeacher = "teacher"
 	// Table holds the table name of the user in the database.
 	Table = "users"
+	// TeacherTable is the table that holds the teacher relation/edge.
+	TeacherTable = "teachers"
+	// TeacherInverseTable is the table name for the Teacher entity.
+	// It exists in this package in order to avoid circular dependency with the "teacher" package.
+	TeacherInverseTable = "teachers"
+	// TeacherColumn is the table column denoting the teacher relation/edge.
+	TeacherColumn = "user_id"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -60,4 +70,18 @@ func ByChannel(opts ...sql.OrderTermOption) OrderOption {
 // ByRoleID orders the results by the role_id field.
 func ByRoleID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRoleID, opts...).ToFunc()
+}
+
+// ByTeacherField orders the results by teacher field.
+func ByTeacherField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newTeacherStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newTeacherStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(TeacherInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2O, false, TeacherTable, TeacherColumn),
+	)
 }

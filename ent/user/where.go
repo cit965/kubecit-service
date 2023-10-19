@@ -6,6 +6,7 @@ import (
 	"kubecit-service/ent/predicate"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -236,6 +237,29 @@ func RoleIDLT(v uint8) predicate.User {
 // RoleIDLTE applies the LTE predicate on the "role_id" field.
 func RoleIDLTE(v uint8) predicate.User {
 	return predicate.User(sql.FieldLTE(FieldRoleID, v))
+}
+
+// HasTeacher applies the HasEdge predicate on the "teacher" edge.
+func HasTeacher() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, TeacherTable, TeacherColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasTeacherWith applies the HasEdge predicate on the "teacher" edge with a given conditions (other predicates).
+func HasTeacherWith(preds ...predicate.Teacher) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := newTeacherStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

@@ -5,6 +5,7 @@ package ent
 import (
 	"fmt"
 	"kubecit-service/ent/teacher"
+	"kubecit-service/ent/user"
 	"strings"
 	"time"
 
@@ -35,6 +36,8 @@ type Teacher struct {
 	CreateAt time.Time `json:"create_at,omitempty"`
 	// 更新时间
 	UpdateAt time.Time `json:"update_at,omitempty"`
+	// UserID holds the value of the "user_id" field.
+	UserID int `json:"user_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TeacherQuery when eager-loading is set.
 	Edges        TeacherEdges `json:"edges"`
@@ -45,9 +48,11 @@ type Teacher struct {
 type TeacherEdges struct {
 	// Courses holds the value of the courses edge.
 	Courses []*Course `json:"courses,omitempty"`
+	// User holds the value of the user edge.
+	User *User `json:"user,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 }
 
 // CoursesOrErr returns the Courses value or an error if the edge
@@ -59,12 +64,25 @@ func (e TeacherEdges) CoursesOrErr() ([]*Course, error) {
 	return nil, &NotLoadedError{edge: "courses"}
 }
 
+// UserOrErr returns the User value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e TeacherEdges) UserOrErr() (*User, error) {
+	if e.loadedTypes[1] {
+		if e.User == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: user.Label}
+		}
+		return e.User, nil
+	}
+	return nil, &NotLoadedError{edge: "user"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Teacher) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case teacher.FieldID, teacher.FieldLevel:
+		case teacher.FieldID, teacher.FieldLevel, teacher.FieldUserID:
 			values[i] = new(sql.NullInt64)
 		case teacher.FieldDetail, teacher.FieldCurriculumVitae, teacher.FieldWorks, teacher.FieldSkills, teacher.FieldName, teacher.FieldAvator:
 			values[i] = new(sql.NullString)
@@ -145,6 +163,12 @@ func (t *Teacher) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				t.UpdateAt = value.Time
 			}
+		case teacher.FieldUserID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field user_id", values[i])
+			} else if value.Valid {
+				t.UserID = int(value.Int64)
+			}
 		default:
 			t.selectValues.Set(columns[i], values[i])
 		}
@@ -161,6 +185,11 @@ func (t *Teacher) Value(name string) (ent.Value, error) {
 // QueryCourses queries the "courses" edge of the Teacher entity.
 func (t *Teacher) QueryCourses() *CourseQuery {
 	return NewTeacherClient(t.config).QueryCourses(t)
+}
+
+// QueryUser queries the "user" edge of the Teacher entity.
+func (t *Teacher) QueryUser() *UserQuery {
+	return NewTeacherClient(t.config).QueryUser(t)
 }
 
 // Update returns a builder for updating this Teacher.
@@ -212,6 +241,9 @@ func (t *Teacher) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("update_at=")
 	builder.WriteString(t.UpdateAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("user_id=")
+	builder.WriteString(fmt.Sprintf("%v", t.UserID))
 	builder.WriteByte(')')
 	return builder.String()
 }

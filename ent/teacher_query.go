@@ -9,6 +9,7 @@ import (
 	"kubecit-service/ent/course"
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/teacher"
+	"kubecit-service/ent/user"
 	"math"
 
 	"entgo.io/ent/dialect"
@@ -25,6 +26,7 @@ type TeacherQuery struct {
 	inters      []Interceptor
 	predicates  []predicate.Teacher
 	withCourses *CourseQuery
+	withUser    *UserQuery
 	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -77,6 +79,28 @@ func (tq *TeacherQuery) QueryCourses() *CourseQuery {
 			sqlgraph.From(teacher.Table, teacher.FieldID, selector),
 			sqlgraph.To(course.Table, course.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, teacher.CoursesTable, teacher.CoursesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryUser chains the current query on the "user" edge.
+func (tq *TeacherQuery) QueryUser() *UserQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := tq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := tq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(teacher.Table, teacher.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, teacher.UserTable, teacher.UserColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -277,6 +301,7 @@ func (tq *TeacherQuery) Clone() *TeacherQuery {
 		inters:      append([]Interceptor{}, tq.inters...),
 		predicates:  append([]predicate.Teacher{}, tq.predicates...),
 		withCourses: tq.withCourses.Clone(),
+		withUser:    tq.withUser.Clone(),
 		// clone intermediate query.
 		sql:  tq.sql.Clone(),
 		path: tq.path,
@@ -291,6 +316,17 @@ func (tq *TeacherQuery) WithCourses(opts ...func(*CourseQuery)) *TeacherQuery {
 		opt(query)
 	}
 	tq.withCourses = query
+	return tq
+}
+
+// WithUser tells the query-builder to eager-load the nodes that are connected to
+// the "user" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TeacherQuery) WithUser(opts ...func(*UserQuery)) *TeacherQuery {
+	query := (&UserClient{config: tq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	tq.withUser = query
 	return tq
 }
 
@@ -372,8 +408,9 @@ func (tq *TeacherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Teac
 	var (
 		nodes       = []*Teacher{}
 		_spec       = tq.querySpec()
-		loadedTypes = [1]bool{
+		loadedTypes = [2]bool{
 			tq.withCourses != nil,
+			tq.withUser != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -401,6 +438,12 @@ func (tq *TeacherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Teac
 		if err := tq.loadCourses(ctx, query, nodes,
 			func(n *Teacher) { n.Edges.Courses = []*Course{} },
 			func(n *Teacher, e *Course) { n.Edges.Courses = append(n.Edges.Courses, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := tq.withUser; query != nil {
+		if err := tq.loadUser(ctx, query, nodes, nil,
+			func(n *Teacher, e *User) { n.Edges.User = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -437,6 +480,35 @@ func (tq *TeacherQuery) loadCourses(ctx context.Context, query *CourseQuery, nod
 	}
 	return nil
 }
+func (tq *TeacherQuery) loadUser(ctx context.Context, query *UserQuery, nodes []*Teacher, init func(*Teacher), assign func(*Teacher, *User)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Teacher)
+	for i := range nodes {
+		fk := nodes[i].UserID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "user_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
 
 func (tq *TeacherQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := tq.querySpec()
@@ -465,6 +537,9 @@ func (tq *TeacherQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != teacher.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if tq.withUser != nil {
+			_spec.Node.AddColumnOnce(teacher.FieldUserID)
 		}
 	}
 	if ps := tq.predicates; len(ps) > 0 {

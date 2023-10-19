@@ -4,6 +4,7 @@ package ent
 
 import (
 	"fmt"
+	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
 	"strings"
 
@@ -21,8 +22,33 @@ type User struct {
 	// Channel holds the value of the "channel" field.
 	Channel string `json:"channel,omitempty"`
 	// RoleID holds the value of the "role_id" field.
-	RoleID       uint8 `json:"role_id,omitempty"`
+	RoleID uint8 `json:"role_id,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the UserQuery when eager-loading is set.
+	Edges        UserEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// UserEdges holds the relations/edges for other nodes in the graph.
+type UserEdges struct {
+	// Teacher holds the value of the teacher edge.
+	Teacher *Teacher `json:"teacher,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// TeacherOrErr returns the Teacher value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserEdges) TeacherOrErr() (*Teacher, error) {
+	if e.loadedTypes[0] {
+		if e.Teacher == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: teacher.Label}
+		}
+		return e.Teacher, nil
+	}
+	return nil, &NotLoadedError{edge: "teacher"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -84,6 +110,11 @@ func (u *User) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (u *User) Value(name string) (ent.Value, error) {
 	return u.selectValues.Get(name)
+}
+
+// QueryTeacher queries the "teacher" edge of the User entity.
+func (u *User) QueryTeacher() *TeacherQuery {
+	return NewUserClient(u.config).QueryTeacher(u)
 }
 
 // Update returns a builder for updating this User.
