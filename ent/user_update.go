@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"kubecit-service/ent/applyrecord"
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
@@ -72,6 +73,21 @@ func (uu *UserUpdate) SetTeacher(t *Teacher) *UserUpdate {
 	return uu.SetTeacherID(t.ID)
 }
 
+// AddApplyRecordIDs adds the "apply_record" edge to the ApplyRecord entity by IDs.
+func (uu *UserUpdate) AddApplyRecordIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddApplyRecordIDs(ids...)
+	return uu
+}
+
+// AddApplyRecord adds the "apply_record" edges to the ApplyRecord entity.
+func (uu *UserUpdate) AddApplyRecord(a ...*ApplyRecord) *UserUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uu.AddApplyRecordIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -81,6 +97,27 @@ func (uu *UserUpdate) Mutation() *UserMutation {
 func (uu *UserUpdate) ClearTeacher() *UserUpdate {
 	uu.mutation.ClearTeacher()
 	return uu
+}
+
+// ClearApplyRecord clears all "apply_record" edges to the ApplyRecord entity.
+func (uu *UserUpdate) ClearApplyRecord() *UserUpdate {
+	uu.mutation.ClearApplyRecord()
+	return uu
+}
+
+// RemoveApplyRecordIDs removes the "apply_record" edge to ApplyRecord entities by IDs.
+func (uu *UserUpdate) RemoveApplyRecordIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveApplyRecordIDs(ids...)
+	return uu
+}
+
+// RemoveApplyRecord removes "apply_record" edges to ApplyRecord entities.
+func (uu *UserUpdate) RemoveApplyRecord(a ...*ApplyRecord) *UserUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uu.RemoveApplyRecordIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -160,6 +197,51 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if uu.mutation.ApplyRecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApplyRecordTable,
+			Columns: []string{user.ApplyRecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(applyrecord.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedApplyRecordIDs(); len(nodes) > 0 && !uu.mutation.ApplyRecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApplyRecordTable,
+			Columns: []string{user.ApplyRecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(applyrecord.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.ApplyRecordIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApplyRecordTable,
+			Columns: []string{user.ApplyRecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(applyrecord.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
@@ -224,6 +306,21 @@ func (uuo *UserUpdateOne) SetTeacher(t *Teacher) *UserUpdateOne {
 	return uuo.SetTeacherID(t.ID)
 }
 
+// AddApplyRecordIDs adds the "apply_record" edge to the ApplyRecord entity by IDs.
+func (uuo *UserUpdateOne) AddApplyRecordIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddApplyRecordIDs(ids...)
+	return uuo
+}
+
+// AddApplyRecord adds the "apply_record" edges to the ApplyRecord entity.
+func (uuo *UserUpdateOne) AddApplyRecord(a ...*ApplyRecord) *UserUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uuo.AddApplyRecordIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -233,6 +330,27 @@ func (uuo *UserUpdateOne) Mutation() *UserMutation {
 func (uuo *UserUpdateOne) ClearTeacher() *UserUpdateOne {
 	uuo.mutation.ClearTeacher()
 	return uuo
+}
+
+// ClearApplyRecord clears all "apply_record" edges to the ApplyRecord entity.
+func (uuo *UserUpdateOne) ClearApplyRecord() *UserUpdateOne {
+	uuo.mutation.ClearApplyRecord()
+	return uuo
+}
+
+// RemoveApplyRecordIDs removes the "apply_record" edge to ApplyRecord entities by IDs.
+func (uuo *UserUpdateOne) RemoveApplyRecordIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveApplyRecordIDs(ids...)
+	return uuo
+}
+
+// RemoveApplyRecord removes "apply_record" edges to ApplyRecord entities.
+func (uuo *UserUpdateOne) RemoveApplyRecord(a ...*ApplyRecord) *UserUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uuo.RemoveApplyRecordIDs(ids...)
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -335,6 +453,51 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.ApplyRecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApplyRecordTable,
+			Columns: []string{user.ApplyRecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(applyrecord.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedApplyRecordIDs(); len(nodes) > 0 && !uuo.mutation.ApplyRecordCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApplyRecordTable,
+			Columns: []string{user.ApplyRecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(applyrecord.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.ApplyRecordIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApplyRecordTable,
+			Columns: []string{user.ApplyRecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(applyrecord.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

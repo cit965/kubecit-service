@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/account"
+	"kubecit-service/ent/applyrecord"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
@@ -35,18 +36,19 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeAccount    = "Account"
-	TypeCategory   = "Category"
-	TypeChapter    = "Chapter"
-	TypeCourse     = "Course"
-	TypeLesson     = "Lesson"
-	TypeOrderInfos = "OrderInfos"
-	TypeOrders     = "Orders"
-	TypeSetting    = "Setting"
-	TypeSlider     = "Slider"
-	TypeTeacher    = "Teacher"
-	TypeUser       = "User"
-	TypeWallet     = "Wallet"
+	TypeAccount     = "Account"
+	TypeApplyRecord = "ApplyRecord"
+	TypeCategory    = "Category"
+	TypeChapter     = "Chapter"
+	TypeCourse      = "Course"
+	TypeLesson      = "Lesson"
+	TypeOrderInfos  = "OrderInfos"
+	TypeOrders      = "Orders"
+	TypeSetting     = "Setting"
+	TypeSlider      = "Slider"
+	TypeTeacher     = "Teacher"
+	TypeUser        = "User"
+	TypeWallet      = "Wallet"
 )
 
 // AccountMutation represents an operation that mutates the Account nodes in the graph.
@@ -571,6 +573,1291 @@ func (m *AccountMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *AccountMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Account edge %s", name)
+}
+
+// ApplyRecordMutation represents an operation that mutates the ApplyRecord nodes in the graph.
+type ApplyRecordMutation struct {
+	config
+	op               Op
+	typ              string
+	id               *int
+	detail           *string
+	curriculum_vitae *string
+	works            *string
+	skills           *string
+	name             *string
+	level            *int
+	addlevel         *int
+	avatar           *string
+	create_at        *time.Time
+	update_at        *time.Time
+	is_passed        *int8
+	addis_passed     *int8
+	messages         *string
+	auditor_id       *int
+	addauditor_id    *int
+	clearedFields    map[string]struct{}
+	user             *int
+	cleareduser      bool
+	done             bool
+	oldValue         func(context.Context) (*ApplyRecord, error)
+	predicates       []predicate.ApplyRecord
+}
+
+var _ ent.Mutation = (*ApplyRecordMutation)(nil)
+
+// applyrecordOption allows management of the mutation configuration using functional options.
+type applyrecordOption func(*ApplyRecordMutation)
+
+// newApplyRecordMutation creates new mutation for the ApplyRecord entity.
+func newApplyRecordMutation(c config, op Op, opts ...applyrecordOption) *ApplyRecordMutation {
+	m := &ApplyRecordMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeApplyRecord,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withApplyRecordID sets the ID field of the mutation.
+func withApplyRecordID(id int) applyrecordOption {
+	return func(m *ApplyRecordMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *ApplyRecord
+		)
+		m.oldValue = func(ctx context.Context) (*ApplyRecord, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().ApplyRecord.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withApplyRecord sets the old ApplyRecord of the mutation.
+func withApplyRecord(node *ApplyRecord) applyrecordOption {
+	return func(m *ApplyRecordMutation) {
+		m.oldValue = func(context.Context) (*ApplyRecord, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m ApplyRecordMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m ApplyRecordMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *ApplyRecordMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *ApplyRecordMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().ApplyRecord.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetDetail sets the "detail" field.
+func (m *ApplyRecordMutation) SetDetail(s string) {
+	m.detail = &s
+}
+
+// Detail returns the value of the "detail" field in the mutation.
+func (m *ApplyRecordMutation) Detail() (r string, exists bool) {
+	v := m.detail
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDetail returns the old "detail" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldDetail(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDetail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDetail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDetail: %w", err)
+	}
+	return oldValue.Detail, nil
+}
+
+// ClearDetail clears the value of the "detail" field.
+func (m *ApplyRecordMutation) ClearDetail() {
+	m.detail = nil
+	m.clearedFields[applyrecord.FieldDetail] = struct{}{}
+}
+
+// DetailCleared returns if the "detail" field was cleared in this mutation.
+func (m *ApplyRecordMutation) DetailCleared() bool {
+	_, ok := m.clearedFields[applyrecord.FieldDetail]
+	return ok
+}
+
+// ResetDetail resets all changes to the "detail" field.
+func (m *ApplyRecordMutation) ResetDetail() {
+	m.detail = nil
+	delete(m.clearedFields, applyrecord.FieldDetail)
+}
+
+// SetCurriculumVitae sets the "curriculum_vitae" field.
+func (m *ApplyRecordMutation) SetCurriculumVitae(s string) {
+	m.curriculum_vitae = &s
+}
+
+// CurriculumVitae returns the value of the "curriculum_vitae" field in the mutation.
+func (m *ApplyRecordMutation) CurriculumVitae() (r string, exists bool) {
+	v := m.curriculum_vitae
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCurriculumVitae returns the old "curriculum_vitae" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldCurriculumVitae(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCurriculumVitae is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCurriculumVitae requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCurriculumVitae: %w", err)
+	}
+	return oldValue.CurriculumVitae, nil
+}
+
+// ClearCurriculumVitae clears the value of the "curriculum_vitae" field.
+func (m *ApplyRecordMutation) ClearCurriculumVitae() {
+	m.curriculum_vitae = nil
+	m.clearedFields[applyrecord.FieldCurriculumVitae] = struct{}{}
+}
+
+// CurriculumVitaeCleared returns if the "curriculum_vitae" field was cleared in this mutation.
+func (m *ApplyRecordMutation) CurriculumVitaeCleared() bool {
+	_, ok := m.clearedFields[applyrecord.FieldCurriculumVitae]
+	return ok
+}
+
+// ResetCurriculumVitae resets all changes to the "curriculum_vitae" field.
+func (m *ApplyRecordMutation) ResetCurriculumVitae() {
+	m.curriculum_vitae = nil
+	delete(m.clearedFields, applyrecord.FieldCurriculumVitae)
+}
+
+// SetWorks sets the "works" field.
+func (m *ApplyRecordMutation) SetWorks(s string) {
+	m.works = &s
+}
+
+// Works returns the value of the "works" field in the mutation.
+func (m *ApplyRecordMutation) Works() (r string, exists bool) {
+	v := m.works
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldWorks returns the old "works" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldWorks(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldWorks is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldWorks requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldWorks: %w", err)
+	}
+	return oldValue.Works, nil
+}
+
+// ClearWorks clears the value of the "works" field.
+func (m *ApplyRecordMutation) ClearWorks() {
+	m.works = nil
+	m.clearedFields[applyrecord.FieldWorks] = struct{}{}
+}
+
+// WorksCleared returns if the "works" field was cleared in this mutation.
+func (m *ApplyRecordMutation) WorksCleared() bool {
+	_, ok := m.clearedFields[applyrecord.FieldWorks]
+	return ok
+}
+
+// ResetWorks resets all changes to the "works" field.
+func (m *ApplyRecordMutation) ResetWorks() {
+	m.works = nil
+	delete(m.clearedFields, applyrecord.FieldWorks)
+}
+
+// SetSkills sets the "skills" field.
+func (m *ApplyRecordMutation) SetSkills(s string) {
+	m.skills = &s
+}
+
+// Skills returns the value of the "skills" field in the mutation.
+func (m *ApplyRecordMutation) Skills() (r string, exists bool) {
+	v := m.skills
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSkills returns the old "skills" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldSkills(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSkills is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSkills requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSkills: %w", err)
+	}
+	return oldValue.Skills, nil
+}
+
+// ClearSkills clears the value of the "skills" field.
+func (m *ApplyRecordMutation) ClearSkills() {
+	m.skills = nil
+	m.clearedFields[applyrecord.FieldSkills] = struct{}{}
+}
+
+// SkillsCleared returns if the "skills" field was cleared in this mutation.
+func (m *ApplyRecordMutation) SkillsCleared() bool {
+	_, ok := m.clearedFields[applyrecord.FieldSkills]
+	return ok
+}
+
+// ResetSkills resets all changes to the "skills" field.
+func (m *ApplyRecordMutation) ResetSkills() {
+	m.skills = nil
+	delete(m.clearedFields, applyrecord.FieldSkills)
+}
+
+// SetName sets the "name" field.
+func (m *ApplyRecordMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *ApplyRecordMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *ApplyRecordMutation) ResetName() {
+	m.name = nil
+}
+
+// SetLevel sets the "level" field.
+func (m *ApplyRecordMutation) SetLevel(i int) {
+	m.level = &i
+	m.addlevel = nil
+}
+
+// Level returns the value of the "level" field in the mutation.
+func (m *ApplyRecordMutation) Level() (r int, exists bool) {
+	v := m.level
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLevel returns the old "level" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldLevel(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLevel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLevel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLevel: %w", err)
+	}
+	return oldValue.Level, nil
+}
+
+// AddLevel adds i to the "level" field.
+func (m *ApplyRecordMutation) AddLevel(i int) {
+	if m.addlevel != nil {
+		*m.addlevel += i
+	} else {
+		m.addlevel = &i
+	}
+}
+
+// AddedLevel returns the value that was added to the "level" field in this mutation.
+func (m *ApplyRecordMutation) AddedLevel() (r int, exists bool) {
+	v := m.addlevel
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetLevel resets all changes to the "level" field.
+func (m *ApplyRecordMutation) ResetLevel() {
+	m.level = nil
+	m.addlevel = nil
+}
+
+// SetAvatar sets the "avatar" field.
+func (m *ApplyRecordMutation) SetAvatar(s string) {
+	m.avatar = &s
+}
+
+// Avatar returns the value of the "avatar" field in the mutation.
+func (m *ApplyRecordMutation) Avatar() (r string, exists bool) {
+	v := m.avatar
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAvatar returns the old "avatar" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldAvatar(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAvatar is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAvatar requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAvatar: %w", err)
+	}
+	return oldValue.Avatar, nil
+}
+
+// ClearAvatar clears the value of the "avatar" field.
+func (m *ApplyRecordMutation) ClearAvatar() {
+	m.avatar = nil
+	m.clearedFields[applyrecord.FieldAvatar] = struct{}{}
+}
+
+// AvatarCleared returns if the "avatar" field was cleared in this mutation.
+func (m *ApplyRecordMutation) AvatarCleared() bool {
+	_, ok := m.clearedFields[applyrecord.FieldAvatar]
+	return ok
+}
+
+// ResetAvatar resets all changes to the "avatar" field.
+func (m *ApplyRecordMutation) ResetAvatar() {
+	m.avatar = nil
+	delete(m.clearedFields, applyrecord.FieldAvatar)
+}
+
+// SetCreateAt sets the "create_at" field.
+func (m *ApplyRecordMutation) SetCreateAt(t time.Time) {
+	m.create_at = &t
+}
+
+// CreateAt returns the value of the "create_at" field in the mutation.
+func (m *ApplyRecordMutation) CreateAt() (r time.Time, exists bool) {
+	v := m.create_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateAt returns the old "create_at" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldCreateAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+	}
+	return oldValue.CreateAt, nil
+}
+
+// ResetCreateAt resets all changes to the "create_at" field.
+func (m *ApplyRecordMutation) ResetCreateAt() {
+	m.create_at = nil
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (m *ApplyRecordMutation) SetUpdateAt(t time.Time) {
+	m.update_at = &t
+}
+
+// UpdateAt returns the value of the "update_at" field in the mutation.
+func (m *ApplyRecordMutation) UpdateAt() (r time.Time, exists bool) {
+	v := m.update_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateAt returns the old "update_at" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldUpdateAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+	}
+	return oldValue.UpdateAt, nil
+}
+
+// ResetUpdateAt resets all changes to the "update_at" field.
+func (m *ApplyRecordMutation) ResetUpdateAt() {
+	m.update_at = nil
+}
+
+// SetIsPassed sets the "is_passed" field.
+func (m *ApplyRecordMutation) SetIsPassed(i int8) {
+	m.is_passed = &i
+	m.addis_passed = nil
+}
+
+// IsPassed returns the value of the "is_passed" field in the mutation.
+func (m *ApplyRecordMutation) IsPassed() (r int8, exists bool) {
+	v := m.is_passed
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsPassed returns the old "is_passed" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldIsPassed(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsPassed is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsPassed requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsPassed: %w", err)
+	}
+	return oldValue.IsPassed, nil
+}
+
+// AddIsPassed adds i to the "is_passed" field.
+func (m *ApplyRecordMutation) AddIsPassed(i int8) {
+	if m.addis_passed != nil {
+		*m.addis_passed += i
+	} else {
+		m.addis_passed = &i
+	}
+}
+
+// AddedIsPassed returns the value that was added to the "is_passed" field in this mutation.
+func (m *ApplyRecordMutation) AddedIsPassed() (r int8, exists bool) {
+	v := m.addis_passed
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetIsPassed resets all changes to the "is_passed" field.
+func (m *ApplyRecordMutation) ResetIsPassed() {
+	m.is_passed = nil
+	m.addis_passed = nil
+}
+
+// SetMessages sets the "messages" field.
+func (m *ApplyRecordMutation) SetMessages(s string) {
+	m.messages = &s
+}
+
+// Messages returns the value of the "messages" field in the mutation.
+func (m *ApplyRecordMutation) Messages() (r string, exists bool) {
+	v := m.messages
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMessages returns the old "messages" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldMessages(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMessages is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMessages requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMessages: %w", err)
+	}
+	return oldValue.Messages, nil
+}
+
+// ClearMessages clears the value of the "messages" field.
+func (m *ApplyRecordMutation) ClearMessages() {
+	m.messages = nil
+	m.clearedFields[applyrecord.FieldMessages] = struct{}{}
+}
+
+// MessagesCleared returns if the "messages" field was cleared in this mutation.
+func (m *ApplyRecordMutation) MessagesCleared() bool {
+	_, ok := m.clearedFields[applyrecord.FieldMessages]
+	return ok
+}
+
+// ResetMessages resets all changes to the "messages" field.
+func (m *ApplyRecordMutation) ResetMessages() {
+	m.messages = nil
+	delete(m.clearedFields, applyrecord.FieldMessages)
+}
+
+// SetAuditorID sets the "auditor_id" field.
+func (m *ApplyRecordMutation) SetAuditorID(i int) {
+	m.auditor_id = &i
+	m.addauditor_id = nil
+}
+
+// AuditorID returns the value of the "auditor_id" field in the mutation.
+func (m *ApplyRecordMutation) AuditorID() (r int, exists bool) {
+	v := m.auditor_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAuditorID returns the old "auditor_id" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldAuditorID(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAuditorID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAuditorID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAuditorID: %w", err)
+	}
+	return oldValue.AuditorID, nil
+}
+
+// AddAuditorID adds i to the "auditor_id" field.
+func (m *ApplyRecordMutation) AddAuditorID(i int) {
+	if m.addauditor_id != nil {
+		*m.addauditor_id += i
+	} else {
+		m.addauditor_id = &i
+	}
+}
+
+// AddedAuditorID returns the value that was added to the "auditor_id" field in this mutation.
+func (m *ApplyRecordMutation) AddedAuditorID() (r int, exists bool) {
+	v := m.addauditor_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearAuditorID clears the value of the "auditor_id" field.
+func (m *ApplyRecordMutation) ClearAuditorID() {
+	m.auditor_id = nil
+	m.addauditor_id = nil
+	m.clearedFields[applyrecord.FieldAuditorID] = struct{}{}
+}
+
+// AuditorIDCleared returns if the "auditor_id" field was cleared in this mutation.
+func (m *ApplyRecordMutation) AuditorIDCleared() bool {
+	_, ok := m.clearedFields[applyrecord.FieldAuditorID]
+	return ok
+}
+
+// ResetAuditorID resets all changes to the "auditor_id" field.
+func (m *ApplyRecordMutation) ResetAuditorID() {
+	m.auditor_id = nil
+	m.addauditor_id = nil
+	delete(m.clearedFields, applyrecord.FieldAuditorID)
+}
+
+// SetUserID sets the "user_id" field.
+func (m *ApplyRecordMutation) SetUserID(i int) {
+	m.user = &i
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *ApplyRecordMutation) UserID() (r int, exists bool) {
+	v := m.user
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the ApplyRecord entity.
+// If the ApplyRecord object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ApplyRecordMutation) OldUserID(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// ClearUserID clears the value of the "user_id" field.
+func (m *ApplyRecordMutation) ClearUserID() {
+	m.user = nil
+	m.clearedFields[applyrecord.FieldUserID] = struct{}{}
+}
+
+// UserIDCleared returns if the "user_id" field was cleared in this mutation.
+func (m *ApplyRecordMutation) UserIDCleared() bool {
+	_, ok := m.clearedFields[applyrecord.FieldUserID]
+	return ok
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *ApplyRecordMutation) ResetUserID() {
+	m.user = nil
+	delete(m.clearedFields, applyrecord.FieldUserID)
+}
+
+// ClearUser clears the "user" edge to the User entity.
+func (m *ApplyRecordMutation) ClearUser() {
+	m.cleareduser = true
+}
+
+// UserCleared reports if the "user" edge to the User entity was cleared.
+func (m *ApplyRecordMutation) UserCleared() bool {
+	return m.UserIDCleared() || m.cleareduser
+}
+
+// UserIDs returns the "user" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// UserID instead. It exists only for internal usage by the builders.
+func (m *ApplyRecordMutation) UserIDs() (ids []int) {
+	if id := m.user; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetUser resets all changes to the "user" edge.
+func (m *ApplyRecordMutation) ResetUser() {
+	m.user = nil
+	m.cleareduser = false
+}
+
+// Where appends a list predicates to the ApplyRecordMutation builder.
+func (m *ApplyRecordMutation) Where(ps ...predicate.ApplyRecord) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the ApplyRecordMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *ApplyRecordMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.ApplyRecord, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *ApplyRecordMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *ApplyRecordMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (ApplyRecord).
+func (m *ApplyRecordMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *ApplyRecordMutation) Fields() []string {
+	fields := make([]string, 0, 13)
+	if m.detail != nil {
+		fields = append(fields, applyrecord.FieldDetail)
+	}
+	if m.curriculum_vitae != nil {
+		fields = append(fields, applyrecord.FieldCurriculumVitae)
+	}
+	if m.works != nil {
+		fields = append(fields, applyrecord.FieldWorks)
+	}
+	if m.skills != nil {
+		fields = append(fields, applyrecord.FieldSkills)
+	}
+	if m.name != nil {
+		fields = append(fields, applyrecord.FieldName)
+	}
+	if m.level != nil {
+		fields = append(fields, applyrecord.FieldLevel)
+	}
+	if m.avatar != nil {
+		fields = append(fields, applyrecord.FieldAvatar)
+	}
+	if m.create_at != nil {
+		fields = append(fields, applyrecord.FieldCreateAt)
+	}
+	if m.update_at != nil {
+		fields = append(fields, applyrecord.FieldUpdateAt)
+	}
+	if m.is_passed != nil {
+		fields = append(fields, applyrecord.FieldIsPassed)
+	}
+	if m.messages != nil {
+		fields = append(fields, applyrecord.FieldMessages)
+	}
+	if m.auditor_id != nil {
+		fields = append(fields, applyrecord.FieldAuditorID)
+	}
+	if m.user != nil {
+		fields = append(fields, applyrecord.FieldUserID)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *ApplyRecordMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case applyrecord.FieldDetail:
+		return m.Detail()
+	case applyrecord.FieldCurriculumVitae:
+		return m.CurriculumVitae()
+	case applyrecord.FieldWorks:
+		return m.Works()
+	case applyrecord.FieldSkills:
+		return m.Skills()
+	case applyrecord.FieldName:
+		return m.Name()
+	case applyrecord.FieldLevel:
+		return m.Level()
+	case applyrecord.FieldAvatar:
+		return m.Avatar()
+	case applyrecord.FieldCreateAt:
+		return m.CreateAt()
+	case applyrecord.FieldUpdateAt:
+		return m.UpdateAt()
+	case applyrecord.FieldIsPassed:
+		return m.IsPassed()
+	case applyrecord.FieldMessages:
+		return m.Messages()
+	case applyrecord.FieldAuditorID:
+		return m.AuditorID()
+	case applyrecord.FieldUserID:
+		return m.UserID()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *ApplyRecordMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case applyrecord.FieldDetail:
+		return m.OldDetail(ctx)
+	case applyrecord.FieldCurriculumVitae:
+		return m.OldCurriculumVitae(ctx)
+	case applyrecord.FieldWorks:
+		return m.OldWorks(ctx)
+	case applyrecord.FieldSkills:
+		return m.OldSkills(ctx)
+	case applyrecord.FieldName:
+		return m.OldName(ctx)
+	case applyrecord.FieldLevel:
+		return m.OldLevel(ctx)
+	case applyrecord.FieldAvatar:
+		return m.OldAvatar(ctx)
+	case applyrecord.FieldCreateAt:
+		return m.OldCreateAt(ctx)
+	case applyrecord.FieldUpdateAt:
+		return m.OldUpdateAt(ctx)
+	case applyrecord.FieldIsPassed:
+		return m.OldIsPassed(ctx)
+	case applyrecord.FieldMessages:
+		return m.OldMessages(ctx)
+	case applyrecord.FieldAuditorID:
+		return m.OldAuditorID(ctx)
+	case applyrecord.FieldUserID:
+		return m.OldUserID(ctx)
+	}
+	return nil, fmt.Errorf("unknown ApplyRecord field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ApplyRecordMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case applyrecord.FieldDetail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDetail(v)
+		return nil
+	case applyrecord.FieldCurriculumVitae:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCurriculumVitae(v)
+		return nil
+	case applyrecord.FieldWorks:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetWorks(v)
+		return nil
+	case applyrecord.FieldSkills:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSkills(v)
+		return nil
+	case applyrecord.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case applyrecord.FieldLevel:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLevel(v)
+		return nil
+	case applyrecord.FieldAvatar:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAvatar(v)
+		return nil
+	case applyrecord.FieldCreateAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateAt(v)
+		return nil
+	case applyrecord.FieldUpdateAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateAt(v)
+		return nil
+	case applyrecord.FieldIsPassed:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsPassed(v)
+		return nil
+	case applyrecord.FieldMessages:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMessages(v)
+		return nil
+	case applyrecord.FieldAuditorID:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAuditorID(v)
+		return nil
+	case applyrecord.FieldUserID:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ApplyRecord field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *ApplyRecordMutation) AddedFields() []string {
+	var fields []string
+	if m.addlevel != nil {
+		fields = append(fields, applyrecord.FieldLevel)
+	}
+	if m.addis_passed != nil {
+		fields = append(fields, applyrecord.FieldIsPassed)
+	}
+	if m.addauditor_id != nil {
+		fields = append(fields, applyrecord.FieldAuditorID)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *ApplyRecordMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case applyrecord.FieldLevel:
+		return m.AddedLevel()
+	case applyrecord.FieldIsPassed:
+		return m.AddedIsPassed()
+	case applyrecord.FieldAuditorID:
+		return m.AddedAuditorID()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ApplyRecordMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case applyrecord.FieldLevel:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddLevel(v)
+		return nil
+	case applyrecord.FieldIsPassed:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddIsPassed(v)
+		return nil
+	case applyrecord.FieldAuditorID:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAuditorID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ApplyRecord numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *ApplyRecordMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(applyrecord.FieldDetail) {
+		fields = append(fields, applyrecord.FieldDetail)
+	}
+	if m.FieldCleared(applyrecord.FieldCurriculumVitae) {
+		fields = append(fields, applyrecord.FieldCurriculumVitae)
+	}
+	if m.FieldCleared(applyrecord.FieldWorks) {
+		fields = append(fields, applyrecord.FieldWorks)
+	}
+	if m.FieldCleared(applyrecord.FieldSkills) {
+		fields = append(fields, applyrecord.FieldSkills)
+	}
+	if m.FieldCleared(applyrecord.FieldAvatar) {
+		fields = append(fields, applyrecord.FieldAvatar)
+	}
+	if m.FieldCleared(applyrecord.FieldMessages) {
+		fields = append(fields, applyrecord.FieldMessages)
+	}
+	if m.FieldCleared(applyrecord.FieldAuditorID) {
+		fields = append(fields, applyrecord.FieldAuditorID)
+	}
+	if m.FieldCleared(applyrecord.FieldUserID) {
+		fields = append(fields, applyrecord.FieldUserID)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *ApplyRecordMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *ApplyRecordMutation) ClearField(name string) error {
+	switch name {
+	case applyrecord.FieldDetail:
+		m.ClearDetail()
+		return nil
+	case applyrecord.FieldCurriculumVitae:
+		m.ClearCurriculumVitae()
+		return nil
+	case applyrecord.FieldWorks:
+		m.ClearWorks()
+		return nil
+	case applyrecord.FieldSkills:
+		m.ClearSkills()
+		return nil
+	case applyrecord.FieldAvatar:
+		m.ClearAvatar()
+		return nil
+	case applyrecord.FieldMessages:
+		m.ClearMessages()
+		return nil
+	case applyrecord.FieldAuditorID:
+		m.ClearAuditorID()
+		return nil
+	case applyrecord.FieldUserID:
+		m.ClearUserID()
+		return nil
+	}
+	return fmt.Errorf("unknown ApplyRecord nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *ApplyRecordMutation) ResetField(name string) error {
+	switch name {
+	case applyrecord.FieldDetail:
+		m.ResetDetail()
+		return nil
+	case applyrecord.FieldCurriculumVitae:
+		m.ResetCurriculumVitae()
+		return nil
+	case applyrecord.FieldWorks:
+		m.ResetWorks()
+		return nil
+	case applyrecord.FieldSkills:
+		m.ResetSkills()
+		return nil
+	case applyrecord.FieldName:
+		m.ResetName()
+		return nil
+	case applyrecord.FieldLevel:
+		m.ResetLevel()
+		return nil
+	case applyrecord.FieldAvatar:
+		m.ResetAvatar()
+		return nil
+	case applyrecord.FieldCreateAt:
+		m.ResetCreateAt()
+		return nil
+	case applyrecord.FieldUpdateAt:
+		m.ResetUpdateAt()
+		return nil
+	case applyrecord.FieldIsPassed:
+		m.ResetIsPassed()
+		return nil
+	case applyrecord.FieldMessages:
+		m.ResetMessages()
+		return nil
+	case applyrecord.FieldAuditorID:
+		m.ResetAuditorID()
+		return nil
+	case applyrecord.FieldUserID:
+		m.ResetUserID()
+		return nil
+	}
+	return fmt.Errorf("unknown ApplyRecord field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *ApplyRecordMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.user != nil {
+		edges = append(edges, applyrecord.EdgeUser)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *ApplyRecordMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case applyrecord.EdgeUser:
+		if id := m.user; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *ApplyRecordMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *ApplyRecordMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *ApplyRecordMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.cleareduser {
+		edges = append(edges, applyrecord.EdgeUser)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *ApplyRecordMutation) EdgeCleared(name string) bool {
+	switch name {
+	case applyrecord.EdgeUser:
+		return m.cleareduser
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *ApplyRecordMutation) ClearEdge(name string) error {
+	switch name {
+	case applyrecord.EdgeUser:
+		m.ClearUser()
+		return nil
+	}
+	return fmt.Errorf("unknown ApplyRecord unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *ApplyRecordMutation) ResetEdge(name string) error {
+	switch name {
+	case applyrecord.EdgeUser:
+		m.ResetUser()
+		return nil
+	}
+	return fmt.Errorf("unknown ApplyRecord edge %s", name)
 }
 
 // CategoryMutation represents an operation that mutates the Category nodes in the graph.
@@ -8357,19 +9644,22 @@ func (m *TeacherMutation) ResetEdge(name string) error {
 // UserMutation represents an operation that mutates the User nodes in the graph.
 type UserMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *int
-	username       *string
-	channel        *string
-	role_id        *uint8
-	addrole_id     *int8
-	clearedFields  map[string]struct{}
-	teacher        *int
-	clearedteacher bool
-	done           bool
-	oldValue       func(context.Context) (*User, error)
-	predicates     []predicate.User
+	op                  Op
+	typ                 string
+	id                  *int
+	username            *string
+	channel             *string
+	role_id             *uint8
+	addrole_id          *int8
+	clearedFields       map[string]struct{}
+	teacher             *int
+	clearedteacher      bool
+	apply_record        map[int]struct{}
+	removedapply_record map[int]struct{}
+	clearedapply_record bool
+	done                bool
+	oldValue            func(context.Context) (*User, error)
+	predicates          []predicate.User
 }
 
 var _ ent.Mutation = (*UserMutation)(nil)
@@ -8637,6 +9927,60 @@ func (m *UserMutation) ResetTeacher() {
 	m.clearedteacher = false
 }
 
+// AddApplyRecordIDs adds the "apply_record" edge to the ApplyRecord entity by ids.
+func (m *UserMutation) AddApplyRecordIDs(ids ...int) {
+	if m.apply_record == nil {
+		m.apply_record = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.apply_record[ids[i]] = struct{}{}
+	}
+}
+
+// ClearApplyRecord clears the "apply_record" edge to the ApplyRecord entity.
+func (m *UserMutation) ClearApplyRecord() {
+	m.clearedapply_record = true
+}
+
+// ApplyRecordCleared reports if the "apply_record" edge to the ApplyRecord entity was cleared.
+func (m *UserMutation) ApplyRecordCleared() bool {
+	return m.clearedapply_record
+}
+
+// RemoveApplyRecordIDs removes the "apply_record" edge to the ApplyRecord entity by IDs.
+func (m *UserMutation) RemoveApplyRecordIDs(ids ...int) {
+	if m.removedapply_record == nil {
+		m.removedapply_record = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.apply_record, ids[i])
+		m.removedapply_record[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedApplyRecord returns the removed IDs of the "apply_record" edge to the ApplyRecord entity.
+func (m *UserMutation) RemovedApplyRecordIDs() (ids []int) {
+	for id := range m.removedapply_record {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ApplyRecordIDs returns the "apply_record" edge IDs in the mutation.
+func (m *UserMutation) ApplyRecordIDs() (ids []int) {
+	for id := range m.apply_record {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetApplyRecord resets all changes to the "apply_record" edge.
+func (m *UserMutation) ResetApplyRecord() {
+	m.apply_record = nil
+	m.clearedapply_record = false
+	m.removedapply_record = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -8819,9 +10163,12 @@ func (m *UserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.teacher != nil {
 		edges = append(edges, user.EdgeTeacher)
+	}
+	if m.apply_record != nil {
+		edges = append(edges, user.EdgeApplyRecord)
 	}
 	return edges
 }
@@ -8834,27 +10181,47 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 		if id := m.teacher; id != nil {
 			return []ent.Value{*id}
 		}
+	case user.EdgeApplyRecord:
+		ids := make([]ent.Value, 0, len(m.apply_record))
+		for id := range m.apply_record {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.removedapply_record != nil {
+		edges = append(edges, user.EdgeApplyRecord)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *UserMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case user.EdgeApplyRecord:
+		ids := make([]ent.Value, 0, len(m.removedapply_record))
+		for id := range m.removedapply_record {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.clearedteacher {
 		edges = append(edges, user.EdgeTeacher)
+	}
+	if m.clearedapply_record {
+		edges = append(edges, user.EdgeApplyRecord)
 	}
 	return edges
 }
@@ -8865,6 +10232,8 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 	switch name {
 	case user.EdgeTeacher:
 		return m.clearedteacher
+	case user.EdgeApplyRecord:
+		return m.clearedapply_record
 	}
 	return false
 }
@@ -8886,6 +10255,9 @@ func (m *UserMutation) ResetEdge(name string) error {
 	switch name {
 	case user.EdgeTeacher:
 		m.ResetTeacher()
+		return nil
+	case user.EdgeApplyRecord:
+		m.ResetApplyRecord()
 		return nil
 	}
 	return fmt.Errorf("unknown User edge %s", name)

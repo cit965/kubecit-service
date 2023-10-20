@@ -25,5 +25,6 @@ func (User) Fields() []ent.Field {
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("teacher", Teacher.Type).Unique(),
+		edge.To("apply_record", ApplyRecord.Type),
 	}
 }

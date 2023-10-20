@@ -20,6 +20,8 @@ const (
 	FieldRoleID = "role_id"
 	// EdgeTeacher holds the string denoting the teacher edge name in mutations.
 	EdgeTeacher = "teacher"
+	// EdgeApplyRecord holds the string denoting the apply_record edge name in mutations.
+	EdgeApplyRecord = "apply_record"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 	// TeacherTable is the table that holds the teacher relation/edge.
@@ -29,6 +31,13 @@ const (
 	TeacherInverseTable = "teachers"
 	// TeacherColumn is the table column denoting the teacher relation/edge.
 	TeacherColumn = "user_id"
+	// ApplyRecordTable is the table that holds the apply_record relation/edge.
+	ApplyRecordTable = "apply_records"
+	// ApplyRecordInverseTable is the table name for the ApplyRecord entity.
+	// It exists in this package in order to avoid circular dependency with the "applyrecord" package.
+	ApplyRecordInverseTable = "apply_records"
+	// ApplyRecordColumn is the table column denoting the apply_record relation/edge.
+	ApplyRecordColumn = "user_id"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -78,10 +87,31 @@ func ByTeacherField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newTeacherStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByApplyRecordCount orders the results by apply_record count.
+func ByApplyRecordCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newApplyRecordStep(), opts...)
+	}
+}
+
+// ByApplyRecord orders the results by apply_record terms.
+func ByApplyRecord(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newApplyRecordStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newTeacherStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(TeacherInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2O, false, TeacherTable, TeacherColumn),
+	)
+}
+func newApplyRecordStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ApplyRecordInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ApplyRecordTable, ApplyRecordColumn),
 	)
 }

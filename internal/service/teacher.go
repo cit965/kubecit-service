@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-kratos/kratos/v2/errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "kubecit-service/api/helloworld/v1"
@@ -113,5 +114,122 @@ func (s KubecitService) ListRecommendedLecturer(ctx context.Context, req *pb.Emp
 
 	return &pb.ListRecommendedLecturerReply{
 		RecommendedLecturers: lecturers,
+	}, nil
+}
+
+// TODO: 权限对接
+// TODO: 判断是否存在已经提交过的且未通过的申请
+func (s *KubecitService) BecomeTeacher(ctx context.Context, req *pb.CreateTeacherRequest) (*pb.BecomeTeacherReply, error) {
+	user, err := s.userUseCase.CurrentUserInfo(ctx)
+	if err != nil {
+		return nil, err
+	} else if uint8(user.RoleId) == biz.UserRoleLecturer {
+		return nil, fmt.Errorf("already is a teacher")
+	}
+	_, err = s.teacherCase.Become(ctx, &biz.ApplyRecord{
+		Detail:          req.Detail,
+		CurriculumVitae: req.CurriculumVitae,
+		Works:           req.Works,
+		Skills:          req.Skills,
+		Name:            req.Name,
+		Level:           int32(req.GetLevel()),
+		Avatar:          req.Avator,
+		UserId:          int(user.UserId),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &pb.BecomeTeacherReply{
+		Message: "申请已提交，请等待管理员审核",
+	}, nil
+}
+
+// TODO：权限对接
+func (s *KubecitService) ReviewTeacher(ctx context.Context, req *pb.ReviewTeacherRequest) (*pb.ReviewTeacherReply, error) {
+	user, err := s.userUseCase.CurrentUserInfo(ctx)
+	if err != nil {
+		return nil, err
+	} else if uint8(user.RoleId) < biz.UserRoleSuperAdmin {
+		return nil, fmt.Errorf("not enough privileges")
+	}
+	ra, err := s.teacherCase.Review(ctx, &biz.ReviewApplyRecord{
+		Id:        int(req.Id),
+		AuditorId: int(user.UserId),
+		Messages:  req.Message,
+		IsPassed:  int(req.GetIsPassed()),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &pb.ReviewTeacherReply{
+		Data: &pb.BecomeTeacherRecordData{
+			Id:              int32(ra.Id),
+			Detail:          ra.Detail,
+			CurriculumVitae: ra.CurriculumVitae,
+			Works:           ra.Works,
+			Skills:          ra.Skills,
+			Name:            ra.Name,
+			Level:           pb.TeacherLevel(ra.Level),
+			Avatar:          ra.Avatar,
+			CreateAt:        timestamppb.New(ra.CreateAt),
+			UpdateAt:        timestamppb.New(ra.UpdateAt),
+			IsPassed:        pb.ApplyRecordIsPassed(ra.IsPassed),
+			Message:         ra.Messages,
+			AuditorId:       int32(ra.AuditorId),
+		},
+		Message: "请求已审核",
+	}, nil
+}
+
+func (s *KubecitService) BecomeTeacherRecord(ctx context.Context, req *pb.BecomeTeacherRecordRequest) (*pb.BecomeTeacherRecordReply, error) {
+	records, err := s.teacherCase.BecomeRecord(ctx, &biz.BecomeRecordFilter{
+		IsPassed: func() *int32 {
+			if req.IsPassed != 0 {
+				return GetInt32Ptr(int32(req.IsPassed))
+			} else {
+				return nil
+			}
+		}(),
+		UserId: req.UserId,
+		Id:     req.Id,
+		PageNum: func() *int32 {
+			if req.PageNum == nil {
+				return GetInt32Ptr(int32(1))
+			} else {
+				return req.PageNum
+			}
+		}(),
+		PageSize: func() *int32 {
+			if req.PageSize == nil {
+				return GetInt32Ptr(int32(20))
+			} else {
+				return req.PageSize
+			}
+		}(),
+	})
+	if err != nil {
+		return nil, err
+	}
+	dataSet := make([]*pb.BecomeTeacherRecordData, 0, len(records))
+	for _, record := range records {
+		dataSet = append(dataSet, &pb.BecomeTeacherRecordData{
+			Id:              int32(record.Id),
+			Detail:          record.Detail,
+			CurriculumVitae: record.CurriculumVitae,
+			Works:           record.Works,
+			Skills:          record.Skills,
+			Name:            record.Name,
+			Level:           pb.TeacherLevel(record.Level),
+			Avatar:          record.Avatar,
+			CreateAt:        timestamppb.New(record.CreateAt),
+			UpdateAt:        timestamppb.New(record.UpdateAt),
+			IsPassed:        pb.ApplyRecordIsPassed(record.IsPassed),
+			Message:         record.Messages,
+			AuditorId:       int32(record.AuditorId),
+		})
+	}
+	return &pb.BecomeTeacherRecordReply{
+		Data:  dataSet,
+		Count: int32(len(dataSet)),
 	}, nil
 }

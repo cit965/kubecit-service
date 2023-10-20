@@ -11,6 +11,7 @@ import (
 	"kubecit-service/ent/migrate"
 
 	"kubecit-service/ent/account"
+	"kubecit-service/ent/applyrecord"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
@@ -36,6 +37,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// Account is the client for interacting with the Account builders.
 	Account *AccountClient
+	// ApplyRecord is the client for interacting with the ApplyRecord builders.
+	ApplyRecord *ApplyRecordClient
 	// Category is the client for interacting with the Category builders.
 	Category *CategoryClient
 	// Chapter is the client for interacting with the Chapter builders.
@@ -72,6 +75,7 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Account = NewAccountClient(c.config)
+	c.ApplyRecord = NewApplyRecordClient(c.config)
 	c.Category = NewCategoryClient(c.config)
 	c.Chapter = NewChapterClient(c.config)
 	c.Course = NewCourseClient(c.config)
@@ -163,20 +167,21 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:        ctx,
-		config:     cfg,
-		Account:    NewAccountClient(cfg),
-		Category:   NewCategoryClient(cfg),
-		Chapter:    NewChapterClient(cfg),
-		Course:     NewCourseClient(cfg),
-		Lesson:     NewLessonClient(cfg),
-		OrderInfos: NewOrderInfosClient(cfg),
-		Orders:     NewOrdersClient(cfg),
-		Setting:    NewSettingClient(cfg),
-		Slider:     NewSliderClient(cfg),
-		Teacher:    NewTeacherClient(cfg),
-		User:       NewUserClient(cfg),
-		Wallet:     NewWalletClient(cfg),
+		ctx:         ctx,
+		config:      cfg,
+		Account:     NewAccountClient(cfg),
+		ApplyRecord: NewApplyRecordClient(cfg),
+		Category:    NewCategoryClient(cfg),
+		Chapter:     NewChapterClient(cfg),
+		Course:      NewCourseClient(cfg),
+		Lesson:      NewLessonClient(cfg),
+		OrderInfos:  NewOrderInfosClient(cfg),
+		Orders:      NewOrdersClient(cfg),
+		Setting:     NewSettingClient(cfg),
+		Slider:      NewSliderClient(cfg),
+		Teacher:     NewTeacherClient(cfg),
+		User:        NewUserClient(cfg),
+		Wallet:      NewWalletClient(cfg),
 	}, nil
 }
 
@@ -194,20 +199,21 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:        ctx,
-		config:     cfg,
-		Account:    NewAccountClient(cfg),
-		Category:   NewCategoryClient(cfg),
-		Chapter:    NewChapterClient(cfg),
-		Course:     NewCourseClient(cfg),
-		Lesson:     NewLessonClient(cfg),
-		OrderInfos: NewOrderInfosClient(cfg),
-		Orders:     NewOrdersClient(cfg),
-		Setting:    NewSettingClient(cfg),
-		Slider:     NewSliderClient(cfg),
-		Teacher:    NewTeacherClient(cfg),
-		User:       NewUserClient(cfg),
-		Wallet:     NewWalletClient(cfg),
+		ctx:         ctx,
+		config:      cfg,
+		Account:     NewAccountClient(cfg),
+		ApplyRecord: NewApplyRecordClient(cfg),
+		Category:    NewCategoryClient(cfg),
+		Chapter:     NewChapterClient(cfg),
+		Course:      NewCourseClient(cfg),
+		Lesson:      NewLessonClient(cfg),
+		OrderInfos:  NewOrderInfosClient(cfg),
+		Orders:      NewOrdersClient(cfg),
+		Setting:     NewSettingClient(cfg),
+		Slider:      NewSliderClient(cfg),
+		Teacher:     NewTeacherClient(cfg),
+		User:        NewUserClient(cfg),
+		Wallet:      NewWalletClient(cfg),
 	}, nil
 }
 
@@ -237,8 +243,8 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.OrderInfos, c.Orders,
-		c.Setting, c.Slider, c.Teacher, c.User, c.Wallet,
+		c.Account, c.ApplyRecord, c.Category, c.Chapter, c.Course, c.Lesson,
+		c.OrderInfos, c.Orders, c.Setting, c.Slider, c.Teacher, c.User, c.Wallet,
 	} {
 		n.Use(hooks...)
 	}
@@ -248,8 +254,8 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.Account, c.Category, c.Chapter, c.Course, c.Lesson, c.OrderInfos, c.Orders,
-		c.Setting, c.Slider, c.Teacher, c.User, c.Wallet,
+		c.Account, c.ApplyRecord, c.Category, c.Chapter, c.Course, c.Lesson,
+		c.OrderInfos, c.Orders, c.Setting, c.Slider, c.Teacher, c.User, c.Wallet,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -260,6 +266,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *AccountMutation:
 		return c.Account.mutate(ctx, m)
+	case *ApplyRecordMutation:
+		return c.ApplyRecord.mutate(ctx, m)
 	case *CategoryMutation:
 		return c.Category.mutate(ctx, m)
 	case *ChapterMutation:
@@ -402,6 +410,140 @@ func (c *AccountClient) mutate(ctx context.Context, m *AccountMutation) (Value, 
 		return (&AccountDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown Account mutation op: %q", m.Op())
+	}
+}
+
+// ApplyRecordClient is a client for the ApplyRecord schema.
+type ApplyRecordClient struct {
+	config
+}
+
+// NewApplyRecordClient returns a client for the ApplyRecord from the given config.
+func NewApplyRecordClient(c config) *ApplyRecordClient {
+	return &ApplyRecordClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `applyrecord.Hooks(f(g(h())))`.
+func (c *ApplyRecordClient) Use(hooks ...Hook) {
+	c.hooks.ApplyRecord = append(c.hooks.ApplyRecord, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `applyrecord.Intercept(f(g(h())))`.
+func (c *ApplyRecordClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ApplyRecord = append(c.inters.ApplyRecord, interceptors...)
+}
+
+// Create returns a builder for creating a ApplyRecord entity.
+func (c *ApplyRecordClient) Create() *ApplyRecordCreate {
+	mutation := newApplyRecordMutation(c.config, OpCreate)
+	return &ApplyRecordCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ApplyRecord entities.
+func (c *ApplyRecordClient) CreateBulk(builders ...*ApplyRecordCreate) *ApplyRecordCreateBulk {
+	return &ApplyRecordCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ApplyRecord.
+func (c *ApplyRecordClient) Update() *ApplyRecordUpdate {
+	mutation := newApplyRecordMutation(c.config, OpUpdate)
+	return &ApplyRecordUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ApplyRecordClient) UpdateOne(ar *ApplyRecord) *ApplyRecordUpdateOne {
+	mutation := newApplyRecordMutation(c.config, OpUpdateOne, withApplyRecord(ar))
+	return &ApplyRecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ApplyRecordClient) UpdateOneID(id int) *ApplyRecordUpdateOne {
+	mutation := newApplyRecordMutation(c.config, OpUpdateOne, withApplyRecordID(id))
+	return &ApplyRecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ApplyRecord.
+func (c *ApplyRecordClient) Delete() *ApplyRecordDelete {
+	mutation := newApplyRecordMutation(c.config, OpDelete)
+	return &ApplyRecordDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ApplyRecordClient) DeleteOne(ar *ApplyRecord) *ApplyRecordDeleteOne {
+	return c.DeleteOneID(ar.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ApplyRecordClient) DeleteOneID(id int) *ApplyRecordDeleteOne {
+	builder := c.Delete().Where(applyrecord.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ApplyRecordDeleteOne{builder}
+}
+
+// Query returns a query builder for ApplyRecord.
+func (c *ApplyRecordClient) Query() *ApplyRecordQuery {
+	return &ApplyRecordQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeApplyRecord},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a ApplyRecord entity by its id.
+func (c *ApplyRecordClient) Get(ctx context.Context, id int) (*ApplyRecord, error) {
+	return c.Query().Where(applyrecord.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ApplyRecordClient) GetX(ctx context.Context, id int) *ApplyRecord {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryUser queries the user edge of a ApplyRecord.
+func (c *ApplyRecordClient) QueryUser(ar *ApplyRecord) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ar.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(applyrecord.Table, applyrecord.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, applyrecord.UserTable, applyrecord.UserColumn),
+		)
+		fromV = sqlgraph.Neighbors(ar.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ApplyRecordClient) Hooks() []Hook {
+	return c.hooks.ApplyRecord
+}
+
+// Interceptors returns the client interceptors.
+func (c *ApplyRecordClient) Interceptors() []Interceptor {
+	return c.inters.ApplyRecord
+}
+
+func (c *ApplyRecordClient) mutate(ctx context.Context, m *ApplyRecordMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ApplyRecordCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ApplyRecordUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ApplyRecordUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ApplyRecordDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown ApplyRecord mutation op: %q", m.Op())
 	}
 }
 
@@ -1752,6 +1894,22 @@ func (c *UserClient) QueryTeacher(u *User) *TeacherQuery {
 	return query
 }
 
+// QueryApplyRecord queries the apply_record edge of a User.
+func (c *UserClient) QueryApplyRecord(u *User) *ApplyRecordQuery {
+	query := (&ApplyRecordClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(applyrecord.Table, applyrecord.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.ApplyRecordTable, user.ApplyRecordColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *UserClient) Hooks() []Hook {
 	return c.hooks.User
@@ -1898,11 +2056,11 @@ func (c *WalletClient) mutate(ctx context.Context, m *WalletMutation) (Value, er
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Account, Category, Chapter, Course, Lesson, OrderInfos, Orders, Setting, Slider,
-		Teacher, User, Wallet []ent.Hook
+		Account, ApplyRecord, Category, Chapter, Course, Lesson, OrderInfos, Orders,
+		Setting, Slider, Teacher, User, Wallet []ent.Hook
 	}
 	inters struct {
-		Account, Category, Chapter, Course, Lesson, OrderInfos, Orders, Setting, Slider,
-		Teacher, User, Wallet []ent.Interceptor
+		Account, ApplyRecord, Category, Chapter, Course, Lesson, OrderInfos, Orders,
+		Setting, Slider, Teacher, User, Wallet []ent.Interceptor
 	}
 )

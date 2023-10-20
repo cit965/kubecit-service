@@ -586,6 +586,67 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.TeacherInfo'
+    /api/teacher/become:
+        post:
+            tags:
+                - Kubecit
+            operationId: Kubecit_BecomeTeacher
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.CreateTeacherRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.BecomeTeacherReply'
+    /api/teacher/becomeRecord:
+        post:
+            tags:
+                - Kubecit
+            operationId: Kubecit_BecomeTeacherRecord
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.BecomeTeacherRecordRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.BecomeTeacherRecordReply'
+    /api/teacher/review/{id}:
+        patch:
+            tags:
+                - Kubecit
+            operationId: Kubecit_ReviewTeacher
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int32
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.ReviewTeacherRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.ReviewTeacherReply'
     /api/teacher/{id}:
         get:
             tags:
@@ -732,6 +793,74 @@ components:
                 praises:
                     type: integer
                     format: int32
+        helloworld.v1.BecomeTeacherRecordData:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                detail:
+                    type: string
+                curriculumVitae:
+                    type: string
+                works:
+                    type: string
+                skills:
+                    type: string
+                name:
+                    type: string
+                level:
+                    type: integer
+                    format: enum
+                avatar:
+                    type: string
+                createAt:
+                    type: string
+                    format: date-time
+                updateAt:
+                    type: string
+                    format: date-time
+                isPassed:
+                    type: integer
+                    format: enum
+                message:
+                    type: string
+                auditorId:
+                    type: integer
+                    format: int32
+        helloworld.v1.BecomeTeacherRecordReply:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/helloworld.v1.BecomeTeacherRecordData'
+                count:
+                    type: integer
+                    format: int32
+        helloworld.v1.BecomeTeacherRecordRequest:
+            type: object
+            properties:
+                isPassed:
+                    type: integer
+                    format: enum
+                userId:
+                    type: integer
+                    format: int32
+                id:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                pageNum:
+                    type: integer
+                    format: int32
+        helloworld.v1.BecomeTeacherReply:
+            type: object
+            properties:
+                message:
+                    type: string
         helloworld.v1.CategoryInfo:
             type: object
             properties:
@@ -1245,6 +1374,28 @@ components:
                 status:
                     type: integer
                     format: enum
+        helloworld.v1.ReviewTeacherReply:
+            type: object
+            properties:
+                message:
+                    type: string
+                data:
+                    $ref: '#/components/schemas/helloworld.v1.BecomeTeacherRecordData'
+        helloworld.v1.ReviewTeacherRequest:
+            required:
+                - id
+                - isPassed
+                - message
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                isPassed:
+                    type: integer
+                    format: enum
+                message:
+                    type: string
         helloworld.v1.SearchCourseRequest:
             type: object
             properties:
