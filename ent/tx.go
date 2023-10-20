@@ -14,6 +14,8 @@ type Tx struct {
 	config
 	// Account is the client for interacting with the Account builders.
 	Account *AccountClient
+	// ApplyRecord is the client for interacting with the ApplyRecord builders.
+	ApplyRecord *ApplyRecordClient
 	// Category is the client for interacting with the Category builders.
 	Category *CategoryClient
 	// Chapter is the client for interacting with the Chapter builders.
@@ -168,6 +170,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Account = NewAccountClient(tx.config)
+	tx.ApplyRecord = NewApplyRecordClient(tx.config)
 	tx.Category = NewCategoryClient(tx.config)
 	tx.Chapter = NewChapterClient(tx.config)
 	tx.Course = NewCourseClient(tx.config)

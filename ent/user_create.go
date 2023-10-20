@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"kubecit-service/ent/applyrecord"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
 
@@ -55,6 +56,21 @@ func (uc *UserCreate) SetNillableTeacherID(id *int) *UserCreate {
 // SetTeacher sets the "teacher" edge to the Teacher entity.
 func (uc *UserCreate) SetTeacher(t *Teacher) *UserCreate {
 	return uc.SetTeacherID(t.ID)
+}
+
+// AddApplyRecordIDs adds the "apply_record" edge to the ApplyRecord entity by IDs.
+func (uc *UserCreate) AddApplyRecordIDs(ids ...int) *UserCreate {
+	uc.mutation.AddApplyRecordIDs(ids...)
+	return uc
+}
+
+// AddApplyRecord adds the "apply_record" edges to the ApplyRecord entity.
+func (uc *UserCreate) AddApplyRecord(a ...*ApplyRecord) *UserCreate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return uc.AddApplyRecordIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -147,6 +163,22 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.ApplyRecordIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApplyRecordTable,
+			Columns: []string{user.ApplyRecordColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(applyrecord.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

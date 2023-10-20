@@ -4,6 +4,7 @@ package ent
 
 import (
 	"kubecit-service/ent/account"
+	"kubecit-service/ent/applyrecord"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
@@ -35,6 +36,22 @@ func init() {
 	accountDescMethod := accountFields[3].Descriptor()
 	// account.MethodValidator is a validator for the "method" field. It is called by the builders before save.
 	account.MethodValidator = accountDescMethod.Validators[0].(func(string) error)
+	applyrecordFields := schema.ApplyRecord{}.Fields()
+	_ = applyrecordFields
+	// applyrecordDescCreateAt is the schema descriptor for create_at field.
+	applyrecordDescCreateAt := applyrecordFields[7].Descriptor()
+	// applyrecord.DefaultCreateAt holds the default value on creation for the create_at field.
+	applyrecord.DefaultCreateAt = applyrecordDescCreateAt.Default.(func() time.Time)
+	// applyrecordDescUpdateAt is the schema descriptor for update_at field.
+	applyrecordDescUpdateAt := applyrecordFields[8].Descriptor()
+	// applyrecord.DefaultUpdateAt holds the default value on creation for the update_at field.
+	applyrecord.DefaultUpdateAt = applyrecordDescUpdateAt.Default.(func() time.Time)
+	// applyrecord.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
+	applyrecord.UpdateDefaultUpdateAt = applyrecordDescUpdateAt.UpdateDefault.(func() time.Time)
+	// applyrecordDescIsPassed is the schema descriptor for is_passed field.
+	applyrecordDescIsPassed := applyrecordFields[9].Descriptor()
+	// applyrecord.DefaultIsPassed holds the default value on creation for the is_passed field.
+	applyrecord.DefaultIsPassed = applyrecordDescIsPassed.Default.(int8)
 	categoryFields := schema.Category{}.Fields()
 	_ = categoryFields
 	// categoryDescName is the schema descriptor for name field.

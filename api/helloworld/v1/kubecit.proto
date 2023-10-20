@@ -389,6 +389,42 @@ service Kubecit {
     };
   }
 
+  rpc BecomeTeacher (CreateTeacherRequest) returns (BecomeTeacherReply) {
+    option (google.api.http) = {
+      post: "/api/teacher/become",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "成为讲师"
+      tags: "teacher"
+    };
+  }
+
+  rpc ReviewTeacher (ReviewTeacherRequest) returns (ReviewTeacherReply) {
+    option (google.api.http) = {
+      patch: "/api/teacher/review/{id}",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "审核成为讲师申请"
+      tags: "teacher"
+    };
+  }
+
+  rpc BecomeTeacherRecord (BecomeTeacherRecordRequest) returns (BecomeTeacherRecordReply) {
+    option (google.api.http) = {
+      post: "/api/teacher/becomeRecord",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "筛选讲师申请"
+      tags: "teacher"
+    };
+  }
+
   rpc ListRecommendedLecturer(Empty) returns (ListRecommendedLecturerReply) {
     option (google.api.http) = {
       get: "/api/recommendedLecturer",
@@ -468,6 +504,74 @@ message CreateTeacherRequest {
   }, (google.api.field_behavior) = REQUIRED];
 }
 
+message BecomeTeacherReply {
+  string message = 1;
+}
+
+message ReviewTeacherRequest {
+  int32 id = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "申请记录id",
+    description: "申请记录id"
+  }, (google.api.field_behavior) = REQUIRED];
+  ApplyRecordIsPassed is_passed = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "是否通过",
+    description: "是否通过（1通过，2不通过），默认为2"
+  }, (google.api.field_behavior) = REQUIRED];
+  string message = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "审核意见",
+    description: "审核意见"
+  }, (google.api.field_behavior) = REQUIRED];
+}
+
+message ReviewTeacherReply {
+    string message = 1;
+    BecomeTeacherRecordData data = 2;
+}
+
+message BecomeTeacherRecordRequest {
+  ApplyRecordIsPassed  is_passed = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "筛选条件为是否通过",
+    description: "是否通过（1通过，2不通过），默认为2，选填"
+  }];
+  optional int32 user_id = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "用户id",
+    description: "根据用户id进行筛选，选填"
+  }];
+  optional int32 id = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "申请记录id",
+    description: "根据申请记录id进行筛选，选填"
+  }];
+  optional int32 page_size = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "页大小",
+    description: "筛选结果分页参数，选填"
+  }];
+  optional int32 page_num = 5[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    title: "页数",
+    description: "筛选结果分页参数，选填"
+  }];
+}
+
+message BecomeTeacherRecordReply {
+  repeated BecomeTeacherRecordData data = 1;
+  int32 count = 2;
+}
+
+message BecomeTeacherRecordData {
+  int32 id = 1;
+  string detail = 2;
+  string curriculum_vitae = 3;
+  string works = 4;
+  string skills = 5;
+  string name = 6;
+  TeacherLevel level = 7;
+  string avatar = 8;
+  google.protobuf.Timestamp create_at = 9;
+  google.protobuf.Timestamp update_at = 10;
+  ApplyRecordIsPassed is_passed = 11;
+  string message = 12;
+  int32 auditor_id = 13;
+}
+
 message ListAllTeacherRequest {
   optional int32 pageNum = 1;
   optional int32 pageSize = 2;
@@ -487,6 +591,12 @@ enum TeacherLevel {
   TEACHER_INTERMEDIATE = 3; //中级
   TEACHER_SENIOR = 4;//高级
   TEACHER_MASTER = 5;//大师
+}
+
+enum ApplyRecordIsPassed {
+  APPLY_RECORD_UNKNOWN = 0;
+  APPLY_RECORD_PASSED = 1; // 通过
+  APPLY_RECORD_NOT_PASSED =2; // 未通过
 }
 
 

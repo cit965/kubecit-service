@@ -33,9 +33,11 @@ type User struct {
 type UserEdges struct {
 	// Teacher holds the value of the teacher edge.
 	Teacher *Teacher `json:"teacher,omitempty"`
+	// ApplyRecord holds the value of the apply_record edge.
+	ApplyRecord []*ApplyRecord `json:"apply_record,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 }
 
 // TeacherOrErr returns the Teacher value or an error if the edge
@@ -49,6 +51,15 @@ func (e UserEdges) TeacherOrErr() (*Teacher, error) {
 		return e.Teacher, nil
 	}
 	return nil, &NotLoadedError{edge: "teacher"}
+}
+
+// ApplyRecordOrErr returns the ApplyRecord value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) ApplyRecordOrErr() ([]*ApplyRecord, error) {
+	if e.loadedTypes[1] {
+		return e.ApplyRecord, nil
+	}
+	return nil, &NotLoadedError{edge: "apply_record"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -115,6 +126,11 @@ func (u *User) Value(name string) (ent.Value, error) {
 // QueryTeacher queries the "teacher" edge of the User entity.
 func (u *User) QueryTeacher() *TeacherQuery {
 	return NewUserClient(u.config).QueryTeacher(u)
+}
+
+// QueryApplyRecord queries the "apply_record" edge of the User entity.
+func (u *User) QueryApplyRecord() *ApplyRecordQuery {
+	return NewUserClient(u.config).QueryApplyRecord(u)
 }
 
 // Update returns a builder for updating this User.

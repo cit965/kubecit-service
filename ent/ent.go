@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/account"
+	"kubecit-service/ent/applyrecord"
 	"kubecit-service/ent/category"
 	"kubecit-service/ent/chapter"
 	"kubecit-service/ent/course"
@@ -84,18 +85,19 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			account.Table:    account.ValidColumn,
-			category.Table:   category.ValidColumn,
-			chapter.Table:    chapter.ValidColumn,
-			course.Table:     course.ValidColumn,
-			lesson.Table:     lesson.ValidColumn,
-			orderinfos.Table: orderinfos.ValidColumn,
-			orders.Table:     orders.ValidColumn,
-			setting.Table:    setting.ValidColumn,
-			slider.Table:     slider.ValidColumn,
-			teacher.Table:    teacher.ValidColumn,
-			user.Table:       user.ValidColumn,
-			wallet.Table:     wallet.ValidColumn,
+			account.Table:     account.ValidColumn,
+			applyrecord.Table: applyrecord.ValidColumn,
+			category.Table:    category.ValidColumn,
+			chapter.Table:     chapter.ValidColumn,
+			course.Table:      course.ValidColumn,
+			lesson.Table:      lesson.ValidColumn,
+			orderinfos.Table:  orderinfos.ValidColumn,
+			orders.Table:      orders.ValidColumn,
+			setting.Table:     setting.ValidColumn,
+			slider.Table:      slider.ValidColumn,
+			teacher.Table:     teacher.ValidColumn,
+			user.Table:        user.ValidColumn,
+			wallet.Table:      wallet.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

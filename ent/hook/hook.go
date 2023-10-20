@@ -20,6 +20,18 @@ func (f AccountFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.AccountMutation", m)
 }
 
+// The ApplyRecordFunc type is an adapter to allow the use of ordinary
+// function as ApplyRecord mutator.
+type ApplyRecordFunc func(context.Context, *ent.ApplyRecordMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ApplyRecordFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ApplyRecordMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ApplyRecordMutation", m)
+}
+
 // The CategoryFunc type is an adapter to allow the use of ordinary
 // function as Category mutator.
 type CategoryFunc func(context.Context, *ent.CategoryMutation) (ent.Value, error)
