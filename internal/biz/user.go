@@ -67,10 +67,12 @@ type AccountPO struct {
 }
 
 type UserPO struct {
-	Id       uint64
-	Username string
-	Channel  string
-	RoleId   uint8
+	Id        uint64
+	Username  string
+	Channel   string
+	RoleId    uint8
+	UserId    int
+	TeacherId int
 }
 
 type AccountRepo interface {
@@ -214,8 +216,10 @@ func (usecase *UserUsecase) CurrentUserInfo(ctx context.Context) (*pb.UserInfoRe
 		return &pb.UserInfoReply{}, err
 	}
 	return &pb.UserInfoReply{
-		Username: userPO.Username,
-		Channel:  userPO.Channel,
-		RoleId:   uint32(int32(userPO.RoleId)),
+		Username:  userPO.Username,
+		Channel:   userPO.Channel,
+		RoleId:    uint32(int32(userPO.RoleId)),
+		UserId:    int32(userPO.UserId),
+		TeacherId: int32(userPO.TeacherId),
 	}, nil
 }

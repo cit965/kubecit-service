@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -35,6 +36,25 @@ func (uc *UserCreate) SetChannel(s string) *UserCreate {
 func (uc *UserCreate) SetRoleID(u uint8) *UserCreate {
 	uc.mutation.SetRoleID(u)
 	return uc
+}
+
+// SetTeacherID sets the "teacher" edge to the Teacher entity by ID.
+func (uc *UserCreate) SetTeacherID(id int) *UserCreate {
+	uc.mutation.SetTeacherID(id)
+	return uc
+}
+
+// SetNillableTeacherID sets the "teacher" edge to the Teacher entity by ID if the given value is not nil.
+func (uc *UserCreate) SetNillableTeacherID(id *int) *UserCreate {
+	if id != nil {
+		uc = uc.SetTeacherID(*id)
+	}
+	return uc
+}
+
+// SetTeacher sets the "teacher" edge to the Teacher entity.
+func (uc *UserCreate) SetTeacher(t *Teacher) *UserCreate {
+	return uc.SetTeacherID(t.ID)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -117,6 +137,22 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.RoleID(); ok {
 		_spec.SetField(user.FieldRoleID, field.TypeUint8, value)
 		_node.RoleID = value
+	}
+	if nodes := uc.mutation.TeacherIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.TeacherTable,
+			Columns: []string{user.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

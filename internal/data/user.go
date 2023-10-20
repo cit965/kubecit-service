@@ -4,7 +4,6 @@ import (
 	"context"
 	"kubecit-service/ent"
 	"kubecit-service/ent/account"
-
 	"kubecit-service/ent/user"
 	"kubecit-service/internal/biz"
 
@@ -28,11 +27,27 @@ func (repo *userRepo) FindById(ctx context.Context, id uint64) (po *biz.UserPO, 
 	if err != nil {
 		return nil, err
 	}
+	if user.RoleID == 3 {
+		teacher, err := user.QueryTeacher().Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return &biz.UserPO{
+			Id:        uint64(user.ID),
+			Username:  user.Username,
+			Channel:   user.Channel,
+			RoleId:    user.RoleID,
+			UserId:    user.ID,
+			TeacherId: teacher.ID,
+		}, nil
+	}
+
 	return &biz.UserPO{
 		Id:       uint64(user.ID),
 		Username: user.Username,
 		Channel:  user.Channel,
 		RoleId:   user.RoleID,
+		UserId:   user.ID,
 	}, nil
 
 }

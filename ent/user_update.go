@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kubecit-service/ent/predicate"
+	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
 
 	"entgo.io/ent/dialect/sql"
@@ -52,9 +53,34 @@ func (uu *UserUpdate) AddRoleID(u int8) *UserUpdate {
 	return uu
 }
 
+// SetTeacherID sets the "teacher" edge to the Teacher entity by ID.
+func (uu *UserUpdate) SetTeacherID(id int) *UserUpdate {
+	uu.mutation.SetTeacherID(id)
+	return uu
+}
+
+// SetNillableTeacherID sets the "teacher" edge to the Teacher entity by ID if the given value is not nil.
+func (uu *UserUpdate) SetNillableTeacherID(id *int) *UserUpdate {
+	if id != nil {
+		uu = uu.SetTeacherID(*id)
+	}
+	return uu
+}
+
+// SetTeacher sets the "teacher" edge to the Teacher entity.
+func (uu *UserUpdate) SetTeacher(t *Teacher) *UserUpdate {
+	return uu.SetTeacherID(t.ID)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
+}
+
+// ClearTeacher clears the "teacher" edge to the Teacher entity.
+func (uu *UserUpdate) ClearTeacher() *UserUpdate {
+	uu.mutation.ClearTeacher()
+	return uu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -105,6 +131,35 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.AddedRoleID(); ok {
 		_spec.AddField(user.FieldRoleID, field.TypeUint8, value)
 	}
+	if uu.mutation.TeacherCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.TeacherTable,
+			Columns: []string{user.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.TeacherIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.TeacherTable,
+			Columns: []string{user.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
@@ -150,9 +205,34 @@ func (uuo *UserUpdateOne) AddRoleID(u int8) *UserUpdateOne {
 	return uuo
 }
 
+// SetTeacherID sets the "teacher" edge to the Teacher entity by ID.
+func (uuo *UserUpdateOne) SetTeacherID(id int) *UserUpdateOne {
+	uuo.mutation.SetTeacherID(id)
+	return uuo
+}
+
+// SetNillableTeacherID sets the "teacher" edge to the Teacher entity by ID if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableTeacherID(id *int) *UserUpdateOne {
+	if id != nil {
+		uuo = uuo.SetTeacherID(*id)
+	}
+	return uuo
+}
+
+// SetTeacher sets the "teacher" edge to the Teacher entity.
+func (uuo *UserUpdateOne) SetTeacher(t *Teacher) *UserUpdateOne {
+	return uuo.SetTeacherID(t.ID)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
+}
+
+// ClearTeacher clears the "teacher" edge to the Teacher entity.
+func (uuo *UserUpdateOne) ClearTeacher() *UserUpdateOne {
+	uuo.mutation.ClearTeacher()
+	return uuo
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -232,6 +312,35 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.AddedRoleID(); ok {
 		_spec.AddField(user.FieldRoleID, field.TypeUint8, value)
+	}
+	if uuo.mutation.TeacherCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.TeacherTable,
+			Columns: []string{user.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.TeacherIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.TeacherTable,
+			Columns: []string{user.TeacherColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &User{config: uuo.config}
 	_spec.Assign = _node.assignValues

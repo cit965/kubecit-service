@@ -17,6 +17,7 @@ type Teacher struct {
 	Level           int32
 	CreateAt        time.Time
 	UpdateAt        time.Time
+	UserId          int
 }
 
 type RecommendedLecturer struct {

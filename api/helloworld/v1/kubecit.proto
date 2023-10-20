@@ -1414,6 +1414,8 @@ message UserInfoReply{
   string username = 1;
   uint32 role_id = 2;
   string channel = 3;
+  int32 user_id = 4;
+  int32 teacher_id = 5;
 }
 
 
