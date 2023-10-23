@@ -690,6 +690,43 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.ListAllTeacherReply'
+    /api/trade/callback:
+        post:
+            tags:
+                - Kubecit
+            description: ========================== 交易相关接口 ===================================
+            operationId: Kubecit_TradeCallback
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.TradeCallbackRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.TradeCallbackReply'
+    /api/u/become:
+        post:
+            tags:
+                - Kubecit
+            operationId: Kubecit_BecomeVip
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.BecomeVipRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.BecomeVipReply'
     /api/u/loginByJson:
         post:
             tags:
@@ -861,6 +898,30 @@ components:
             properties:
                 message:
                     type: string
+        helloworld.v1.BecomeVipReply:
+            type: object
+            properties:
+                payLink:
+                    type: string
+                bizId:
+                    type: integer
+                    format: int64
+        helloworld.v1.BecomeVipRequest:
+            required:
+                - payType
+                - vipType
+                - price
+            type: object
+            properties:
+                payType:
+                    type: integer
+                    format: enum
+                vipType:
+                    type: integer
+                    format: enum
+                price:
+                    type: number
+                    format: float
         helloworld.v1.CategoryInfo:
             type: object
             properties:
@@ -1481,6 +1542,24 @@ components:
                 level:
                     type: integer
                     format: enum
+        helloworld.v1.TradeCallbackReply:
+            type: object
+            properties:
+                message:
+                    type: string
+        helloworld.v1.TradeCallbackRequest:
+            required:
+                - bizNo
+                - payStatus
+            type: object
+            properties:
+                bizNo:
+                    type: integer
+                    description: PayType payType = 1;
+                    format: int64
+                payStatus:
+                    type: integer
+                    format: enum
         helloworld.v1.UpdateCategoryReq:
             type: object
             properties:
@@ -1638,6 +1717,9 @@ components:
                 teacherId:
                     type: integer
                     format: int32
+                vipStatus:
+                    type: integer
+                    format: enum
         helloworld.v1.VideoPlayerGetParamReply:
             required:
                 - appid

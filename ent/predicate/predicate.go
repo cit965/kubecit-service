@@ -42,5 +42,14 @@ type Teacher func(*sql.Selector)
 // User is the predicate function for user builders.
 type User func(*sql.Selector)
 
+// VipInfo is the predicate function for vipinfo builders.
+type VipInfo func(*sql.Selector)
+
+// VipOrder is the predicate function for viporder builders.
+type VipOrder func(*sql.Selector)
+
+// VipProduct is the predicate function for vipproduct builders.
+type VipProduct func(*sql.Selector)
+
 // Wallet is the predicate function for wallet builders.
 type Wallet func(*sql.Selector)

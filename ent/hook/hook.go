@@ -152,6 +152,42 @@ func (f UserFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error)
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.UserMutation", m)
 }
 
+// The VipInfoFunc type is an adapter to allow the use of ordinary
+// function as VipInfo mutator.
+type VipInfoFunc func(context.Context, *ent.VipInfoMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f VipInfoFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.VipInfoMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.VipInfoMutation", m)
+}
+
+// The VipOrderFunc type is an adapter to allow the use of ordinary
+// function as VipOrder mutator.
+type VipOrderFunc func(context.Context, *ent.VipOrderMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f VipOrderFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.VipOrderMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.VipOrderMutation", m)
+}
+
+// The VipProductFunc type is an adapter to allow the use of ordinary
+// function as VipProduct mutator.
+type VipProductFunc func(context.Context, *ent.VipProductMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f VipProductFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.VipProductMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.VipProductMutation", m)
+}
+
 // The WalletFunc type is an adapter to allow the use of ordinary
 // function as Wallet mutator.
 type WalletFunc func(context.Context, *ent.WalletMutation) (ent.Value, error)

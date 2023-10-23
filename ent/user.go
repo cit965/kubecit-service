@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
+	"kubecit-service/ent/vipinfo"
 	"strings"
 
 	"entgo.io/ent"
@@ -35,9 +36,13 @@ type UserEdges struct {
 	Teacher *Teacher `json:"teacher,omitempty"`
 	// ApplyRecord holds the value of the apply_record edge.
 	ApplyRecord []*ApplyRecord `json:"apply_record,omitempty"`
+	// VipInfo holds the value of the vip_info edge.
+	VipInfo *VipInfo `json:"vip_info,omitempty"`
+	// VipOrder holds the value of the vip_order edge.
+	VipOrder []*VipOrder `json:"vip_order,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [4]bool
 }
 
 // TeacherOrErr returns the Teacher value or an error if the edge
@@ -60,6 +65,28 @@ func (e UserEdges) ApplyRecordOrErr() ([]*ApplyRecord, error) {
 		return e.ApplyRecord, nil
 	}
 	return nil, &NotLoadedError{edge: "apply_record"}
+}
+
+// VipInfoOrErr returns the VipInfo value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserEdges) VipInfoOrErr() (*VipInfo, error) {
+	if e.loadedTypes[2] {
+		if e.VipInfo == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: vipinfo.Label}
+		}
+		return e.VipInfo, nil
+	}
+	return nil, &NotLoadedError{edge: "vip_info"}
+}
+
+// VipOrderOrErr returns the VipOrder value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) VipOrderOrErr() ([]*VipOrder, error) {
+	if e.loadedTypes[3] {
+		return e.VipOrder, nil
+	}
+	return nil, &NotLoadedError{edge: "vip_order"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -131,6 +158,16 @@ func (u *User) QueryTeacher() *TeacherQuery {
 // QueryApplyRecord queries the "apply_record" edge of the User entity.
 func (u *User) QueryApplyRecord() *ApplyRecordQuery {
 	return NewUserClient(u.config).QueryApplyRecord(u)
+}
+
+// QueryVipInfo queries the "vip_info" edge of the User entity.
+func (u *User) QueryVipInfo() *VipInfoQuery {
+	return NewUserClient(u.config).QueryVipInfo(u)
+}
+
+// QueryVipOrder queries the "vip_order" edge of the User entity.
+func (u *User) QueryVipOrder() *VipOrderQuery {
+	return NewUserClient(u.config).QueryVipOrder(u)
 }
 
 // Update returns a builder for updating this User.

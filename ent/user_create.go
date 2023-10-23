@@ -9,6 +9,8 @@ import (
 	"kubecit-service/ent/applyrecord"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
+	"kubecit-service/ent/vipinfo"
+	"kubecit-service/ent/viporder"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -71,6 +73,40 @@ func (uc *UserCreate) AddApplyRecord(a ...*ApplyRecord) *UserCreate {
 		ids[i] = a[i].ID
 	}
 	return uc.AddApplyRecordIDs(ids...)
+}
+
+// SetVipInfoID sets the "vip_info" edge to the VipInfo entity by ID.
+func (uc *UserCreate) SetVipInfoID(id int) *UserCreate {
+	uc.mutation.SetVipInfoID(id)
+	return uc
+}
+
+// SetNillableVipInfoID sets the "vip_info" edge to the VipInfo entity by ID if the given value is not nil.
+func (uc *UserCreate) SetNillableVipInfoID(id *int) *UserCreate {
+	if id != nil {
+		uc = uc.SetVipInfoID(*id)
+	}
+	return uc
+}
+
+// SetVipInfo sets the "vip_info" edge to the VipInfo entity.
+func (uc *UserCreate) SetVipInfo(v *VipInfo) *UserCreate {
+	return uc.SetVipInfoID(v.ID)
+}
+
+// AddVipOrderIDs adds the "vip_order" edge to the VipOrder entity by IDs.
+func (uc *UserCreate) AddVipOrderIDs(ids ...int) *UserCreate {
+	uc.mutation.AddVipOrderIDs(ids...)
+	return uc
+}
+
+// AddVipOrder adds the "vip_order" edges to the VipOrder entity.
+func (uc *UserCreate) AddVipOrder(v ...*VipOrder) *UserCreate {
+	ids := make([]int, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uc.AddVipOrderIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -179,6 +215,38 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(applyrecord.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.VipInfoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.VipInfoTable,
+			Columns: []string{user.VipInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(vipinfo.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.VipOrderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.VipOrderTable,
+			Columns: []string{user.VipOrderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(viporder.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

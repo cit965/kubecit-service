@@ -10,6 +10,8 @@ import (
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
+	"kubecit-service/ent/vipinfo"
+	"kubecit-service/ent/viporder"
 	"math"
 
 	"entgo.io/ent/dialect"
@@ -27,6 +29,8 @@ type UserQuery struct {
 	predicates      []predicate.User
 	withTeacher     *TeacherQuery
 	withApplyRecord *ApplyRecordQuery
+	withVipInfo     *VipInfoQuery
+	withVipOrder    *VipOrderQuery
 	modifiers       []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -101,6 +105,50 @@ func (uq *UserQuery) QueryApplyRecord() *ApplyRecordQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(applyrecord.Table, applyrecord.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, user.ApplyRecordTable, user.ApplyRecordColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryVipInfo chains the current query on the "vip_info" edge.
+func (uq *UserQuery) QueryVipInfo() *VipInfoQuery {
+	query := (&VipInfoClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(vipinfo.Table, vipinfo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, user.VipInfoTable, user.VipInfoColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryVipOrder chains the current query on the "vip_order" edge.
+func (uq *UserQuery) QueryVipOrder() *VipOrderQuery {
+	query := (&VipOrderClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(viporder.Table, viporder.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.VipOrderTable, user.VipOrderColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -302,6 +350,8 @@ func (uq *UserQuery) Clone() *UserQuery {
 		predicates:      append([]predicate.User{}, uq.predicates...),
 		withTeacher:     uq.withTeacher.Clone(),
 		withApplyRecord: uq.withApplyRecord.Clone(),
+		withVipInfo:     uq.withVipInfo.Clone(),
+		withVipOrder:    uq.withVipOrder.Clone(),
 		// clone intermediate query.
 		sql:  uq.sql.Clone(),
 		path: uq.path,
@@ -327,6 +377,28 @@ func (uq *UserQuery) WithApplyRecord(opts ...func(*ApplyRecordQuery)) *UserQuery
 		opt(query)
 	}
 	uq.withApplyRecord = query
+	return uq
+}
+
+// WithVipInfo tells the query-builder to eager-load the nodes that are connected to
+// the "vip_info" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithVipInfo(opts ...func(*VipInfoQuery)) *UserQuery {
+	query := (&VipInfoClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withVipInfo = query
+	return uq
+}
+
+// WithVipOrder tells the query-builder to eager-load the nodes that are connected to
+// the "vip_order" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithVipOrder(opts ...func(*VipOrderQuery)) *UserQuery {
+	query := (&VipOrderClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withVipOrder = query
 	return uq
 }
 
@@ -408,9 +480,11 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	var (
 		nodes       = []*User{}
 		_spec       = uq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [4]bool{
 			uq.withTeacher != nil,
 			uq.withApplyRecord != nil,
+			uq.withVipInfo != nil,
+			uq.withVipOrder != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -444,6 +518,19 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		if err := uq.loadApplyRecord(ctx, query, nodes,
 			func(n *User) { n.Edges.ApplyRecord = []*ApplyRecord{} },
 			func(n *User, e *ApplyRecord) { n.Edges.ApplyRecord = append(n.Edges.ApplyRecord, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withVipInfo; query != nil {
+		if err := uq.loadVipInfo(ctx, query, nodes, nil,
+			func(n *User, e *VipInfo) { n.Edges.VipInfo = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withVipOrder; query != nil {
+		if err := uq.loadVipOrder(ctx, query, nodes,
+			func(n *User) { n.Edges.VipOrder = []*VipOrder{} },
+			func(n *User, e *VipOrder) { n.Edges.VipOrder = append(n.Edges.VipOrder, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -492,6 +579,63 @@ func (uq *UserQuery) loadApplyRecord(ctx context.Context, query *ApplyRecordQuer
 	}
 	query.Where(predicate.ApplyRecord(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(user.ApplyRecordColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.UserID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadVipInfo(ctx context.Context, query *VipInfoQuery, nodes []*User, init func(*User), assign func(*User, *VipInfo)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(vipinfo.FieldUserID)
+	}
+	query.Where(predicate.VipInfo(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.VipInfoColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.UserID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadVipOrder(ctx context.Context, query *VipOrderQuery, nodes []*User, init func(*User), assign func(*User, *VipOrder)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(viporder.FieldUserID)
+	}
+	query.Where(predicate.VipOrder(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.VipOrderColumn), fks...))
 	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {

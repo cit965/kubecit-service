@@ -255,6 +255,29 @@ service Kubecit {
     };
   }
 
+  rpc BecomeVip (BecomeVipRequest) returns (BecomeVipReply) {
+    option (google.api.http) = {
+      post: "/api/u/become",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "用户升级为vip"
+      tags: "user"
+    };
+  }
+  // ========================== 交易相关接口 ===================================
+  rpc TradeCallback (TradeCallbackRequest) returns (TradeCallbackReply) {
+    option (google.api.http) = {
+      post: "/api/trade/callback",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "第三方支付回调接口"
+      tags: "trade"
+    };
+  }
 
   // ========================== 系统设置相关接口 ===================================
   rpc CreateSlider (CreateSliderRequest) returns (CreateSliderReply) {
@@ -1526,10 +1549,11 @@ message UserInfoReply{
   string channel = 3;
   int32 user_id = 4;
   int32 teacher_id = 5;
+  VipStatus vipStatus = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "vip状态",
+      description: "  VIP_STATUS_UNKNOWN = 0;VIP_STATUS_ACTIVE = 1;VIP_STATUS_INACTIVE = 2;"
+    }];
 }
-
-
-
 
 message LoginByJsonRequest {
   string username = 1;
@@ -1727,4 +1751,71 @@ message OrderPayRequest {
       title: "支付方式",
       description: "NO_PAY = 1 ; // 还未支付 ALIPAY = 2; // 支付宝 WECHAT = 3; // 微信支付 GOLDEN_LEAF = 4;  // 金叶子 SILVER_LEAF = 5;  //银叶子"
     }, (google.api.field_behavior) = REQUIRED];
+}
+
+message BecomeVipRequest {
+  PayType payType = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "支付方式",
+      description: "NO_PAY = 1 ; // 还未支付 ALIPAY = 2; // 支付宝 WECHAT = 3; // 微信支付 GOLDEN_LEAF = 4;  // 金叶子 SILVER_LEAF = 5;  //银叶子"
+    }, (google.api.field_behavior) = REQUIRED];
+  VipType vipType = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "会员类型",
+      description: "VIP_TYPE_UNKNOWN = 0;VIP_TYPE_MONTHLY = 1（月度会员）;VIP_TYPE_QUARTERLY = 2（季度会员）;VIP_TYPE_YEARLY = 3（年度会员）;VIP_TYPE_FOREVER = 4（永久会员）;"
+    }, (google.api.field_behavior) = REQUIRED];
+  float price = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "总价",
+      description: "总价"
+    }, (google.api.field_behavior) = REQUIRED];
+}
+
+message BecomeVipReply {
+  string payLink = 1;
+  int64 bizId = 2;
+}
+
+
+enum VipType {
+  VIP_TYPE_UNKNOWN = 0;
+  VIP_TYPE_MONTHLY = 1;
+  VIP_TYPE_QUARTERLY = 2;
+  VIP_TYPE_YEARLY = 3;
+  VIP_TYPE_FOREVER = 4;
+}
+
+enum TradeStatus {
+  TRADE_STATUS_UNKNOWN = 0;
+  TRADE_CLOSED = 1;
+  TRADE_SUCCESS = 2;
+  TRADE_FINISHED = 3;
+}
+
+enum VipStatus {
+  VIP_STATUS_UNKNOWN = 0;
+  VIP_STATUS_ACTIVE = 1;
+  VIP_STATUS_INACTIVE = 2;
+}
+
+message TradeCallbackRequest {
+//  PayType payType = 1;
+  int64 bizNo = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "业务单号",
+      description: "业务单号，为/api/u/become返回值内容"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  TradeStatus payStatus = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "支付状态",
+      description: "支付状态  TRADE_STATUS_UNKNOWN = 0;TRADE_CLOSED = 1;TRADE_SUCCESS = 2;TRADE_FINISHED = 3; "
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message TradeCallbackReply {
+  string message = 1;
 }

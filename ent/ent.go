@@ -18,6 +18,9 @@ import (
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
+	"kubecit-service/ent/vipinfo"
+	"kubecit-service/ent/viporder"
+	"kubecit-service/ent/vipproduct"
 	"kubecit-service/ent/wallet"
 	"reflect"
 	"sync"
@@ -97,6 +100,9 @@ func checkColumn(table, column string) error {
 			slider.Table:      slider.ValidColumn,
 			teacher.Table:     teacher.ValidColumn,
 			user.Table:        user.ValidColumn,
+			vipinfo.Table:     vipinfo.ValidColumn,
+			viporder.Table:    viporder.ValidColumn,
+			vipproduct.Table:  vipproduct.ValidColumn,
 			wallet.Table:      wallet.ValidColumn,
 		})
 	})

@@ -10,6 +10,8 @@ import (
 	"kubecit-service/ent/predicate"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
+	"kubecit-service/ent/vipinfo"
+	"kubecit-service/ent/viporder"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -88,6 +90,40 @@ func (uu *UserUpdate) AddApplyRecord(a ...*ApplyRecord) *UserUpdate {
 	return uu.AddApplyRecordIDs(ids...)
 }
 
+// SetVipInfoID sets the "vip_info" edge to the VipInfo entity by ID.
+func (uu *UserUpdate) SetVipInfoID(id int) *UserUpdate {
+	uu.mutation.SetVipInfoID(id)
+	return uu
+}
+
+// SetNillableVipInfoID sets the "vip_info" edge to the VipInfo entity by ID if the given value is not nil.
+func (uu *UserUpdate) SetNillableVipInfoID(id *int) *UserUpdate {
+	if id != nil {
+		uu = uu.SetVipInfoID(*id)
+	}
+	return uu
+}
+
+// SetVipInfo sets the "vip_info" edge to the VipInfo entity.
+func (uu *UserUpdate) SetVipInfo(v *VipInfo) *UserUpdate {
+	return uu.SetVipInfoID(v.ID)
+}
+
+// AddVipOrderIDs adds the "vip_order" edge to the VipOrder entity by IDs.
+func (uu *UserUpdate) AddVipOrderIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddVipOrderIDs(ids...)
+	return uu
+}
+
+// AddVipOrder adds the "vip_order" edges to the VipOrder entity.
+func (uu *UserUpdate) AddVipOrder(v ...*VipOrder) *UserUpdate {
+	ids := make([]int, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uu.AddVipOrderIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -118,6 +154,33 @@ func (uu *UserUpdate) RemoveApplyRecord(a ...*ApplyRecord) *UserUpdate {
 		ids[i] = a[i].ID
 	}
 	return uu.RemoveApplyRecordIDs(ids...)
+}
+
+// ClearVipInfo clears the "vip_info" edge to the VipInfo entity.
+func (uu *UserUpdate) ClearVipInfo() *UserUpdate {
+	uu.mutation.ClearVipInfo()
+	return uu
+}
+
+// ClearVipOrder clears all "vip_order" edges to the VipOrder entity.
+func (uu *UserUpdate) ClearVipOrder() *UserUpdate {
+	uu.mutation.ClearVipOrder()
+	return uu
+}
+
+// RemoveVipOrderIDs removes the "vip_order" edge to VipOrder entities by IDs.
+func (uu *UserUpdate) RemoveVipOrderIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveVipOrderIDs(ids...)
+	return uu
+}
+
+// RemoveVipOrder removes "vip_order" edges to VipOrder entities.
+func (uu *UserUpdate) RemoveVipOrder(v ...*VipOrder) *UserUpdate {
+	ids := make([]int, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uu.RemoveVipOrderIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -242,6 +305,80 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if uu.mutation.VipInfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.VipInfoTable,
+			Columns: []string{user.VipInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(vipinfo.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.VipInfoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.VipInfoTable,
+			Columns: []string{user.VipInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(vipinfo.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.VipOrderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.VipOrderTable,
+			Columns: []string{user.VipOrderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(viporder.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedVipOrderIDs(); len(nodes) > 0 && !uu.mutation.VipOrderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.VipOrderTable,
+			Columns: []string{user.VipOrderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(viporder.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.VipOrderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.VipOrderTable,
+			Columns: []string{user.VipOrderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(viporder.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
@@ -321,6 +458,40 @@ func (uuo *UserUpdateOne) AddApplyRecord(a ...*ApplyRecord) *UserUpdateOne {
 	return uuo.AddApplyRecordIDs(ids...)
 }
 
+// SetVipInfoID sets the "vip_info" edge to the VipInfo entity by ID.
+func (uuo *UserUpdateOne) SetVipInfoID(id int) *UserUpdateOne {
+	uuo.mutation.SetVipInfoID(id)
+	return uuo
+}
+
+// SetNillableVipInfoID sets the "vip_info" edge to the VipInfo entity by ID if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableVipInfoID(id *int) *UserUpdateOne {
+	if id != nil {
+		uuo = uuo.SetVipInfoID(*id)
+	}
+	return uuo
+}
+
+// SetVipInfo sets the "vip_info" edge to the VipInfo entity.
+func (uuo *UserUpdateOne) SetVipInfo(v *VipInfo) *UserUpdateOne {
+	return uuo.SetVipInfoID(v.ID)
+}
+
+// AddVipOrderIDs adds the "vip_order" edge to the VipOrder entity by IDs.
+func (uuo *UserUpdateOne) AddVipOrderIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddVipOrderIDs(ids...)
+	return uuo
+}
+
+// AddVipOrder adds the "vip_order" edges to the VipOrder entity.
+func (uuo *UserUpdateOne) AddVipOrder(v ...*VipOrder) *UserUpdateOne {
+	ids := make([]int, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uuo.AddVipOrderIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -351,6 +522,33 @@ func (uuo *UserUpdateOne) RemoveApplyRecord(a ...*ApplyRecord) *UserUpdateOne {
 		ids[i] = a[i].ID
 	}
 	return uuo.RemoveApplyRecordIDs(ids...)
+}
+
+// ClearVipInfo clears the "vip_info" edge to the VipInfo entity.
+func (uuo *UserUpdateOne) ClearVipInfo() *UserUpdateOne {
+	uuo.mutation.ClearVipInfo()
+	return uuo
+}
+
+// ClearVipOrder clears all "vip_order" edges to the VipOrder entity.
+func (uuo *UserUpdateOne) ClearVipOrder() *UserUpdateOne {
+	uuo.mutation.ClearVipOrder()
+	return uuo
+}
+
+// RemoveVipOrderIDs removes the "vip_order" edge to VipOrder entities by IDs.
+func (uuo *UserUpdateOne) RemoveVipOrderIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveVipOrderIDs(ids...)
+	return uuo
+}
+
+// RemoveVipOrder removes "vip_order" edges to VipOrder entities.
+func (uuo *UserUpdateOne) RemoveVipOrder(v ...*VipOrder) *UserUpdateOne {
+	ids := make([]int, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return uuo.RemoveVipOrderIDs(ids...)
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -498,6 +696,80 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(applyrecord.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.VipInfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.VipInfoTable,
+			Columns: []string{user.VipInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(vipinfo.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.VipInfoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   user.VipInfoTable,
+			Columns: []string{user.VipInfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(vipinfo.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.VipOrderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.VipOrderTable,
+			Columns: []string{user.VipOrderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(viporder.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedVipOrderIDs(); len(nodes) > 0 && !uuo.mutation.VipOrderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.VipOrderTable,
+			Columns: []string{user.VipOrderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(viporder.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.VipOrderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.VipOrderTable,
+			Columns: []string{user.VipOrderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(viporder.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

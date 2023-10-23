@@ -276,6 +276,67 @@ var (
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
 	}
+	// VipInfosColumns holds the columns for the "vip_infos" table.
+	VipInfosColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "vip_type", Type: field.TypeInt8},
+		{Name: "start_at", Type: field.TypeTime},
+		{Name: "expire_at", Type: field.TypeTime},
+		{Name: "user_id", Type: field.TypeInt, Unique: true},
+	}
+	// VipInfosTable holds the schema information for the "vip_infos" table.
+	VipInfosTable = &schema.Table{
+		Name:       "vip_infos",
+		Columns:    VipInfosColumns,
+		PrimaryKey: []*schema.Column{VipInfosColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "vip_infos_users_vip_info",
+				Columns:    []*schema.Column{VipInfosColumns[4]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+	}
+	// VipOrdersColumns holds the columns for the "vip_orders" table.
+	VipOrdersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "biz_id", Type: field.TypeInt64, Unique: true},
+		{Name: "vip_type", Type: field.TypeInt8},
+		{Name: "pay_type", Type: field.TypeInt8},
+		{Name: "pay_status", Type: field.TypeInt8, Nullable: true},
+		{Name: "create_at", Type: field.TypeTime},
+		{Name: "update_at", Type: field.TypeTime},
+		{Name: "price", Type: field.TypeFloat64},
+		{Name: "user_id", Type: field.TypeInt, Nullable: true},
+	}
+	// VipOrdersTable holds the schema information for the "vip_orders" table.
+	VipOrdersTable = &schema.Table{
+		Name:       "vip_orders",
+		Columns:    VipOrdersColumns,
+		PrimaryKey: []*schema.Column{VipOrdersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "vip_orders_users_vip_order",
+				Columns:    []*schema.Column{VipOrdersColumns[8]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// VipProductsColumns holds the columns for the "vip_products" table.
+	VipProductsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "price", Type: field.TypeFloat64},
+		{Name: "name", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString, Size: 2147483647},
+	}
+	// VipProductsTable holds the schema information for the "vip_products" table.
+	VipProductsTable = &schema.Table{
+		Name:       "vip_products",
+		Columns:    VipProductsColumns,
+		PrimaryKey: []*schema.Column{VipProductsColumns[0]},
+	}
 	// WalletsColumns holds the columns for the "wallets" table.
 	WalletsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -307,6 +368,9 @@ var (
 		SlidersTable,
 		TeachersTable,
 		UsersTable,
+		VipInfosTable,
+		VipOrdersTable,
+		VipProductsTable,
 		WalletsTable,
 	}
 )
@@ -319,4 +383,6 @@ func init() {
 	CoursesTable.ForeignKeys[1].RefTable = TeachersTable
 	LessonsTable.ForeignKeys[0].RefTable = ChaptersTable
 	TeachersTable.ForeignKeys[0].RefTable = UsersTable
+	VipInfosTable.ForeignKeys[0].RefTable = UsersTable
+	VipOrdersTable.ForeignKeys[0].RefTable = UsersTable
 }

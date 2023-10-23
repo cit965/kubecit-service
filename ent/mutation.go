@@ -19,6 +19,9 @@ import (
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
+	"kubecit-service/ent/vipinfo"
+	"kubecit-service/ent/viporder"
+	"kubecit-service/ent/vipproduct"
 	"kubecit-service/ent/wallet"
 	"sync"
 	"time"
@@ -48,6 +51,9 @@ const (
 	TypeSlider      = "Slider"
 	TypeTeacher     = "Teacher"
 	TypeUser        = "User"
+	TypeVipInfo     = "VipInfo"
+	TypeVipOrder    = "VipOrder"
+	TypeVipProduct  = "VipProduct"
 	TypeWallet      = "Wallet"
 )
 
@@ -9657,6 +9663,11 @@ type UserMutation struct {
 	apply_record        map[int]struct{}
 	removedapply_record map[int]struct{}
 	clearedapply_record bool
+	vip_info            *int
+	clearedvip_info     bool
+	vip_order           map[int]struct{}
+	removedvip_order    map[int]struct{}
+	clearedvip_order    bool
 	done                bool
 	oldValue            func(context.Context) (*User, error)
 	predicates          []predicate.User
@@ -9981,6 +9992,99 @@ func (m *UserMutation) ResetApplyRecord() {
 	m.removedapply_record = nil
 }
 
+// SetVipInfoID sets the "vip_info" edge to the VipInfo entity by id.
+func (m *UserMutation) SetVipInfoID(id int) {
+	m.vip_info = &id
+}
+
+// ClearVipInfo clears the "vip_info" edge to the VipInfo entity.
+func (m *UserMutation) ClearVipInfo() {
+	m.clearedvip_info = true
+}
+
+// VipInfoCleared reports if the "vip_info" edge to the VipInfo entity was cleared.
+func (m *UserMutation) VipInfoCleared() bool {
+	return m.clearedvip_info
+}
+
+// VipInfoID returns the "vip_info" edge ID in the mutation.
+func (m *UserMutation) VipInfoID() (id int, exists bool) {
+	if m.vip_info != nil {
+		return *m.vip_info, true
+	}
+	return
+}
+
+// VipInfoIDs returns the "vip_info" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// VipInfoID instead. It exists only for internal usage by the builders.
+func (m *UserMutation) VipInfoIDs() (ids []int) {
+	if id := m.vip_info; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetVipInfo resets all changes to the "vip_info" edge.
+func (m *UserMutation) ResetVipInfo() {
+	m.vip_info = nil
+	m.clearedvip_info = false
+}
+
+// AddVipOrderIDs adds the "vip_order" edge to the VipOrder entity by ids.
+func (m *UserMutation) AddVipOrderIDs(ids ...int) {
+	if m.vip_order == nil {
+		m.vip_order = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.vip_order[ids[i]] = struct{}{}
+	}
+}
+
+// ClearVipOrder clears the "vip_order" edge to the VipOrder entity.
+func (m *UserMutation) ClearVipOrder() {
+	m.clearedvip_order = true
+}
+
+// VipOrderCleared reports if the "vip_order" edge to the VipOrder entity was cleared.
+func (m *UserMutation) VipOrderCleared() bool {
+	return m.clearedvip_order
+}
+
+// RemoveVipOrderIDs removes the "vip_order" edge to the VipOrder entity by IDs.
+func (m *UserMutation) RemoveVipOrderIDs(ids ...int) {
+	if m.removedvip_order == nil {
+		m.removedvip_order = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.vip_order, ids[i])
+		m.removedvip_order[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedVipOrder returns the removed IDs of the "vip_order" edge to the VipOrder entity.
+func (m *UserMutation) RemovedVipOrderIDs() (ids []int) {
+	for id := range m.removedvip_order {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// VipOrderIDs returns the "vip_order" edge IDs in the mutation.
+func (m *UserMutation) VipOrderIDs() (ids []int) {
+	for id := range m.vip_order {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetVipOrder resets all changes to the "vip_order" edge.
+func (m *UserMutation) ResetVipOrder() {
+	m.vip_order = nil
+	m.clearedvip_order = false
+	m.removedvip_order = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -10163,12 +10267,18 @@ func (m *UserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 4)
 	if m.teacher != nil {
 		edges = append(edges, user.EdgeTeacher)
 	}
 	if m.apply_record != nil {
 		edges = append(edges, user.EdgeApplyRecord)
+	}
+	if m.vip_info != nil {
+		edges = append(edges, user.EdgeVipInfo)
+	}
+	if m.vip_order != nil {
+		edges = append(edges, user.EdgeVipOrder)
 	}
 	return edges
 }
@@ -10187,15 +10297,28 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeVipInfo:
+		if id := m.vip_info; id != nil {
+			return []ent.Value{*id}
+		}
+	case user.EdgeVipOrder:
+		ids := make([]ent.Value, 0, len(m.vip_order))
+		for id := range m.vip_order {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 4)
 	if m.removedapply_record != nil {
 		edges = append(edges, user.EdgeApplyRecord)
+	}
+	if m.removedvip_order != nil {
+		edges = append(edges, user.EdgeVipOrder)
 	}
 	return edges
 }
@@ -10210,18 +10333,30 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeVipOrder:
+		ids := make([]ent.Value, 0, len(m.removedvip_order))
+		for id := range m.removedvip_order {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 4)
 	if m.clearedteacher {
 		edges = append(edges, user.EdgeTeacher)
 	}
 	if m.clearedapply_record {
 		edges = append(edges, user.EdgeApplyRecord)
+	}
+	if m.clearedvip_info {
+		edges = append(edges, user.EdgeVipInfo)
+	}
+	if m.clearedvip_order {
+		edges = append(edges, user.EdgeVipOrder)
 	}
 	return edges
 }
@@ -10234,6 +10369,10 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 		return m.clearedteacher
 	case user.EdgeApplyRecord:
 		return m.clearedapply_record
+	case user.EdgeVipInfo:
+		return m.clearedvip_info
+	case user.EdgeVipOrder:
+		return m.clearedvip_order
 	}
 	return false
 }
@@ -10244,6 +10383,9 @@ func (m *UserMutation) ClearEdge(name string) error {
 	switch name {
 	case user.EdgeTeacher:
 		m.ClearTeacher()
+		return nil
+	case user.EdgeVipInfo:
+		m.ClearVipInfo()
 		return nil
 	}
 	return fmt.Errorf("unknown User unique edge %s", name)
@@ -10259,8 +10401,2054 @@ func (m *UserMutation) ResetEdge(name string) error {
 	case user.EdgeApplyRecord:
 		m.ResetApplyRecord()
 		return nil
+	case user.EdgeVipInfo:
+		m.ResetVipInfo()
+		return nil
+	case user.EdgeVipOrder:
+		m.ResetVipOrder()
+		return nil
 	}
 	return fmt.Errorf("unknown User edge %s", name)
+}
+
+// VipInfoMutation represents an operation that mutates the VipInfo nodes in the graph.
+type VipInfoMutation struct {
+	config
+	op               Op
+	typ              string
+	id               *int
+	vip_type         *int8
+	addvip_type      *int8
+	start_at         *time.Time
+	expire_at        *time.Time
+	clearedFields    map[string]struct{}
+	user_info        *int
+	cleareduser_info bool
+	done             bool
+	oldValue         func(context.Context) (*VipInfo, error)
+	predicates       []predicate.VipInfo
+}
+
+var _ ent.Mutation = (*VipInfoMutation)(nil)
+
+// vipinfoOption allows management of the mutation configuration using functional options.
+type vipinfoOption func(*VipInfoMutation)
+
+// newVipInfoMutation creates new mutation for the VipInfo entity.
+func newVipInfoMutation(c config, op Op, opts ...vipinfoOption) *VipInfoMutation {
+	m := &VipInfoMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeVipInfo,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withVipInfoID sets the ID field of the mutation.
+func withVipInfoID(id int) vipinfoOption {
+	return func(m *VipInfoMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *VipInfo
+		)
+		m.oldValue = func(ctx context.Context) (*VipInfo, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().VipInfo.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withVipInfo sets the old VipInfo of the mutation.
+func withVipInfo(node *VipInfo) vipinfoOption {
+	return func(m *VipInfoMutation) {
+		m.oldValue = func(context.Context) (*VipInfo, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m VipInfoMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m VipInfoMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *VipInfoMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *VipInfoMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().VipInfo.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetVipType sets the "vip_type" field.
+func (m *VipInfoMutation) SetVipType(i int8) {
+	m.vip_type = &i
+	m.addvip_type = nil
+}
+
+// VipType returns the value of the "vip_type" field in the mutation.
+func (m *VipInfoMutation) VipType() (r int8, exists bool) {
+	v := m.vip_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldVipType returns the old "vip_type" field's value of the VipInfo entity.
+// If the VipInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipInfoMutation) OldVipType(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldVipType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldVipType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldVipType: %w", err)
+	}
+	return oldValue.VipType, nil
+}
+
+// AddVipType adds i to the "vip_type" field.
+func (m *VipInfoMutation) AddVipType(i int8) {
+	if m.addvip_type != nil {
+		*m.addvip_type += i
+	} else {
+		m.addvip_type = &i
+	}
+}
+
+// AddedVipType returns the value that was added to the "vip_type" field in this mutation.
+func (m *VipInfoMutation) AddedVipType() (r int8, exists bool) {
+	v := m.addvip_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetVipType resets all changes to the "vip_type" field.
+func (m *VipInfoMutation) ResetVipType() {
+	m.vip_type = nil
+	m.addvip_type = nil
+}
+
+// SetStartAt sets the "start_at" field.
+func (m *VipInfoMutation) SetStartAt(t time.Time) {
+	m.start_at = &t
+}
+
+// StartAt returns the value of the "start_at" field in the mutation.
+func (m *VipInfoMutation) StartAt() (r time.Time, exists bool) {
+	v := m.start_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStartAt returns the old "start_at" field's value of the VipInfo entity.
+// If the VipInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipInfoMutation) OldStartAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStartAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStartAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStartAt: %w", err)
+	}
+	return oldValue.StartAt, nil
+}
+
+// ResetStartAt resets all changes to the "start_at" field.
+func (m *VipInfoMutation) ResetStartAt() {
+	m.start_at = nil
+}
+
+// SetExpireAt sets the "expire_at" field.
+func (m *VipInfoMutation) SetExpireAt(t time.Time) {
+	m.expire_at = &t
+}
+
+// ExpireAt returns the value of the "expire_at" field in the mutation.
+func (m *VipInfoMutation) ExpireAt() (r time.Time, exists bool) {
+	v := m.expire_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExpireAt returns the old "expire_at" field's value of the VipInfo entity.
+// If the VipInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipInfoMutation) OldExpireAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExpireAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExpireAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExpireAt: %w", err)
+	}
+	return oldValue.ExpireAt, nil
+}
+
+// ResetExpireAt resets all changes to the "expire_at" field.
+func (m *VipInfoMutation) ResetExpireAt() {
+	m.expire_at = nil
+}
+
+// SetUserID sets the "user_id" field.
+func (m *VipInfoMutation) SetUserID(i int) {
+	m.user_info = &i
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *VipInfoMutation) UserID() (r int, exists bool) {
+	v := m.user_info
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the VipInfo entity.
+// If the VipInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipInfoMutation) OldUserID(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *VipInfoMutation) ResetUserID() {
+	m.user_info = nil
+}
+
+// SetUserInfoID sets the "user_info" edge to the User entity by id.
+func (m *VipInfoMutation) SetUserInfoID(id int) {
+	m.user_info = &id
+}
+
+// ClearUserInfo clears the "user_info" edge to the User entity.
+func (m *VipInfoMutation) ClearUserInfo() {
+	m.cleareduser_info = true
+}
+
+// UserInfoCleared reports if the "user_info" edge to the User entity was cleared.
+func (m *VipInfoMutation) UserInfoCleared() bool {
+	return m.cleareduser_info
+}
+
+// UserInfoID returns the "user_info" edge ID in the mutation.
+func (m *VipInfoMutation) UserInfoID() (id int, exists bool) {
+	if m.user_info != nil {
+		return *m.user_info, true
+	}
+	return
+}
+
+// UserInfoIDs returns the "user_info" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// UserInfoID instead. It exists only for internal usage by the builders.
+func (m *VipInfoMutation) UserInfoIDs() (ids []int) {
+	if id := m.user_info; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetUserInfo resets all changes to the "user_info" edge.
+func (m *VipInfoMutation) ResetUserInfo() {
+	m.user_info = nil
+	m.cleareduser_info = false
+}
+
+// Where appends a list predicates to the VipInfoMutation builder.
+func (m *VipInfoMutation) Where(ps ...predicate.VipInfo) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the VipInfoMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *VipInfoMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.VipInfo, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *VipInfoMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *VipInfoMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (VipInfo).
+func (m *VipInfoMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *VipInfoMutation) Fields() []string {
+	fields := make([]string, 0, 4)
+	if m.vip_type != nil {
+		fields = append(fields, vipinfo.FieldVipType)
+	}
+	if m.start_at != nil {
+		fields = append(fields, vipinfo.FieldStartAt)
+	}
+	if m.expire_at != nil {
+		fields = append(fields, vipinfo.FieldExpireAt)
+	}
+	if m.user_info != nil {
+		fields = append(fields, vipinfo.FieldUserID)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *VipInfoMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case vipinfo.FieldVipType:
+		return m.VipType()
+	case vipinfo.FieldStartAt:
+		return m.StartAt()
+	case vipinfo.FieldExpireAt:
+		return m.ExpireAt()
+	case vipinfo.FieldUserID:
+		return m.UserID()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *VipInfoMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case vipinfo.FieldVipType:
+		return m.OldVipType(ctx)
+	case vipinfo.FieldStartAt:
+		return m.OldStartAt(ctx)
+	case vipinfo.FieldExpireAt:
+		return m.OldExpireAt(ctx)
+	case vipinfo.FieldUserID:
+		return m.OldUserID(ctx)
+	}
+	return nil, fmt.Errorf("unknown VipInfo field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *VipInfoMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case vipinfo.FieldVipType:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetVipType(v)
+		return nil
+	case vipinfo.FieldStartAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStartAt(v)
+		return nil
+	case vipinfo.FieldExpireAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExpireAt(v)
+		return nil
+	case vipinfo.FieldUserID:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown VipInfo field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *VipInfoMutation) AddedFields() []string {
+	var fields []string
+	if m.addvip_type != nil {
+		fields = append(fields, vipinfo.FieldVipType)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *VipInfoMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case vipinfo.FieldVipType:
+		return m.AddedVipType()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *VipInfoMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case vipinfo.FieldVipType:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddVipType(v)
+		return nil
+	}
+	return fmt.Errorf("unknown VipInfo numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *VipInfoMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *VipInfoMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *VipInfoMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown VipInfo nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *VipInfoMutation) ResetField(name string) error {
+	switch name {
+	case vipinfo.FieldVipType:
+		m.ResetVipType()
+		return nil
+	case vipinfo.FieldStartAt:
+		m.ResetStartAt()
+		return nil
+	case vipinfo.FieldExpireAt:
+		m.ResetExpireAt()
+		return nil
+	case vipinfo.FieldUserID:
+		m.ResetUserID()
+		return nil
+	}
+	return fmt.Errorf("unknown VipInfo field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *VipInfoMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.user_info != nil {
+		edges = append(edges, vipinfo.EdgeUserInfo)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *VipInfoMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case vipinfo.EdgeUserInfo:
+		if id := m.user_info; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *VipInfoMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *VipInfoMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *VipInfoMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.cleareduser_info {
+		edges = append(edges, vipinfo.EdgeUserInfo)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *VipInfoMutation) EdgeCleared(name string) bool {
+	switch name {
+	case vipinfo.EdgeUserInfo:
+		return m.cleareduser_info
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *VipInfoMutation) ClearEdge(name string) error {
+	switch name {
+	case vipinfo.EdgeUserInfo:
+		m.ClearUserInfo()
+		return nil
+	}
+	return fmt.Errorf("unknown VipInfo unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *VipInfoMutation) ResetEdge(name string) error {
+	switch name {
+	case vipinfo.EdgeUserInfo:
+		m.ResetUserInfo()
+		return nil
+	}
+	return fmt.Errorf("unknown VipInfo edge %s", name)
+}
+
+// VipOrderMutation represents an operation that mutates the VipOrder nodes in the graph.
+type VipOrderMutation struct {
+	config
+	op                Op
+	typ               string
+	id                *int
+	biz_id            *int64
+	addbiz_id         *int64
+	vip_type          *int8
+	addvip_type       *int8
+	pay_type          *int8
+	addpay_type       *int8
+	pay_status        *int8
+	addpay_status     *int8
+	create_at         *time.Time
+	update_at         *time.Time
+	price             *float64
+	addprice          *float64
+	clearedFields     map[string]struct{}
+	user_order        *int
+	cleareduser_order bool
+	done              bool
+	oldValue          func(context.Context) (*VipOrder, error)
+	predicates        []predicate.VipOrder
+}
+
+var _ ent.Mutation = (*VipOrderMutation)(nil)
+
+// viporderOption allows management of the mutation configuration using functional options.
+type viporderOption func(*VipOrderMutation)
+
+// newVipOrderMutation creates new mutation for the VipOrder entity.
+func newVipOrderMutation(c config, op Op, opts ...viporderOption) *VipOrderMutation {
+	m := &VipOrderMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeVipOrder,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withVipOrderID sets the ID field of the mutation.
+func withVipOrderID(id int) viporderOption {
+	return func(m *VipOrderMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *VipOrder
+		)
+		m.oldValue = func(ctx context.Context) (*VipOrder, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().VipOrder.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withVipOrder sets the old VipOrder of the mutation.
+func withVipOrder(node *VipOrder) viporderOption {
+	return func(m *VipOrderMutation) {
+		m.oldValue = func(context.Context) (*VipOrder, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m VipOrderMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m VipOrderMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *VipOrderMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *VipOrderMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().VipOrder.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetBizID sets the "biz_id" field.
+func (m *VipOrderMutation) SetBizID(i int64) {
+	m.biz_id = &i
+	m.addbiz_id = nil
+}
+
+// BizID returns the value of the "biz_id" field in the mutation.
+func (m *VipOrderMutation) BizID() (r int64, exists bool) {
+	v := m.biz_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBizID returns the old "biz_id" field's value of the VipOrder entity.
+// If the VipOrder object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipOrderMutation) OldBizID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBizID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBizID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBizID: %w", err)
+	}
+	return oldValue.BizID, nil
+}
+
+// AddBizID adds i to the "biz_id" field.
+func (m *VipOrderMutation) AddBizID(i int64) {
+	if m.addbiz_id != nil {
+		*m.addbiz_id += i
+	} else {
+		m.addbiz_id = &i
+	}
+}
+
+// AddedBizID returns the value that was added to the "biz_id" field in this mutation.
+func (m *VipOrderMutation) AddedBizID() (r int64, exists bool) {
+	v := m.addbiz_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetBizID resets all changes to the "biz_id" field.
+func (m *VipOrderMutation) ResetBizID() {
+	m.biz_id = nil
+	m.addbiz_id = nil
+}
+
+// SetVipType sets the "vip_type" field.
+func (m *VipOrderMutation) SetVipType(i int8) {
+	m.vip_type = &i
+	m.addvip_type = nil
+}
+
+// VipType returns the value of the "vip_type" field in the mutation.
+func (m *VipOrderMutation) VipType() (r int8, exists bool) {
+	v := m.vip_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldVipType returns the old "vip_type" field's value of the VipOrder entity.
+// If the VipOrder object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipOrderMutation) OldVipType(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldVipType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldVipType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldVipType: %w", err)
+	}
+	return oldValue.VipType, nil
+}
+
+// AddVipType adds i to the "vip_type" field.
+func (m *VipOrderMutation) AddVipType(i int8) {
+	if m.addvip_type != nil {
+		*m.addvip_type += i
+	} else {
+		m.addvip_type = &i
+	}
+}
+
+// AddedVipType returns the value that was added to the "vip_type" field in this mutation.
+func (m *VipOrderMutation) AddedVipType() (r int8, exists bool) {
+	v := m.addvip_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetVipType resets all changes to the "vip_type" field.
+func (m *VipOrderMutation) ResetVipType() {
+	m.vip_type = nil
+	m.addvip_type = nil
+}
+
+// SetPayType sets the "pay_type" field.
+func (m *VipOrderMutation) SetPayType(i int8) {
+	m.pay_type = &i
+	m.addpay_type = nil
+}
+
+// PayType returns the value of the "pay_type" field in the mutation.
+func (m *VipOrderMutation) PayType() (r int8, exists bool) {
+	v := m.pay_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayType returns the old "pay_type" field's value of the VipOrder entity.
+// If the VipOrder object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipOrderMutation) OldPayType(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayType: %w", err)
+	}
+	return oldValue.PayType, nil
+}
+
+// AddPayType adds i to the "pay_type" field.
+func (m *VipOrderMutation) AddPayType(i int8) {
+	if m.addpay_type != nil {
+		*m.addpay_type += i
+	} else {
+		m.addpay_type = &i
+	}
+}
+
+// AddedPayType returns the value that was added to the "pay_type" field in this mutation.
+func (m *VipOrderMutation) AddedPayType() (r int8, exists bool) {
+	v := m.addpay_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPayType resets all changes to the "pay_type" field.
+func (m *VipOrderMutation) ResetPayType() {
+	m.pay_type = nil
+	m.addpay_type = nil
+}
+
+// SetPayStatus sets the "pay_status" field.
+func (m *VipOrderMutation) SetPayStatus(i int8) {
+	m.pay_status = &i
+	m.addpay_status = nil
+}
+
+// PayStatus returns the value of the "pay_status" field in the mutation.
+func (m *VipOrderMutation) PayStatus() (r int8, exists bool) {
+	v := m.pay_status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayStatus returns the old "pay_status" field's value of the VipOrder entity.
+// If the VipOrder object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipOrderMutation) OldPayStatus(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayStatus: %w", err)
+	}
+	return oldValue.PayStatus, nil
+}
+
+// AddPayStatus adds i to the "pay_status" field.
+func (m *VipOrderMutation) AddPayStatus(i int8) {
+	if m.addpay_status != nil {
+		*m.addpay_status += i
+	} else {
+		m.addpay_status = &i
+	}
+}
+
+// AddedPayStatus returns the value that was added to the "pay_status" field in this mutation.
+func (m *VipOrderMutation) AddedPayStatus() (r int8, exists bool) {
+	v := m.addpay_status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearPayStatus clears the value of the "pay_status" field.
+func (m *VipOrderMutation) ClearPayStatus() {
+	m.pay_status = nil
+	m.addpay_status = nil
+	m.clearedFields[viporder.FieldPayStatus] = struct{}{}
+}
+
+// PayStatusCleared returns if the "pay_status" field was cleared in this mutation.
+func (m *VipOrderMutation) PayStatusCleared() bool {
+	_, ok := m.clearedFields[viporder.FieldPayStatus]
+	return ok
+}
+
+// ResetPayStatus resets all changes to the "pay_status" field.
+func (m *VipOrderMutation) ResetPayStatus() {
+	m.pay_status = nil
+	m.addpay_status = nil
+	delete(m.clearedFields, viporder.FieldPayStatus)
+}
+
+// SetCreateAt sets the "create_at" field.
+func (m *VipOrderMutation) SetCreateAt(t time.Time) {
+	m.create_at = &t
+}
+
+// CreateAt returns the value of the "create_at" field in the mutation.
+func (m *VipOrderMutation) CreateAt() (r time.Time, exists bool) {
+	v := m.create_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateAt returns the old "create_at" field's value of the VipOrder entity.
+// If the VipOrder object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipOrderMutation) OldCreateAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+	}
+	return oldValue.CreateAt, nil
+}
+
+// ResetCreateAt resets all changes to the "create_at" field.
+func (m *VipOrderMutation) ResetCreateAt() {
+	m.create_at = nil
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (m *VipOrderMutation) SetUpdateAt(t time.Time) {
+	m.update_at = &t
+}
+
+// UpdateAt returns the value of the "update_at" field in the mutation.
+func (m *VipOrderMutation) UpdateAt() (r time.Time, exists bool) {
+	v := m.update_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateAt returns the old "update_at" field's value of the VipOrder entity.
+// If the VipOrder object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipOrderMutation) OldUpdateAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+	}
+	return oldValue.UpdateAt, nil
+}
+
+// ResetUpdateAt resets all changes to the "update_at" field.
+func (m *VipOrderMutation) ResetUpdateAt() {
+	m.update_at = nil
+}
+
+// SetUserID sets the "user_id" field.
+func (m *VipOrderMutation) SetUserID(i int) {
+	m.user_order = &i
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *VipOrderMutation) UserID() (r int, exists bool) {
+	v := m.user_order
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the VipOrder entity.
+// If the VipOrder object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipOrderMutation) OldUserID(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// ClearUserID clears the value of the "user_id" field.
+func (m *VipOrderMutation) ClearUserID() {
+	m.user_order = nil
+	m.clearedFields[viporder.FieldUserID] = struct{}{}
+}
+
+// UserIDCleared returns if the "user_id" field was cleared in this mutation.
+func (m *VipOrderMutation) UserIDCleared() bool {
+	_, ok := m.clearedFields[viporder.FieldUserID]
+	return ok
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *VipOrderMutation) ResetUserID() {
+	m.user_order = nil
+	delete(m.clearedFields, viporder.FieldUserID)
+}
+
+// SetPrice sets the "price" field.
+func (m *VipOrderMutation) SetPrice(f float64) {
+	m.price = &f
+	m.addprice = nil
+}
+
+// Price returns the value of the "price" field in the mutation.
+func (m *VipOrderMutation) Price() (r float64, exists bool) {
+	v := m.price
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPrice returns the old "price" field's value of the VipOrder entity.
+// If the VipOrder object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipOrderMutation) OldPrice(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPrice is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPrice requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPrice: %w", err)
+	}
+	return oldValue.Price, nil
+}
+
+// AddPrice adds f to the "price" field.
+func (m *VipOrderMutation) AddPrice(f float64) {
+	if m.addprice != nil {
+		*m.addprice += f
+	} else {
+		m.addprice = &f
+	}
+}
+
+// AddedPrice returns the value that was added to the "price" field in this mutation.
+func (m *VipOrderMutation) AddedPrice() (r float64, exists bool) {
+	v := m.addprice
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPrice resets all changes to the "price" field.
+func (m *VipOrderMutation) ResetPrice() {
+	m.price = nil
+	m.addprice = nil
+}
+
+// SetUserOrderID sets the "user_order" edge to the User entity by id.
+func (m *VipOrderMutation) SetUserOrderID(id int) {
+	m.user_order = &id
+}
+
+// ClearUserOrder clears the "user_order" edge to the User entity.
+func (m *VipOrderMutation) ClearUserOrder() {
+	m.cleareduser_order = true
+}
+
+// UserOrderCleared reports if the "user_order" edge to the User entity was cleared.
+func (m *VipOrderMutation) UserOrderCleared() bool {
+	return m.UserIDCleared() || m.cleareduser_order
+}
+
+// UserOrderID returns the "user_order" edge ID in the mutation.
+func (m *VipOrderMutation) UserOrderID() (id int, exists bool) {
+	if m.user_order != nil {
+		return *m.user_order, true
+	}
+	return
+}
+
+// UserOrderIDs returns the "user_order" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// UserOrderID instead. It exists only for internal usage by the builders.
+func (m *VipOrderMutation) UserOrderIDs() (ids []int) {
+	if id := m.user_order; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetUserOrder resets all changes to the "user_order" edge.
+func (m *VipOrderMutation) ResetUserOrder() {
+	m.user_order = nil
+	m.cleareduser_order = false
+}
+
+// Where appends a list predicates to the VipOrderMutation builder.
+func (m *VipOrderMutation) Where(ps ...predicate.VipOrder) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the VipOrderMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *VipOrderMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.VipOrder, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *VipOrderMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *VipOrderMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (VipOrder).
+func (m *VipOrderMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *VipOrderMutation) Fields() []string {
+	fields := make([]string, 0, 8)
+	if m.biz_id != nil {
+		fields = append(fields, viporder.FieldBizID)
+	}
+	if m.vip_type != nil {
+		fields = append(fields, viporder.FieldVipType)
+	}
+	if m.pay_type != nil {
+		fields = append(fields, viporder.FieldPayType)
+	}
+	if m.pay_status != nil {
+		fields = append(fields, viporder.FieldPayStatus)
+	}
+	if m.create_at != nil {
+		fields = append(fields, viporder.FieldCreateAt)
+	}
+	if m.update_at != nil {
+		fields = append(fields, viporder.FieldUpdateAt)
+	}
+	if m.user_order != nil {
+		fields = append(fields, viporder.FieldUserID)
+	}
+	if m.price != nil {
+		fields = append(fields, viporder.FieldPrice)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *VipOrderMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case viporder.FieldBizID:
+		return m.BizID()
+	case viporder.FieldVipType:
+		return m.VipType()
+	case viporder.FieldPayType:
+		return m.PayType()
+	case viporder.FieldPayStatus:
+		return m.PayStatus()
+	case viporder.FieldCreateAt:
+		return m.CreateAt()
+	case viporder.FieldUpdateAt:
+		return m.UpdateAt()
+	case viporder.FieldUserID:
+		return m.UserID()
+	case viporder.FieldPrice:
+		return m.Price()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *VipOrderMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case viporder.FieldBizID:
+		return m.OldBizID(ctx)
+	case viporder.FieldVipType:
+		return m.OldVipType(ctx)
+	case viporder.FieldPayType:
+		return m.OldPayType(ctx)
+	case viporder.FieldPayStatus:
+		return m.OldPayStatus(ctx)
+	case viporder.FieldCreateAt:
+		return m.OldCreateAt(ctx)
+	case viporder.FieldUpdateAt:
+		return m.OldUpdateAt(ctx)
+	case viporder.FieldUserID:
+		return m.OldUserID(ctx)
+	case viporder.FieldPrice:
+		return m.OldPrice(ctx)
+	}
+	return nil, fmt.Errorf("unknown VipOrder field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *VipOrderMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case viporder.FieldBizID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBizID(v)
+		return nil
+	case viporder.FieldVipType:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetVipType(v)
+		return nil
+	case viporder.FieldPayType:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayType(v)
+		return nil
+	case viporder.FieldPayStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayStatus(v)
+		return nil
+	case viporder.FieldCreateAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateAt(v)
+		return nil
+	case viporder.FieldUpdateAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateAt(v)
+		return nil
+	case viporder.FieldUserID:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
+	case viporder.FieldPrice:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPrice(v)
+		return nil
+	}
+	return fmt.Errorf("unknown VipOrder field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *VipOrderMutation) AddedFields() []string {
+	var fields []string
+	if m.addbiz_id != nil {
+		fields = append(fields, viporder.FieldBizID)
+	}
+	if m.addvip_type != nil {
+		fields = append(fields, viporder.FieldVipType)
+	}
+	if m.addpay_type != nil {
+		fields = append(fields, viporder.FieldPayType)
+	}
+	if m.addpay_status != nil {
+		fields = append(fields, viporder.FieldPayStatus)
+	}
+	if m.addprice != nil {
+		fields = append(fields, viporder.FieldPrice)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *VipOrderMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case viporder.FieldBizID:
+		return m.AddedBizID()
+	case viporder.FieldVipType:
+		return m.AddedVipType()
+	case viporder.FieldPayType:
+		return m.AddedPayType()
+	case viporder.FieldPayStatus:
+		return m.AddedPayStatus()
+	case viporder.FieldPrice:
+		return m.AddedPrice()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *VipOrderMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case viporder.FieldBizID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBizID(v)
+		return nil
+	case viporder.FieldVipType:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddVipType(v)
+		return nil
+	case viporder.FieldPayType:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPayType(v)
+		return nil
+	case viporder.FieldPayStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPayStatus(v)
+		return nil
+	case viporder.FieldPrice:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPrice(v)
+		return nil
+	}
+	return fmt.Errorf("unknown VipOrder numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *VipOrderMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(viporder.FieldPayStatus) {
+		fields = append(fields, viporder.FieldPayStatus)
+	}
+	if m.FieldCleared(viporder.FieldUserID) {
+		fields = append(fields, viporder.FieldUserID)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *VipOrderMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *VipOrderMutation) ClearField(name string) error {
+	switch name {
+	case viporder.FieldPayStatus:
+		m.ClearPayStatus()
+		return nil
+	case viporder.FieldUserID:
+		m.ClearUserID()
+		return nil
+	}
+	return fmt.Errorf("unknown VipOrder nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *VipOrderMutation) ResetField(name string) error {
+	switch name {
+	case viporder.FieldBizID:
+		m.ResetBizID()
+		return nil
+	case viporder.FieldVipType:
+		m.ResetVipType()
+		return nil
+	case viporder.FieldPayType:
+		m.ResetPayType()
+		return nil
+	case viporder.FieldPayStatus:
+		m.ResetPayStatus()
+		return nil
+	case viporder.FieldCreateAt:
+		m.ResetCreateAt()
+		return nil
+	case viporder.FieldUpdateAt:
+		m.ResetUpdateAt()
+		return nil
+	case viporder.FieldUserID:
+		m.ResetUserID()
+		return nil
+	case viporder.FieldPrice:
+		m.ResetPrice()
+		return nil
+	}
+	return fmt.Errorf("unknown VipOrder field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *VipOrderMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.user_order != nil {
+		edges = append(edges, viporder.EdgeUserOrder)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *VipOrderMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case viporder.EdgeUserOrder:
+		if id := m.user_order; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *VipOrderMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *VipOrderMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *VipOrderMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.cleareduser_order {
+		edges = append(edges, viporder.EdgeUserOrder)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *VipOrderMutation) EdgeCleared(name string) bool {
+	switch name {
+	case viporder.EdgeUserOrder:
+		return m.cleareduser_order
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *VipOrderMutation) ClearEdge(name string) error {
+	switch name {
+	case viporder.EdgeUserOrder:
+		m.ClearUserOrder()
+		return nil
+	}
+	return fmt.Errorf("unknown VipOrder unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *VipOrderMutation) ResetEdge(name string) error {
+	switch name {
+	case viporder.EdgeUserOrder:
+		m.ResetUserOrder()
+		return nil
+	}
+	return fmt.Errorf("unknown VipOrder edge %s", name)
+}
+
+// VipProductMutation represents an operation that mutates the VipProduct nodes in the graph.
+type VipProductMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	price         *float64
+	addprice      *float64
+	name          *string
+	description   *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*VipProduct, error)
+	predicates    []predicate.VipProduct
+}
+
+var _ ent.Mutation = (*VipProductMutation)(nil)
+
+// vipproductOption allows management of the mutation configuration using functional options.
+type vipproductOption func(*VipProductMutation)
+
+// newVipProductMutation creates new mutation for the VipProduct entity.
+func newVipProductMutation(c config, op Op, opts ...vipproductOption) *VipProductMutation {
+	m := &VipProductMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeVipProduct,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withVipProductID sets the ID field of the mutation.
+func withVipProductID(id int) vipproductOption {
+	return func(m *VipProductMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *VipProduct
+		)
+		m.oldValue = func(ctx context.Context) (*VipProduct, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().VipProduct.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withVipProduct sets the old VipProduct of the mutation.
+func withVipProduct(node *VipProduct) vipproductOption {
+	return func(m *VipProductMutation) {
+		m.oldValue = func(context.Context) (*VipProduct, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m VipProductMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m VipProductMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *VipProductMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *VipProductMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().VipProduct.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetPrice sets the "price" field.
+func (m *VipProductMutation) SetPrice(f float64) {
+	m.price = &f
+	m.addprice = nil
+}
+
+// Price returns the value of the "price" field in the mutation.
+func (m *VipProductMutation) Price() (r float64, exists bool) {
+	v := m.price
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPrice returns the old "price" field's value of the VipProduct entity.
+// If the VipProduct object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipProductMutation) OldPrice(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPrice is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPrice requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPrice: %w", err)
+	}
+	return oldValue.Price, nil
+}
+
+// AddPrice adds f to the "price" field.
+func (m *VipProductMutation) AddPrice(f float64) {
+	if m.addprice != nil {
+		*m.addprice += f
+	} else {
+		m.addprice = &f
+	}
+}
+
+// AddedPrice returns the value that was added to the "price" field in this mutation.
+func (m *VipProductMutation) AddedPrice() (r float64, exists bool) {
+	v := m.addprice
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPrice resets all changes to the "price" field.
+func (m *VipProductMutation) ResetPrice() {
+	m.price = nil
+	m.addprice = nil
+}
+
+// SetName sets the "name" field.
+func (m *VipProductMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *VipProductMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the VipProduct entity.
+// If the VipProduct object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipProductMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *VipProductMutation) ResetName() {
+	m.name = nil
+}
+
+// SetDescription sets the "description" field.
+func (m *VipProductMutation) SetDescription(s string) {
+	m.description = &s
+}
+
+// Description returns the value of the "description" field in the mutation.
+func (m *VipProductMutation) Description() (r string, exists bool) {
+	v := m.description
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDescription returns the old "description" field's value of the VipProduct entity.
+// If the VipProduct object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VipProductMutation) OldDescription(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDescription requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
+	}
+	return oldValue.Description, nil
+}
+
+// ResetDescription resets all changes to the "description" field.
+func (m *VipProductMutation) ResetDescription() {
+	m.description = nil
+}
+
+// Where appends a list predicates to the VipProductMutation builder.
+func (m *VipProductMutation) Where(ps ...predicate.VipProduct) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the VipProductMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *VipProductMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.VipProduct, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *VipProductMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *VipProductMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (VipProduct).
+func (m *VipProductMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *VipProductMutation) Fields() []string {
+	fields := make([]string, 0, 3)
+	if m.price != nil {
+		fields = append(fields, vipproduct.FieldPrice)
+	}
+	if m.name != nil {
+		fields = append(fields, vipproduct.FieldName)
+	}
+	if m.description != nil {
+		fields = append(fields, vipproduct.FieldDescription)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *VipProductMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case vipproduct.FieldPrice:
+		return m.Price()
+	case vipproduct.FieldName:
+		return m.Name()
+	case vipproduct.FieldDescription:
+		return m.Description()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *VipProductMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case vipproduct.FieldPrice:
+		return m.OldPrice(ctx)
+	case vipproduct.FieldName:
+		return m.OldName(ctx)
+	case vipproduct.FieldDescription:
+		return m.OldDescription(ctx)
+	}
+	return nil, fmt.Errorf("unknown VipProduct field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *VipProductMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case vipproduct.FieldPrice:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPrice(v)
+		return nil
+	case vipproduct.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case vipproduct.FieldDescription:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDescription(v)
+		return nil
+	}
+	return fmt.Errorf("unknown VipProduct field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *VipProductMutation) AddedFields() []string {
+	var fields []string
+	if m.addprice != nil {
+		fields = append(fields, vipproduct.FieldPrice)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *VipProductMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case vipproduct.FieldPrice:
+		return m.AddedPrice()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *VipProductMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case vipproduct.FieldPrice:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPrice(v)
+		return nil
+	}
+	return fmt.Errorf("unknown VipProduct numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *VipProductMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *VipProductMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *VipProductMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown VipProduct nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *VipProductMutation) ResetField(name string) error {
+	switch name {
+	case vipproduct.FieldPrice:
+		m.ResetPrice()
+		return nil
+	case vipproduct.FieldName:
+		m.ResetName()
+		return nil
+	case vipproduct.FieldDescription:
+		m.ResetDescription()
+		return nil
+	}
+	return fmt.Errorf("unknown VipProduct field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *VipProductMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *VipProductMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *VipProductMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *VipProductMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *VipProductMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *VipProductMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *VipProductMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown VipProduct unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *VipProductMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown VipProduct edge %s", name)
 }
 
 // WalletMutation represents an operation that mutates the Wallet nodes in the graph.
