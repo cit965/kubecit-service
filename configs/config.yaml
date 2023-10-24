@@ -25,4 +25,8 @@ gin:
     token: '111'
     appid: wx4edbdc4895597796
     app_secret: cea927f6ae8a5974a0ce3e266a4cad0b
-
+  oss:
+    bucket: kubecit
+    accessKey: lc9nSjacBlpMYSYGJBholUVtVLZCeZij8tne8yfj
+    secretKey: eFLL-H9p0B-Zb4jtseHJJ0mRfslzN-NznX6XlwMp
+    domain: "test"
