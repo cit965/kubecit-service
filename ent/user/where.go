@@ -285,6 +285,52 @@ func HasApplyRecordWith(preds ...predicate.ApplyRecord) predicate.User {
 	})
 }
 
+// HasVipInfo applies the HasEdge predicate on the "vip_info" edge.
+func HasVipInfo() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, VipInfoTable, VipInfoColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasVipInfoWith applies the HasEdge predicate on the "vip_info" edge with a given conditions (other predicates).
+func HasVipInfoWith(preds ...predicate.VipInfo) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := newVipInfoStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasVipOrder applies the HasEdge predicate on the "vip_order" edge.
+func HasVipOrder() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, VipOrderTable, VipOrderColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasVipOrderWith applies the HasEdge predicate on the "vip_order" edge with a given conditions (other predicates).
+func HasVipOrderWith(preds ...predicate.VipOrder) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := newVipOrderStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.User) predicate.User {
 	return predicate.User(func(s *sql.Selector) {

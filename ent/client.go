@@ -22,6 +22,9 @@ import (
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/teacher"
 	"kubecit-service/ent/user"
+	"kubecit-service/ent/vipinfo"
+	"kubecit-service/ent/viporder"
+	"kubecit-service/ent/vipproduct"
 	"kubecit-service/ent/wallet"
 
 	"entgo.io/ent"
@@ -59,6 +62,12 @@ type Client struct {
 	Teacher *TeacherClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
+	// VipInfo is the client for interacting with the VipInfo builders.
+	VipInfo *VipInfoClient
+	// VipOrder is the client for interacting with the VipOrder builders.
+	VipOrder *VipOrderClient
+	// VipProduct is the client for interacting with the VipProduct builders.
+	VipProduct *VipProductClient
 	// Wallet is the client for interacting with the Wallet builders.
 	Wallet *WalletClient
 }
@@ -86,6 +95,9 @@ func (c *Client) init() {
 	c.Slider = NewSliderClient(c.config)
 	c.Teacher = NewTeacherClient(c.config)
 	c.User = NewUserClient(c.config)
+	c.VipInfo = NewVipInfoClient(c.config)
+	c.VipOrder = NewVipOrderClient(c.config)
+	c.VipProduct = NewVipProductClient(c.config)
 	c.Wallet = NewWalletClient(c.config)
 }
 
@@ -181,6 +193,9 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Slider:      NewSliderClient(cfg),
 		Teacher:     NewTeacherClient(cfg),
 		User:        NewUserClient(cfg),
+		VipInfo:     NewVipInfoClient(cfg),
+		VipOrder:    NewVipOrderClient(cfg),
+		VipProduct:  NewVipProductClient(cfg),
 		Wallet:      NewWalletClient(cfg),
 	}, nil
 }
@@ -213,6 +228,9 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Slider:      NewSliderClient(cfg),
 		Teacher:     NewTeacherClient(cfg),
 		User:        NewUserClient(cfg),
+		VipInfo:     NewVipInfoClient(cfg),
+		VipOrder:    NewVipOrderClient(cfg),
+		VipProduct:  NewVipProductClient(cfg),
 		Wallet:      NewWalletClient(cfg),
 	}, nil
 }
@@ -244,7 +262,8 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.Account, c.ApplyRecord, c.Category, c.Chapter, c.Course, c.Lesson,
-		c.OrderInfos, c.Orders, c.Setting, c.Slider, c.Teacher, c.User, c.Wallet,
+		c.OrderInfos, c.Orders, c.Setting, c.Slider, c.Teacher, c.User, c.VipInfo,
+		c.VipOrder, c.VipProduct, c.Wallet,
 	} {
 		n.Use(hooks...)
 	}
@@ -255,7 +274,8 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.Account, c.ApplyRecord, c.Category, c.Chapter, c.Course, c.Lesson,
-		c.OrderInfos, c.Orders, c.Setting, c.Slider, c.Teacher, c.User, c.Wallet,
+		c.OrderInfos, c.Orders, c.Setting, c.Slider, c.Teacher, c.User, c.VipInfo,
+		c.VipOrder, c.VipProduct, c.Wallet,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -288,6 +308,12 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Teacher.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
+	case *VipInfoMutation:
+		return c.VipInfo.mutate(ctx, m)
+	case *VipOrderMutation:
+		return c.VipOrder.mutate(ctx, m)
+	case *VipProductMutation:
+		return c.VipProduct.mutate(ctx, m)
 	case *WalletMutation:
 		return c.Wallet.mutate(ctx, m)
 	default:
@@ -1910,6 +1936,38 @@ func (c *UserClient) QueryApplyRecord(u *User) *ApplyRecordQuery {
 	return query
 }
 
+// QueryVipInfo queries the vip_info edge of a User.
+func (c *UserClient) QueryVipInfo(u *User) *VipInfoQuery {
+	query := (&VipInfoClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(vipinfo.Table, vipinfo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, user.VipInfoTable, user.VipInfoColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryVipOrder queries the vip_order edge of a User.
+func (c *UserClient) QueryVipOrder(u *User) *VipOrderQuery {
+	query := (&VipOrderClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(viporder.Table, viporder.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.VipOrderTable, user.VipOrderColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *UserClient) Hooks() []Hook {
 	return c.hooks.User
@@ -1932,6 +1990,392 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 		return (&UserDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown User mutation op: %q", m.Op())
+	}
+}
+
+// VipInfoClient is a client for the VipInfo schema.
+type VipInfoClient struct {
+	config
+}
+
+// NewVipInfoClient returns a client for the VipInfo from the given config.
+func NewVipInfoClient(c config) *VipInfoClient {
+	return &VipInfoClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `vipinfo.Hooks(f(g(h())))`.
+func (c *VipInfoClient) Use(hooks ...Hook) {
+	c.hooks.VipInfo = append(c.hooks.VipInfo, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `vipinfo.Intercept(f(g(h())))`.
+func (c *VipInfoClient) Intercept(interceptors ...Interceptor) {
+	c.inters.VipInfo = append(c.inters.VipInfo, interceptors...)
+}
+
+// Create returns a builder for creating a VipInfo entity.
+func (c *VipInfoClient) Create() *VipInfoCreate {
+	mutation := newVipInfoMutation(c.config, OpCreate)
+	return &VipInfoCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of VipInfo entities.
+func (c *VipInfoClient) CreateBulk(builders ...*VipInfoCreate) *VipInfoCreateBulk {
+	return &VipInfoCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for VipInfo.
+func (c *VipInfoClient) Update() *VipInfoUpdate {
+	mutation := newVipInfoMutation(c.config, OpUpdate)
+	return &VipInfoUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *VipInfoClient) UpdateOne(vi *VipInfo) *VipInfoUpdateOne {
+	mutation := newVipInfoMutation(c.config, OpUpdateOne, withVipInfo(vi))
+	return &VipInfoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *VipInfoClient) UpdateOneID(id int) *VipInfoUpdateOne {
+	mutation := newVipInfoMutation(c.config, OpUpdateOne, withVipInfoID(id))
+	return &VipInfoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for VipInfo.
+func (c *VipInfoClient) Delete() *VipInfoDelete {
+	mutation := newVipInfoMutation(c.config, OpDelete)
+	return &VipInfoDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *VipInfoClient) DeleteOne(vi *VipInfo) *VipInfoDeleteOne {
+	return c.DeleteOneID(vi.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *VipInfoClient) DeleteOneID(id int) *VipInfoDeleteOne {
+	builder := c.Delete().Where(vipinfo.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &VipInfoDeleteOne{builder}
+}
+
+// Query returns a query builder for VipInfo.
+func (c *VipInfoClient) Query() *VipInfoQuery {
+	return &VipInfoQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeVipInfo},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a VipInfo entity by its id.
+func (c *VipInfoClient) Get(ctx context.Context, id int) (*VipInfo, error) {
+	return c.Query().Where(vipinfo.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *VipInfoClient) GetX(ctx context.Context, id int) *VipInfo {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryUserInfo queries the user_info edge of a VipInfo.
+func (c *VipInfoClient) QueryUserInfo(vi *VipInfo) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := vi.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(vipinfo.Table, vipinfo.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, vipinfo.UserInfoTable, vipinfo.UserInfoColumn),
+		)
+		fromV = sqlgraph.Neighbors(vi.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *VipInfoClient) Hooks() []Hook {
+	return c.hooks.VipInfo
+}
+
+// Interceptors returns the client interceptors.
+func (c *VipInfoClient) Interceptors() []Interceptor {
+	return c.inters.VipInfo
+}
+
+func (c *VipInfoClient) mutate(ctx context.Context, m *VipInfoMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&VipInfoCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&VipInfoUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&VipInfoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&VipInfoDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown VipInfo mutation op: %q", m.Op())
+	}
+}
+
+// VipOrderClient is a client for the VipOrder schema.
+type VipOrderClient struct {
+	config
+}
+
+// NewVipOrderClient returns a client for the VipOrder from the given config.
+func NewVipOrderClient(c config) *VipOrderClient {
+	return &VipOrderClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `viporder.Hooks(f(g(h())))`.
+func (c *VipOrderClient) Use(hooks ...Hook) {
+	c.hooks.VipOrder = append(c.hooks.VipOrder, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `viporder.Intercept(f(g(h())))`.
+func (c *VipOrderClient) Intercept(interceptors ...Interceptor) {
+	c.inters.VipOrder = append(c.inters.VipOrder, interceptors...)
+}
+
+// Create returns a builder for creating a VipOrder entity.
+func (c *VipOrderClient) Create() *VipOrderCreate {
+	mutation := newVipOrderMutation(c.config, OpCreate)
+	return &VipOrderCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of VipOrder entities.
+func (c *VipOrderClient) CreateBulk(builders ...*VipOrderCreate) *VipOrderCreateBulk {
+	return &VipOrderCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for VipOrder.
+func (c *VipOrderClient) Update() *VipOrderUpdate {
+	mutation := newVipOrderMutation(c.config, OpUpdate)
+	return &VipOrderUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *VipOrderClient) UpdateOne(vo *VipOrder) *VipOrderUpdateOne {
+	mutation := newVipOrderMutation(c.config, OpUpdateOne, withVipOrder(vo))
+	return &VipOrderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *VipOrderClient) UpdateOneID(id int) *VipOrderUpdateOne {
+	mutation := newVipOrderMutation(c.config, OpUpdateOne, withVipOrderID(id))
+	return &VipOrderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for VipOrder.
+func (c *VipOrderClient) Delete() *VipOrderDelete {
+	mutation := newVipOrderMutation(c.config, OpDelete)
+	return &VipOrderDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *VipOrderClient) DeleteOne(vo *VipOrder) *VipOrderDeleteOne {
+	return c.DeleteOneID(vo.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *VipOrderClient) DeleteOneID(id int) *VipOrderDeleteOne {
+	builder := c.Delete().Where(viporder.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &VipOrderDeleteOne{builder}
+}
+
+// Query returns a query builder for VipOrder.
+func (c *VipOrderClient) Query() *VipOrderQuery {
+	return &VipOrderQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeVipOrder},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a VipOrder entity by its id.
+func (c *VipOrderClient) Get(ctx context.Context, id int) (*VipOrder, error) {
+	return c.Query().Where(viporder.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *VipOrderClient) GetX(ctx context.Context, id int) *VipOrder {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryUserOrder queries the user_order edge of a VipOrder.
+func (c *VipOrderClient) QueryUserOrder(vo *VipOrder) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := vo.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(viporder.Table, viporder.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, viporder.UserOrderTable, viporder.UserOrderColumn),
+		)
+		fromV = sqlgraph.Neighbors(vo.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *VipOrderClient) Hooks() []Hook {
+	return c.hooks.VipOrder
+}
+
+// Interceptors returns the client interceptors.
+func (c *VipOrderClient) Interceptors() []Interceptor {
+	return c.inters.VipOrder
+}
+
+func (c *VipOrderClient) mutate(ctx context.Context, m *VipOrderMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&VipOrderCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&VipOrderUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&VipOrderUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&VipOrderDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown VipOrder mutation op: %q", m.Op())
+	}
+}
+
+// VipProductClient is a client for the VipProduct schema.
+type VipProductClient struct {
+	config
+}
+
+// NewVipProductClient returns a client for the VipProduct from the given config.
+func NewVipProductClient(c config) *VipProductClient {
+	return &VipProductClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `vipproduct.Hooks(f(g(h())))`.
+func (c *VipProductClient) Use(hooks ...Hook) {
+	c.hooks.VipProduct = append(c.hooks.VipProduct, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `vipproduct.Intercept(f(g(h())))`.
+func (c *VipProductClient) Intercept(interceptors ...Interceptor) {
+	c.inters.VipProduct = append(c.inters.VipProduct, interceptors...)
+}
+
+// Create returns a builder for creating a VipProduct entity.
+func (c *VipProductClient) Create() *VipProductCreate {
+	mutation := newVipProductMutation(c.config, OpCreate)
+	return &VipProductCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of VipProduct entities.
+func (c *VipProductClient) CreateBulk(builders ...*VipProductCreate) *VipProductCreateBulk {
+	return &VipProductCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for VipProduct.
+func (c *VipProductClient) Update() *VipProductUpdate {
+	mutation := newVipProductMutation(c.config, OpUpdate)
+	return &VipProductUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *VipProductClient) UpdateOne(vp *VipProduct) *VipProductUpdateOne {
+	mutation := newVipProductMutation(c.config, OpUpdateOne, withVipProduct(vp))
+	return &VipProductUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *VipProductClient) UpdateOneID(id int) *VipProductUpdateOne {
+	mutation := newVipProductMutation(c.config, OpUpdateOne, withVipProductID(id))
+	return &VipProductUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for VipProduct.
+func (c *VipProductClient) Delete() *VipProductDelete {
+	mutation := newVipProductMutation(c.config, OpDelete)
+	return &VipProductDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *VipProductClient) DeleteOne(vp *VipProduct) *VipProductDeleteOne {
+	return c.DeleteOneID(vp.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *VipProductClient) DeleteOneID(id int) *VipProductDeleteOne {
+	builder := c.Delete().Where(vipproduct.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &VipProductDeleteOne{builder}
+}
+
+// Query returns a query builder for VipProduct.
+func (c *VipProductClient) Query() *VipProductQuery {
+	return &VipProductQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeVipProduct},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a VipProduct entity by its id.
+func (c *VipProductClient) Get(ctx context.Context, id int) (*VipProduct, error) {
+	return c.Query().Where(vipproduct.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *VipProductClient) GetX(ctx context.Context, id int) *VipProduct {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *VipProductClient) Hooks() []Hook {
+	return c.hooks.VipProduct
+}
+
+// Interceptors returns the client interceptors.
+func (c *VipProductClient) Interceptors() []Interceptor {
+	return c.inters.VipProduct
+}
+
+func (c *VipProductClient) mutate(ctx context.Context, m *VipProductMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&VipProductCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&VipProductUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&VipProductUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&VipProductDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown VipProduct mutation op: %q", m.Op())
 	}
 }
 
@@ -2057,10 +2501,12 @@ func (c *WalletClient) mutate(ctx context.Context, m *WalletMutation) (Value, er
 type (
 	hooks struct {
 		Account, ApplyRecord, Category, Chapter, Course, Lesson, OrderInfos, Orders,
-		Setting, Slider, Teacher, User, Wallet []ent.Hook
+		Setting, Slider, Teacher, User, VipInfo, VipOrder, VipProduct,
+		Wallet []ent.Hook
 	}
 	inters struct {
 		Account, ApplyRecord, Category, Chapter, Course, Lesson, OrderInfos, Orders,
-		Setting, Slider, Teacher, User, Wallet []ent.Interceptor
+		Setting, Slider, Teacher, User, VipInfo, VipOrder, VipProduct,
+		Wallet []ent.Interceptor
 	}
 )

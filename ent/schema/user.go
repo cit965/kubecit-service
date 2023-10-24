@@ -14,7 +14,6 @@ type User struct {
 // Fields of the User.
 func (User) Fields() []ent.Field {
 	return []ent.Field{
-
 		field.String("username"),
 		field.String("channel"),
 		field.Uint8("role_id"),
@@ -26,5 +25,7 @@ func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("teacher", Teacher.Type).Unique(),
 		edge.To("apply_record", ApplyRecord.Type),
+		edge.To("vip_info", VipInfo.Type).Unique(),
+		edge.To("vip_order", VipOrder.Type),
 	}
 }

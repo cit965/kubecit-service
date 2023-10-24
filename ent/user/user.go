@@ -22,6 +22,10 @@ const (
 	EdgeTeacher = "teacher"
 	// EdgeApplyRecord holds the string denoting the apply_record edge name in mutations.
 	EdgeApplyRecord = "apply_record"
+	// EdgeVipInfo holds the string denoting the vip_info edge name in mutations.
+	EdgeVipInfo = "vip_info"
+	// EdgeVipOrder holds the string denoting the vip_order edge name in mutations.
+	EdgeVipOrder = "vip_order"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 	// TeacherTable is the table that holds the teacher relation/edge.
@@ -38,6 +42,20 @@ const (
 	ApplyRecordInverseTable = "apply_records"
 	// ApplyRecordColumn is the table column denoting the apply_record relation/edge.
 	ApplyRecordColumn = "user_id"
+	// VipInfoTable is the table that holds the vip_info relation/edge.
+	VipInfoTable = "vip_infos"
+	// VipInfoInverseTable is the table name for the VipInfo entity.
+	// It exists in this package in order to avoid circular dependency with the "vipinfo" package.
+	VipInfoInverseTable = "vip_infos"
+	// VipInfoColumn is the table column denoting the vip_info relation/edge.
+	VipInfoColumn = "user_id"
+	// VipOrderTable is the table that holds the vip_order relation/edge.
+	VipOrderTable = "vip_orders"
+	// VipOrderInverseTable is the table name for the VipOrder entity.
+	// It exists in this package in order to avoid circular dependency with the "viporder" package.
+	VipOrderInverseTable = "vip_orders"
+	// VipOrderColumn is the table column denoting the vip_order relation/edge.
+	VipOrderColumn = "user_id"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -101,6 +119,27 @@ func ByApplyRecord(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newApplyRecordStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByVipInfoField orders the results by vip_info field.
+func ByVipInfoField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newVipInfoStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByVipOrderCount orders the results by vip_order count.
+func ByVipOrderCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newVipOrderStep(), opts...)
+	}
+}
+
+// ByVipOrder orders the results by vip_order terms.
+func ByVipOrder(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newVipOrderStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newTeacherStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -113,5 +152,19 @@ func newApplyRecordStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ApplyRecordInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, ApplyRecordTable, ApplyRecordColumn),
+	)
+}
+func newVipInfoStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(VipInfoInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2O, false, VipInfoTable, VipInfoColumn),
+	)
+}
+func newVipOrderStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(VipOrderInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, VipOrderTable, VipOrderColumn),
 	)
 }

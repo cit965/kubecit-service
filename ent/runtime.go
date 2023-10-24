@@ -14,6 +14,8 @@ import (
 	"kubecit-service/ent/schema"
 	"kubecit-service/ent/slider"
 	"kubecit-service/ent/teacher"
+	"kubecit-service/ent/vipinfo"
+	"kubecit-service/ent/viporder"
 	"kubecit-service/ent/wallet"
 	"time"
 )
@@ -174,6 +176,24 @@ func init() {
 	teacher.DefaultUpdateAt = teacherDescUpdateAt.Default.(func() time.Time)
 	// teacher.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
 	teacher.UpdateDefaultUpdateAt = teacherDescUpdateAt.UpdateDefault.(func() time.Time)
+	vipinfoFields := schema.VipInfo{}.Fields()
+	_ = vipinfoFields
+	// vipinfoDescStartAt is the schema descriptor for start_at field.
+	vipinfoDescStartAt := vipinfoFields[1].Descriptor()
+	// vipinfo.DefaultStartAt holds the default value on creation for the start_at field.
+	vipinfo.DefaultStartAt = vipinfoDescStartAt.Default.(func() time.Time)
+	viporderFields := schema.VipOrder{}.Fields()
+	_ = viporderFields
+	// viporderDescCreateAt is the schema descriptor for create_at field.
+	viporderDescCreateAt := viporderFields[4].Descriptor()
+	// viporder.DefaultCreateAt holds the default value on creation for the create_at field.
+	viporder.DefaultCreateAt = viporderDescCreateAt.Default.(func() time.Time)
+	// viporderDescUpdateAt is the schema descriptor for update_at field.
+	viporderDescUpdateAt := viporderFields[5].Descriptor()
+	// viporder.DefaultUpdateAt holds the default value on creation for the update_at field.
+	viporder.DefaultUpdateAt = viporderDescUpdateAt.Default.(func() time.Time)
+	// viporder.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
+	viporder.UpdateDefaultUpdateAt = viporderDescUpdateAt.UpdateDefault.(func() time.Time)
 	walletFields := schema.Wallet{}.Fields()
 	_ = walletFields
 	// walletDescGoldLeaf is the schema descriptor for gold_leaf field.
