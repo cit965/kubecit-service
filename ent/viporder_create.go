@@ -96,8 +96,8 @@ func (voc *VipOrderCreate) SetNillableUserID(i *int) *VipOrderCreate {
 }
 
 // SetPrice sets the "price" field.
-func (voc *VipOrderCreate) SetPrice(f float64) *VipOrderCreate {
-	voc.mutation.SetPrice(f)
+func (voc *VipOrderCreate) SetPrice(i int) *VipOrderCreate {
+	voc.mutation.SetPrice(i)
 	return voc
 }
 
@@ -236,7 +236,7 @@ func (voc *VipOrderCreate) createSpec() (*VipOrder, *sqlgraph.CreateSpec) {
 		_node.UpdateAt = value
 	}
 	if value, ok := voc.mutation.Price(); ok {
-		_spec.SetField(viporder.FieldPrice, field.TypeFloat64, value)
+		_spec.SetField(viporder.FieldPrice, field.TypeInt, value)
 		_node.Price = value
 	}
 	if nodes := voc.mutation.UserOrderIDs(); len(nodes) > 0 {

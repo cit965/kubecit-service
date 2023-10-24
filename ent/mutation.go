@@ -11017,8 +11017,8 @@ type VipOrderMutation struct {
 	addpay_status     *int8
 	create_at         *time.Time
 	update_at         *time.Time
-	price             *float64
-	addprice          *float64
+	price             *int
+	addprice          *int
 	clearedFields     map[string]struct{}
 	user_order        *int
 	cleareduser_order bool
@@ -11485,13 +11485,13 @@ func (m *VipOrderMutation) ResetUserID() {
 }
 
 // SetPrice sets the "price" field.
-func (m *VipOrderMutation) SetPrice(f float64) {
-	m.price = &f
+func (m *VipOrderMutation) SetPrice(i int) {
+	m.price = &i
 	m.addprice = nil
 }
 
 // Price returns the value of the "price" field in the mutation.
-func (m *VipOrderMutation) Price() (r float64, exists bool) {
+func (m *VipOrderMutation) Price() (r int, exists bool) {
 	v := m.price
 	if v == nil {
 		return
@@ -11502,7 +11502,7 @@ func (m *VipOrderMutation) Price() (r float64, exists bool) {
 // OldPrice returns the old "price" field's value of the VipOrder entity.
 // If the VipOrder object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VipOrderMutation) OldPrice(ctx context.Context) (v float64, err error) {
+func (m *VipOrderMutation) OldPrice(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldPrice is only allowed on UpdateOne operations")
 	}
@@ -11516,17 +11516,17 @@ func (m *VipOrderMutation) OldPrice(ctx context.Context) (v float64, err error) 
 	return oldValue.Price, nil
 }
 
-// AddPrice adds f to the "price" field.
-func (m *VipOrderMutation) AddPrice(f float64) {
+// AddPrice adds i to the "price" field.
+func (m *VipOrderMutation) AddPrice(i int) {
 	if m.addprice != nil {
-		*m.addprice += f
+		*m.addprice += i
 	} else {
-		m.addprice = &f
+		m.addprice = &i
 	}
 }
 
 // AddedPrice returns the value that was added to the "price" field in this mutation.
-func (m *VipOrderMutation) AddedPrice() (r float64, exists bool) {
+func (m *VipOrderMutation) AddedPrice() (r int, exists bool) {
 	v := m.addprice
 	if v == nil {
 		return
@@ -11746,7 +11746,7 @@ func (m *VipOrderMutation) SetField(name string, value ent.Value) error {
 		m.SetUserID(v)
 		return nil
 	case viporder.FieldPrice:
-		v, ok := value.(float64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -11831,7 +11831,7 @@ func (m *VipOrderMutation) AddField(name string, value ent.Value) error {
 		m.AddPayStatus(v)
 		return nil
 	case viporder.FieldPrice:
-		v, ok := value.(float64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

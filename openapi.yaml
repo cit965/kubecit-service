@@ -920,8 +920,8 @@ components:
                     type: integer
                     format: enum
                 price:
-                    type: number
-                    format: float
+                    type: integer
+                    format: int32
         helloworld.v1.CategoryInfo:
             type: object
             properties:

@@ -32,8 +32,8 @@ type VipOrder struct {
 	UpdateAt time.Time `json:"update_at,omitempty"`
 	// 用户id
 	UserID int `json:"user_id,omitempty"`
-	// 订单价格
-	Price float64 `json:"price,omitempty"`
+	// 订单价格(单位分)
+	Price int `json:"price,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the VipOrderQuery when eager-loading is set.
 	Edges        VipOrderEdges `json:"edges"`
@@ -67,9 +67,7 @@ func (*VipOrder) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case viporder.FieldPrice:
-			values[i] = new(sql.NullFloat64)
-		case viporder.FieldID, viporder.FieldBizID, viporder.FieldVipType, viporder.FieldPayType, viporder.FieldPayStatus, viporder.FieldUserID:
+		case viporder.FieldID, viporder.FieldBizID, viporder.FieldVipType, viporder.FieldPayType, viporder.FieldPayStatus, viporder.FieldUserID, viporder.FieldPrice:
 			values[i] = new(sql.NullInt64)
 		case viporder.FieldCreateAt, viporder.FieldUpdateAt:
 			values[i] = new(sql.NullTime)
@@ -137,10 +135,10 @@ func (vo *VipOrder) assignValues(columns []string, values []any) error {
 				vo.UserID = int(value.Int64)
 			}
 		case viporder.FieldPrice:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field price", values[i])
 			} else if value.Valid {
-				vo.Price = value.Float64
+				vo.Price = int(value.Int64)
 			}
 		default:
 			vo.selectValues.Set(columns[i], values[i])

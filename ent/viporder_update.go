@@ -136,15 +136,15 @@ func (vou *VipOrderUpdate) ClearUserID() *VipOrderUpdate {
 }
 
 // SetPrice sets the "price" field.
-func (vou *VipOrderUpdate) SetPrice(f float64) *VipOrderUpdate {
+func (vou *VipOrderUpdate) SetPrice(i int) *VipOrderUpdate {
 	vou.mutation.ResetPrice()
-	vou.mutation.SetPrice(f)
+	vou.mutation.SetPrice(i)
 	return vou
 }
 
-// AddPrice adds f to the "price" field.
-func (vou *VipOrderUpdate) AddPrice(f float64) *VipOrderUpdate {
-	vou.mutation.AddPrice(f)
+// AddPrice adds i to the "price" field.
+func (vou *VipOrderUpdate) AddPrice(i int) *VipOrderUpdate {
+	vou.mutation.AddPrice(i)
 	return vou
 }
 
@@ -257,10 +257,10 @@ func (vou *VipOrderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(viporder.FieldUpdateAt, field.TypeTime, value)
 	}
 	if value, ok := vou.mutation.Price(); ok {
-		_spec.SetField(viporder.FieldPrice, field.TypeFloat64, value)
+		_spec.SetField(viporder.FieldPrice, field.TypeInt, value)
 	}
 	if value, ok := vou.mutation.AddedPrice(); ok {
-		_spec.AddField(viporder.FieldPrice, field.TypeFloat64, value)
+		_spec.AddField(viporder.FieldPrice, field.TypeInt, value)
 	}
 	if vou.mutation.UserOrderCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -418,15 +418,15 @@ func (vouo *VipOrderUpdateOne) ClearUserID() *VipOrderUpdateOne {
 }
 
 // SetPrice sets the "price" field.
-func (vouo *VipOrderUpdateOne) SetPrice(f float64) *VipOrderUpdateOne {
+func (vouo *VipOrderUpdateOne) SetPrice(i int) *VipOrderUpdateOne {
 	vouo.mutation.ResetPrice()
-	vouo.mutation.SetPrice(f)
+	vouo.mutation.SetPrice(i)
 	return vouo
 }
 
-// AddPrice adds f to the "price" field.
-func (vouo *VipOrderUpdateOne) AddPrice(f float64) *VipOrderUpdateOne {
-	vouo.mutation.AddPrice(f)
+// AddPrice adds i to the "price" field.
+func (vouo *VipOrderUpdateOne) AddPrice(i int) *VipOrderUpdateOne {
+	vouo.mutation.AddPrice(i)
 	return vouo
 }
 
@@ -569,10 +569,10 @@ func (vouo *VipOrderUpdateOne) sqlSave(ctx context.Context) (_node *VipOrder, er
 		_spec.SetField(viporder.FieldUpdateAt, field.TypeTime, value)
 	}
 	if value, ok := vouo.mutation.Price(); ok {
-		_spec.SetField(viporder.FieldPrice, field.TypeFloat64, value)
+		_spec.SetField(viporder.FieldPrice, field.TypeInt, value)
 	}
 	if value, ok := vouo.mutation.AddedPrice(); ok {
-		_spec.AddField(viporder.FieldPrice, field.TypeFloat64, value)
+		_spec.AddField(viporder.FieldPrice, field.TypeInt, value)
 	}
 	if vouo.mutation.UserOrderCleared() {
 		edge := &sqlgraph.EdgeSpec{

@@ -22,7 +22,7 @@ func (VipOrder) Fields() []ent.Field {
 		field.Time("create_at").Default(time.Now).Comment("创建时间"),
 		field.Time("update_at").Default(time.Now).UpdateDefault(time.Now).Comment("更新时间"),
 		field.Int("user_id").Optional().Unique().Comment("用户id"),
-		field.Float("price").Comment("订单价格"),
+		field.Int("price").Comment("订单价格(单位分)"),
 	}
 }
 

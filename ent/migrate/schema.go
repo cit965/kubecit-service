@@ -307,7 +307,7 @@ var (
 		{Name: "pay_status", Type: field.TypeInt8, Nullable: true},
 		{Name: "create_at", Type: field.TypeTime},
 		{Name: "update_at", Type: field.TypeTime},
-		{Name: "price", Type: field.TypeFloat64},
+		{Name: "price", Type: field.TypeInt},
 		{Name: "user_id", Type: field.TypeInt, Nullable: true},
 	}
 	// VipOrdersTable holds the schema information for the "vip_orders" table.

@@ -91,7 +91,7 @@ func UserID(v int) predicate.VipOrder {
 }
 
 // Price applies equality check predicate on the "price" field. It's identical to PriceEQ.
-func Price(v float64) predicate.VipOrder {
+func Price(v int) predicate.VipOrder {
 	return predicate.VipOrder(sql.FieldEQ(FieldPrice, v))
 }
 
@@ -376,42 +376,42 @@ func UserIDNotNil() predicate.VipOrder {
 }
 
 // PriceEQ applies the EQ predicate on the "price" field.
-func PriceEQ(v float64) predicate.VipOrder {
+func PriceEQ(v int) predicate.VipOrder {
 	return predicate.VipOrder(sql.FieldEQ(FieldPrice, v))
 }
 
 // PriceNEQ applies the NEQ predicate on the "price" field.
-func PriceNEQ(v float64) predicate.VipOrder {
+func PriceNEQ(v int) predicate.VipOrder {
 	return predicate.VipOrder(sql.FieldNEQ(FieldPrice, v))
 }
 
 // PriceIn applies the In predicate on the "price" field.
-func PriceIn(vs ...float64) predicate.VipOrder {
+func PriceIn(vs ...int) predicate.VipOrder {
 	return predicate.VipOrder(sql.FieldIn(FieldPrice, vs...))
 }
 
 // PriceNotIn applies the NotIn predicate on the "price" field.
-func PriceNotIn(vs ...float64) predicate.VipOrder {
+func PriceNotIn(vs ...int) predicate.VipOrder {
 	return predicate.VipOrder(sql.FieldNotIn(FieldPrice, vs...))
 }
 
 // PriceGT applies the GT predicate on the "price" field.
-func PriceGT(v float64) predicate.VipOrder {
+func PriceGT(v int) predicate.VipOrder {
 	return predicate.VipOrder(sql.FieldGT(FieldPrice, v))
 }
 
 // PriceGTE applies the GTE predicate on the "price" field.
-func PriceGTE(v float64) predicate.VipOrder {
+func PriceGTE(v int) predicate.VipOrder {
 	return predicate.VipOrder(sql.FieldGTE(FieldPrice, v))
 }
 
 // PriceLT applies the LT predicate on the "price" field.
-func PriceLT(v float64) predicate.VipOrder {
+func PriceLT(v int) predicate.VipOrder {
 	return predicate.VipOrder(sql.FieldLT(FieldPrice, v))
 }
 
 // PriceLTE applies the LTE predicate on the "price" field.
-func PriceLTE(v float64) predicate.VipOrder {
+func PriceLTE(v int) predicate.VipOrder {
 	return predicate.VipOrder(sql.FieldLTE(FieldPrice, v))
 }
 

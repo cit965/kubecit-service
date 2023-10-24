@@ -83,7 +83,7 @@ type BecomeOrderInfo struct {
 	VipType   int
 	PayStatus int
 	BizId     int64
-	Price     float64
+	Price     int
 	StartAt   time.Time
 	ExpireAt  time.Time
 }
@@ -277,7 +277,7 @@ func (u *UserUsecase) Become(ctx context.Context, req *pb.BecomeVipRequest) (*pb
 		PayType: int(req.GetPayType()),
 		VipType: int(req.GetVipType()),
 		BizId:   BizId.GenID(),
-		Price:   float64(req.Price),
+		Price:   int(req.Price),
 	}
 	err = u.userRepo.Become(ctx, becomeReq)
 	if err != nil {

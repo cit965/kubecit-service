@@ -1764,7 +1764,7 @@ message BecomeVipRequest {
       title: "会员类型",
       description: "VIP_TYPE_UNKNOWN = 0;VIP_TYPE_MONTHLY = 1（月度会员）;VIP_TYPE_QUARTERLY = 2（季度会员）;VIP_TYPE_YEARLY = 3（年度会员）;VIP_TYPE_FOREVER = 4（永久会员）;"
     }, (google.api.field_behavior) = REQUIRED];
-  float price = 3[
+  int32 price = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "总价",
       description: "总价"
