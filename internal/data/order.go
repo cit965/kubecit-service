@@ -53,11 +53,11 @@ func (or *orderRepo) createOrderTx(ctx context.Context, courseIds []int32) (*biz
 	if err != nil {
 		return nil, errors.BadRequest("", err.Error())
 	}
-
 	userId, err := common.GetUserFromCtx(ctx)
 	if err != nil {
 		return nil, err
 	}
+	//userId := int32(1)
 	orderObj, err := or.data.db.Orders.Create().SetOrderSn(GenerateOrderSn(int32(userId))).SetTradePrice(int32(coursePrice)).SetUserID(int32(userId)).Save(ctx)
 	if err != nil {
 		return nil, errors.BadRequest("创建订单失败", err.Error())
@@ -73,32 +73,20 @@ func (or *orderRepo) createOrderTx(ctx context.Context, courseIds []int32) (*biz
 		if err != nil {
 			return nil, errors.BadRequest("创建订单详情失败", err.Error())
 		}
-
-		infos = append(infos, &biz.OrderInfo{
-			Id:              info.ID,
-			ProductName:     info.ProductName,
-			ProductDescribe: info.ProductDescribe,
-			ProductPrice:    c.Price,
-			CreateTime:      info.CreateTime,
-			UpdateTime:      info.UpdateTime,
-			OrderId:         int32(orderObj.ID),
-			ProductId:       id,
-		})
+		var orderInfo biz.OrderInfo
+		err = common.Copy(&orderInfo, info)
+		if err != nil {
+			return nil, err
+		}
+		infos = append(infos, &orderInfo)
 	}
-	order := &biz.Order{
-		Id:         orderObj.ID,
-		UserId:     int32(userId),
-		OrderSn:    orderObj.OrderSn,
-		PayType:    orderObj.PayType,
-		PayStatus:  orderObj.PayStatus,
-		TradePrice: orderObj.TradePrice,
-		TradeNo:    orderObj.TradeNo,
-		PayTime:    orderObj.PayTime,
-		CreateTime: orderObj.CreateTime,
-		UpdateTime: orderObj.UpdateTime,
-		Info:       infos,
+	var order biz.Order
+	err = common.Copy(&order, orderObj)
+	if err != nil {
+		return nil, err
 	}
-	return order, nil
+	order.Details = infos
+	return &order, nil
 }
 
 func GenerateOrderSn(userId int32) string {
@@ -133,32 +121,22 @@ func (or *orderRepo) MyOrder(ctx context.Context, pageNum, pageSize *int32) ([]*
 			return nil, err
 		}
 		orderDetails := make([]*biz.OrderInfo, 0)
-
 		for _, orderInfo := range orderInfos {
-			orderDetails = append(orderDetails, &biz.OrderInfo{
-				Id:              orderInfo.ID,
-				ProductName:     orderInfo.ProductName,
-				ProductDescribe: orderInfo.ProductDescribe,
-				ProductPrice:    orderInfo.ProductPrice,
-				CreateTime:      orderInfo.CreateTime,
-				UpdateTime:      orderInfo.UpdateTime,
-				OrderId:         int32(order.ID),
-				ProductId:       orderInfo.ProductID,
-			})
+			var info biz.OrderInfo
+			err = common.Copy(&info, orderInfo)
+			if err != nil {
+				return nil, err
+			}
+			orderDetails = append(orderDetails, &info)
 		}
-		ordersResult = append(ordersResult, &biz.Order{
-			Id:         order.ID,
-			UserId:     order.UserID,
-			OrderSn:    order.OrderSn,
-			PayType:    order.PayType,
-			PayStatus:  order.PayStatus,
-			TradePrice: order.TradePrice,
-			TradeNo:    order.TradeNo,
-			PayTime:    order.PayTime,
-			CreateTime: order.CreateTime,
-			UpdateTime: order.UpdateTime,
-			Info:       orderDetails,
-		})
+		var ord biz.Order
+		err = common.Copy(&ord, order)
+		if err != nil {
+			return nil, err
+		}
+		ord.Details = orderDetails
+		ordersResult = append(ordersResult, &ord)
 	}
+
 	return ordersResult, nil
 }

@@ -1363,7 +1363,7 @@ components:
                 productPrice:
                     type: integer
                     format: int32
-                productDescription:
+                productDescribe:
                     type: string
         helloworld.v1.OrderListReply:
             type: object

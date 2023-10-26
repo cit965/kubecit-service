@@ -17,7 +17,7 @@ type Order struct {
 	PayTime    time.Time
 	CreateTime time.Time
 	UpdateTime time.Time
-	Info       []*OrderInfo
+	Details    []*OrderInfo
 }
 
 type OrderInfo struct {
