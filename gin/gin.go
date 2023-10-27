@@ -1,19 +1,26 @@
 package gin
 
 import (
+	"context"
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/skip2/go-qrcode"
 	"kubecit-service/ent"
 	"kubecit-service/ent/account"
+	"kubecit-service/ent/chapter"
+	"kubecit-service/ent/course"
+	"kubecit-service/ent/lesson"
 	"kubecit-service/ent/user"
 	"kubecit-service/internal/conf"
 	"kubecit-service/internal/pkg/jwt"
+	"kubecit-service/internal/pkg/provider/oss/qiniucloud"
 	"net/http"
 	"net/url"
 	"sort"
+	"strconv"
 )
 
 import "embed"
@@ -36,7 +43,14 @@ type Datastore struct {
 	Source string
 }
 
-func initConfig(g *conf.Gin, d *conf.Data) (*WxConfig, *Datastore) {
+type OssConfig struct {
+	Bucket    string
+	AccessKey string
+	SecretKey string
+	Domain    string
+}
+
+func initConfig(g *conf.Gin, d *conf.Data) (*WxConfig, *Datastore, *OssConfig) {
 	return &WxConfig{
 			Token:     g.Wechat.Token,
 			AppId:     g.Wechat.Appid,
@@ -44,17 +58,38 @@ func initConfig(g *conf.Gin, d *conf.Data) (*WxConfig, *Datastore) {
 		}, &Datastore{
 			Driver: d.Database.Driver,
 			Source: d.Database.Source,
+		}, &OssConfig{
+			Bucket:    g.Oss.Bucket,
+			AccessKey: g.Oss.AccessKey,
+			SecretKey: g.Oss.SecretKey,
+			Domain:    g.Oss.Domain,
 		}
 
 }
 
 var (
-	WX *WxConfig
-	DB *Datastore
+	WX  *WxConfig
+	DB  *Datastore
+	OSS *OssConfig
 )
 
+var (
+	entClient *ent.Client
+)
+
+func initEntClient() *ent.Client {
+	if entClient == nil {
+		client, err := ent.Open(DB.Driver, DB.Source)
+		if err != nil {
+			log.Fatal("连接数据库失败")
+		}
+		entClient = client
+	}
+	return entClient
+}
+
 func NewGinService(g *conf.Gin, d *conf.Data) *GinService {
-	WX, DB = initConfig(g, d)
+	WX, DB, OSS = initConfig(g, d)
 	r := gin.Default()
 	r.Use(Cors())
 	// static files
@@ -67,6 +102,9 @@ func NewGinService(g *conf.Gin, d *conf.Data) *GinService {
 	r.GET("/gin/wechat/login", Redirect)
 	// 回调地址
 	r.GET("/gin/wechat/callback", Callback)
+
+	// 上传文件
+	r.POST("/gin/upload/:courseId/:chapterId/:lessonId", UploadHandler)
 	return &GinService{r}
 }
 
@@ -157,11 +195,9 @@ func Callback(ctx *gin.Context) {
 		FailWithMessage("解析微信用户信息失败", ctx)
 		return
 	}
-	entClient, err := ent.Open(DB.Driver, DB.Source)
-	if err != nil {
-		FailWithMessage("连接数据库失败", ctx)
-		return
-	}
+
+	entClient = initEntClient()
+
 	// 查询账号是否存在
 	ac, err := entClient.Account.Query().Where(account.OpenidEQ(userData.OpenID)).First(ctx)
 	// 账号不存在,则创建用户和账号。 用户是唯一的，只有创建了用户才能有账号
@@ -235,4 +271,40 @@ func Cors() gin.HandlerFunc {
 
 		c.Next()
 	}
+}
+
+func UploadHandler(c *gin.Context) {
+	ossClient := qiniucloud.NewossQiniuCloud(OSS.Bucket, OSS.AccessKey, OSS.SecretKey)
+	file, header, errFile := c.Request.FormFile("file")
+	if errFile != nil {
+		c.String(http.StatusBadRequest, "form file error")
+		return
+	}
+	defer file.Close()
+
+	courseId, _ := strconv.Atoi(c.Param("courseId"))
+	chapterId, _ := strconv.Atoi(c.Param("chapterId"))
+	lessonId, _ := strconv.Atoi(c.Param("lessonId"))
+
+	filepath := fmt.Sprintf("%v/%v/%v/%v", c.Param("courseId"), c.Param("chapterId"), c.Param("lessonId"), header.Filename)
+
+	_, err := ossClient.UploadFile(file, filepath, header.Size)
+	if err != nil {
+		c.String(http.StatusInternalServerError, "upload file failed")
+		return
+	}
+	entClient = initEntClient()
+	lessonInfo, err := entClient.Course.Query().Where(course.IDEQ(courseId)).
+		QueryChapters().Where(chapter.IDEQ(chapterId)).
+		QueryLessons().Where(lesson.IDEQ(lessonId)).Only(context.TODO())
+	if err != nil {
+		c.String(http.StatusInternalServerError, "query lesson error")
+		return
+	}
+	_, err = lessonInfo.Update().SetStoragePath(filepath).Save(context.TODO())
+	if err != nil {
+		c.String(http.StatusInternalServerError, "update lesson error")
+		return
+	}
+	c.String(http.StatusOK, "upload file %v success", filepath)
 }

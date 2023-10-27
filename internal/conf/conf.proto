@@ -16,6 +16,14 @@ message Bootstrap {
 
 message Gin {
   Wechat wechat =1;
+  Oss oss = 2;
+}
+
+message Oss {
+  string bucket = 1;
+  string accessKey = 2;
+  string secretKey = 3;
+  string domain = 4;
 }
 
 message Wechat {
