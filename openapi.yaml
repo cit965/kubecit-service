@@ -1069,6 +1069,7 @@ components:
                 - cover
                 - price
                 - categoryId
+                - teacherId
             type: object
             properties:
                 level:
@@ -1088,6 +1089,9 @@ components:
                     items:
                         type: string
                 categoryId:
+                    type: integer
+                    format: int32
+                teacherId:
                     type: integer
                     format: int32
         helloworld.v1.CreateLessonReply:
@@ -1614,6 +1618,7 @@ components:
                 - price
                 - tags
                 - categoryId
+                - teacherId
             type: object
             properties:
                 id:
@@ -1636,6 +1641,9 @@ components:
                     items:
                         type: string
                 categoryId:
+                    type: integer
+                    format: int32
+                teacherId:
                     type: integer
                     format: int32
         helloworld.v1.UpdateLessonReply:

@@ -982,6 +982,13 @@ message UpdateCourseRequest {
     },
     (google.api.field_behavior) = REQUIRED
   ];
+  int32 teacherId = 10[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "讲师id",
+      description: "讲师id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message UpdateCourseReply {
@@ -1050,6 +1057,13 @@ message CreateCourseRequest {
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       title: "分类Id",
       description: "分类Id,只能是二级Id"
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  int32 teacherId = 10[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      title: "讲师Id",
+      description: "讲师Id"
     },
     (google.api.field_behavior) = REQUIRED
   ];

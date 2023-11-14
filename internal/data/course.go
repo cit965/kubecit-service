@@ -76,6 +76,7 @@ func (c *courseRepo) SearchCourse(ctx context.Context, pageNum, pageSize *int32,
 			UpdatedAt:  v.UpdatedAt,
 			Status:     v.Status,
 			CategoryId: v.CategoryID,
+			TeacherId:  v.TeacherID,
 		})
 	}
 	return courses, int32(total), nil
@@ -116,7 +117,7 @@ func (c *courseRepo) GetCourse(ctx context.Context, id int) (*biz.Course, error)
 
 func (c *courseRepo) UpdateCourse(ctx context.Context, id int, ins *biz.Course) (*biz.Course, error) {
 	res, err := c.data.db.Course.UpdateOneID(id).SetLevel(ins.Level).SetName(ins.Name).SetDetail(ins.Detail).SetCover(ins.Cover).
-		SetPrice(ins.Price).SetTags(ins.Tags).SetCategoryID(ins.CategoryId).Save(ctx)
+		SetPrice(ins.Price).SetTags(ins.Tags).SetCategoryID(ins.CategoryId).SetTeacherID(ins.TeacherId).Save(ctx)
 	if err != nil {
 		c.log.Errorf("course repo update error: %v\n", err)
 		return nil, err
@@ -133,6 +134,7 @@ func (c *courseRepo) UpdateCourse(ctx context.Context, id int, ins *biz.Course) 
 		UpdatedAt:  res.UpdatedAt,
 		Status:     res.Status,
 		CategoryId: res.CategoryID,
+		TeacherId:  res.TeacherID,
 	}, nil
 }
 
@@ -158,8 +160,8 @@ func (c *courseRepo) ReviewCourse(ctx context.Context, id int, status int32) (*b
 }
 
 func (c *courseRepo) CreateCourse(ctx context.Context, course *biz.Course) (*biz.Course, error) {
-	res, err := c.data.db.Course.Create().SetLevel(course.Level).SetName(course.Name).SetDetail(course.Detail).SetCover(course.Cover).
-		SetPrice(course.Price).SetTags(course.Tags).SetStatus(course.Status).SetCategoryID(course.CategoryId).Save(ctx)
+	res, err := c.data.db.Debug().Course.Create().SetLevel(course.Level).SetName(course.Name).SetDetail(course.Detail).SetCover(course.Cover).
+		SetPrice(course.Price).SetTags(course.Tags).SetStatus(course.Status).SetCategoryID(course.CategoryId).SetTeacherID(course.TeacherId).Save(ctx)
 	if err != nil {
 		c.log.Errorf("course repo create error: %v\n", err)
 		return nil, err
